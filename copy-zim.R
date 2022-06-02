@@ -32,7 +32,7 @@ library(ggrepel)
 library(hrbrthemes)
 library(rmapshaper)
 library(magrittr)
-gpclibPermit()
+#gpclibPermit()
 #rsconnect::configureApp("ShinyApp", account = "ecsusan-vt-2020-shiny", size="xxlarge")
 
 
