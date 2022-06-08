@@ -1,3 +1,4 @@
+
 library(dplyr)
 
 baseline <- livdiv %>%
@@ -25,9 +26,11 @@ villagecount <- baseline %>%
   count(village) 
 
 baseline %>% 
-  group_by(village) 
+  group_by(village) %>% 
+  summarize(meanage = mean(head_age), )
+
   
-  
+
 
 
          
