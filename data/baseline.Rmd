@@ -1,0 +1,98 @@
+---
+title: "baseline_analysis"
+author: "Nandini Das"
+date: '2022-06-13'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(shiny)
+library(shinythemes)
+library(shinyjs)
+library(ggplot2)
+library(maps)
+library(plotly)
+library(DT)
+library(dplyr)
+library(tigris)
+library(tidyverse)
+library(tidycensus)
+library(readxl)
+library(collapsibleTree)
+library(shinycssloaders)
+library(leaflet)
+library(leaflet.extras)
+library(rvest)
+library(sf)
+library(shinydashboard)
+library(shinydashboardPlus)
+library(tidygeocoder)
+library(janitor)
+library(dplyr)
+library(ggplot2)
+library(magrittr)
+options(tigris_use_cache = TRUE)
+
+library(rstudioapi)
+setwd(dirname(getActiveDocumentContext()$path))
+```
+
+# Baseline
+
+```{r}
+
+baseline <- dataset %>%
+filter(week_num == 0:4) %>%
+arrange(date)
+
+```
+
+```{r}
+
+
+
+figure <- ggplot(baseline, aes(head_age, head_edu, color= village))+geom_point()
+
+
+
+figure
+
+```
+
+
+```{r}
+
+
+baseline %>% select(head_age, head_edu, village) %>% group_by(village) %>%
+                                          summarise_all(mean) -> baseline.summary
+
+figure_sum <- ggplot(baseline, aes(head_age, head_edu, color= village))+geom_point(data=baseline.summary, shape=15, size=5)
+
+
+
+figure_sum
+
+```
+
+
+
+```{r}
+
+
+figure_gender<-ggplot(baseline, aes(head_edu,land_own, color=as.factor(head_female)))+geom_point()
+
+figure_gender+ scale_y_continuous(trans='log2') + ylim(0,300)
+
+```
+
+
+```{r}
+
+
+figure_gender<-ggplot(baseline, aes(as.numeric(total_inc), fill=village))+geom_histogram(binwidth=2000, center=0.05)
+
+figure_gender
+
+```
