@@ -67,7 +67,8 @@ Bar plot of age by village
 ```{r}
 by_villagemore <- baseline %>% 
   group_by(village ) %>% 
-  summarize_at(c("head_age", "head_edu", "head_married"), mean, na.rm=TRUE)
+  summarize_at(c("head_age", "head_edu", "head_married"), mean, na.rm=TRUE) %>%
+  mutate(sub = substr(head_edu, 1, 4))
 
 ```
 
@@ -86,11 +87,16 @@ ggplot(baseline, aes(x = head_age)) +
 ```{r}
 ggplot(baseline, aes(x = head_age)) +
   geom_histogram(fill = "cornflowerblue", 
-                 color = "white", 
-                 bins = 20) + 
-  labs(title="Participants by age", 
-       subtitle = "number of bins = 20",
-       x = "Age")
+                 color = "white", bins = 20
+                 ) + 
+  labs(title="Head of Households' Age",
+        y = "Number of Head of Households") +
+  theme_classic() +
+  scale_x_continuous(breaks = c(20, 30, 40, 50, 60, 70, 80), name="Age", limits=c(20, 80)) 
+  
+
+
+#scale_y_continuous(name="Stopping distance", limits=c(0, 150))
 
 ```
  
@@ -102,13 +108,12 @@ library(ggplot2)
 
 ggplot(by_villagemore, aes(x = village, y = head_age, color="black", fill="#c5bf6f", width=0.5, srt = 45)) +
   geom_col(width = "5") +
-  ylab("Mean Age of HH") + 
-  xlab("Village") +
-  ggtitle("Age by Village") +
+  ylab("Age") + 
+  xlab("")+
+  ggtitle("Mean Age for Head of Household by Village") +
   theme(axis.line = element_line(size = 3, colour = "grey80")) +
   theme(legend.position = "none") +
-  
-  #rotate_x_text(angle = 33, size = rel(1)) 
+  rotate_x_text(angle = 33, size = rel(1)) 
 
 ```
 
@@ -119,8 +124,7 @@ ggplot(baseline, aes(x = head_edu)) +
   geom_histogram(fill = "indianred3", 
                  color = "white", 
                  bins = 20) + 
-  labs(title="HH Education", 
-       subtitle = "number of bins = 20",
+  labs(title="Head of Households' Years of Education",
        x = "Education (Years)", y = "Count")
 
 ```
@@ -130,13 +134,25 @@ ggplot(baseline, aes(x = head_edu)) +
 ```{r}
 ggplot(by_villagemore, aes(x = village, y = head_edu, fill = "")) +
   geom_col(position = position_dodge(width = 1), color = "black", fill = "skyblue") +
-  ggtitle("Education by Village") +
-  theme_wsj(color = "gray") +
+  ggtitle("Mean Years of Education for Head of Households by Village") +
   theme(axis.title=element_text(size=12)) +
-  labs(x = "Villages", y = "Education (Years)") +
-  rotate_x_text(angle = 45, size = rel(1)) +
-  ggtitle("Education by Village")
+  labs(x = "", y = "Education (Years)") +
+  rotate_x_text(angle = 45, size = rel(1)) 
 ```
+
+
+```{r}
+
+
+ggplot(by_villagemore, aes(x = "", y= head_edu, fill = village)) +
+        geom_bar(width = 1, stat = "identity") +
+   facet_wrap(~village, ncol = 5) +
+  geom_text(aes(label = sub), position = position_stack(vjust=1.1)) +
+  labs(title = "Mean Years of Education for Head of Households", x = NULL, y = "Years of Education") +
+  theme(legend.position="none") 
+```
+
+
 
 
 ```{r}
@@ -150,30 +166,26 @@ ggplot(by_villageedu, aes(y = nbc, x = village)) +
   geom_col(fill = "cornflowerblue", 
                  color = "white") + 
   labs(title="Number of School Aged Members in Household", 
-       x = "Village", y = "Number School Aged") +
+       x = "", y = "Number School Aged") +
   rotate_x_text(angle = 45, size = rel(1)) 
 
 
-```
-
-```{r}
 ggplot(by_villageedu, aes(y = mgs, x = village)) +
   geom_col(fill = "cornflowerblue", 
                  color = "white") + 
   labs(title="Number of School Aged Members in Household Going to School", 
-       x = "Village", y = "Number School Going") +
+       x = "", y = "Number School Going") +
   rotate_x_text(angle = 45, size = rel(1)) 
-```
 
-```{r}
 going <- baseline %>% 
   filter(hh_students_prop == 0:1) %>%
   summarize(hhsp = mean(hh_students_prop))
 
 going$hhsp 
 
-  
+
 ```
+
 
 
 
@@ -201,10 +213,6 @@ mar3 <- t(mar3)
 col1 <- c("Village", "Yes", "No")
 mar4 <- cbind(col1, mar3)
 
-```
-
-
-```{r}
 mar$head_married <- mar$head_married * 100
 mar$and <- mar$and * 100
 
@@ -224,18 +232,19 @@ femmar <- baseline %>%
 
 ```{r}
 countmar <- baseline %>%
-  count(head_married, head_female, head_married & head_female)
+  count(head_married, head_female, head_married & head_female) %>% 
+  mutate(Gender = case_when(head_female == 1 ~ "Female", 
+                                head_female == 0 ~ "Male"))
 
-ggplot(countmar, aes(x = head_married, y = n, fill = head_female)) +
+ggplot(countmar, aes(x = head_married, y = n, fill = Gender)) +
   geom_col() +
-  labs(title = "Married", x = "Not Married                            Married", y = "Count") +
-  #legend(ncol = 2)
+  labs(title = "Head of Household Marital Status", x = "Not Married                            Married", y = "Count") +
   theme_classic() +
-   scale_x_discrete()
+   scale_x_discrete() 
 
 countmar
 ```
-A large majority of HH are married. Out of the unmarried HH, most are women. 23 households are unmarried, 18 of those are female headed housholds. 
+A large majority of HH are married. Out of the unmarried HH, most are women. 23 households are unmarried, 18 of those are female headed households. 
 
 
 
@@ -264,14 +273,7 @@ ggplot(femmar, aes(x = "", y= sub, alpha = 0.1)) +
             vjust = -0.25)
 ```
  
-```{r}
-ggplot(baseline, aes(x = "", y= nb_school_going, fill = "blue")) +
-        geom_col(width = 1, stat = "identity") +
-       coord_polar(theta = "y", start=0) + 
-  facet_wrap(~village, ncol = 5) 
-  #theme_void() 
-  
-```
+
  
       
     
