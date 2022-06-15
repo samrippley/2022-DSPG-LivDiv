@@ -107,7 +107,8 @@ ggplot(by_villagemore, aes(x = village, y = head_age, color="black", fill="#c5bf
   ggtitle("Age by Village") +
   theme(axis.line = element_line(size = 3, colour = "grey80")) +
   theme(legend.position = "none") +
-  rotate_x_text(angle = 45, size = rel(.8)) 
+  
+  #rotate_x_text(angle = 33, size = rel(1)) 
 
 ```
 
@@ -234,7 +235,7 @@ ggplot(countmar, aes(x = head_married, y = n, fill = head_female)) +
 
 countmar
 ```
-A large majority of HH are married. Out of the unmarried HH, most are women. 
+A large majority of HH are married. Out of the unmarried HH, most are women. 23 households are unmarried, 18 of those are female headed housholds. 
 
 
 
