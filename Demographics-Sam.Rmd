@@ -72,17 +72,6 @@ by_villagemore <- baseline %>%
 
 ```
 
-```{r}
-ggplot(baseline, aes(x = head_age)) +
-  geom_density(fill = "deepskyblue", 
-               bw = 1) + 
-  labs(title="Participants by age", 
-       x = "Age")
-
-```
-
-
-
 
 ```{r}
 ggplot(baseline, aes(x = head_age)) +
@@ -94,9 +83,6 @@ ggplot(baseline, aes(x = head_age)) +
   theme_classic() +
   scale_x_continuous(breaks = c(20, 30, 40, 50, 60, 70, 80), name="Age", limits=c(20, 80)) 
   
-
-
-#scale_y_continuous(name="Stopping distance", limits=c(0, 150))
 
 ```
  
@@ -239,8 +225,7 @@ countmar <- baseline %>%
 ggplot(countmar, aes(x = head_married, y = n, fill = Gender)) +
   geom_col() +
   labs(title = "Head of Household Marital Status", x = "Not Married                            Married", y = "Count") +
-  theme_classic() +
-   scale_x_discrete() 
+  scale_x_discrete() 
 
 countmar
 ```
@@ -255,23 +240,13 @@ ggplot(mar, aes(x = "", y= sub, fill = and)) +
   #theme_void() +
   geom_text(aes(label = perc), position = position_stack(vjust=0.5)) +
   labs(title = "Percent of HH Married by Village", x = NULL, y = NULL) +
-  theme(legend.position="none")
+  theme(legend.position="none") 
 ```
 
 
 
  
- 
-```{r}
-ggplot(femmar, aes(x = "", y= sub, alpha = 0.1)) +
-        geom_col(aes(fill = "yellow")) +
-   facet_wrap(~village, ncol = 5) +
-  #theme_void() +
-  labs(title = "Proportion of HH Married by Village for Females", x = NULL, y = NULL) +
-  theme(legend.position="none") +
-  geom_text(aes(label = sub), 
-            vjust = -0.25)
-```
+
  
 
  
