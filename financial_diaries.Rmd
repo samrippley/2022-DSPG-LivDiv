@@ -1,0 +1,12 @@
+
+
+```{r}
+library(tidyverse)
+library(dplyr)
+
+load("~/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data/livdivdata.RData")
+
+fd <- livdiv %>%
+  select(-(4:967))
+```
+
