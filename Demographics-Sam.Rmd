@@ -230,8 +230,10 @@ ggplot(countmar, aes(x = head_married, y = n, fill = head_female)) +
   #legend(ncol = 2)
   theme_classic() +
    scale_x_discrete()
-```
 
+countmar
+```
+A large majority of HH are married. Out of the unmarried HH, most are women. 
 
 
 
