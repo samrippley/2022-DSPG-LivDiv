@@ -56,7 +56,8 @@ ggplot(countvil,
   labs(x = "Village", 
        y = "Count", 
        title  = "Households by Village") +
-    coord_flip()
+    coord_flip() +
+  theme_classic2()
 
 ```
 
