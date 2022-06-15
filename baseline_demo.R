@@ -5,25 +5,22 @@ library(dyplr)
 load("~/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data/livdivdata.RData")
 
 baseline <- livdiv %>%
-  filter(week_num == 0:4) %>%
-  arrange(date)
-
-
+  slice(1:307,)
 
 baseline %>%
   summarise("farm_yn")
 
 baseline %>%
-summarise_at(c("farm_yn", "head_edu", "head_age", "head_married", "head_female", "nb_children", "hh_dependents_prop"), mean, na.rm = TRUE)
+summarise_at(c("head_age", "head_edu", "head_female", "nb_hhmem", "nb_children", "hh_migrant_prop"), mean, na.rm = TRUE)
 
 sumstats <- baseline %>%
-summarise_at(c("farm_yn", "head_edu", "head_age", "head_married", "head_female", "nb_children", "hh_dependents_prop"), mean, na.rm = TRUE)
+summarise_at(c("head_age", "head_edu", "head_female", "nb_hhmem", "nb_children", "hh_migrant_prop"), mean, na.rm = TRUE)
 
 sumstats2 <- baseline %>%
-  summarise_at(c("farm_yn", "head_edu", "head_age", "head_married", "head_female", "nb_children", "hh_dependents_prop"), min, na.rm = TRUE)
+  summarise_at(c("head_age", "head_edu", "head_female", "nb_hhmem", "nb_children", "hh_migrant_prop"), min, na.rm = TRUE)
 
 sumstats3 <- baseline %>%
-  summarise_at(c("farm_yn", "head_edu", "head_age", "head_married", "head_female", "nb_children", "hh_dependents_prop"), max, na.rm = TRUE)
+  summarise_at(c("head_age", "head_edu", "head_female", "nb_hhmem", "nb_children", "hh_migrant_prop"), max, na.rm = TRUE)
 
 sumstats <- rbind(sumstats, sumstats2, sumstats3)
 
@@ -32,6 +29,8 @@ row.names(sumstats) <- rownames
 
 villagecount <- baseline %>% 
   count(village) 
+
+sum(livdiv(week))
 
 
 baseline %>%
@@ -55,7 +54,7 @@ library(ggplot2)
 countmar <- baseline %>%
   count(head_married) 
 
-
+sum(villagecount$n)
 
 # Create a bar plot of age by village 
 ggplot(baseline, aes(x = village, y = head_age)) +

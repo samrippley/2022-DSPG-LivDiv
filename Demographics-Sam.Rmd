@@ -1,0 +1,280 @@
+---
+title: "Demographics-Sam"
+output: html_document
+date: '2022-06-13'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(tidyverse)
+library(ggthemes)
+```
+
+Get baseline data 
+
+```{r cars}
+load("~/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data/livdivdata.RData")
+baseline <- livdiv %>%
+  slice(1:306,)
+```
+
+Summarize stats
+
+```{r pressure, echo=FALSE}
+baseline %>%
+summarise_at(c("head_age", "head_edu", "head_female", "head_married", "hh_students_prop", "nb_school_aged", "nb_school_going"), mean, na.rm = TRUE)
+
+sumstats <- baseline %>%
+summarise_at(c("head_age", "head_edu", "head_female", "head_married", "hh_students_prop", "nb_school_aged", "nb_school_going"), mean, na.rm = TRUE)
+
+sumstats2 <- baseline %>%
+  summarise_at(c("head_age", "head_edu", "head_female", "head_married", "hh_students_prop", "nb_school_aged", "nb_school_going"), min, na.rm = TRUE)
+
+sumstats3 <- baseline %>%
+  summarise_at(c("head_age", "head_edu", "head_female", "head_married", "hh_students_prop", "nb_school_aged", "nb_school_going"), max, na.rm = TRUE)
+
+sumstats <- rbind(sumstats, sumstats2, sumstats3)
+
+rownames <- c("Mean", "Min", "Max")
+row.names(sumstats) <- rownames
+view(sumstats)
+
+
+```
+
+Count Village 
+
+```{r}
+countvil <- baseline %>% 
+  count(village) 
+
+ggplot(countvil, 
+       aes(x = reorder(village, n), 
+           y = n)) + 
+  geom_bar(stat = "identity") +
+  labs(x = "Village", 
+       y = "Count", 
+       title  = "Households by Village") +
+    coord_flip()
+
+```
+
+
+Bar plot of age by village 
+
+```{r}
+by_villagemore <- baseline %>% 
+  group_by(village ) %>% 
+  summarize_at(c("head_age", "head_edu", "head_married"), mean, na.rm=TRUE)
+
+```
+
+```{r}
+ggplot(baseline, aes(x = head_age)) +
+  geom_density(fill = "deepskyblue", 
+               bw = 1) + 
+  labs(title="Participants by age", 
+       x = "Age")
+
+```
+
+
+
+
+```{r}
+ggplot(baseline, aes(x = head_age)) +
+  geom_histogram(fill = "cornflowerblue", 
+                 color = "white", 
+                 bins = 20) + 
+  labs(title="Participants by age", 
+       subtitle = "number of bins = 20",
+       x = "Age")
+
+```
+ 
+Bar plot of Age by village 
+
+```{r}
+library(ggpubr)
+library(ggplot2)
+
+ggplot(by_villagemore, aes(x = village, y = head_age, color="black", fill="#c5bf6f", width=0.5, srt = 45)) +
+  geom_col(width = "5") +
+  ylab("Mean Age of HH") + 
+  xlab("Village") +
+  ggtitle("Age by Village") +
+  theme(axis.line = element_line(size = 3, colour = "grey80")) +
+  theme(legend.position = "none") +
+  rotate_x_text(angle = 45, size = rel(.8)) 
+
+```
+
+
+
+```{r}
+ggplot(baseline, aes(x = head_edu)) +
+  geom_histogram(fill = "indianred3", 
+                 color = "white", 
+                 bins = 20) + 
+  labs(title="HH Education", 
+       subtitle = "number of bins = 20",
+       x = "Education (Years)", y = "Count")
+
+```
+
+
+
+```{r}
+ggplot(by_villagemore, aes(x = village, y = head_edu, fill = "")) +
+  geom_col(position = position_dodge(width = 1), color = "black", fill = "skyblue") +
+  ggtitle("Education by Village") +
+  theme_wsj(color = "gray") +
+  theme(axis.title=element_text(size=12)) +
+  labs(x = "Villages", y = "Education (Years)") +
+  rotate_x_text(angle = 45, size = rel(1)) +
+  ggtitle("Education by Village")
+```
+
+
+```{r}
+
+by_villageedu <- baseline %>% 
+  group_by(village ) %>% 
+  summarize(nbc = mean(nb_school_aged), mgs = mean(nb_school_going))
+
+
+ggplot(by_villageedu, aes(y = nbc, x = village)) +
+  geom_col(fill = "cornflowerblue", 
+                 color = "white") + 
+  labs(title="Number of School Aged Members in Household", 
+       x = "Village", y = "Number School Aged") +
+  rotate_x_text(angle = 45, size = rel(1)) 
+
+
+```
+
+```{r}
+ggplot(by_villageedu, aes(y = mgs, x = village)) +
+  geom_col(fill = "cornflowerblue", 
+                 color = "white") + 
+  labs(title="Number of School Aged Members in Household Going to School", 
+       x = "Village", y = "Number School Going") +
+  rotate_x_text(angle = 45, size = rel(1)) 
+```
+
+```{r}
+going <- baseline %>% 
+  filter(hh_students_prop == 0:1) %>%
+  summarize(hhsp = mean(hh_students_prop))
+
+going$hhsp 
+
+  
+```
+
+
+
+
+```{r}
+mar <- baseline %>% 
+  group_by(village) %>%
+  summarize_at(c("head_married"), mean, na.rm = TRUE) %>%
+  mutate(and = 1 - head_married) %>%
+  mutate(sub = substr(head_married, 1, 4)) %>%
+  mutate(perc = percent(head_married)) %>% 
+  mutate(one = 100)
+
+mar2 <- baseline %>% 
+  group_by(village) %>%
+  summarize_at(c("head_married"), mean, na.rm = TRUE) %>%
+  mutate(perc = percent(head_married)) %>%
+  mutate(other = 1 - head_married) %>%
+  mutate(not = percent(other)) 
+
+mar3 <- mar2 %>%
+  select(village, perc, not) 
+
+mar3 <- t(mar3)
+col1 <- c("Village", "Yes", "No")
+mar4 <- cbind(col1, mar3)
+
+```
+
+
+```{r}
+mar$head_married <- mar$head_married * 100
+mar$and <- mar$and * 100
+
+as.numeric(baseline$head_married)
+class(baseline$head_married)
+
+countmar <- baseline %>%
+  count(head_married, head_female, head_married & head_female)
+
+femmar <- baseline %>% 
+  group_by(village) %>%
+  filter(head_female == 1) %>%
+  summarize_at(c("head_married"), mean, na.rm = TRUE) %>%
+  mutate(head_married = head_married * 100) %>%
+  mutate(sub = substr(head_married, 1, 4))
+```
+
+```{r}
+countmar <- baseline %>%
+  count(head_married, head_female, head_married & head_female)
+
+ggplot(countmar, aes(x = head_married, y = n, fill = head_female)) +
+  geom_col() +
+  labs(title = "Married", x = "Not Married                            Married", y = "Count") +
+  #legend(ncol = 2)
+  theme_classic() +
+   scale_x_discrete()
+```
+
+
+
+
+```{r}
+ggplot(mar, aes(x = "", y= sub, fill = and)) +
+        geom_col(width = 1, stat = "identity") +
+   facet_wrap(~village, ncol = 5) +
+  #theme_void() +
+  geom_text(aes(label = perc), position = position_stack(vjust=0.5)) +
+  labs(title = "Percent of HH Married by Village", x = NULL, y = NULL) +
+  theme(legend.position="none")
+```
+
+
+
+ 
+ 
+```{r}
+ggplot(femmar, aes(x = "", y= sub, alpha = 0.1)) +
+        geom_col(aes(fill = "yellow")) +
+   facet_wrap(~village, ncol = 5) +
+  #theme_void() +
+  labs(title = "Proportion of HH Married by Village for Females", x = NULL, y = NULL) +
+  theme(legend.position="none") +
+  geom_text(aes(label = sub), 
+            vjust = -0.25)
+```
+ 
+```{r}
+ggplot(baseline, aes(x = "", y= nb_school_going, fill = "blue")) +
+        geom_col(width = 1, stat = "identity") +
+       coord_polar(theta = "y", start=0) + 
+  facet_wrap(~village, ncol = 5) 
+  #theme_void() 
+  
+```
+ 
+      
+    
+
+
+
+
+
+
+
