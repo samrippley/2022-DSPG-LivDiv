@@ -112,10 +112,12 @@ ggplot(baseline, aes(x = head_edu)) +
                  bins = 20) + 
   labs(title="Head of Households' Years of Education",
        x = "Education (Years)", y = "Count")
+baseline %>% count(head_edu)
 
 ```
 
-
+This graph depicts mean education for the head of households by village.
+The mode is 0 years of education, with 62/307 people in this study have 0 years of education. The maximum number of years of education from our sample is 9 years. 
 
 ```{r}
 ggplot(by_villagemore, aes(x = village, y = head_edu, fill = "")) +
@@ -138,7 +140,7 @@ ggplot(by_villagemore, aes(x = "", y= head_edu, fill = village)) +
   theme(legend.position="none") 
 ```
 
-
+This graph depicts mean education for the head of households by village.  The variable education is measured in years. The average number of years of education for the head of households across all villages is 5.308. 5 years of education is roughly equivalent to finishing pre-primary and primary school. The village with the lowest average is Birajnagar at 3.14 years. The village with the highest average is Pargumti at 6.81 years of education. There is very limited infrastructure on education in the Sundarbans. The inhabitants of the Sundarbans live in poverty and children at a young age are needed to work and help support their families. 
 
 
 ```{r}
