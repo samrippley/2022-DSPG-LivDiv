@@ -1,0 +1,259 @@
+---
+title: "bl_graphs"
+output: html_document
+date: '2022-06-21'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r cars}
+load("~/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data/livdivdata.RData")
+
+baseline <- livdiv %>%
+  slice(1:307,)
+```
+
+```{r cars}
+baseline %>%
+summarise_at(c("head_edu", "head_age", "head_female", "head_married", "nb_marw", "nb_put_saving"), mean, na.rm = TRUE)
+
+sumstats <- baseline %>%
+summarise_at(c("head_edu", "head_age", "head_female", "head_married", "nb_marw", "nb_put_saving"), mean, na.rm = TRUE)
+
+sumstats2 <- baseline %>%
+  summarise_at(c("head_edu", "head_age", "head_female", "head_married", "nb_marw", "nb_put_saving"), min, na.rm = TRUE)
+
+sumstats3 <- baseline %>%
+  summarise_at(c("head_edu", "head_age", "head_female", "head_married", "nb_marw", "nb_put_saving"), max, na.rm = TRUE)
+
+sumstats <- rbind(sumstats, sumstats2, sumstats3)
+
+rownames <- c("Mean", "Min", "Max")
+row.names(sumstats) <- rownames
+```
+
+## HH Primary Occupation 
+
+```{r cars}
+occup1 <- baseline %>% 
+  filter(relationship1 == 1) %>%
+  select(c(village = "village", job = "job1_1"))
+occup2 <- baseline %>% 
+  filter(relationship2 == 1) %>%
+  select(c(village = "village", job = "job1_2"))
+occup3 <- baseline %>% 
+  filter(relationship3 == 1) %>%
+  select(c(village = "village", job = "job1_3"))
+occup4 <- baseline %>% 
+  filter(relationship4 == 1) %>%
+  select(c(village = "village", job = "job1_4")) 
+
+occup1 = na.omit(occup1)
+occup2 = na.omit(occup2)
+occup3 = na.omit(occup3)
+occup4 = na.omit(occup4)
+
+occup <- rbind(occup1, occup2, occup3, occup4)
+```
+
+
+```{r cars}
+
+```
+
+1Agricultural wage worker
+2Livestock worker
+3Farmer
+4Casual labor
+5Construction/brick labor
+6Gleaning/foraging
+7Fisherman
+8Fishery worker
+9Factory worker
+10Household help
+11Transport related work
+12Own business
+13Service Work (NGO, gov,etc.)
+14 NREGA
+15Housewife
+16 Other
+
+```{r}
+ggplot(occup, aes(x = job)) +
+  geom_histogram() +
+  bins
+  scale_x_discrete(labels = c("1" = "Agricultural wage worker", "Livestock worker" = "2", "Farmer" = "3", "Casual labor" = "4", "Construction/brick labor" = "5", "Gleaning/foraging" = "6", "Fisherman" = "7", "Fishery worker" = "8", "Factory worker" = "9", "Household help" = "10", "Transport related work" = "11", "Own business" = "12", "Service Work (NGO, gov,etc.)" = "13", "NREGA" = "14", "Housewife" = "15", "Other" = "16")) +
+  coord_flip()
+
+labels <- c("Agricultural wage worker", "Livestock worker", "Farmer", "Casual labor", "Construction/brick labor", "Gleaning/foraging", "Fisherman", "Fishery worker", "Factory worker", "Household help", "Transport related work", "Own business", "Service Work (NGO, gov,etc.)", "NREGA", "Housewife", "Other")
+
+```
+
+
+
+## HH Secondary Occupation 
+
+````{r}
+soccup1 <- baseline %>% 
+  filter(relationship1 == 1) %>%
+  select(c(village = "village", job = "job1_1"))
+soccup2 <- baseline %>% 
+  filter(relationship2 == 1) %>%
+  select(c(village = "village", job = "job1_2"))
+soccup3 <- baseline %>% 
+  filter(relationship3 == 1) %>%
+  select(c(village = "village", job = "job1_3"))
+soccup4 <- baseline %>% 
+  filter(relationship4 == 1) %>%
+  select(c(village = "village", job = "job1_4")) 
+
+
+soccup1 = na.omit(occup1)
+soccup2 = na.omit(occup2)
+soccup3 = na.omit(occup3)
+soccup4 = na.omit(occup4)
+
+soccup <- rbind(occup1, occup2, occup3, occup4)
+```
+
+```{r}
+ggplot(soccup, aes(x = job)) +
+  geom_histogram() 
+```
+
+
+
+## HH Age 
+	
+	
+	
+##HH education 
+	
+	
+	
+##HH Marital status 
+	
+
+
+
+##Number of married women per household 
+	
+	
+	
+
+	
+	
+	
+	
+##Savings 
+	
+```{r}
+
+```
+
+-------------------------
+##Appendix 
+
+
+Primary Occupation for all  
+ 
+
+toccup1 <- baseline %>% 
+  filter(job1_1 != 0) %>%
+  select(c(village = "village", job = "job1_1"))
+toccup2 <- baseline %>% 
+  select(c(village = "village", job = "job1_2"))
+toccup3 <- baseline %>% 
+  select(c(village = "village", job = "job1_3"))
+toccup4 <- baseline %>% 
+  select(c(village = "village", job = "job1_4")) 
+
+toccup5 <- baseline %>% 
+  select(c(village = "village", job = "job1_5"))
+toccup6 <- baseline %>% 
+  select(c(village = "village", job = "job1_6"))
+toccup7 <- baseline %>% 
+  select(c(village = "village", job = "job1_7"))
+#toccup8 <- baseline %>% 
+  #select(c(village = "village", job = "job1_8")) 
+
+toccup9 <- baseline %>% 
+  select(c(village = "village", job = "job1_9"))
+#toccup10 <- baseline %>% 
+  #select(c(village = "village", job = "job1_10"))
+#toccup11 <- baseline %>% 
+ # select(c(village = "village", job = "job1_11"))
+toccup12 <- baseline %>% 
+  select(c(village = "village", job = "job1_12")) 
+  
+toccup1 = na.omit(toccup1)
+toccup2 = na.omit(toccup2)
+toccup3 = na.omit(toccup3)
+toccup4 = na.omit(toccup4)
+toccup5 = na.omit(toccup5)
+toccup6 = na.omit(toccup6)
+toccup7 = na.omit(toccup7)
+#toccup8 = na.omit(occup8)
+toccup9 = na.omit(toccup9)
+#toccup10 = na.omit(occup10)
+#toccup11 = na.omit(occup11)
+toccup12 = na.omit(toccup12)
+
+toccup <- rbind(toccup1, toccup2, toccup3, toccup4, toccup5, toccup6, toccup7, toccup9, toccup12)
+
+
+
+#Secondary Occupation for all  
+
+stoccup1 <- baseline %>% 
+  filter(job1_1 != 0) %>%
+  select(c(village = "village", job = "job2_1"))
+stoccup2 <- baseline %>% 
+  select(c(village = "village", job = "job2_2"))
+stoccup3 <- baseline %>% 
+  select(c(village = "village", job = "job2_3"))
+stoccup4 <- baseline %>% 
+  select(c(village = "village", job = "job2_4")) 
+
+stoccup5 <- baseline %>% 
+  select(c(village = "village", job = "job2_5"))
+stoccup6 <- baseline %>% 
+  select(c(village = "village", job = "job2_6"))
+stoccup7 <- baseline %>% 
+  select(c(village = "village", job = "job2_7"))
+#toccup8 <- baseline %>% 
+  #select(c(village = "village", job = "job1_8")) 
+
+stoccup9 <- baseline %>% 
+  select(c(village = "village", job = "job2_9"))
+#toccup10 <- baseline %>% 
+  #select(c(village = "village", job = "job1_10"))
+#toccup11 <- baseline %>% 
+ # select(c(village = "village", job = "job1_11"))
+stoccup12 <- baseline %>% 
+  select(c(village = "village", job = "job2_12")) 
+  
+stoccup1 = na.omit(stoccup1)
+stoccup2 = na.omit(stoccup2)
+stoccup3 = na.omit(stoccup3)
+stoccup4 = na.omit(stoccup4)
+stoccup5 = na.omit(stoccup5)
+stoccup6 = na.omit(stoccup6)
+stoccup7 = na.omit(stoccup7)
+#toccup8 = na.omit(occup8)
+stoccup9 = na.omit(stoccup9)
+#toccup10 = na.omit(occup10)
+#toccup11 = na.omit(occup11)
+stoccup12 = na.omit(stoccup12)
+
+stoccup <- rbind(stoccup1, stoccup2, stoccup3, stoccup4, stoccup5, stoccup6, stoccup7, stoccup9, stoccup12)
+
+
+
+
+
