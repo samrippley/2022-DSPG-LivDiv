@@ -1,12 +1,178 @@
+---
+title: "Total Expenditure"
+subtitle: Financial Diary Analysis
+date: '2022-06-17'
+output:
+  html_document: default
+  pdf_document: default
+---
 
-
-```{r}
-library(tidyverse)
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
+library(tidyverse)
+library(ggthemes)
+library(ggplot2)
 
 load("~/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data/livdivdata.RData")
 
 fd <- livdiv %>%
   select(-(4:967))
+
+library(lubridate)
+expen <- fd %>%
+  select(c("hhid", "date", "total_spending", "village","hhid"))
+expen$date <- as_date(expen$date)
 ```
+
+```{r}
+qplot(x=date, y=total_spending, color = village,
+      data=expen, na.rm=TRUE,
+      main="Weekly Expenditure by Household Over Time",
+      xlab="Date", ylab="Total Expenditure (INR)")
+```
+
+
+This graph depicts the weekly expenditure of households over time. Every dot represents the total expenditure of one week for a single household. 
+
+This graph is interesting because it shows the outliers. Majority of the weekly expenditure are well bellow 50000 INR. The outliers consist mostly of house repairs or expenses regarding festivals. 
+
+Expenditure = total spending = weekly total consumption and non-consumption expenditures
+
+
+```{r}
+exoverall <- expen %>%
+  select(c("date", "total_spending", "village")) %>%
+  group_by(date) %>%
+summarize_at(c("total_spending"), mean, na.rm=TRUE) 
+```
+
+```{r}
+qplot(x=date, y=total_spending,
+      data=exoverall, na.rm=TRUE,
+      main="Average Weekly Expenditure Over Time",
+      xlab="Date", ylab="Average Weekly Expenditure (INR)", geom = "line")
+
+```
+
+
+The average of every household in our data set's weekly expenditure over time. 
+
+
+
+```{r}
+exbyvil <- expen %>%
+  select(c("date", "total_spending", "village")) %>%
+  group_by(village,date) %>%
+summarize_at(c("total_spending"), mean, na.rm=TRUE) 
+```
+  
+
+```{r}
+qplot(x=date, y=total_spending, color = village,
+      data=exbyvil, na.rm=TRUE,
+      main="Total Expenditure by Village",
+      xlab="Date", ylab="Total Expenditure (INR)", geom = "line")
+```
+
+
+
+This graph shows the average total expenditure of each village over time. Each line represents one of the 10 villages.  
+
+
+
+```{r}
+exbyamr <- expen %>%
+  select(c("date", "total_spending", "village")) %>%
+  filter(village == "Amrabati") %>%
+  group_by(date) %>%
+summarize_at(c("total_spending"), mean, na.rm=TRUE) 
+```
+
+
+```{r}
+qplot(x=date, y=total_spending,
+      data=exbyamr, na.rm=TRUE,
+      main="Total Expenditure in Amrabati",
+      xlab="Date", ylab="Total Spending (INR)", geom = "line")
+```
+
+
+This graph shows the average weekly total spending in one of the villages - Amrabati. 
+
+
+```{r}
+exbyamrhhid <- expen %>%
+  filter(village == "Amrabati") %>%
+  select(c("date", "total_spending",  "hhid")) %>%
+  group_by(hhid, date)
+#summarize_at(c("total_spending"), mean, na.rm=TRUE) 
+#as.factor(exbyamrhhid$hhid)
+```
+
+```{r}
+qplot(x=date, y=total_spending, color = hhid,
+      data=exbyamrhhid, na.rm=TRUE,
+      main="Weekly Expenditure in Amrabati by Household",
+      xlab="Date", ylab="Total Spending (INR)")
+```
+
+
+This graph shows total spending by each household in Amrabati over time. Each point represents the total weekly spending of one household in the village Amrabati.
+
+
+```{r}
+onehhid <- exbyamrhhid %>%
+  filter(hhid == "1") %>%
+  group_by(date)
+#summarize_at(c("total_spending"), mean, na.rm=TRUE) 
+#as.factor(exbyamrhhid$hhid)
+```
+
+
+```{r}
+ggplot(onehhid, aes(x= date, y = total_spending, na.rm = TRUE)) +
+     geom_line() + 
+          xlab("Time") +
+      ylab("Total Spending (INR)") +
+  labs(title = "Nimai Sardar's Expenditure")
+```
+
+
+
+Nimai Sardar is the head of a household in Amrabati. This is his total expenditure over time. 
+
+
+
+
+
+
+
+
+
+-------------------------------------------------
+# Appendex 
+
+
+qplot(x=date, y=total_spending, color = village,
+      data=exbyvil, na.rm=TRUE,
+      main="Total Expenditure over Time by Village",
+      xlab="Date", ylab="Total Expenditure (INR)")
+
+
+
+This graph shows the total expenditure of the households, grouped by village, across time. Every dot represents the average total expenditure of one week for each village.  
+
+
+
+
+ggplot(exbyamrhhid, aes(x= date, y = total_spending, na.rm = TRUE)) +
+     geom_line(aes(color = hhid)) + 
+          xlab("Time") +
+      ylab("Total Spending (INR)") +
+  labs(title = "Expenditure in Amrabati by Household Over Time")
+
+
+
+This graph depicts the average total expenditure of each household over time. Each line represents one of the 10 villages. This graph is very difficult to read- but can be filtered by household in the dynamic shiny app. 
 
