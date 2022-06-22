@@ -1,0 +1,219 @@
+---
+title: "Demographics-Sam"
+output: html_document
+date: '2022-06-13'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(tidyverse)
+library(ggthemes)
+```
+
+Get baseline data 
+
+```{r cars}
+load("~/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data/livdivdata.RData")
+baseline <- livdiv %>%
+  slice(1:306,)
+```
+
+Summarize stats
+
+```{r pressure, echo=FALSE}
+baseline %>%
+summarise_at(c("head_age", "head_edu", "head_female", "head_married", "hh_students_prop", "nb_school_aged", "nb_school_going"), mean, na.rm = TRUE)
+
+sumstats <- baseline %>%
+summarise_at(c("head_age", "head_edu", "head_female", "head_married", "hh_students_prop", "nb_school_aged", "nb_school_going"), mean, na.rm = TRUE)
+
+sumstats2 <- baseline %>%
+  summarise_at(c("head_age", "head_edu", "head_female", "head_married", "hh_students_prop", "nb_school_aged", "nb_school_going"), min, na.rm = TRUE)
+
+sumstats3 <- baseline %>%
+  summarise_at(c("head_age", "head_edu", "head_female", "head_married", "hh_students_prop", "nb_school_aged", "nb_school_going"), max, na.rm = TRUE)
+
+sumstats <- rbind(sumstats, sumstats2, sumstats3)
+
+rownames <- c("Mean", "Min", "Max")
+row.names(sumstats) <- rownames
+view(sumstats)
+
+
+```
+
+Count Village 
+
+```{r}
+countvil <- baseline %>% 
+  count(village) 
+
+ggplot(countvil, 
+       aes(x = reorder(village, n), 
+           y = n)) + 
+  geom_bar(stat = "identity") +
+  labs(x = "Village", 
+       y = "Count", 
+       title  = "Households by Village") +
+    coord_flip() +
+  theme_classic()
+
+```
+
+
+Bar plot of age by village 
+
+```{r}
+by_villagemore <- baseline %>% 
+  group_by(village ) %>% 
+  summarize_at(c("head_age", "head_edu", "head_married"), mean, na.rm=TRUE) %>%
+  mutate(sub = substr(head_edu, 1, 4))
+```
+
+
+```{r}
+ggplot(baseline, aes(x = head_age)) +
+  geom_histogram(fill = "cornflowerblue", 
+                 color = "white", bins = 20
+                 ) + 
+  labs(title="Head of Households' Age",
+        y = "Number of Head of Households") +
+  theme_classic() +
+  scale_x_continuous(breaks = c(20, 30, 40, 50, 60, 70, 80), name="Age", limits=c(20, 80)) 
+
+```
+ 
+Bar plot of Age by village 
+
+```{r}
+library(ggpubr)
+library(ggplot2)
+
+ggplot(by_villagemore, aes(x = village, y = head_age, color="black", fill="#c5bf6f", width=0.5, srt = 45)) +
+  geom_col(width = "5") +
+  ylab("Age") + 
+  xlab("")+
+  ggtitle("Mean Age for Head of Household by Village") +
+  theme(axis.line = element_line(size = 3, colour = "grey80")) +
+  theme(legend.position = "none") +
+  rotate_x_text(angle = 33, size = rel(1)) 
+
+```
+
+
+
+```{r}
+ggplot(baseline, aes(x = head_edu)) +
+  geom_histogram(fill = "indianred3", 
+                 color = "white", 
+                 bins = 20) + 
+  labs(title="Head of Households' Years of Education",
+       x = "Education (Years)", y = "Count")
+```
+
+This graph depicts mean education for the head of households by village.
+The mode is 0 years of education, with 62/307 people in this study have 0 years of education. The maximum number of years of education from our sample is 9 years. 
+
+```{r}
+ggplot(by_villagemore, aes(x = village, y = head_edu, fill = "")) +
+  geom_col(position = position_dodge(width = 1), color = "black", fill = "skyblue") +
+  ggtitle("Mean Years of Education for Head of Households by Village") +
+  theme(axis.title=element_text(size=12)) +
+  labs(x = "", y = "Education (Years)") +
+  rotate_x_text(angle = 45, size = rel(1)) 
+```
+
+
+```{r}
+
+
+ggplot(by_villagemore, aes(x = "", y= head_edu, fill = village)) +
+        geom_bar(width = 1, stat = "identity") +
+   facet_wrap(~village, ncol = 5) +
+  geom_text(aes(label = sub), position = position_stack(vjust=1.1)) +
+  labs(title = "Mean Years of Education for Head of Households", x = NULL, y = "Years of Education") +
+  theme(legend.position="none") 
+```
+
+This graph depicts mean education for the head of households by village.  The variable education is measured in years. The average number of years of education for the head of households across all villages is 5.308. 5 years of education is roughly equivalent to finishing pre-primary and primary school. The village with the lowest average is Birajnagar at 3.14 years. The village with the highest average is Pargumti at 6.81 years of education. There is very limited infrastructure on education in the Sundarbans. The inhabitants of the Sundarbans live in poverty and children at a young age are needed to work and help support their families. 
+
+
+```{r}
+
+by_villageedu <- baseline %>% 
+  group_by(village ) %>% 
+  summarize(nbc = mean(nb_school_aged), mgs = mean(nb_school_going))
+
+
+ggplot(by_villageedu, aes(y = nbc, x = village)) +
+  geom_col(fill = "cornflowerblue", 
+                 color = "white") + 
+  labs(title="Number of School Aged Members in Household", 
+       x = "", y = "Number School Aged") +
+  rotate_x_text(angle = 45, size = rel(1)) 
+
+
+ggplot(by_villageedu, aes(y = mgs, x = village)) +
+  geom_col(fill = "cornflowerblue", 
+                 color = "white") + 
+  labs(title="Number of School Aged Members in Household Going to School", 
+       x = "", y = "Number School Going") +
+  rotate_x_text(angle = 45, size = rel(1)) 
+
+going <- baseline %>% 
+  filter(hh_students_prop == 0:1) %>%
+  summarize(hhsp = mean(hh_students_prop))
+
+going$hhsp 
+
+
+```
+
+
+
+```{r}
+library(scales)
+mar <- baseline %>% 
+  group_by(village) %>%
+  summarize_at(c("head_married"), mean, na.rm = TRUE) %>%
+  mutate(and = 1 - head_married) %>%
+  mutate(sub = substr(head_married, 1, 6)) %>%
+  mutate(one = 100)
+```
+
+
+```{r}
+countmar <- baseline %>%
+  count(head_married, head_female, head_married & head_female) %>% 
+  mutate(Gender = case_when(head_female == 1 ~ "Female", 
+                                head_female == 0 ~ "Male"))
+
+ggplot(countmar, aes(x = head_married, y = n, fill = Gender)) +
+  geom_col() +
+  labs(title = "Head of Household Marital Status", x = "Not Married                            Married", y = "Count") +
+  scale_x_discrete() 
+
+countmar
+```
+A large majority of HH are married. Out of the unmarried HH, most are women. 23 households are unmarried, 18 of those are female headed households. 
+
+
+
+
+
+
+ 
+
+ 
+
+ 
+      
+    
+
+
+
+
+
+
+

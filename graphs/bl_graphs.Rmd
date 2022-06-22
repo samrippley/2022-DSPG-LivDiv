@@ -9,16 +9,16 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
-```
+library(knitr)
+library(ggpubr)
 
-```{r cars}
 load("~/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data/livdivdata.RData")
 
 baseline <- livdiv %>%
   slice(1:307,)
 ```
 
-```{r cars}
+```{r, echo= FALSE}
 baseline %>%
 summarise_at(c("head_edu", "head_age", "head_female", "head_married", "nb_marw", "nb_put_saving"), mean, na.rm = TRUE)
 
@@ -35,9 +35,27 @@ sumstats <- rbind(sumstats, sumstats2, sumstats3)
 
 rownames <- c("Mean", "Min", "Max")
 row.names(sumstats) <- rownames
+sumstats
+``` 
+
+#Count Village 
+
+```{r}
+countvil <- baseline %>% 
+  count(village) 
+
+ggplot(countvil, 
+       aes(x = reorder(village, n), 
+           y = n)) + 
+  geom_bar(stat = "identity") +
+  labs(x = "Village", 
+       y = "Count", 
+       title  = "Number of Households by Village") +
+    coord_flip() +
+  theme_classic()
+
 ```
 
-## HH Primary Occupation 
 
 ```{r cars}
 occup1 <- baseline %>% 
@@ -61,100 +79,279 @@ occup4 = na.omit(occup4)
 occup <- rbind(occup1, occup2, occup3, occup4)
 ```
 
-
-```{r cars}
-
+```{r, echo=FALSE}
+count <- occup %>% 
+  count(job) 
+count
 ```
 
-1Agricultural wage worker
-2Livestock worker
-3Farmer
-4Casual labor
-5Construction/brick labor
-6Gleaning/foraging
-7Fisherman
-8Fishery worker
-9Factory worker
-10Household help
-11Transport related work
-12Own business
-13Service Work (NGO, gov,etc.)
-14 NREGA
-15Housewife
-16 Other
+````{r, echo = FALSE}
+soccup1 <- baseline %>% 
+  filter(relationship1 == 1) %>%
+  select(c(village = "village", job = "job2_1"))
+soccup2 <- baseline %>% 
+  filter(relationship2 == 1) %>%
+  select(c(village = "village", job = "job2_2"))
+soccup3 <- baseline %>% 
+  filter(relationship3 == 1) %>%
+  select(c(village = "village", job = "job2_3"))
+soccup4 <- baseline %>% 
+  filter(relationship4 == 1) %>%
+  select(c(village = "village", job = "job2_4")) 
 
-```{r}
-ggplot(occup, aes(x = job)) +
-  geom_histogram() +
-  bins
-  scale_x_discrete(labels = c("1" = "Agricultural wage worker", "Livestock worker" = "2", "Farmer" = "3", "Casual labor" = "4", "Construction/brick labor" = "5", "Gleaning/foraging" = "6", "Fisherman" = "7", "Fishery worker" = "8", "Factory worker" = "9", "Household help" = "10", "Transport related work" = "11", "Own business" = "12", "Service Work (NGO, gov,etc.)" = "13", "NREGA" = "14", "Housewife" = "15", "Other" = "16")) +
-  coord_flip()
 
-labels <- c("Agricultural wage worker", "Livestock worker", "Farmer", "Casual labor", "Construction/brick labor", "Gleaning/foraging", "Fisherman", "Fishery worker", "Factory worker", "Household help", "Transport related work", "Own business", "Service Work (NGO, gov,etc.)", "NREGA", "Housewife", "Other")
+soccup1 = na.omit(soccup1)
+soccup2 = na.omit(soccup2)
+soccup3 = na.omit(soccup3)
+soccup4 = na.omit(soccup4)
 
+soccup <- rbind(soccup1, soccup2, soccup3, soccup4)
 ```
 
+```{r, echo=FALSE}
+scount <- soccup %>% 
+  count(job) 
+scount <- scount %>%
+  filter(job != 0)
+```
+
+## HH Primary Occupation
+
+```{r, echo=FALSE}
+countv <- occup %>% 
+  group_by(village) %>%
+  count(job) 
+```
+
+```{r, echo=FALSE}
+library(RColorBrewer)
+```
+
+```{r, echo=FALSE}
+ggplot(countv, aes(x = job, y = n, fill = village)) +
+  geom_col() +
+  scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
+  coord_flip() +
+  theme_minimal () +
+  labs(title = "Primary Occupation of Household Heads", x = "", y = "") +
+  scale_fill_brewer(palette="Spectral")
+```
+
+
+This graph shows the primary occupation of the household heads. It is grouped by village. 
+The most common primary occupation is being a farmer, followed by casual labor, and agricultural wage worker. There are no head of households whose primary occupation is work in foraging or housewife. 
+This graph shows that Amrabati is the village with the greatest number of household heads working as a fishery worker. 
 
 
 ## HH Secondary Occupation 
 
-````{r}
-soccup1 <- baseline %>% 
-  filter(relationship1 == 1) %>%
-  select(c(village = "village", job = "job1_1"))
-soccup2 <- baseline %>% 
-  filter(relationship2 == 1) %>%
-  select(c(village = "village", job = "job1_2"))
-soccup3 <- baseline %>% 
-  filter(relationship3 == 1) %>%
-  select(c(village = "village", job = "job1_3"))
-soccup4 <- baseline %>% 
-  filter(relationship4 == 1) %>%
-  select(c(village = "village", job = "job1_4")) 
-
-
-soccup1 = na.omit(occup1)
-soccup2 = na.omit(occup2)
-soccup3 = na.omit(occup3)
-soccup4 = na.omit(occup4)
-
-soccup <- rbind(occup1, occup2, occup3, occup4)
+```{r, echo=FALSE}
+scountv <- soccup %>% 
+  group_by(village) %>%
+  count(job) 
+scountv <- scountv %>%
+  filter(job != 0)
 ```
 
-```{r}
-ggplot(soccup, aes(x = job)) +
-  geom_histogram() 
+```{r, echo=FALSE}
+ggplot(scountv, aes(x = job, y = n, fill = village)) +
+  geom_col() +
+  scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
+  coord_flip() +
+  theme_minimal () +
+  labs(title = "Secondary Occupation of Household Heads", x = "", y = "") +
+  scale_fill_brewer(palette="Spectral")
 ```
 
+This graph shows the secondary occupation of the household heads. It is grouped by village. 
+The two most common secondary occupations are farmer and casual labor- this is the same as the two most common primary occupation. The third most common is agricultural wage worker.
+This graph shows that Amrabati is the village with the greatest number of household heads working as a fishery worker. 
+
+
+```{r, echo=FALSE}
+countamr <- occup %>% 
+  filter(village == "Amrabati") %>%
+  count(job) 
+```
+
+```{r, echo=FALSE}
+ggplot(countamr, aes(x = job, y = n)) +
+  geom_col() +
+  scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
+  scale_y_discrete(limits = factor(1:10)) +
+  coord_flip() +
+  theme_minimal () +
+  labs(title = "Primary Occupation of Household Heads", subtitle = "in Amrabati", x = "", y = "") +
+  scale_fill_brewer(palette="Spectral")
+  
+```
+
+
+This graph shows the primary occupation of the household heads in Amrabati.
 
 
 ## HH Age 
-	
-	
-	
+```{r}
+ggplot(baseline, aes(x = head_age)) +
+  geom_histogram(fill = "cornflowerblue", 
+                 color = "white", bins = 20
+                 ) + 
+  labs(title="Age of Household Heads",
+        y = "Number of Household Heads") +
+  theme_classic() +
+  scale_x_continuous(breaks = c(20, 30, 40, 50, 60, 70, 80), name="Age", limits=c(20, 80)) 
+
+```
+
+
+The minimum age is 24 and the maximum is 80. There are 20 bins, each bin contains 3 years. The first bin contains people ages 24-27, and this continues in groups of 3 until it reaches 80. The mean age is 49.7. 
+
+
+```{r}
+by_villagemore <- baseline %>% 
+  group_by(village ) %>% 
+  summarize_at(c("head_age", "head_edu", "head_married"), mean, na.rm=TRUE) %>%
+  mutate(sub = substr(head_edu, 1, 4))
+```
+
+
+```{r}
+ggplot(by_villagemore, aes(x = village, y = head_age, fill = village, width=0.5, srt = 45)) +
+  geom_col(width = "5") +
+  ylab("Age") + 
+  xlab("")+
+  ggtitle("Household Heads Average Age") +
+  labs(subtitle = "by Village") +
+  theme(axis.line = element_line(size = 3, colour = "grey80")) +
+  theme(legend.position = "none") +
+  rotate_x_text(angle = 33, size = rel(1)) 
+```
+
+
+The average age of the household heads for each village. The mean age is 49.7. Average household head age across villages ranged from 43.64 years in Purba Dwarokapur to 53.7 years in Pargumti. 
+
 ##HH education 
 	
+```{r}
+educount <- baseline %>% 
+  group_by(village ) %>% 
+  count(head_edu) 
+```	
 	
+```{r}
+ggplot(educount, aes(x = head_edu, y = n, fill = village)) +
+  geom_col() + 
+  labs(title="Years of Education for Household Heads",
+       x = "Years of Education", y = "Number of Household Heads") +
+  scale_x_discrete(limits = factor(1:15)) 
+```
+
+
+This graph shows the Number of Household Heads that have completed a given number of years of Education. The years of education correpsonds with grade levels- 1 year is equivalent to grade 1. This is true with year 1 to 12. 12 years is equivalent to 12th grade being the highest level of education.
+15 is equivalent to a university degree.
+0 is None/No formal education. 
+
+
+```{r}
+ggplot(by_villagemore, aes(x = "", y= head_edu, fill = village)) +
+        geom_bar(width = 1, stat = "identity") +
+   facet_wrap(~village, ncol = 5) +
+  geom_text(aes(label = sub), position = position_stack(vjust=1.1)) +
+  labs(title = "Mean Years of Education for Head of Households", x = NULL, y = "Years of Education") +
+  theme(legend.position="none") 
+```
+
+
+This graph depicts mean education for the head of households by village.  The variable education is measured in years. The average number of years of education for the head of households across all villages is 5.308. 5 years of education is roughly equivalent to finishing pre-primary and primary school. The village with the lowest average is Birajnagar at 3.14 years. The village with the highest average is Pargumti at 6.81 years of education. There is very limited infrastructure on education in the Sundarbans. The inhabitants of the Sundarbans live in poverty and children at a young age are needed to work and help support their families. 
+
+
+
+
+```{r}
+library(hrbrthemes)
+import_roboto_condensed()
+```
+
+in Amrabati 
+```{r}
+educountamr <- baseline %>% 
+  filter(village == "Amrabati" ) %>% 
+  count(head_edu) 
+```	
+	
+```{r}
+ggplot(educountamr, aes(x = head_edu, y = n)) +
+  geom_col() + 
+  labs(title="Years of Education for Household Heads", subtitle = "in Amrabati",
+       x = "Years of Education", y = "Number of Household Heads") +
+  scale_x_discrete(limits = factor(1:15)) 
+```	
 	
 ##HH Marital status 
 	
+```{r}
+countmar <- baseline %>%
+  count(head_married, head_female, head_married & head_female) %>% 
+  mutate(Gender = case_when(head_female == 1 ~ "Female", 
+                                head_female == 0 ~ "Male"))
+
+ggplot(countmar, aes(x = head_married, y = n, fill = Gender)) +
+  geom_col() +
+  labs(title = "Household Heads' Marital Status", x = "Not Married                       Married", y = "Number of Household Heads") +
+  scale_x_discrete() + theme_classic()
+```
+A large majority of HH are married. Out of the unmarried HH, most are women. 23 households are unmarried, 18 of those are female headed households. 
+92.4% of Household Heads are married. 
+26 female household heads. 18 out of the 26 female household heads are unmarried. 
+8 of the 283 married household heads are female. 
 
 
+#Number of married women per household 
 
-##Number of married women per household 
+  
 	
-	
-	
+```{r}
+nbmarw <- baseline %>% 
+  group_by(village) %>% 
+  summarize_at(c("nb_marw"), mean, na.rm=TRUE) %>%
+  mutate(sub = substr(nb_marw, 1, 4))
+```
 
-	
-	
+```{r}
+ggplot(nbmarw, aes(x = "", y= nb_marw, fill = village)) +
+        geom_bar(width = 1, stat = "identity") +
+   facet_wrap(~village, ncol = 5) +
+  geom_text(aes(label = sub), color = "black", position = position_stack(vjust=1.1)) +
+  labs(title = "Average Number of Married Women per Household", subtitle = "by Village", x = NULL, y = "") +
+  theme_classic() +
+  theme(legend.position="none") + scale_fill_brewer(palette="Spectral") 
+```
 	
 	
 ##Savings 
 	
 ```{r}
+nbsav <- baseline %>% 
+  group_by(village) %>% 
+  summarize_at(c("nb_put_saving"), mean, na.rm=TRUE)
 
+nbsavcount <- baseline %>% 
+  group_by(village) %>% 
+  count(nb_put_saving) 
 ```
+
+```{r}
+ggplot(nbsavcount, aes(x = nb_put_saving, y = n)) +
+  geom_col() +
+  labs(title="Number of Times Households Saved Money in a Year",
+       x = "Numer of Times Able to Save", y = "Number of Household Heads") +
+  theme_classic()
+```
+
+
+Baseline survey question: In the last 12 months, how many times has your household been able to save money? 
+Majority of households were able to save 0 times in the 12 months leading up to the baseline survey. 
+
 
 -------------------------
 ##Appendix 
@@ -255,5 +452,28 @@ stoccup <- rbind(stoccup1, stoccup2, stoccup3, stoccup4, stoccup5, stoccup6, sto
 
 
 
+
+Facet wrap primary occupation by village 
+
+
+
+ggplot(countv, aes(x = job, y = n, fill = vilage)) +
+  geom_col() +
+  scale_y_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
+  coord_flip() +
+  labs(title = "Primary Occupation of Household Heads", x = "", y = "") +
+  scale_fill_brewer(palette="Spectral") +
+  facet_wrap(~job, ncol = 10) +
+  theme(legend.position="none") 
+
+
+ggplot(countv, aes(x = job, y = n, fill = vilage)) +
+  geom_col() +
+  scale_y_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
+  coord_flip() +
+  labs(title = "Primary Occupation of Household Heads", x = "", y = "") +
+  scale_fill_brewer(palette="Spectral") +
+  facet_wrap(~job, ncol = 10) +
+  theme(legend.position="none") 
 
 
