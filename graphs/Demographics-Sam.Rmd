@@ -53,11 +53,11 @@ ggplot(countvil,
        aes(x = reorder(village, n), 
            y = n)) + 
   geom_bar(stat = "identity") +
-  labs(x = "Village", 
-       y = "Count", 
-       title  = "Households by Village") +
-    coord_flip() +
-  theme_classic()
+  labs(x = "", 
+       y = "Number of Households", 
+       title  = "Number of Households by Village") +
+    coord_flip() 
+ 
 
 ```
 

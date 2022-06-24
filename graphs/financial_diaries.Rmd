@@ -17,19 +17,98 @@ library(ggplot2)
 load("~/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data/livdivdata.RData")
 
 fd <- livdiv %>%
-  select(-(4:967))
+  select(-(4:967)) 
 
 library(lubridate)
 expen <- fd %>%
-  select(c("hhid", "date", "total_spending", "village","hhid"))
+  select(c("hhid", "week_num", "date", "total_spending", "village","hhid")) 
 expen$date <- as_date(expen$date)
 ```
 
+
 ```{r}
-qplot(x=date, y=total_spending, color = village,
-      data=expen, na.rm=TRUE,
-      main="Weekly Expenditure by Household Over Time",
-      xlab="Date", ylab="Total Expenditure (INR)")
+exoverall <- expen %>%
+  select(c("week_num", "total_spending", "village")) %>%
+  group_by(week_num) %>%
+summarize_at(c("total_spending"), mean, na.rm=TRUE) 
+```
+
+```{r}
+ggplot(exoverall, aes(x=week_num, y=total_spending, na.rm = TRUE)) +
+     geom_line() +
+      labs(title="Average Weekly Expenditure Over Time",
+      x="Date", y="Average Weekly Expenditure (INR)") +
+  scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+```
+
+The average of every household in our data set's weekly expenditure over time. 
+
+
+
+```{r}
+exbyvil <- expen %>%
+  select(c("week_num", "total_spending", "village")) %>%
+  group_by(village,week_num) %>%
+summarize_at(c("total_spending"), mean, na.rm=TRUE) 
+```
+  
+
+```{r}
+ggplot(exbyvil, aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) +
+      geom_line() +
+      labs(title="Average Weekly Expenditure by Village",
+      x="Date", y="Average Weekly Expenditure (INR)") +
+  scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+  
+```
+
+
+
+This graph shows the average total expenditure of each village over time. Each line represents one of the 10 villages.  
+
+These graphs show expenditure 
+
+Expenditure = total spending = weekly total consumption and non-consumption expenditures. 
+consumption expenditure ex - food 
+non consumption expenditure ex - rent 
+
+
+This graph shows the average total expenditure of each village over time. Each line represents one of the 10 villages. 
+
+This graphs is interesting because it shows trends. the largest expenses include things such as house repairs or expenses regarding festivals. 
+Following expenditure over time tells us a lot about the vchnging nature of spending in the Sundarbans region- due to things such as festivals, weather, harvest season, etc 
+
+
+
+```{r}
+exbyamr <- expen %>%
+  select(c("week_num", "total_spending", "village")) %>%
+  filter(village == "Amrabati") %>%
+  group_by(week_num) %>%
+summarize_at(c("total_spending"), mean, na.rm=TRUE) 
+```
+
+
+```{r}
+ggplot(exbyamr, aes(x=week_num, y=total_spending, na.rm=TRUE)) +
+  geom_line(color= "red") + 
+      labs(title="Average Weekly Expenditure in Amrabati",
+      x="Date", y="Average Weekly Expenditure (INR)") +
+  scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+  
+```
+
+
+This graph shows the average weekly total spending in one of the villages - Amrabati. 
+
+
+
+```{r}
+ggplot(expen, aes(x=week_num, y=total_spending, color = village, na.rm = TRUE)) +
+  geom_jitter() +
+      labs(title = "Weekly Expenditure by Household Over Time",
+      x="Date", y="Total Expenditure (INR)") +
+        scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
 ```
 
 
@@ -41,106 +120,20 @@ Expenditure = total spending = weekly total consumption and non-consumption expe
 
 
 ```{r}
-exoverall <- expen %>%
-  select(c("date", "total_spending", "village")) %>%
-  group_by(date) %>%
-summarize_at(c("total_spending"), mean, na.rm=TRUE) 
+expenbeg <- expen %>% 
+  filter(village == "Beguakhali")
 ```
 
 ```{r}
-qplot(x=date, y=total_spending,
-      data=exoverall, na.rm=TRUE,
-      main="Average Weekly Expenditure Over Time",
-      xlab="Date", ylab="Average Weekly Expenditure (INR)", geom = "line")
-
-```
-
-
-The average of every household in our data set's weekly expenditure over time. 
-
-
-
-```{r}
-exbyvil <- expen %>%
-  select(c("date", "total_spending", "village")) %>%
-  group_by(village,date) %>%
-summarize_at(c("total_spending"), mean, na.rm=TRUE) 
-```
-  
-
-```{r}
-qplot(x=date, y=total_spending, color = village,
-      data=exbyvil, na.rm=TRUE,
-      main="Total Expenditure by Village",
-      xlab="Date", ylab="Total Expenditure (INR)", geom = "line")
+ggplot(expenbeg, aes(x=week_num, y=total_spending, color = hhid, na.rm = TRUE)) +
+  geom_jitter() +
+      labs(title = "Weekly Expenditure by Household Over Time", subtitle= "In Beguakhali", 
+      x="Date", y="Total Expenditure (INR)") +
+        scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
 ```
 
 
 
-This graph shows the average total expenditure of each village over time. Each line represents one of the 10 villages.  
-
-
-
-```{r}
-exbyamr <- expen %>%
-  select(c("date", "total_spending", "village")) %>%
-  filter(village == "Amrabati") %>%
-  group_by(date) %>%
-summarize_at(c("total_spending"), mean, na.rm=TRUE) 
-```
-
-
-```{r}
-qplot(x=date, y=total_spending,
-      data=exbyamr, na.rm=TRUE,
-      main="Total Expenditure in Amrabati",
-      xlab="Date", ylab="Total Spending (INR)", geom = "line")
-```
-
-
-This graph shows the average weekly total spending in one of the villages - Amrabati. 
-
-
-```{r}
-exbyamrhhid <- expen %>%
-  filter(village == "Amrabati") %>%
-  select(c("date", "total_spending",  "hhid")) %>%
-  group_by(hhid, date)
-#summarize_at(c("total_spending"), mean, na.rm=TRUE) 
-#as.factor(exbyamrhhid$hhid)
-```
-
-```{r}
-qplot(x=date, y=total_spending, color = hhid,
-      data=exbyamrhhid, na.rm=TRUE,
-      main="Weekly Expenditure in Amrabati by Household",
-      xlab="Date", ylab="Total Spending (INR)")
-```
-
-
-This graph shows total spending by each household in Amrabati over time. Each point represents the total weekly spending of one household in the village Amrabati.
-
-
-```{r}
-onehhid <- exbyamrhhid %>%
-  filter(hhid == "1") %>%
-  group_by(date)
-#summarize_at(c("total_spending"), mean, na.rm=TRUE) 
-#as.factor(exbyamrhhid$hhid)
-```
-
-
-```{r}
-ggplot(onehhid, aes(x= date, y = total_spending, na.rm = TRUE)) +
-     geom_line() + 
-          xlab("Time") +
-      ylab("Total Spending (INR)") +
-  labs(title = "Nimai Sardar's Expenditure")
-```
-
-
-
-Nimai Sardar is the head of a household in Amrabati. This is his total expenditure over time. 
 
 
 
@@ -158,9 +151,6 @@ qplot(x=date, y=total_spending, color = village,
       data=exbyvil, na.rm=TRUE,
       main="Total Expenditure over Time by Village",
       xlab="Date", ylab="Total Expenditure (INR)")
-
-
-
 This graph shows the total expenditure of the households, grouped by village, across time. Every dot represents the average total expenditure of one week for each village.  
 
 
@@ -171,8 +161,51 @@ ggplot(exbyamrhhid, aes(x= date, y = total_spending, na.rm = TRUE)) +
           xlab("Time") +
       ylab("Total Spending (INR)") +
   labs(title = "Expenditure in Amrabati by Household Over Time")
-
-
-
 This graph depicts the average total expenditure of each household over time. Each line represents one of the 10 villages. This graph is very difficult to read- but can be filtered by household in the dynamic shiny app. 
+
+
+
+
+exbyamrhhid <- expen %>%
+  filter(village == "Amrabati") %>%
+  select(c("week_num", "total_spending",  "hhid")) %>%
+  group_by(hhid, week_num)
+#summarize_at(c("total_spending"), mean, na.rm=TRUE) 
+#as.factor(exbyamrhhid$hhid)
+
+qplot(x=week_num, y=total_spending, color = hhid,
+      data=exbyamrhhid, na.rm=TRUE,
+      main="Weekly Expenditure in Amrabati by Household",
+      xlab="Date", ylab="Total Spending (INR)")
+This graph shows total spending by each household in Amrabati over time. Each point represents the total weekly spending of one household in the village Amrabati.
+
+
+
+
+expenamr <- expen %>% 
+  filter(village == "Amrabati") 
+
+ggplot(expenamr, aes(x=week_num, y=total_spending, color = hhid, na.rm = TRUE)) +
+  geom_jitter() +
+      labs(title = "Weekly Expenditure by Household Over Time", subtitle= "In Amrabati", 
+      x="Date", y="Total Expenditure (INR)") +
+        scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+
+
+
+expenbij <- expen %>% 
+  filter(village == "Bijoynagar") %>% 
+  filter(-(hhid == 307))
+
+ggplot(expenbij, aes(x=week_num, y=total_spending, color = hhid, na.rm = TRUE)) +
+  geom_jitter() +
+      labs(title = "Weekly Expenditure by Household Over Time", subtitle= "In Bijoynagar", 
+      x="Date", y="Total Expenditure (INR)") +
+        scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+
+
+
+
+
+
 
