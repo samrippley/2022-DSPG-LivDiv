@@ -1,0 +1,117 @@
+---
+title: "Baseline Remittance and Proportion of employed members in Household"
+author: "Nandini Das"
+date: '2022-06-15'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(shiny)
+library(shinythemes)
+library(shinyjs)
+library(ggplot2)
+library(maps)
+library(plotly)
+library(DT)
+library(dplyr)
+library(tigris)
+library(tidyverse)
+library(tidycensus)
+library(readxl)
+library(collapsibleTree)
+library(shinycssloaders)
+library(leaflet)
+library(leaflet.extras)
+library(rvest)
+library(sf)
+library(shinydashboard)
+library(shinydashboardPlus)
+library(tidygeocoder)
+library(janitor)
+library(dplyr)
+library(ggplot2)
+library(magrittr)
+options(tigris_use_cache = TRUE)
+
+library(rstudioapi)
+```
+
+
+```{r}
+load("~/Desktop/2022-DSPG-LivDiv-/data/livdivdata.RData")
+view(livdiv)
+baseline <- livdiv %>%
+slice(1:306,) 
+
+```
+
+# Relationship between Remittance, total mean income and mean expenditure in Baseline week by village
+
+```{r, warning = FALSE}
+library(plotly)
+baseline %>% select(village, exp_total, full_inc, rmt_total) %>% group_by(village) %>%summarise_all(mean) -> baseline.summary
+
+figure_inc_spending <- ggplot(baseline.summary, aes(rmt_total, full_inc, color= village))+geom_point(data=baseline.summary, shape=17, size=3) +labs(x="Total mean weekly remittances", y="Total mean weekly income", color="Villages") + ggtitle("Average total income vs average total remittances in Baseline week") 
+
+p<-figure_inc_spending +coord_flip() #+ scale_x_continuous(trans='log2') 
+ggplotly(p)
+```
+
+```{r, warning = FALSE}
+library(plotly)
+baseline %>% select(village, exp_total, full_inc, rmt_total) %>% group_by(village) %>%summarise_all(mean) -> baseline.summary
+
+figure_inc_spending <- ggplot(baseline.summary, aes(exp_total, full_inc, color= village))+geom_point(data=baseline.summary, shape=17, size=3) +labs(x="Total mean weekly remittances", y="Total mean weekly income", color="Villages") + ggtitle("Average total income vs average total remittances in Baseline week") 
+
+p<-figure_inc_spending +coord_flip() #+ scale_x_continuous(trans='log2') 
+ggplotly(p)
+```
+### Observations
+
+As expected, there is an overall positive relationship between the total mean income and expenditure. Shibpur seems to have the lowest income. Lakshmi Janardanpur has the both highest income and expenditure. Pargumti is also an interesting case in hand since the households in this village seems to be earning a lot but has the lowest mean expenditure. On the other hand, Purba Dwarokapur spends more than 5 other villages on an average but earns the second lowest. 
+
+```{r, warning = FALSE}
+baseline_rmt <- baseline %>% select(village, rmt_total)
+
+baseline %>% select(village, head_age, head_edu, village, exp_total, hh_employed_prop,  rmt_total) %>% group_by(village) %>% summarise_all(mean) -> baseline.summary
+
+
+ggplot(baseline.summary, aes(x=village, y=rmt_total, color=village)) + geom_point() +labs(y="Total mean remittances in Baseline Week", x="Villages")+scale_x_discrete(guide = guide_axis(n.dodge=3))+ggtitle("Average Total remittances of each village in baseline week") +
+  theme(axis.ticks.x =element_blank(),
+        axis.text.x = element_blank())
+
+```
+
+
+### Observations
+
+This diagram shows that: 
+
+* Beguakhali has the highest remittance income and also has the second highest mean income and expenditure - not a surprising result. 
+* Shibpur, the lowest income village also has no remittance income. 
+* Lakshmi Janardanpur highest income and expenditure is probably not due to its high remittance. 
+* Pargumti earns a reasonable remittance yet their expenditure is low.
+* Purba Dwarokapur earning source is not clear - remittance is 0 and it spends a lot more as compared to other villages. Land ownership?
+
+# Average Household Employment Proportion By Village
+```{r, warning = FALSE}
+
+library(plotly)
+
+df2 <- data.frame(d=c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur"),
+                l=c(0.478, 0.401, 0.473, 0.429,0.494, 0.370, 0.486, 0.407, 0.331, 0.339))
+
+p<-ggplot(data=df2, aes(x=d, y=l,  width=0.7, fill=d)) +
+  geom_bar(stat="identity") +
+  labs(y="Average household employment proportions", x="Villages", fill="white")+ggtitle("Mean proportion of household employed members per village in Baseline week") +
+  theme(axis.text.x = element_blank())+
+  geom_text(aes(label = l, l = l), size = 3, position = position_stack(vjust = 1.05)) 
+
+
+
+ggplotly(p)
+```
+
+Haridaskati Samsernagar, Pragumti, Bijoynagar and Amrabati have the highest proportion of employed members in the household while Sagar and Shibpur are among the least. 
