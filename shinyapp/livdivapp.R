@@ -22,15 +22,16 @@ ui <- fluidPage(
                         "Number of bins:",
                         min = 1,
                         max = 50,
-                        value = 30)
+                        value = 30),
         ),
 
         # Show a plot of the generated distribution
         mainPanel(
-           plotOutput("distPlot")
-        )
+           plotOutput("distPlot"),
+        ),
+
     )
-)
+    )
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
@@ -43,6 +44,7 @@ server <- function(input, output) {
         # draw the histogram with the specified number of bins
         hist(x, breaks = bins, col = 'darkgray', border = 'white')
     })
+
 }
 
 # Run the application 
