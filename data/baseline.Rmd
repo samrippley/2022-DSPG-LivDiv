@@ -42,24 +42,14 @@ setwd(dirname(getActiveDocumentContext()$path))
 # Baseline
 
 ```{r}
-
-baseline <- dataset %>%
-filter(week_num == 0:4) %>%
-arrange(date)
-
-```
-
-```{r}
-
-
-
-figure <- ggplot(baseline, aes(head_age, head_edu, color= village))+geom_point()
-
-
-
-figure
+load("~/Desktop/2022-DSPG-LivDiv-/data/livdivdata.RData")
+view(livdiv)
+baseline <- livdiv %>%
+slice(1:306,) 
 
 ```
+
+
 
 
 ```{r}
@@ -91,8 +81,77 @@ figure_gender+ scale_y_continuous(trans='log2') + ylim(0,300)
 ```{r}
 
 
-figure_gender<-ggplot(baseline, aes(as.numeric(total_inc), fill=village))+geom_histogram(binwidth=2000, center=0.05)
+figure_total_inc<-ggplot(baseline, aes(as.numeric(total_inc), fill=village))+geom_histogram(binwidth=2000, center=0.05)
 
-figure_gender
+figure_total_inc
 
 ```
+```{r}
+
+figure_total_exp<-ggplot(baseline, aes(as.numeric(exp_total), fill=village))+geom_histogram(binwidth=2000, center=0.05)
+
+figure_total_exp
+
+```
+
+```{r}
+
+figure_total_inc<-ggplot(baseline, aes(as.numeric(total_inc), fill=village))+geom_histogram(binwidth=2000, center=0.05)
+
+figure_total_inc
+
+```
+
+
+```{r}
+
+baseline %>% select(head_age, head_edu, village, exp_total, inc_total) %>% group_by(village) %>%summarise_all(mean) -> baseline.summary
+
+figure_inc_spending <- ggplot(baseline.summary, aes(exp_total, inc_total, color= village))+geom_point(data=baseline.summary, shape=17, size=3) +labs(x="Total expenditure", y="Total income") + ggtitle("Relationship of total income and total expenditure per village") 
+
+figure_inc_spending + scale_x_continuous(trans='log2')
+
+```
+```{r}
+baseline_rmt <- baseline %>% select(village, rmt_total)
+
+baseline %>% select(village, head_age, head_edu, village, exp_total, hh_employed_prop,  rmt_total) %>% group_by(village) %>% summarise_all(mean) -> baseline.summary
+
+figure_total_rmt<-ggplot(baseline.summary, aes(x=rmt_total, y=village))+  geom_bar(stat="identity", width=0.5)
+
+figure_total_rmt
+
+ggplot(baseline.summary, aes(x=village, y=rmt_total)) + geom_boxplot() +labs(y="Total remittances in Baseline Week", x="Villages")+scale_x_discrete(guide = guide_axis(n.dodge=3))+ggtitle("Total remittances of each village in baseline week") 
+
+```
+```{r}
+baseline<- data.frame(baseline)
+
+
+
+baseline %>% mutate(unemployment= 1- hh_employed_prop) %>% select(hh_employed_prop, unemployment, village) %>% group_by(village) %>% summarise_all(mean) -> baseline.summary
+
+ggplot(baseline.summary, aes(x=village, y=hh_employed_prop)) + geom_boxplot() +labs(y="Total remittances in Baseline Week", x="Villages" )+scale_x_discrete(guide = guide_axis(n.dodge=3))
+```
+```{r}
+
+
+df2 <- data.frame(supp=rep(c("Employed", "Unemployed"), each=10),
+                dose=c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur"),
+                len=c(0.4780612, 0.4007672, 0.4729048, 0.4285714,0.4944841, 0.3699830, 0.4861111, 0.4072666, 0.3307398, 0.3389172, 0.5219388, 0.5992328, 0.5270952, 0.5714286, 0.5055159, 0.6300170, 0.5138889, 0.5927334, 0.6692602, 0.6610828))
+
+ggplot(data=df2, aes(x=dose, y=len, fill=supp,  width=0.)) +
+  geom_bar(stat="identity") +scale_x_discrete(guide = guide_axis(n.dodge=3)) +
+  scale_fill_manual(values = c("#DADAEB", "#9E9AC8", "#6A51A3")) 
+
+
+
+```
+
+```{r}
+ggplot(data=df2, aes(x=dose, y=len, fill=supp)) +
+geom_bar(stat="identity", position=position_dodge())  +scale_x_discrete(guide = guide_axis(n.dodge=3))
+```
+
+
+
