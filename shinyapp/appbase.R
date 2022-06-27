@@ -148,34 +148,56 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                           ) 
                  ), 
                  ## Tab Demographics --------------------------------------------
-                 tabPanel("Demographics",
-                          fluidRow(style = "margin: 6px;",
-                                   h1(strong("Demographic Characteristics"), align = "center"),
-                                   p("", style = "padding-top:10px;"),
-                                   column(4, 
-                                          h4(strong("Households")),
-                                          p("We examined 306 hh."),
-                                          p("October 2019"), 
-                                          p("Our interactive plots visualize village level sociodemographic characteristics of households. 
-                                       This format allows for easy digestion and comparison of factors to help us best understand who the households on a statistical level.")
-                                   ) ,
-                                   column(8,
-                                          h4(strong("Resident Socioeconomic Characteristics by Census Tract or Block Group")),
-                                          selectInput("char1", "Select Variable:", width = "100%", choices = c(
-                                            "Median Household Income" = "income",
-                                            "Household Head Average Age" = "age" ,
-                                            "Occupation" = "unemploy",
-                                            "Education" = "high"
-                                          )
-                                          ), 
-                                          withSpinner(leafletOutput("demo1")) , 
-                                          p(tags$small("Data Source: BL October 2019")),
-                                   ) 
-                                   
-                          ) 
-                 ), 
-                 
-                 
+                 navbarMenu("Demographics" , 
+                            tabPanel("Static", 
+                                     fluidRow(style = "margin: 6px;",
+                                              h1(strong("Static Demographics"), align = "center"),
+                                              p("", style = "padding-top:10px;"), 
+                                              column(4, 
+                                                     h4(strong("Education")),
+                                                     p("These are demographics"),
+                                              ) ,
+                                              column(8, 
+                                                     h4(strong("Occupation")),
+                                                     selectInput("var1", "Select Variable:", width = "100%", choices = c(
+                                                       "Education" = "rainfall",
+                                                       "Occupation" = "min", 
+                                                       "Poverty" = "max")
+                                                     ),
+                                                     plotlyOutput("Poverty"),
+                                                     p(tags$small("Data Source: US Climate"))),
+                                              column(12, 
+                                                     h4("References: "), 
+                                                     p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
+                                                     p("", style = "padding-top:10px;")) 
+                                     )), 
+                            tabPanel("Dynamic", 
+                                     style = "margin: 6px;",
+                                     h1(strong("Dynamic"), align = "center"),
+                                     p("", style = "padding-top:10px;"), 
+                                     column(4, 
+                                            h4(strong("Streams, Lakes, and Water Bodies")), 
+                                            p("Differences by Village."), 
+                                            p("Location is important. Need water to fish. Transportation, etc. Graphed differences by village.")),
+                                     column(8,
+                                                    h4(strong("Household Demographic Characteristics by Village")),
+                                                    selectInput("char1", "Select Variable:", width = "100%", choices = c(
+                                                      "Median Household Income" = "income",
+                                                      "Household Head Average Age" = "age" ,
+                                                      "Occupation" = "unemploy",
+                                                      "Education" = "high"
+                                                    )
+                                                    ), 
+                                                    withSpinner(leafletOutput("demo1")) , 
+                                                    p(tags$small("Data Source: BL October 2019")),
+                                     ) 
+                                     
+                                     
+                                     ) 
+                            ), 
+                            
+                                     
+                        
                 # FD data tab-----------------------------------------------------------
                 tabPanel("High Frequency Data", value = "",
                          fluidRow(style = "margin: 6px;",
