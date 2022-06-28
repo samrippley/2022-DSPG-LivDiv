@@ -102,6 +102,18 @@ scountv <- soccup %>%
 scountv <- scountv %>%
   filter(job != 0)
 
+# Poverty line counts
+values_pl <- c(17,11,20,10,32,18,19,9,14,16,17,11,18,10,23,5,21,6,21,7)
+prop_pl_values <- c("60%", "40%", "67%", "33%", "64%","36%","68%","32%","53%","                47%","60%","40%","64%","36%","82%","18%","77%","23%","75%","25%" )
+dat_pl <- data.frame(villages_2, Key, values_pl, prop_pl_values)
+dat_pl
+
+# marital status
+countmar <- baseline %>%
+  count(head_married, head_female, head_married & head_female) %>% 
+  mutate(Gender = case_when(head_female == 1 ~ "Female", 
+                            head_female == 0 ~ "Male"))
+
 
 
 # CODE TO DETECT ORIGIN OF LINK AND CHANGE LOGO ACCORDINGLY
@@ -229,9 +241,10 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                                        "Education" = "edu", 
                                                        "Primary Occupation" = "pocu",
                                                        "Secondary Occupation" ="socu",
-                                                       "Poverty" = "pov"),
+                                                       "Poverty" = "pov", 
+                                                       "Marital Status" = "mar"),
                                                     ), 
-                                                     withSpinner(plotOutput("ageplot", height = "800px")),
+                                                     withSpinner(plotOutput("ageplot", height = "500px")),
                                                      
                                               ),
                                               column(12, 
@@ -410,8 +423,22 @@ server <- function(input, output, session) {
     }
     
     else if (ageVar() == "pov") {
-      povplot <- ggplot(
-      povplot
+      village_pl_count_plot <- ggplot(dat_pl, aes(x= villages_2, y = values_pl, fill = Key)) + 
+        geom_col(position = 'stack') + 
+        labs( x= "", y = "Total Number of Households") + 
+        theme_classic() + 
+        ggtitle("Households That Live Below the Poverty Line") +
+        coord_flip()+
+        geom_text(aes(label = prop_pl_values), size = 2.5, nudge_y = -1)
+      village_pl_count_plot
+    }
+    
+    else if (ageVar() == "mar") {
+      marplot <- ggplot(countmar, aes(x = head_married, y = n, fill = Gender)) +
+        geom_col() +
+        labs(title = "Household Heads' Marital Status", x = "Not Married                       Married", y = "Number of Household Heads") +
+        scale_x_discrete() + theme_classic()
+      marplot
     }
     
     
