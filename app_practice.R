@@ -18,12 +18,16 @@ ui <- fluidPage(
   # Sidebar with a slider input for number of bins 
   sidebarLayout(
     sidebarPanel(
-      selectInput("village", "Select village", choices = c(Villages)),
+      checkboxGroupInput("village", "Select village", choices = c("Amrabati", "Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar",
+                                                           "Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur"), 
+                         selected = c("Amrabati", "Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar",
+                                      "Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur")),
     ),
     
     # Show a plot of the generated distribution
     mainPanel(
       plotOutput("rmt"),
+      plotOutput("rmt_all")
     ),
     
   )
@@ -31,10 +35,23 @@ ui <- fluidPage(
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
+  filtered <- reactive({
+    dplyr::filter(rmt_data_mean_weeks, Villages==input$village)
+  })
+
   
   output$rmt <- renderPlot({
-    # generate bins based on input$bins from ui.R
-  average_rmt_plot
+    ggplot(filtered(), aes(x = weeks_rep
+                                    , y = mean_rmt_per_week, color = Villages)) + 
+      geom_line() +
+      theme_classic() +
+      labs(x = "Date", y = "Average Remittance Income [Rupee]") +
+      ggtitle("Average Remittance Income")#+ #(11/16/18 - 10/31/19)
+      #scale_color_brewer(palette = "Spectral")#+
+      #scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+    #annotate(geom = "text", aes(x = unlist(months)))
+    
+
   })
   
 }
