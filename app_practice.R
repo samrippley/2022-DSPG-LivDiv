@@ -18,10 +18,9 @@ ui <- fluidPage(
   # Sidebar with a slider input for number of bins 
   sidebarLayout(
     sidebarPanel(
-      checkboxGroupInput("village", "Select village", choices = c("Amrabati", "Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar",
-                                                           "Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur"), 
-                         selected = c("Amrabati", "Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar",
-                                      "Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur")),
+      pickerInput("village", "Select Village:", choices = village_vector, 
+                  selected = village_vector,
+                  multiple = T, options = list(`actions-box` = T)),
     ),
     
     # Show a plot of the generated distribution
@@ -36,7 +35,10 @@ ui <- fluidPage(
 # Define server logic required to draw a histogram
 server <- function(input, output) {
   filtered <- reactive({
-    dplyr::filter(rmt_data_mean_weeks, Villages==input$village)
+    rmt_data_mean_weeks %>%
+      #filter(Villages==input$village)
+      filter(Villages %in% input$village)
+
   })
 
   
