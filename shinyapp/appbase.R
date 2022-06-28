@@ -30,6 +30,7 @@ library(gridExtra)
 library(ggpubr)
 library(lubridate)
 library(shinyWidgets)
+library(viridis)
 
 
 prettyblue <- "#232D4B"
@@ -40,7 +41,6 @@ colors <- c("#232d4b","#2c4f6b","#0e879c","#60999a","#d1e0bf","#d9e12b","#e6ce3a
 village_vector = c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur")
 # data -----------------------------------------------------------
 
-# rmt plot data:
 fd <- livdiv %>%
   select(-(4:967))
 # remittance data
@@ -60,9 +60,10 @@ fd2 <- livdiv %>%
 rmt2 <- fd %>%
   select(c(hhid, date, rmt_total, village))
 rmt2$date <- as_date(rmt2$date)
+# rmt plot data:
 village <- c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur") 
 Villages <- rep(village, 49)
-weeks_rep <- c(rep(1,10), rep(2, 10), rep(3,10), rep(4,10), rep(5,10), rep(6,10), rep(7,10), rep(8,10), rep(9,10), rep(10,10), 
+weeks <- c(rep(1,10), rep(2, 10), rep(3,10), rep(4,10), rep(5,10), rep(6,10), rep(7,10), rep(8,10), rep(9,10), rep(10,10), 
                rep(11,10), rep(12,10), rep(13, 10), rep(14,10), rep(15,10), rep(16, 10), rep(17, 10), rep(18,10), rep(19,10), rep(20,10),
                rep(21, 10), rep(22,10), rep(23,10), rep(24,10), rep(25,10), rep(26, 10), rep(27,10), rep(28,10), rep(29,10), rep(30,10),
                rep(31,10), rep(32,10), rep(33,10), rep(34,10), rep(35,10), rep(36,10), rep(37,10), rep(38,10), rep(39,10), rep(40,10),
@@ -133,8 +134,8 @@ avgRmt <- rmt2 %>%
 
 dates <- avgRmt$date
 months <- c("January 2019", "April 2019", "July 2019", "October 2019")
-rmt_data_mean_weeks <- data.frame(Villages, weeks_rep, mean_rmt_per_week)
-average_rmt_plot <- ggplot(rmt_data_mean_weeks, aes(x = weeks_rep
+rmt_data_mean_weeks <- data.frame(Villages, weeks, mean_rmt_per_week)
+average_rmt_plot <- ggplot(rmt_data_mean_weeks, aes(x = weeks
                                                     , y = mean_rmt_per_week, color = Villages)) + 
   geom_line() +
   theme_classic() +
@@ -143,6 +144,35 @@ average_rmt_plot <- ggplot(rmt_data_mean_weeks, aes(x = weeks_rep
   scale_color_brewer(palette = "Spectral")+
   scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
 annotate(geom = "text", aes(x = unlist(months)))
+#--------------------------------------------------------------------
+# rmt method plot:
+method_counts <- c(397, 472, 1, 1, 13)
+Method <- c("Bank", "In person", "Mobile", "Money Order", "Other")
+method_dat <- data.frame(Method, method_counts, stringsAsFactors = T)
+method_values <- c("       397", "       472", "   1", "   1", "    13")
+
+rmt_method_plot <- ggplot(method_dat, aes( x= Method, y = method_counts, fill = Method)) +
+  geom_col(fill = plasma(5, alpha = 1, begin = 0, end = 1, direction = 1)) +
+  labs(x = "", y = "Total") +
+  theme_classic() +
+  coord_flip()+
+  ggtitle("Method of Receiving Remittance")+
+  geom_text(aes(label = method_values), size = 3)
+#--------------------------------------------------------------------
+# rmt purpose plot:
+Purpose <-  c("Food/Utility Purchases", "Tuition", "Assets/Durable Purchases", "Medical Expenses", "Other", "No Reason")
+purpose_count <- c(594, 37, 27, 93, 128, 43)
+purpose_dat <- data.frame(Purpose, purpose_count, stringsAsFactors = T)
+purpose_values <- c("      594", "      37", "     27", "     93", "      128", "      43")
+
+rmt_purpose_plot <- ggplot(purpose_dat, aes(x = Purpose, y = purpose_count, fill = Purpose)) + 
+  geom_col(fill = plasma(6, alpha = 1, begin = 0, end = 1, direction = 1)) +
+  labs(x = "", y = "Total") +
+  theme_classic() +
+  ggtitle("Purpose for Receiving Remittance")+
+  #rotate_x_text(angle = 22, size = rel(0.8))
+  coord_flip()+
+  geom_text(aes(label = purpose_values), size = 2.4)
 #-----------------------------------------------------------------
 
 
@@ -309,7 +339,9 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                            mainPanel(
                              tabsetPanel(
                              tabPanel("Plot",plotOutput("rmt")),
-                             tabPanel("Table",DT:: DTOutput("rmt_table"))
+                             tabPanel("Table",DT:: DTOutput("rmt_table")),
+                             tabPanel("Method", plotOutput("rmt_method")),
+                             tabPanel("Purpose", plotOutput("rmt_purpose"))
                              )
                            ),
                            
@@ -501,20 +533,26 @@ server <- function(input, output) {
   })
   
   output$rmt <- renderPlot({
-    ggplot(filtered(), aes(x = weeks_rep
+    ggplot(filtered(), aes(x = weeks
                            , y = mean_rmt_per_week, color = Villages)) + 
       geom_line() +
       theme_classic() +
       labs(x = "Date", y = "Average Remittance Income [Rupee]") +
-      ggtitle("Average Weekly Remittance Income")#+ #(11/16/18 - 10/31/19)
+      ggtitle("Average Weekly Remittance Income")+ #(11/16/18 - 10/31/19)
       #scale_color_brewer(palette = "Spectral")+
-    #scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+    scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
     #annotate(geom = "text", aes(x = unlist(months)))
     
     
   })
   output$rmt_table <- DT::renderDT({
     filtered()
+  })
+  output$rmt_method <- renderPlot({
+    rmt_method_plot
+  })
+  output$rmt_purpose <- renderPlot({
+    rmt_purpose_plot
   })
   
   
