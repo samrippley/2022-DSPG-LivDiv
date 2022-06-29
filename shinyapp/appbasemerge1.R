@@ -388,6 +388,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                           fluidRow(align = "center",
                                    p(tags$small(em('Last updated: August 2021'))))
                  ),
+)
                  
                  ## Tab Date Intro--------------------------------------------
                  tabPanel("Data",
@@ -395,8 +396,8 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                    h1(strong("We have BL and FD"), align = "center"),
                                    p("", style = "padding-top:10px;")
                                    
-                          ) 
-                 ), 
+                          ),
+                 )
                  ## Tab Demographics --------------------------------------------
                  navbarMenu("Demographics" , 
                             tabPanel("Static", 
@@ -453,16 +454,98 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                      
                         
                 # FD data tab-----------------------------------------------------------
-               
-                navbarMenu("High Frequency Data" , 
-                           tabPanel("Income",
+                
+navbarMenu("Demographics" , 
+           tabPanel("Static", 
+                    fluidRow(style = "margin: 6px;",
+                             h1(strong("Static Demographics"), align = "center"),
+                             p("", style = "padding-top:10px;"), 
+                             column(4, 
+                                    h4(strong("Education")),
+                                    p("These are demographics"),
+                             ) ,
+                             column(8, 
+                                    h4(strong("Demographics")),
+                                    selectInput("agedrop", "Select Varibiable:", width = "100%", choices = c(
+                                      "Age" = "age",
+                                      "Education" = "edu", 
+                                      "Primary Occupation" = "pocu",
+                                      "Secondary Occupation" ="socu",
+                                      "Poverty" = "pov", 
+                                      "Marital Status" = "mar"),
+                                    ), 
+                                    withSpinner(plotOutput("ageplot", height = "500px")),
+                                    
+                             ),
+                             column(12, 
+                                    h4("References: "), 
+                                    p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
+                                    p("", style = "padding-top:10px;")) 
+                    )), 
+           tabPanel("Dynamic", 
+                    style = "margin: 6px;",
+                    h1(strong("Dynamic"), align = "center"),
+                    p("", style = "padding-top:10px;"), 
+                    column(4, 
+                           h4(strong("Dynamic")), 
+                           p("Differences by Village."), 
+                           p("Location is important. Need water to fish. Transportation, etc. Graphed differences by village.")),
+                    column(8,
+                           h4(strong("Household Demographic Characteristics by Village")),
+                           selectInput("char1", "Select Variable:", width = "100%", choices = c(
+                             "Median Household Income" = "income",
+                             "Household Head Average Age" = "age" ,
+                             "Occupation" = "unemploy",
+                             "Education" = "high"
+                           )
+                           ), 
+                           withSpinner(leafletOutput("demo1")) , 
+                           p(tags$small("Data Source: BL October 2019")),
+                    ) 
+                    
+                    
+           ) 
+), 
+
+
+
+
+navbarMenu("High Frequency Data" , 
+                           tabPanel("Remmitances", value = "",
                                     fluidRow(style = "margin: 6px;",
-                                             h1(strong("Shocking"), align = "center"),
-                                             p("", style = "padding-top:10px;")
-                                             
-                                    ) 
-                           ),            
+                                             h1(strong("FD"), align = "center"),
+                                             p("", style = "padding-top:10px;"),
+                                             column(12,h4(strong("Overview")),
+                                                    p("Over time"),
+                                                    br("")
+                                                    
+                                                    
+                                             ) ),
+                                    # Sidebar with a select input for village
+                                    sidebarLayout(
+                                      sidebarPanel(
+                                        #tags$h2("Select/Deselect all"),
+                                        pickerInput("village", "Select Village:", choices = village_vector, 
+                                                    selected = village_vector,
+                                                    multiple = T, options = list(`actions-box` = T)),
+                                        
+                                        
+                                      )),
+                                    
                            
+                                      
+                                      # Show a plot of the generated plot
+                                      mainPanel(
+                                        tabsetPanel(
+                                          tabPanel("Plot",plotOutput("rmt")),
+                                          tabPanel("Table",DT:: DTOutput("rmt_table")),
+                                          tabPanel("Method", plotOutput("rmt_method")),
+                                          tabPanel("Purpose", plotOutput("rmt_purpose"))
+                                        )
+                                      ),
+                                      
+                                    )
+                           ), 
                            tabPanel("Expenditure",
                                     fluidRow(style = "margin: 6px;",
                                              h1(strong("Shocking"), align = "center"),
@@ -491,66 +574,17 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                     
                                     
                            ), 
-                           
-                           tabPanel("High Frequency Data", value = "",
-                                    fluidRow(style = "margin: 6px;",
-                                             h1(strong("FD"), align = "center"),
-                                             p("", style = "padding-top:10px;"),
-                                             column(12,h4(strong("Overview")),
-                                                    p("Over time"),
-                                                    br("")
-                                                    
-                                                    
-                                             ) ),
-                                    # Sidebar with a select input for village
-                                    sidebarLayout(
-                                      sidebarPanel(
-                                        #tags$h2("Select/Deselect all"),
-                                        pickerInput("village", "Select Village:", choices = village_vector, 
-                                                    selected = village_vector,
-                                                    multiple = T, options = list(`actions-box` = T)),
-                                        
-                                      ),
-                                      
-                                      # Show a plot of the generated plot
-                                      mainPanel(
-                                        tabsetPanel(
-                                          tabPanel("Plot",plotOutput("rmt")),
-                                          tabPanel("Table",DT:: DTOutput("rmt_table")),
-                                          tabPanel("Method", plotOutput("rmt_method")),
-                                          tabPanel("Purpose", plotOutput("rmt_purpose"))
-                                        )
-                                      ),
-                                      
-                                    )
-                           ),           
-                           
-                           
-                           
-                ),
-              
+)
+                
                
                 ## Shocks Tab --------------------------------------------
-                navbarMenu("Shocks" , 
-                tabPanel("Shock 1",
+                tabPanel("Shocks",
                          fluidRow(style = "margin: 6px;",
                                   h1(strong("Shocking"), align = "center"),
                                   p("", style = "padding-top:10px;")
                                   
                          ) 
                 ), 
-                
-                
-                
-                 tabPanel("Shock 2",
-                         fluidRow(style = "margin: 6px;",
-                                  h1(strong("Shocking"), align = "center"),
-                                  p("", style = "padding-top:10px;")
-                                  
-                         ) 
-                ), 
-                ), 
-                
                 ## FGD tab------------------------------------------
                 tabPanel("Focus Group Discussion",
                          fluidRow(style = "margin: 6px;",
@@ -559,7 +593,6 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                   
                          ) 
                 ), 
-              
                  # team tab -----------------------------------------------------------
                  tabPanel("Meet the Team", value = "contact",
                           fluidRow(style = "margin-left: 300px; margin-right: 300px;",
@@ -615,7 +648,6 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                             p("We would like to thank Kenner Love, Unit Coordinator Extension Agent, Agricultural and Natural Resources Crop & Soil Sciences from the Virginia Cooperative Extension for his support on this project.")
                           )
                  ),
-                
                 inverse = T)
                 
                 
@@ -743,8 +775,7 @@ server <- function(input, output, session) {
   
     )
   
-}
-
+  }
 
 
 shinyApp(ui = ui, server = server)
