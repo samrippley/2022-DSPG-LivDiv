@@ -2,10 +2,23 @@
 title: "Shocks"
 author: "Siddarth Ravikanti"
 date: "6/27/2022"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r}
+library(dplyr)
+library(ggplot2)
+library(tidyverse)
+library(viridis)
+library(plotly)
+
+load("~/Documents/2022-DSPG-LivDiv-/data/livdivdata.RData")
+baseline <- livdiv %>%
+slice(1:306,)
+
+
 shocks <- baseline %>% select(shk1,shk2,shk3,shk4,shk5,shk6,shk7)
 shocks <- data.frame(y=unlist(shocks))
 colnames(shocks) <- c('shock_nmb')
