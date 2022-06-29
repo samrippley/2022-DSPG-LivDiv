@@ -141,9 +141,9 @@ average_rmt_plot <- ggplot(rmt_data_mean_weeks, aes(x = weeks
   theme_classic() +
   labs(x = "Date", y = "Average Remittance Income [Rupee]") +
   ggtitle("Average Remittance Income Per Village")+ #(11/16/18 - 10/31/19)
-  scale_color_brewer(palette = "Spectral")+
+  #scale_color_brewer(palette = "Spectral")+
   scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
-annotate(geom = "text", aes(x = unlist(months)))
+#annotate(geom = "text", aes(x = unlist(months)))
 #--------------------------------------------------------------------
 # rmt method plot:
 method_counts <- c(397, 472, 1, 1, 13)
@@ -174,7 +174,22 @@ rmt_purpose_plot <- ggplot(purpose_dat, aes(x = Purpose, y = purpose_count, fill
   coord_flip()+
   geom_text(aes(label = purpose_values), size = 2.4)
 #-----------------------------------------------------------------
+# Expenditure plot data:
+expen <- fd %>%
+  select(c("hhid", "week_num", "date", "total_spending", "village","hhid")) 
+expen$date <- as_date(expen$date)
 
+exbyvil <- expen %>%
+  select(c("week_num", "total_spending", "village")) %>%
+  group_by(village,week_num) %>%
+  summarize_at(c("total_spending"), mean, na.rm=TRUE) 
+
+ggplot(exbyvil, aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) +
+  geom_line() +
+  labs(title="Average Weekly Expenditure by Village",
+       x="Date", y="Average Weekly Expenditure (INR)") +
+  scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+#--------------------------------------------------------------------
 
 # CODE TO DETECT ORIGIN OF LINK AND CHANGE LOGO ACCORDINGLY
 jscode <- "function getUrlVars() {
@@ -344,7 +359,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                              tabPanel("Purpose", plotOutput("rmt_purpose"))
                              )
                            ),
-                           
+
                          )
                         ),
                
@@ -354,7 +369,28 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                   h1(strong("Shocking"), align = "center"),
                                   p("", style = "padding-top:10px;")
                                   
-                         ) 
+                         ),
+                         # Sidebar with a select input for village
+                         sidebarLayout(
+                           sidebarPanel(
+                             #tags$h2("Select/Deselect all"),
+                             pickerInput("village_exp", "Select Village:", choices = village_vector, 
+                                         selected = village_vector,
+                                         multiple = T, options = list(`actions-box` = T)),
+                             
+                             
+                           ),
+                           
+                           # Show a plot of the generated plot
+                           mainPanel(
+                             tabsetPanel(
+                               tabPanel("Plot",plotOutput("exp"))
+                             )
+                           ),
+                           
+                         )
+                         
+                         
                 ), 
                 
                 ## FGD tab------------------------------------------
@@ -553,6 +589,20 @@ server <- function(input, output) {
   })
   output$rmt_purpose <- renderPlot({
     rmt_purpose_plot
+  })
+  # exp plot ouput
+  filtered_exp <- reactive({
+    exbyvil %>% 
+      filter(village %in% input$village_exp)
+  })
+  output$exp <- renderPlot({
+    ggplot(filtered_exp(), aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) +
+      geom_line() +
+      labs(title="Average Weekly Expenditure by Village",
+           x="Date", y="Average Weekly Expenditure (INR)") +
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+    
+    
   })
   
   
