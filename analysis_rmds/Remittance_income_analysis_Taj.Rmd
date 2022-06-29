@@ -75,6 +75,7 @@ rmt_method_plot
 - Remittance income was primarily received through a bank or in person
 - Its more convenient to receive currency through person or from a bank rather than through mobile apps 
 - Money orders are often very secure ways of sending money. Many households are more likely concerned about receiving their money quickly rather than securely
+- Money orders often have additional fees attached to them and using mobile apps can be difficult in places where data usage is very limited.
 - (It wouldn't make sense to do this by village because some villages dint receive weekly remittance for a majority of the data set so there would be many gaps and wouldn't show some of the villages)
 
 
@@ -109,7 +110,7 @@ rmt_purpose_plot
 - (Across all villages)
 - Shows the count of what every transaction of remittance was used for over the data period
 - Remittance income was primarily being used for food and utility purchases
-- It makes sense that a large majority of remittance is used on food, especially if the remittance is being received after devasttaion (cyclone)
+- It makes sense that a large majority of remittance is used on food, especially if the remittance is being received after devastaion (cyclone)
 - (assets/durable purchases: appliances, furniture, goods that don't wear out quickly and are not purchased frequently)
 
 # Get average and total income by village for each week then compare across 49 week period
