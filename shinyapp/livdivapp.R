@@ -302,7 +302,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                      
                             )
                             
-                          ),
+                          )
                           
                           
                  ))
