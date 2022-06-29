@@ -29,13 +29,50 @@ library(ggplotify)
 library(grid)
 library(gridExtra)
 library(ggpubr)
+library(lubridate)
+library(shinyWidgets)
 
 
 prettyblue <- "#232D4B"
 navBarBlue <- '#427EDC'
 options(spinner.color = prettyblue, spinner.color.background = '#ffffff', spinner.size = 3, spinner.type = 7)
 
+<<<<<<< HEAD
+    # Sidebar with a slider input for number of bins 
+    sidebarLayout(
+        sidebarPanel(
+            sliderInput("bins",
+                        "Number of bins:",
+                        min = 1,
+                        max = 50,
+                        value = 30),
+        ),
+
+        # Show a plot of the generated distribution
+        mainPanel(
+           plotOutput("distPlot"),
+        ),
+
+    )
+    )
+
+# Define server logic required to draw a histogram
+server <- function(input, output) {
+
+    output$distPlot <- renderPlot({
+        # generate bins based on input$bins from ui.R
+        x    <- faithful[, 2]
+        bins <- seq(min(x), max(x), length.out = input$bins + 1)
+
+        # draw the histogram with the specified number of bins
+        hist(x, breaks = bins, col = 'darkgray', border = 'white')
+    })
+
+}
+
 colors <- c("#232d4b","#2c4f6b","#0e879c","#60999a","#d1e0bf","#d9e12b","#e6ce3a","#e6a01d","#e57200","#fdfdfd")
+village_vector <- c("Amrabati", "Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar",
+                    "Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur") 
 
 ################################################################################################################################################################
 # user -------------------------------------------------------------
@@ -307,6 +344,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                           
                  ))
                  
+>>>>>>> 8926853bf6041710db63ffd89ee8720dd79ee7fe
 
 # Run the application 
 shinyApp(ui = ui, server = server)

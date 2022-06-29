@@ -214,22 +214,28 @@ months <- c("January 2019", "April 2019", "July 2019", "October 2019")
 ```
 
 ```{r}
-rmt_data_mean_weeks <- data.frame(Villages, weeks_rep, mean_rmt_per_week, dates)
+rmt_data_mean_weeks <- data.frame(Villages, weeks_rep, mean_rmt_per_week)
 ```
 
 
 # Average remittance income plot
 ```{r}
 average_rmt_plot <- ggplot(rmt_data_mean_weeks, aes(x = weeks_rep
-                                                    , y = mean_rmt_per_week, color = Villages)) + 
+                                                    , y = mean_rmt_per_week, , color = Villages)) + 
   geom_line() +
   theme_classic() +
   labs(x = "Date", y = "Average Remittance Income [Rupee]") +
   ggtitle("Average Remittance Income Per Village")+ #(11/16/18 - 10/31/19)
-  scale_color_brewer(palette = "Spectral")+
+  #discrete_scale(aesthetics = Villages, scale_name = "rmt palette",palette = viridis_pal(1, 0, 10, option = "D"))
+  #scale_color_brewer(palette = "Spectral")+
   scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
   annotate(geom = "text", aes(x = unlist(months)))
 average_rmt_plot
+```
+
+```{r}
+mean_rmt_plot <- ggplot(mean_rmt, aes(x = week, y = mean_weekly_rmt, color = village)) + geom_line()
+mean_rmt_plot
 ```
 
 - Large spikes in remittance start around week 19 happen throughout the rest of the data period 
