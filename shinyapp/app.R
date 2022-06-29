@@ -39,8 +39,11 @@ options(spinner.color = prettyblue, spinner.color.background = '#ffffff', spinne
 
 colors <- c("#232d4b","#2c4f6b","#0e879c","#60999a","#d1e0bf","#d9e12b","#e6ce3a","#e6a01d","#e57200","#fdfdfd")
 village_vector = c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur")
+
+
 # data -----------------------------------------------------------
-#load("~/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data/livdivdata.RData")
+
+load("~/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data/livdivdata.RData")
 
 baseline <- livdiv %>%
   slice(1:307,)
@@ -105,6 +108,16 @@ scountv <- soccup %>%
 scountv <- scountv %>%
   filter(job != 0)
 
+# Business counts
+villages_2 <- c(rep("Amrabati", 2), rep("Beguakhali", 2), rep("Bijoynagar", 2), rep("Birajnagar", 2), rep("Haridaskati Samsernagar", 2), rep("Lakshmi Janardanpur",2), rep("Pargumti",2),rep("Purba Dwarokapur", 2), rep("Sagar", 2), rep("Shibpur",2))
+Key <- rep(c("No", "Yes"), 2)
+values_bus <-c(26,2,27,3,48,2,24,2,27,3,25,3,24,4,21,7,21,7,25,3)
+
+#prop_bus_values <- c(0.93,0.07, 0.9,0.1,0.96,0.04,0.86,0.14,0.9,0.1,0.9,0.1,0.86,0.14,0.75,0.25,0.75,0.25,0.9,0.1)
+prop_bus_values <- c("93%","7%","90%","10%","96%","4%","86%","14%","90%","10%","90%","10%","86%","14%","75%","25%","75%","25%","90%","10%")
+dat_bus <-  data.frame(villages_2, Key, values_bus, prop_bus_values)
+dat_bus
+
 # Poverty line counts
 values_pl <- c(17,11,20,10,32,18,19,9,14,16,17,11,18,10,23,5,21,6,21,7)
 prop_pl_values <- c("60%", "40%", "67%", "33%", "64%","36%","68%","32%","53%","                47%","60%","40%","64%","36%","82%","18%","77%","23%","75%","25%" )
@@ -120,6 +133,8 @@ countmar <- baseline %>%
 
 fd <- livdiv %>%
   select(-(4:967))
+
+
 # remittance data
 rmt <- fd %>% 
   select(village, hhid, name, week, date, 
@@ -137,6 +152,8 @@ fd2 <- livdiv %>%
 rmt2 <- fd %>%
   select(c(hhid, date, rmt_total, village))
 rmt2$date <- as_date(rmt2$date)
+
+
 # rmt plot data:
 village <- c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur") 
 Villages <- rep(village, 49)
@@ -217,11 +234,13 @@ average_rmt_plot <- ggplot(rmt_data_mean_weeks, aes(x = weeks
   geom_line() +
   theme_classic() +
   labs(x = "Date", y = "Average Remittance Income [Rupee]") +
-  ggtitle("Average Remittance Income Per Village")+ #(11/16/18 - 10/31/19)
+  ggtitle("Average Remittance Income Per Village") + #(11/16/18 - 10/31/19)
   #scale_color_brewer(palette = "Spectral")+
   scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
 #annotate(geom = "text", aes(x = unlist(months)))
 #--------------------------------------------------------------------
+
+
 # rmt method plot:
 method_counts <- c(397, 472, 1, 1, 13)
 Method <- c("Bank", "In person", "Mobile", "Money Order", "Other")
@@ -236,6 +255,7 @@ rmt_method_plot <- ggplot(method_dat, aes( x= Method, y = method_counts, fill = 
   ggtitle("Method of Receiving Remittance")+
   geom_text(aes(label = method_values), size = 3)
 #--------------------------------------------------------------------
+
 # rmt purpose plot:
 Purpose <-  c("Food/Utility Purchases", "Tuition", "Assets/Durable Purchases", "Medical Expenses", "Other", "No Reason")
 purpose_count <- c(594, 37, 27, 93, 128, 43)
@@ -251,6 +271,7 @@ rmt_purpose_plot <- ggplot(purpose_dat, aes(x = Purpose, y = purpose_count, fill
   coord_flip()+
   geom_text(aes(label = purpose_values), size = 2.4)
 #-----------------------------------------------------------------
+
 # Expenditure plot data:
 expen <- fd %>%
   select(c("hhid", "week_num", "date", "total_spending", "village","hhid")) 
@@ -267,14 +288,7 @@ ggplot(exbyvil, aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) 
        x="Date", y="Average Weekly Expenditure (INR)") +
   scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
 #--------------------------------------------------------------------
-# Income Plot data:
-fin_diary <- livdiv %>% select(village, date, week, name, full_inc) %>% arrange(week, village) %>% group_by(week) 
-fin_diary$date <- as_date(fin_diary$date)
-avg_tot_inc <- fin_diary %>% group_by(date, village, week) %>% summarize(avg_inc = mean(full_inc, na.rm = TRUE))
-ggplot(avg_tot_inc, aes(date, avg_inc, color = village)) + geom_line() + labs(x = "", y = "Income (INR)", title = "Average Weekly Household Income by village", color = "Village") 
 
-
-#--------------------------------------------------------------------
 # CODE TO DETECT ORIGIN OF LINK AND CHANGE LOGO ACCORDINGLY
 jscode <- "function getUrlVars() {
                 var vars = {};
@@ -439,68 +453,102 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                      
                         
                 # FD data tab-----------------------------------------------------------
-                tabPanel("High Frequency Data", value = "",
-                         fluidRow(style = "margin: 6px;",
-                                  h1(strong("FD"), align = "center"),
-                                  p("", style = "padding-top:10px;"),
-                                  column(12,h4(strong("Overview")),
-                                         p("Over time"),
-                                         br("")
-                                          
-                                          
-                                          ) ),
-                         # Sidebar with a select input for village
-                         sidebarLayout(
-                           sidebarPanel(
-                             #tags$h2("Select/Deselect all"),
-                             pickerInput("village", "Select Village:", choices = village_vector, 
-                                         selected = village_vector,
-                                         multiple = T, options = list(`actions-box` = T)),
-                             
-
-                           ),
+               
+                navbarMenu("High Frequency Data" , 
+                           tabPanel("Income",
+                                    fluidRow(style = "margin: 6px;",
+                                             h1(strong("Shocking"), align = "center"),
+                                             p("", style = "padding-top:10px;")
+                                             
+                                    ) 
+                           ),            
                            
-                           # Show a plot of the generated plot
-                           mainPanel(
-                             tabsetPanel(
-                             tabPanel("Plot",plotOutput("rmt")),
-                             tabPanel("Table",DT:: DTOutput("rmt_table")),
-                             tabPanel("Method", plotOutput("rmt_method")),
-                             tabPanel("Purpose", plotOutput("rmt_purpose"))
-                             )
-                           ),
-
-                         )
-                        ),
+                           tabPanel("Expenditure",
+                                    fluidRow(style = "margin: 6px;",
+                                             h1(strong("Shocking"), align = "center"),
+                                             p("", style = "padding-top:10px;")
+                                             
+                                    ),
+                                    # Sidebar with a select input for village
+                                    sidebarLayout(
+                                      sidebarPanel(
+                                        #tags$h2("Select/Deselect all"),
+                                        pickerInput("village_exp", "Select Village:", choices = village_vector, 
+                                                    selected = village_vector,
+                                                    multiple = T, options = list(`actions-box` = T)),
+                                        
+                                        
+                                      ),
+                                      
+                                      # Show a plot of the generated plot
+                                      mainPanel(
+                                        tabsetPanel(
+                                          tabPanel("Plot",plotOutput("exp"))
+                                        )
+                                      ),
+                                      
+                                    )
+                                    
+                                    
+                           ), 
+                           
+                           tabPanel("High Frequency Data", value = "",
+                                    fluidRow(style = "margin: 6px;",
+                                             h1(strong("FD"), align = "center"),
+                                             p("", style = "padding-top:10px;"),
+                                             column(12,h4(strong("Overview")),
+                                                    p("Over time"),
+                                                    br("")
+                                                    
+                                                    
+                                             ) ),
+                                    # Sidebar with a select input for village
+                                    sidebarLayout(
+                                      sidebarPanel(
+                                        #tags$h2("Select/Deselect all"),
+                                        pickerInput("village", "Select Village:", choices = village_vector, 
+                                                    selected = village_vector,
+                                                    multiple = T, options = list(`actions-box` = T)),
+                                        
+                                      ),
+                                      
+                                      # Show a plot of the generated plot
+                                      mainPanel(
+                                        tabsetPanel(
+                                          tabPanel("Plot",plotOutput("rmt")),
+                                          tabPanel("Table",DT:: DTOutput("rmt_table")),
+                                          tabPanel("Method", plotOutput("rmt_method")),
+                                          tabPanel("Purpose", plotOutput("rmt_purpose"))
+                                        )
+                                      ),
+                                      
+                                    )
+                           ),           
+                           
+                           
+                           
+                ),
+              
                
                 ## Shocks Tab --------------------------------------------
-                tabPanel("Shocks",
+                navbarMenu("Shocks" , 
+                tabPanel("Shock 1",
                          fluidRow(style = "margin: 6px;",
                                   h1(strong("Shocking"), align = "center"),
                                   p("", style = "padding-top:10px;")
                                   
-                         ),
-                         # Sidebar with a select input for village
-                         sidebarLayout(
-                           sidebarPanel(
-                             #tags$h2("Select/Deselect all"),
-                             pickerInput("village_exp", "Select Village:", choices = village_vector, 
-                                         selected = village_vector,
-                                         multiple = T, options = list(`actions-box` = T)),
-                             
-                             
-                           ),
-                           
-                           # Show a plot of the generated plot
-                           mainPanel(
-                             tabsetPanel(
-                               tabPanel("Plot",plotOutput("exp"))
-                             )
-                           ),
-                           
-                         )
-                         
-                         
+                         ) 
+                ), 
+                
+                
+                
+                 tabPanel("Shock 2",
+                         fluidRow(style = "margin: 6px;",
+                                  h1(strong("Shocking"), align = "center"),
+                                  p("", style = "padding-top:10px;")
+                                  
+                         ) 
+                ), 
                 ), 
                 
                 ## FGD tab------------------------------------------
@@ -511,6 +559,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                   
                          ) 
                 ), 
+              
                  # team tab -----------------------------------------------------------
                  tabPanel("Meet the Team", value = "contact",
                           fluidRow(style = "margin-left: 300px; margin-right: 300px;",
@@ -566,6 +615,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                             p("We would like to thank Kenner Love, Unit Coordinator Extension Agent, Agricultural and Natural Resources Crop & Soil Sciences from the Virginia Cooperative Extension for his support on this project.")
                           )
                  ),
+                
                 inverse = T)
                 
                 
@@ -688,10 +738,13 @@ server <- function(input, output, session) {
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
     
     
-  })
+  }
+  
+  
+    )
   
 }
-  
+
 
 
 shinyApp(ui = ui, server = server)

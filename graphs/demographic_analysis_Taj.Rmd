@@ -122,7 +122,7 @@ pct <- round(slices/sum(slices)*100)
 lbls <- paste(lbls, pct) # add percents to labels
 lbls <- paste(lbls,"%      ",sep="") # ad % to labels
 business_pie <- pie3D(slices,labels = lbls, col=rainbow(length(lbls)),
-    main="Pie Chart of Households that own a Business (All Villages)")
+    main="Households that own a Business (All Villages)")
 ```
 
 - This pie chart shows the distribution of households that own a business across all 10 villages
