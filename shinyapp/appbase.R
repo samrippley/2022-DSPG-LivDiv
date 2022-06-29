@@ -31,7 +31,7 @@ library(ggpubr)
 library(lubridate)
 library(shinyWidgets)
 library(viridis)
-
+library(RColorBrewer)
 
 prettyblue <- "#232D4B"
 navBarBlue <- '#427EDC'
@@ -40,6 +40,83 @@ options(spinner.color = prettyblue, spinner.color.background = '#ffffff', spinne
 colors <- c("#232d4b","#2c4f6b","#0e879c","#60999a","#d1e0bf","#d9e12b","#e6ce3a","#e6a01d","#e57200","#fdfdfd")
 village_vector = c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur")
 # data -----------------------------------------------------------
+load("~/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data/livdivdata.RData")
+
+baseline <- livdiv %>%
+  slice(1:307,)
+
+#edu and age data 
+by_villagemore <- baseline %>% 
+  group_by(village ) %>% 
+  summarize_at(c("head_age", "head_edu", "head_married"), mean, na.rm=TRUE) %>%
+  mutate(sub = substr(head_edu, 1, 4))
+
+#occupation data 
+occup1 <- baseline %>% 
+  filter(relationship1 == 1) %>%
+  select(c(village = "village", job = "job1_1"))
+occup2 <- baseline %>% 
+  filter(relationship2 == 1) %>%
+  select(c(village = "village", job = "job1_2"))
+occup3 <- baseline %>% 
+  filter(relationship3 == 1) %>%
+  select(c(village = "village", job = "job1_3"))
+occup4 <- baseline %>% 
+  filter(relationship4 == 1) %>%
+  select(c(village = "village", job = "job1_4")) 
+
+occup1 = na.omit(occup1)
+occup2 = na.omit(occup2)
+occup3 = na.omit(occup3)
+occup4 = na.omit(occup4)
+
+occup <- rbind(occup1, occup2, occup3, occup4)
+
+countv <- occup %>% 
+  group_by(village) %>%
+  count(job) 
+
+#secondary occupation data 
+
+soccup1 <- baseline %>% 
+  filter(relationship1 == 1) %>%
+  select(c(village = "village", job = "job2_1"))
+soccup2 <- baseline %>% 
+  filter(relationship2 == 1) %>%
+  select(c(village = "village", job = "job2_2"))
+soccup3 <- baseline %>% 
+  filter(relationship3 == 1) %>%
+  select(c(village = "village", job = "job2_3"))
+soccup4 <- baseline %>% 
+  filter(relationship4 == 1) %>%
+  select(c(village = "village", job = "job2_4")) 
+
+
+soccup1 = na.omit(soccup1)
+soccup2 = na.omit(soccup2)
+soccup3 = na.omit(soccup3)
+soccup4 = na.omit(soccup4)
+
+soccup <- rbind(soccup1, soccup2, soccup3, soccup4)
+
+scountv <- soccup %>% 
+  group_by(village) %>%
+  count(job) 
+scountv <- scountv %>%
+  filter(job != 0)
+
+# Poverty line counts
+values_pl <- c(17,11,20,10,32,18,19,9,14,16,17,11,18,10,23,5,21,6,21,7)
+prop_pl_values <- c("60%", "40%", "67%", "33%", "64%","36%","68%","32%","53%","                47%","60%","40%","64%","36%","82%","18%","77%","23%","75%","25%" )
+dat_pl <- data.frame(villages_2, Key, values_pl, prop_pl_values)
+dat_pl
+
+# marital status
+countmar <- baseline %>%
+  count(head_married, head_female, head_married & head_female) %>% 
+  mutate(Gender = case_when(head_female == 1 ~ "Female", 
+                            head_female == 0 ~ "Male"))
+
 
 fd <- livdiv %>%
   select(-(4:967))
@@ -300,34 +377,60 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                           ) 
                  ), 
                  ## Tab Demographics --------------------------------------------
-                 tabPanel("Demographics",
-                          fluidRow(style = "margin: 6px;",
-                                   h1(strong("Demographic Characteristics"), align = "center"),
-                                   p("", style = "padding-top:10px;"),
-                                   column(4, 
-                                          h4(strong("Households")),
-                                          p("We examined 306 hh."),
-                                          p("October 2019"), 
-                                          p("Our interactive plots visualize village level sociodemographic characteristics of households. 
-                                       This format allows for easy digestion and comparison of factors to help us best understand who the households on a statistical level.")
-                                   ) ,
-                                   column(8,
-                                          h4(strong("Resident Socioeconomic Characteristics by Census Tract or Block Group")),
-                                          selectInput("char1", "Select Variable:", width = "100%", choices = c(
-                                            "Median Household Income" = "income",
-                                            "Household Head Average Age" = "age" ,
-                                            "Occupation" = "unemploy",
-                                            "Education" = "high"
-                                          )
-                                          ), 
-                                          withSpinner(leafletOutput("demo1")) , 
-                                          p(tags$small("Data Source: BL October 2019")),
-                                   ) 
-                                   
-                          ) 
-                 ), 
-                 
-                 
+                 navbarMenu("Demographics" , 
+                            tabPanel("Static", 
+                                     fluidRow(style = "margin: 6px;",
+                                              h1(strong("Static Demographics"), align = "center"),
+                                              p("", style = "padding-top:10px;"), 
+                                              column(4, 
+                                                     h4(strong("Education")),
+                                                     p("These are demographics"),
+                                              ) ,
+                                              column(8, 
+                                                     h4(strong("Demographics")),
+                                                     selectInput("agedrop", "Select Varibiable:", width = "100%", choices = c(
+                                                       "Age" = "age",
+                                                       "Education" = "edu", 
+                                                       "Primary Occupation" = "pocu",
+                                                       "Secondary Occupation" ="socu",
+                                                       "Poverty" = "pov", 
+                                                       "Marital Status" = "mar"),
+                                                    ), 
+                                                     withSpinner(plotOutput("ageplot", height = "500px")),
+                                                     
+                                              ),
+                                              column(12, 
+                                                     h4("References: "), 
+                                                     p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
+                                                     p("", style = "padding-top:10px;")) 
+                                     )), 
+                            tabPanel("Dynamic", 
+                                     style = "margin: 6px;",
+                                     h1(strong("Dynamic"), align = "center"),
+                                     p("", style = "padding-top:10px;"), 
+                                     column(4, 
+                                            h4(strong("Dynamic")), 
+                                            p("Differences by Village."), 
+                                            p("Location is important. Need water to fish. Transportation, etc. Graphed differences by village.")),
+                                     column(8,
+                                                    h4(strong("Household Demographic Characteristics by Village")),
+                                                    selectInput("char1", "Select Variable:", width = "100%", choices = c(
+                                                      "Median Household Income" = "income",
+                                                      "Household Head Average Age" = "age" ,
+                                                      "Occupation" = "unemploy",
+                                                      "Education" = "high"
+                                                    )
+                                                    ), 
+                                                    withSpinner(leafletOutput("demo1")) , 
+                                                    p(tags$small("Data Source: BL October 2019")),
+                                     ) 
+                                     
+                                     
+                                     ) 
+                            ), 
+                            
+                                     
+                        
                 # FD data tab-----------------------------------------------------------
                 tabPanel("High Frequency Data", value = "",
                          fluidRow(style = "margin: 6px;",
@@ -456,109 +559,84 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                             p("We would like to thank Kenner Love, Unit Coordinator Extension Agent, Agricultural and Natural Resources Crop & Soil Sciences from the Virginia Cooperative Extension for his support on this project.")
                           )
                  ),
-                 inverse = T)
-
-
-
+                inverse = T)
+                
+                
+                
 # server -----------------------------------------------------------
+server <- function(input, output, session) {
+# Run JavaScript Code
+ runjs(jscode)
+                  
 
-server <- function(input, output) {
-  runjs(jscode)
-  
-  
-  char1 <- reactive({
-    input$char1
+  #age tabset -----------------------------------------------------
+  ageVar <- reactive({
+    input$agedrop
   })
-  output$demo1 <- renderLeaflet({
-    if(char1() == "home") {
-      pal <- colorNumeric(palette = "viridis", 
-                          domain = home$estimate)
+  
+  output$ageplot <- renderPlot({
+    if (ageVar() == "age") {
       
-      labels <- lapply(
-        paste("<strong>Area: </strong>",
-              home$NAME,
-              "<br />",
-              "<strong>Home Value: </strong>",
-              formatC(home$estimate, format = "f", big.mark =",", digits = 0)),
-        htmltools::HTML
-      )
-      
-      home %>%
-        leaflet(width = "100%") %>%
-        addProviderTiles(provider = "CartoDB.Positron") %>%
-        addPolygons(popup = ~ str_extract(NAME, "^([^,]*)"),
-                    stroke = FALSE,
-                    smoothFactor = 0,
-                    fillOpacity = 0.7,
-                    label = labels,
-                    color = ~ pal(estimate)) %>%
-        addLegend("bottomright", 
-                  pal = pal, 
-                  values = ~ estimate,
-                  title = "Median Home Value",
-                  labFormat = labelFormat(prefix = "$"),
-                  opacity = .7)
-      
-     } else if (char1() == "age") {
-        pal <- colorNumeric(palette = "viridis", 
-                            domain = age$estimate)
-        
-        labels <- lapply(
-          paste("<strong>Area: </strong>",
-                age$NAME,
-                "<br />",
-                "<strong>Median Age: </strong>",
-                formatC(age$estimate, format = "f", digits = 0)),
-          htmltools::HTML
-        )
-        
-        
-        age %>%
-          leaflet(width = "100%") %>%
-          addProviderTiles(provider = "CartoDB.Positron") %>%
-          addPolygons(popup = ~ str_extract(NAME, "^([^,]*)"),
-                      stroke = FALSE,
-                      smoothFactor = 0,
-                      fillOpacity = 0.7,
-                      label = labels, 
-                      color = ~ pal(estimate)) %>%
-          addLegend("bottomright", 
-                    pal = pal, 
-                    values = ~ estimate,
-                    title = "Median Age",
-                    labFormat = labelFormat(),
-                    opacity = 1)
-        
-        
-      
-    }else if(char1() == "poverty") {
-      pal <- colorNumeric(palette = "viridis", 
-                          domain = poverty$estimate)
-      labels <- lapply(
-        paste("<strong>Area: </strong>",
-              poverty$NAME,
-              "<br />",
-              "<strong>Population Estimate: </strong>",
-              formatC(poverty$estimate, format = "f", digits = 0)),
-        htmltools::HTML
-      )
-      poverty %>%
-        leaflet(width = "100%") %>%
-        addProviderTiles(provider = "CartoDB.Positron") %>%
-        addPolygons(popup = ~ str_extract(NAME, "^([^,]*)"),
-                    stroke = FALSE,
-                    smoothFactor = 0,
-                    fillOpacity = 0.7,
-                    label = labels,
-                    color = ~ pal(estimate)) %>%
-        addLegend("bottomright", 
-                  pal = pal, 
-                  values = ~ estimate,
-                  title = "Population Income below Poverty",
-                  labFormat = labelFormat(suffix = ""),
-                  opacity = .7)
+    fplot <- ggplot(baseline, aes(x = head_age)) +
+      geom_histogram(fill = "cornflowerblue", 
+                     color = "white", bins = 20
+      ) + 
+      labs(title="Age of Household Heads",
+           y = "Number of Household Heads") +
+      theme_classic() +
+      scale_x_continuous(breaks = c(20, 30, 40, 50, 60, 70, 80), name="Age", limits=c(20, 80))
+    fplot
     }
- 
+    else if (ageVar() == "edu") {
+    splot <- ggplot(by_villagemore, aes(x = "", y= head_edu, fill = village)) +
+      geom_bar(width = 1, stat = "identity") +
+      facet_wrap(~village, ncol = 5) +
+      geom_text(aes(label = sub), position = position_stack(vjust=1.1)) +
+      labs(title = "Mean Years of Education for Head of Households", x = NULL, y = "Years of Education") +
+      theme(legend.position="none") 
+    splot
+    }
+  
+    else if (ageVar() == "pocu") {
+     pocplot <- ggplot(countv, aes(x = job, y = n, fill = village)) +
+        geom_col() +
+        scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
+        coord_flip() +
+        theme_minimal () +
+        labs(title = "Primary Occupation of Household Heads", x = "", y = "") +
+        scale_fill_brewer(palette="Spectral")
+     pocplot
+    }
+    
+    else if (ageVar() == "socu") {
+      socplot <- ggplot(scountv, aes(x = job, y = n, fill = village)) +
+        geom_col() +
+        scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
+        coord_flip() +
+        theme_minimal () +
+        labs(title = "Secondary Occupation of Household Heads", x = "", y = "") +
+        scale_fill_brewer(palette="Spectral")
+      socplot
+    }
+    
+    else if (ageVar() == "pov") {
+      village_pl_count_plot <- ggplot(dat_pl, aes(x= villages_2, y = values_pl, fill = Key)) + 
+        geom_col(position = 'stack') + 
+        labs( x= "", y = "Total Number of Households") + 
+        theme_classic() + 
+        ggtitle("Households That Live Below the Poverty Line") +
+        coord_flip()+
+        geom_text(aes(label = prop_pl_values), size = 2.5, nudge_y = -1)
+      village_pl_count_plot
+    }
+ else if (ageVar() == "mar") {
+      marplot <- ggplot(countmar, aes(x = head_married, y = n, fill = Gender)) +
+        geom_col() +
+        labs(title = "Household Heads' Marital Status", x = "Not Married                       Married", y = "Number of Household Heads") +
+        scale_x_discrete() + theme_classic()
+      marplot
+    }
+    
     
   })
   # rmt plot output
@@ -605,10 +683,9 @@ server <- function(input, output) {
     
   })
   
-  
-  runjs(jscode)
-
 }
+  
+
 
 shinyApp(ui = ui, server = server)
 
