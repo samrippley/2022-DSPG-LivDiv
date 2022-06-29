@@ -1,0 +1,507 @@
+---
+title: "Baseline Demographic Analysis"
+author: "Taj Cole"
+date: '2022-06-14'
+output: html_document
+---
+
+The demographics I analyzed are the amount of 'Kathas' owned, the amount of households that own a business, and the amount of households that live below te poverty line
+
+#load liv div data
+
+```{r}
+#load packages
+library(dplyr)
+library(ggplot2)
+library(plotrix)
+```
+
+```{r}
+# Set baseline and select variables
+baseline <- livdiv %>%
+  slice(1:306)
+
+selected_bl <- baseline %>% select(hh_ownfarm_prop, hh_ownfarm, nb_hhmem, land_own, business_yn, business_type, below_204inr_bl, village, today, hhid)
+
+```
+
+# Land Owned
+
+I started by making a bar plot that showed the different amount of 'kathas' of land owned and how many households owned that amount, aggregated from every village
+
+```{r}
+# Bar plot of Kathas owned across all 10 villages
+own_land <- ggplot(selected_bl, aes(x = land_own, fill = village, color = village)) + 
+  geom_bar(position = position_dodge(2)) +
+  labs(x = "'Land Owned [Kathas]", y = " Number of Households") + 
+  theme_classic() +
+  ggtitle("Land Owned Across All Villages")
+own_land
+```
+
+-   A katha is about 1,361 sq ft. For reference, 1 acre is about 32 kathas
+-   Households in the baseline own an average of 48.36 kathas of land
+-   The max owned is 510 kathas (1 person in Bijoynagar)
+-   The min owned is 1 kathas
+-   106 NAs were reported and removed from histogram
+-   (Only asked households that reported to own a farm)
+-   Most households that own farm land own less than 100 kathas which is about 3 acres
+-   A majority of households that own less than 100 kathas are cattle farms and less agriculture
+-   Most hosueholds provide labor to farm land, rather than owning their own farm land
+
+```{r}
+# Count of amount of Kathas owned
+own_land_count <- selected_bl %>% 
+  count(land_own)
+own_land_count
+```
+
+I then calculated the mean, max, and min of land owned across all villages
+
+```{r}
+# Avg, max, min
+mean(na.omit(selected_bl$land_own))
+max(na.omit(selected_bl$land_own))
+min(na.omit(selected_bl$land_own))
+```
+
+## Land Owned (within each village)
+
+# Land Owned Data Frame by village
+
+I created a new data fram with the villages, land owners, and max, min, and average, land owned
+
+```{r}
+villages <- c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur") 
+land_owners <- c(2, 18, 41, 14, 25, 21, 24, 21, 10, 24)
+max_land_value <- c(16, 160, 510, 80, 120, 200, 250, 70, 80, 180 )
+min_land_value <- c(10, 10, 8, 10, 1, 10, 3, 7, 2, 3)
+mean_land_value <- c(13, 45.44, 60.95, 42.14, 45.44, 50.9, 64, 36.35, 23.7, 41.58)
+sum_value <- c(26, 818, 2499, 590, 1136, 1069, 1537, 763.5, 237, 998)
+land_stats <- data.frame(villages, land_owners, max_land_value, min_land_value, mean_land_value, sum_value)
+land_stats
+```
+
+## Land owners, min, max, average land, and sum land owned
+
+I made column plots for each of the variables
+
+```{r}
+# Land owners
+land_owners_plot <- ggplot(land_stats, aes(x = villages, y = land_owners)) +
+  geom_col(fill = "salmon") + 
+  ggtitle("Amount of Land Owners in Each Village") +
+  labs(x = "", y = "Land Owners")+
+  coord_flip()
+  #theme(axis.text.x = element_text(angle = 90))
+land_owners_plot
+
+```
+
+-   Bijoynagar has the most land owners across all the villages (41 people in the sample)
+-   Amrabati has the least amount of land owners (2 people)
+    -   Households in this village most likely provide labor to other farms
+-   across all villages theres an average of 20 land owners
+-   
+
+```{r}
+# Max land owned
+max_land_plot <- ggplot(land_stats, aes(x = villages, y = max_land_value)) +
+  geom_col(fill = "dark green ") +
+  coord_flip() +
+  ggtitle("Most Amount of Land Owned in Each Village") +
+  labs(x = "", y = "Land Owned")
+max_land_plot
+
+```
+
+-   This graph shows the maximum amount of land owned for each village
+-   Bijoynagar has the household with the most amount of land owned (510 kathas)
+
+```{r}
+# Min land owned
+min_land_plot <- ggplot(land_stats, aes(x = villages, y = min_land_value)) +
+  geom_col(fill = "dark blue") +
+  coord_flip() +
+  ggtitle("Least Amount of Land Owned in Each Village") +
+  labs(x = "", y = "Land Owned")
+min_land_plot
+
+```
+
+-   this graph shows the land owner with the least amount of land in each village
+-   for more than half of the villages, the households own at least 5 kathas of land
+
+```{r}
+# Mean land owned
+mean_land_plot <- ggplot(land_stats, aes(x = villages, y = mean_land_value, fill = villages)) +
+  geom_col() +
+  coord_flip() +
+  ggtitle("Average Amount of Land Owned in Each Village") +
+  labs(x = "", y = "Land Owned [Kathas]")
+mean_land_plot
+
+```
+
+-   this graph shows the average amount of land that households own in each village
+
+```{r}
+# Sums of land owned across all villages
+sum_land_plot <- ggplot(land_stats, aes(x = villages, y = sum_value)) +
+  geom_col(fill = "purple") +
+  coord_flip() +
+  ggtitle("Total Amount of Land Owned in Each Village") +
+  labs(x = "", y = "Land Owned")
+sum_land_plot
+```
+
+-   Bijoynagar has the hosueholds that own the most amount of land (almost 2500 kathas)
+-   They may provide farm land and are the source of farm labor from other villages
+
+# Business owners and Below poverty line
+
+I analyzed the amount of housheolds that reported owning a business in each village
+
+# Piecharts
+
+I started by making a piechart that showed the percentage across all villages
+
+```{r}
+# Pie chart have Households that own a business (aggregate)
+slices <- c(268, 38)
+lbls <- c("No", "               Yes")
+pct <- round(slices/sum(slices)*100)
+lbls <- paste(lbls, pct) # add percents to labels
+lbls <- paste(lbls,"%      ",sep="") # ad % to labels
+business_pie <- pie3D(slices,labels = lbls, col=rainbow(length(lbls)),
+    main="Pie Chart of Households that own a Business (All Villages)")
+
+```
+
+-   88% of households across the 10 villages reported that they do not own a business
+-   12% do own a business
+
+I made two data frames (dat_bus, dat_pl)
+
+```{r}
+# Business counts
+villages_2 <- c(rep("Amrabati", 2), rep("Beguakhali", 2), rep("Bijoynagar", 2), rep("Birajnagar", 2), rep("Haridaskati Samsernagar", 2), rep("Lakshmi Janardanpur",2), rep("Pargumti",2),rep("Purba Dwarokapur", 2), rep("Sagar", 2), rep("Shibpur",2))
+Key <- rep(c("No", "Yes"), 2)
+values_bus <-c(26,2,27,3,48,2,24,2,27,3,25,3,24,4,21,7,21,7,25,3)
+#prop_bus_values <- c(0.93,0.07, 0.9,0.1,0.96,0.04,0.86,0.14,0.9,0.1,0.9,0.1,0.86,0.14,0.75,0.25,0.75,0.25,0.9,0.1)
+prop_bus_values <- c("93%","7%","90%","10%","96%","4%","86%","14%","90%","10%","90%","10%","86%","14%","75%","25%","75%","25%","90%","10%")
+dat_bus <-  data.frame(villages_2, Key, values_bus, prop_bus_values)
+dat_bus
+# Poverty line counts
+values_pl <- c(17,11,20,10,32,18,19,9,14,16,17,11,18,10,23,5,21,6,21,7)
+prop_pl_values <- c("60%", "40%", "67%", "33%", "64%","36%","68%","32%","53%","                47%","60%","40%","64%","36%","82%","18%","77%","23%","75%","25%" )
+dat_pl <- data.frame(villages_2, Key, values_pl, prop_pl_values)
+dat_pl
+```
+
+I made stacked bar plots for the business counts and poverty line counts
+
+```{r}
+# Business stacked plot
+
+village_bus_count_plot <- ggplot(dat_bus, aes(x= villages_2, y = values_bus, fill = Key)) + 
+  geom_col(position = 'stack') + 
+  labs( x= "", y = "Total Number of Households") + 
+  theme_classic() + 
+  ggtitle("Households That Own a Business") +
+  coord_flip()+
+  geom_text(aes(label = prop_bus_values), size = 2.5, nudge_y = -1)
+village_bus_count_plot
+
+```
+
+-   Across all 10 villages, very few households own a business. Purba Dwarokapur and Sagar had the most, with 7 households within the sample reporting to own a business.
+-   Its not surprising to see that most households do not own a business.Since the region is largely in poverty, it would not be feasible for most households, as operating a business requires consistent injections of money and managing financial risk (debt, shocks)
+-   Rather than owning a business, most members of the household provide labor for farms and the few businesses in the villages.
+
+Pie chart of households below the poverty line (aggregate)
+
+```{r}
+slices_pl <- c(202, 103)
+lbls_pl <- c("No", "Yes")
+pct_pl <- round(slices_pl/sum(slices_pl)*100)
+lbls_pl <- paste(lbls_pl, pct_pl) # add percents to labels
+lbls_pl <- paste(lbls_pl,"%",sep="") # ad % to labels
+pie3D(slices_pl,labels = lbls_pl, col=rainbow(length(lbls_pl)),
+    main="Households That Live Below the Poverty Line (All Villages)")
+
+```
+
+-   34% of households, across all 10 villages, live below the poverty line
+-   (66% dont)
+-   Living below the poverty line means that you make below 204 rupee per week per person
+-   This pie chart shows that a significant amount of the Sundarbans region lives in financial poverty (more than a third)
+
+I made another stacked bar plot to show the count distributions between each village
+
+```{r}
+# Poverty stacked plot
+village_pl_count_plot <- ggplot(dat_pl, aes(x= villages_2, y = values_pl, fill = Key)) + 
+  geom_col(position = 'stack') + 
+  labs( x= "", y = "Total Number of Households") + 
+  theme_classic() + 
+  ggtitle("Count of Households That Live Below the Poverty Line") +
+  coord_flip()+
+  geom_text(aes(label = prop_pl_values), size = 2.5, nudge_y = -1)
+village_pl_count_plot
+
+```
+
+-   Most villages showed around 20-30% of households below the poevrty line
+-   Purba had the lowest, only 18% below the poverty line
+-   Haridaskati Samserngar had more than 50% of households report to live below the poverty line
+- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#---------------------------------------------------------- \# Appendix
+
+## subset, land owners, min, max, mean, and sum
+
+Subsetting to land owned by village data, then found out the number of land owners, and the max, min, average, and sum of land owned in each village ( I counted the land owners by eye, no code)
+
+```{r}
+# subsettiing to land owned data
+
+own_land_village <- selected_bl %>% 
+  select(village, land_own)
+
+Amrabati_land <- own_land_village %>% 
+  filter(village == "Amrabati")
+
+Beguakhali_land <- own_land_village %>% 
+  filter(village == "Beguakhali")
+
+Bijoynagar_land <- own_land_village %>% 
+  filter(village == "Bijoynagar")
+
+Birajnagar_land <- own_land_village %>% 
+  filter(village == "Birajnagar") 
+
+Hsam_land <- own_land_village %>% 
+  filter(village == "Haridaskati Samsernagar") 
+
+Ljan_land <- own_land_village %>% 
+  filter(village == "Lakshmi Janardanpur")
+
+Pargumti_land <- own_land_village %>% 
+  filter(village == "Pargumti")
+
+Pdawr_land <- own_land_village %>% 
+  filter(village == "Purba Dwarokapur")
+
+Sagar_land <- own_land_village %>% 
+  filter(village == "Sagar")
+
+Shibpur_land <- own_land_village %>% 
+  filter(village == "Shibpur") 
+
+```
+
+```{r}
+# Amrabati has 2 land owners ( max 16, min 10, mean 13 Kathas, sum 16)
+max(na.omit(Amrabati_land$land_own))
+min(na.omit(Amrabati_land$land_own))
+mean(na.omit(Amrabati_land$land_own))
+sum(na.omit(Amrabati_land$land_own))
+# Beguakhali has 18 land owners (160 and min 10, mean 45.44, sum 818 )
+max(na.omit(Beguakhali_land$land_own))
+min(na.omit(Beguakhali_land$land_own))
+mean(na.omit(Beguakhali_land$land_own))
+sum(na.omit(Beguakhali_land$land_own))
+# Bijoynagar has 41 land owners (max 510, min 8, mean 60.95, sum 2499 )
+max(na.omit(Bijoynagar_land$land_own))
+min(na.omit(Bijoynagar_land$land_own))
+mean(na.omit(Bijoynagar_land$land_own))
+sum(na.omit(Bijoynagar_land$land_own))
+# Birajnagar has 14 land owners (max 80, min 10, mean 42.14, sum 590)
+max(na.omit(Birajnagar_land$land_own))
+min(na.omit(Birajnagar_land$land_own))
+mean(na.omit(Birajnagar_land$land_own))
+sum(na.omit(Birajnagar_land$land_own))
+# Haridaskati Samsernagar has 25 land owners (max 120, min 1, mean 45.44, sum 1136 )
+max(na.omit(Hsam_land$land_own))
+min(na.omit(Hsam_land$land_own))
+mean(na.omit(Hsam_land$land_own))
+sum(na.omit(Hsam_land$land_own))
+# Lakshmi Janardanpur has 21 land owners (max 200, min 10, mean 50.9, sum 1069)
+max(na.omit(Ljan_land$land_own))
+min(na.omit(Ljan_land$land_own))
+mean(na.omit(Ljan_land$land_own))
+sum(na.omit(Ljan_land$land_own))
+# Pargumti has 24 land owners (max 250, min 3, mean 64, sum 1537)
+max(na.omit(Pargumti_land$land_own))
+min(na.omit(Pargumti_land$land_own))
+mean(na.omit(Pargumti_land$land_own))
+sum(na.omit(Pargumti_land$land_own))
+# Purba Dwarokapur has 21 land owners (max 70, min 7, mean 36.35, sum763.5 )
+max(na.omit(Pdawr_land$land_own))
+min(na.omit(Pdawr_land$land_own))
+mean(na.omit(Pdawr_land$land_own))
+sum(na.omit(Pdawr_land$land_own))
+# Sagar has 10 land owners (max 80, min 2, mean 23.7, sum 237)
+max(na.omit(Sagar_land$land_own))
+min(na.omit(Sagar_land$land_own))
+mean(na.omit(Sagar_land$land_own))
+sum(na.omit(Sagar_land$land_own))
+# Shibpur has 24 land owners (max 180, min 3, mean 41.58, sum 998)
+max(na.omit(Shibpur_land$land_own))
+min(na.omit(Shibpur_land$land_own))
+mean(na.omit(Shibpur_land$land_own))
+sum(na.omit(Shibpur_land$land_own))
+```
+
+## Village counts for owning a business and living below the poverty line
+
+I used to code to find the counts of households that reported owning a business and households that reported to live below the poverty line (This was only needed to find sums, none of the variables in this chunk are used in plots)
+
+```{r}
+Village_bus_data <- data.frame(village = c("Amrabati", "Beguakhali", "Bijoynagar","Birajnagar", "Haridaskati Samsernagar", "Lakshmi Janardanpur", "Pargumti", "Purba Dwarokapur", "Sagar", "Shibpur"),
+                               No = c(26, 27, 48, 24, 27, 25, 24, 21, 21, 25),
+                               Yes = c(2, 3, 2, 4, 3, 3, 4, 7, 7, 3))
+
+Village_pl_data <- data.frame(village = c("Amrabati", "Beguakhali", "Bijoynagar","Birajnagar", "Haridaskati Samsernagar", "Lakshmi Janardanpur", "Pargumti", "Purba Dwarokapur", "Sagar", "Shibpur"),
+                              No = c(17, 20, 32, 19, 14, 17, 18, 23, 21, 21),
+                              Yes = c(11, 10, 18, 9, 16, 11, 10, 5, 6, 7))
+
+```
+
+
+```{r}
+## Amrabati
+Amrabati <- selected_bl %>% 
+  filter(village == "Amrabati") %>% 
+  select(business_yn, below_204inr_bl)
+# Amrabati business count
+Amrabati_bus_count <- Amrabati %>% 
+  count(business_yn)
+# Amrabati pl count
+Amrabati_pl_count <- Amrabati %>% 
+  count(below_204inr_bl)
+
+## Beguakhali 
+Beguakhali <- selected_bl %>% 
+  filter(village == "Beguakhali") %>% 
+  select(business_yn, below_204inr_bl)
+#Beguakhali business count
+Beguakhali_bus_count <-  Beguakhali %>% 
+  count(business_yn)
+#Beguakhali pl count
+Beguakhali_pl_count <- Beguakhali %>% 
+  count(below_204inr_bl)
+
+## Bijoynagar 
+Bijoynagar <- selected_bl %>% 
+  filter(village == "Bijoynagar") %>% 
+  select(business_yn, below_204inr_bl)
+#Bijoynagar business count
+Bijoynagar_bus_count <- Bijoynagar %>% 
+  count(business_yn)
+# Bijoynagar pl count 
+Bijoynagar_pl_count <- Bijoynagar %>% 
+  count(below_204inr_bl)
+
+# Birajnagar
+
+Birajnagar <- selected_bl %>% 
+  filter(village == "Birajnagar") %>% 
+  select(business_yn, below_204inr_bl)
+# Birajnagar business count
+Birajnagar_bus_count <- Birajnagar %>% 
+  count(business_yn)
+# Birajnagar pl count
+Birajnagar_pl_count <- Birajnagar %>% 
+  count(below_204inr_bl)
+
+## Haridaskati Samsernagar 
+Haridaskati_Samsernagar <- selected_bl %>% 
+  filter(village == "Haridaskati Samsernagar") %>% 
+  select(business_yn, below_204inr_bl)
+# Haridaskati Samsernagar business count
+Hsam_bus_count <-  Haridaskati_Samsernagar %>% 
+  count(business_yn)
+# Haridaskati Samsernagar pl count 
+Hsam_pl_count <- Haridaskati_Samsernagar %>% 
+  count(below_204inr_bl)
+
+## Lakshmi Janardanpur
+Lakshmi_Janardanpur <- selected_bl %>% 
+  filter(village == "Lakshmi Janardanpur") %>% 
+  select(business_yn, below_204inr_bl)
+# Lakshmi Janardanpur business count
+Ljan_bus_count <- Lakshmi_Janardanpur %>% 
+  count(business_yn)
+# Lakshmi Janardanpur pl count
+Ljan_pl_count <- Lakshmi_Janardanpur %>% 
+  count(below_204inr_bl)
+
+## Pargumti
+Pargumti <- selected_bl %>% 
+  filter(village == "Pargumti") %>% 
+  select(business_yn, below_204inr_bl)
+# Pargumti business count
+Pargumti_bus_count <-  Pargumti %>% 
+  count(business_yn)
+# Pargumti pl count
+Pargumti_pl_count <- Pargumti %>% 
+  count(below_204inr_bl)
+
+## Purba Dwarokapur
+Purba_Dwarokapur <- selected_bl %>% 
+  filter(village == "Purba Dwarokapur") %>% 
+  select(business_yn, below_204inr_bl)
+# Purba Dwarokapur business count
+Pdwar_bus_count <-  Purba_Dwarokapur %>% 
+  count(business_yn)
+# Purba Dwarokapur pl count
+Pdwar_pl_count <- Purba_Dwarokapur %>% 
+  count(below_204inr_bl)
+
+## Sagar
+Sagar <- selected_bl %>% 
+  filter(village == "Sagar") %>% 
+  select(business_yn, below_204inr_bl)
+# Sagar business count 
+Sagar_bus_count <- Sagar %>% 
+  count(business_yn)
+# Sagar pl count
+Sagar_pl_count <- Sagar %>% 
+  count(below_204inr_bl)
+
+## Shibpur
+Shibpur <- selected_bl %>% 
+  filter(village == "Shibpur") %>% 
+  select(business_yn, below_204inr_bl)
+# Shibpur business count
+Shibpur_bus_count <-Shibpur %>% 
+  count(business_yn)
+# Shibpur pl count
+Shibpur_pl_count <- Shibpur %>% 
+  count(below_204inr_bl)
+
+```
