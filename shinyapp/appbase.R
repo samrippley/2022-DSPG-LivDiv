@@ -39,7 +39,10 @@ options(spinner.color = prettyblue, spinner.color.background = '#ffffff', spinne
 
 colors <- c("#232d4b","#2c4f6b","#0e879c","#60999a","#d1e0bf","#d9e12b","#e6ce3a","#e6a01d","#e57200","#fdfdfd")
 village_vector = c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur")
+
+
 # data -----------------------------------------------------------
+
 load("~/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data/livdivdata.RData")
 
 baseline <- livdiv %>%
@@ -120,6 +123,8 @@ countmar <- baseline %>%
 
 fd <- livdiv %>%
   select(-(4:967))
+
+
 # remittance data
 rmt <- fd %>% 
   select(village, hhid, name, week, date, 
@@ -137,6 +142,8 @@ fd2 <- livdiv %>%
 rmt2 <- fd %>%
   select(c(hhid, date, rmt_total, village))
 rmt2$date <- as_date(rmt2$date)
+
+
 # rmt plot data:
 village <- c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur") 
 Villages <- rep(village, 49)
@@ -217,11 +224,13 @@ average_rmt_plot <- ggplot(rmt_data_mean_weeks, aes(x = weeks
   geom_line() +
   theme_classic() +
   labs(x = "Date", y = "Average Remittance Income [Rupee]") +
-  ggtitle("Average Remittance Income Per Village")+ #(11/16/18 - 10/31/19)
+  ggtitle("Average Remittance Income Per Village") + #(11/16/18 - 10/31/19)
   #scale_color_brewer(palette = "Spectral")+
   scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
 #annotate(geom = "text", aes(x = unlist(months)))
 #--------------------------------------------------------------------
+
+
 # rmt method plot:
 method_counts <- c(397, 472, 1, 1, 13)
 Method <- c("Bank", "In person", "Mobile", "Money Order", "Other")
@@ -236,6 +245,7 @@ rmt_method_plot <- ggplot(method_dat, aes( x= Method, y = method_counts, fill = 
   ggtitle("Method of Receiving Remittance")+
   geom_text(aes(label = method_values), size = 3)
 #--------------------------------------------------------------------
+
 # rmt purpose plot:
 Purpose <-  c("Food/Utility Purchases", "Tuition", "Assets/Durable Purchases", "Medical Expenses", "Other", "No Reason")
 purpose_count <- c(594, 37, 27, 93, 128, 43)
@@ -251,6 +261,7 @@ rmt_purpose_plot <- ggplot(purpose_dat, aes(x = Purpose, y = purpose_count, fill
   coord_flip()+
   geom_text(aes(label = purpose_values), size = 2.4)
 #-----------------------------------------------------------------
+
 # Expenditure plot data:
 expen <- fd %>%
   select(c("hhid", "week_num", "date", "total_spending", "village","hhid")) 
