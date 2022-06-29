@@ -1,0 +1,811 @@
+---
+title: "Remittance Analysis"
+author: "Taj Cole"
+date: '2022-06-16'
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+---
+
+
+```{r}
+# Packages
+library(dplyr)
+library(ggplot2)
+library(plotly)
+library(lubridate)
+library(viridis)
+# load data
+load("~/2022-DSPG-LivDiv-/data/livdivdata.RData")
+# financial diary
+# subset
+fd <- livdiv %>%
+  select(-(4:967))
+# remittance data
+rmt <- fd %>% 
+  select(village, hhid, name, week, date, 
+         rmt_total, rmt_method_bank, rmt_method_person, 
+         rmt_method_mobile, rmt_method_moneyorder, rmt_method_oth, rmt_purpose_food, rmt_purpose_food,
+         rmt_purpose_tuition, rmt_purpose_asset, rmt_purpose_med, rmt_purpose_oth, rmt_purpose_none)
+rmt
+rmt_nonZero <- rmt %>% 
+  filter(rmt_total != 0)
+rmt_nonZero
+
+
+fd2 <- livdiv %>%
+select(-(4:967))
+rmt2 <- fd %>%
+select(c(hhid, date, rmt_total, village))
+rmt2$date <- as_date(rmt2$date)
+
+```
+
+- Remittance income is money sent to a person for the payment of goods and services, or as a gift
+
+# Method of recieving remittance
+```{r}
+rmt_method_summary <- rmt_nonZero %>% 
+  summarise("bank" = sum(rmt_method_bank), "in person" = sum(rmt_method_person), 
+            "mobile" = sum(rmt_method_mobile), "money order" = sum(rmt_method_moneyorder),
+            "other" = sum(rmt_method_oth))
+rmt_method_summary
+```
+
+# Histogram of methods to recieve remittance
+
+```{r}
+method_counts <- c(397, 472, 1, 1, 13)
+Method <- c("Bank", "In person", "Mobile", "Money Order", "Other")
+method_dat <- data.frame(Method, method_counts, stringsAsFactors = T)
+method_values <- c("       397", "       472", "   1", "   1", "    13")
+
+rmt_method_plot <- ggplot(method_dat, aes( x= Method, y = method_counts, fill = Method)) +
+  geom_col(fill = plasma(5, alpha = 1, begin = 0, end = 1, direction = 1)) +
+  labs(x = "", y = "Total") +
+  theme_classic() +
+  coord_flip()+
+  ggtitle("Method of Receiving Remittance")+
+  geom_text(aes(label = method_values), size = 3)
+rmt_method_plot
+```
+
+- Shows the count of how every transaction of remittance was received over the data period
+- Remittance income was primarily received through a bank or in person
+- Its more convenient to receive currency through person or from a bank rather than through mobile apps 
+- Money orders are often very secure ways of sending money. Many households are more likely concerned about receiving their money quickly rather than securely
+- (It wouldn't make sense to do this by village because some villages dint receive weekly remittance for a majority of the data set so there would be many gaps and wouldn't show some of the villages)
+
+
+# Purpose of recieving remittance
+```{r}
+rmt_purpose_summary <- rmt_nonZero %>% 
+  summarise("Food/utility purchases" = sum(rmt_purpose_food), "tuition" = sum(rmt_purpose_tuition),
+            "asset/durable purchases" = sum(rmt_purpose_asset), "medical expenses" =sum(rmt_purpose_med), 
+            "other reason" = sum(rmt_purpose_oth), "No reason" = sum(rmt_purpose_none))
+rmt_purpose_summary
+```
+
+# Histogram of purpose of recieving remittance
+
+```{r}
+Purpose <-  c("Food/Utility Purchases", "Tuition", "Assets/Durable Purchases", "Medical Expenses", "Other", "No Reason")
+purpose_count <- c(594, 37, 27, 93, 128, 43)
+purpose_dat <- data.frame(Purpose, purpose_count, stringsAsFactors = T)
+purpose_values <- c("      594", "      37", "     27", "     93", "      128", "      43")
+
+rmt_purpose_plot <- ggplot(purpose_dat, aes(x = Purpose, y = purpose_count, fill = Purpose)) + 
+  geom_col(fill = plasma(6, alpha = 1, begin = 0, end = 1, direction = 1)) +
+  labs(x = "", y = "Total") +
+  theme_classic() +
+  ggtitle("Purpose for Receiving Remittance")+
+  #rotate_x_text(angle = 22, size = rel(0.8))
+  coord_flip()+
+  geom_text(aes(label = purpose_values), size = 2.4)
+rmt_purpose_plot
+```
+
+- (Across all villages)
+- Shows the count of what every transaction of remittance was used for over the data period
+- Remittance income was primarily being used for food and utility purchases
+- It makes sense that a large majority of remittance is used on food, especially if the remittance is being received after devasttaion (cyclone)
+- (assets/durable purchases: appliances, furniture, goods that don't wear out quickly and are not purchased frequently)
+
+# Get average and total income by village for each week then compare across 49 week period
+
+# Villages vector
+```{r}
+village <- c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur") 
+Villages <- rep(village, 49)
+```
+
+# vector of weeks repeated
+```{r}
+weeks_rep <- c(rep(1,10), rep(2, 10), rep(3,10), rep(4,10), rep(5,10), rep(6,10), rep(7,10), rep(8,10), rep(9,10), rep(10,10), 
+               rep(11,10), rep(12,10), rep(13, 10), rep(14,10), rep(15,10), rep(16, 10), rep(17, 10), rep(18,10), rep(19,10), rep(20,10),
+               rep(21, 10), rep(22,10), rep(23,10), rep(24,10), rep(25,10), rep(26, 10), rep(27,10), rep(28,10), rep(29,10), rep(30,10),
+               rep(31,10), rep(32,10), rep(33,10), rep(34,10), rep(35,10), rep(36,10), rep(37,10), rep(38,10), rep(39,10), rep(40,10),
+               rep(41,10), rep(42,10), rep(43,10), rep(44,10), rep(45,10), rep(46,10), rep(47,10), rep(48,10), rep(49,10)) 
+
+```
+
+## Average remittance each week (vectors)
+```{r, include=FALSE}
+week1_rmt_means <- c(0, 5166.667, 11100, 0, 5250, 950, 5000, 0, 0, 0)
+week2_rmt_means <- c(2000, 6000, 4071.429, 1600, 1300, 2700, 0, 2383.333, 3000, 2625)
+week3_rmt_means <- c(2000, 3000, 2033.333, 2500, 3250, 3000, 2000, 1250, 0, 2000)
+week4_rmt_means <- c(0, 6333.333, 2250, 1650, 2333.333, 5000, 750, 2833.333, 4500, 10000)
+week5_rmt_means <- c(0, 2125, 3950, 2850, 4000, 0, 0, 875, 3000, 0)
+week6_rmt_means <- c(0, 6280, 2800, 1733.333, 0, 0, 1500, 700, 7000, 1000)
+week7_rmt_means <- c(0, 2000, 3100, 1775, 3000, 900, 1666.667, 2833.333, 0, 4200)
+week8_rmt_means <- c(0, 3700, 2357.143, 1450, 0, 0, 0, 4025, 0, 500)
+week9_rmt_means <- c(0, 7000, 4916.667, 2220, 0, 1000, 2000, 1825, 0, 8250)
+week10_rmt_means <- c(0, 5000, 3500, 3680, 0, 3833.333, 0, 1575, 0, 7000)
+week11_rmt_means <- c(0, 1000, 1542.857, 2500, 1166.667, 750, 0, 1400, 2000, 900)
+week12_rmt_means <- c(0, 3500, 3333.333, 1800, 7000, 0, 0, 1600, 0, 600)
+week13_rmt_means <- c(0, 9333.333, 3416.667, 1600, 6333.333, 500, 0, 1625, 0, 1750)
+week14_rmt_means <- c(0, 2666.667, 3959.091, 2600, 0, 0, 2000, 1250, 5000, 850)
+week15_rmt_means <- c(0, 3000, 2500, 2700, 500, 1500, 0, 925, 2750, 8000)
+week16_rmt_means <- c(0, 4125, 5000, 6800, 500, 0, 3200, 800, 500, 8750)
+week17_rmt_means <- c(0, 3500, 4000, 1700, 500, 3000, 0, 1850, 0, 10000)
+week18_rmt_means <- c(0, 30200, 3250, 6750, 20250, 2000, 3000, 4300, 0, 5750)
+week19_rmt_means <- c(0, 6000, 3250, 3000, 700, 3192.5, 500, 2600, 0, 13000)
+week20_rmt_means <- c(0, 1000, 2500, 0, 500, 3590, 0, 200, 0, 1500)
+week21_rmt_means <- c(0, 5333.333, 3625, 3000, 300, 3500, 1000, 1730, 0, 0)
+week22_rmt_means <- c(8000, 4501.250, 4250, 2633.333, 25000, 900, 1250, 3166.667, 0, 8000)
+week23_rmt_means <- c(0, 2333.333, 4250, 3850, 0, 3166.667, 0, 2333.333, 0, 0)
+week24_rmt_means <- c(0, 6333.333, 2285.714, 6500, 0, 7500, 1050, 1300, 0, 6500)
+week25_rmt_means <- c(0, 6416.667, 3333.333, 500, 0, 5000, 0, 10000, 0, 0)
+week26_rmt_means <- c(0, 6500, 2800, 2100, 0, 3000, 8000, 500, 0, 30000)
+week27_rmt_means <- c(0, 3000, 5460, 4000, 20000, 0, 0, 1400, 0, 0)
+week28_rmt_means <- c(0, 0, 2300, 0, 0, 2750, 0, 3000, 2000, 7500)
+week29_rmt_means <- c(0, 5000, 5062.5, 15000, 10000, 2562.5, 0, 2875, 5000, 3500)
+week30_rmt_means <- c(0, 5375, 2928.571, 3500, 3675, 0, 0, 1033.333, 0, 3025)
+week31_rmt_means <- c(0, 1500, 3366.667, 0, 500, 5666.667, 0, 750, 7000, 0)
+week32_rmt_means <- c(0, 6000, 1833.333, 6500, 300, 2000, 0, 900, 0, 9900)
+week33_rmt_means <- c(0, 6000, 2742.857, 0, 450, 7000, 0, 2500, 0, 5000)
+week34_rmt_means <- c(0, 2000, 2214.286, 3000, 1450, 0, 0, 500, 2000, 0)
+week35_rmt_means <- c(0, 3500, 4136.364, 4433.333, 2733.333, 3400, 0, 0, 0, 32000)
+week36_rmt_means <- c(0, 1000, 3000, 2000, 475, 0, 0, 1000, 0, 10000)
+week37_rmt_means <- c(0, 2500, 4927.273, 5000, 2637.5, 0, 0, 500, 0, 7666.667)
+week38_rmt_means <- c(0, 7400, 2657.143, 4035, 3103.333, 1500, 0, 1500, 0, 0)
+week39_rmt_means <- c(0, 1000, 3500, 3000, 1875, 0, 0, 3250, 0, 0)
+week40_rmt_means <- c(500, 3533.333, 2600, 5035, 1943.333, 3100, 2500, 500, 0, 900)
+week41_rmt_means <- c(0, 4500, 3242.857, 0, 1220, 1000, 0, 1500, 0, 5000)
+week42_rmt_means <- c(5000, 6250, 2583.333, 2500, 1000, 2500, 5000, 2750, 0, 15000)
+week43_rmt_means <- c(5000, 2500, 1750, 1945, 5000, 3000, 0, 3333.333, 0, 4000)
+week44_rmt_means <- c(0, 3250, 2300, 800, 400, 0, 0, 1750, 0, 20500)
+week45_rmt_means <- c(0, 5333.333, 3200, 7000, 2153.333, 0, 0, 2900, 0, 0)
+week46_rmt_means <- c(0, 7333.333, 5400, 3335, 1250, 2500, 0, 1866.667, 1800, 15000)
+week47_rmt_means <- c(0, 4000, 3582.500, 3833.333, 5000, 0, 0, 1100, 0, 0)
+week48_rmt_means <- c(0, 3900, 6875, 0, 1210, 8500, 0, 1200, 0, 0)
+week49_rmt_means <- c(9700, 6500, 2228.571, 0, 500, 8000, 0, 1675, 0, 400)
+
+```
+
+
+# vector for all weeks of remittance averages
+```{r}
+mean_rmt_per_week <- c(week1_rmt_means, week2_rmt_means, week3_rmt_means, week4_rmt_means, week5_rmt_means,
+                         week6_rmt_means, week7_rmt_means, week8_rmt_means, week9_rmt_means, week10_rmt_means,
+                         week11_rmt_means, week12_rmt_means, week13_rmt_means, week14_rmt_means, week15_rmt_means,
+                         week16_rmt_means, week17_rmt_means, week18_rmt_means, week19_rmt_means, week20_rmt_means,
+                         week21_rmt_means, week22_rmt_means, week23_rmt_means, week24_rmt_means, week25_rmt_means,
+                         week26_rmt_means, week27_rmt_means, week28_rmt_means, week29_rmt_means, week30_rmt_means,
+                         week31_rmt_means, week32_rmt_means, week33_rmt_means, week34_rmt_means, week35_rmt_means,
+                         week36_rmt_means, week37_rmt_means, week38_rmt_means, week39_rmt_means, week40_rmt_means,
+                         week41_rmt_means, week42_rmt_means, week43_rmt_means, week44_rmt_means, week45_rmt_means,
+                         week46_rmt_means, week47_rmt_means, week48_rmt_means, week49_rmt_means)
+
+```
+
+
+# Data frame for average remittance
+
+```{r}
+avgRmt <- rmt2 %>%
+  select(date, rmt_total, village) %>% 
+group_by(date, village) %>%
+summarize_at(c("rmt_total"), mean, na.rm= T)
+
+dates <- avgRmt$date
+months <- c("January 2019", "April 2019", "July 2019", "October 2019")
+```
+
+```{r}
+rmt_data_mean_weeks <- data.frame(Villages, weeks_rep, mean_rmt_per_week)
+```
+
+
+# Average remittance income plot
+```{r}
+average_rmt_plot <- ggplot(rmt_data_mean_weeks, aes(x = weeks_rep
+                                                    , y = mean_rmt_per_week, , color = Villages)) + 
+  geom_line() +
+  theme_classic() +
+  labs(x = "Date", y = "Average Remittance Income [Rupee]") +
+  ggtitle("Average Remittance Income Per Village")+ #(11/16/18 - 10/31/19)
+  #discrete_scale(aesthetics = Villages, scale_name = "rmt palette",palette = viridis_pal(1, 0, 10, option = "D"))
+  #scale_color_brewer(palette = "Spectral")+
+  scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+  annotate(geom = "text", aes(x = unlist(months)))
+average_rmt_plot
+```
+
+```{r}
+mean_rmt_plot <- ggplot(mean_rmt, aes(x = week, y = mean_weekly_rmt, color = village)) + geom_line()
+mean_rmt_plot
+```
+
+- Large spikes in remittance start around week 19 happen throughout the rest of the data period 
+- Week 19-49 covered the dates march 22, 2019 - October 31, 2019
+- Within this time period The Sundarbans was affected by 3 severe cyclones that hit the Bengal Bay: Fani (category 4), Bulbul and Matmo (category 1)
+- Fani was from April 25th to May 4th 2019 (weeks 22-24)
+- Bulbul and Matmo were from October 28th to November 11th (week 48 and 49)
+  - Matmo formed in the Philippine Sea on October 24th, dissipated as it went West over land (Cambodia), then regained energy and reached peak strength as it went over the Andaman Sea and into the Bengal bay, where it was renamed Bulbul
+  - citation: [Al Jazeera. “Tropical Cyclone Matmo Is Reborn As Bulbul.” Climate Crisis News | Al Jazeera, Al Jazeera Media Network, 7 Nov. 2019, https://www.aljazeera.com/news/2019/11/7/tropical-cyclone-matmo-is-reborn-as-bulbul.] 
+- Villages could've also been impacted by two cylones that hit the Arabian sea during this time period: Vayu and Hikaa (category 1)
+  - Vayu was from June 8-18th (week 29-31)
+  - Hikaa was from September 20-26th (week 44)
+    - Hikaa did not make direct landfall
+-While not reported as a region directly affected by these two cyclones, it is very likely that the Sundarbans still experienced the negative residuals of
+these storms due to their proximity to the Arabian Sea
+-Villages with the largest spikes were most likely hit the hardest
+- Cyclone dates citation : [“Most Recent Cyclones in India.” Worlddata.info, Worlddata, https://www.worlddata.info/asia/india/cyclones.php.]
+
+
+
+
+--------------------------------------------------------------------
+# Appendix
+
+# Total remittance for each village each week (vectors)
+```{r}
+week1_rmt_totals<- c(0, 15500, 22200, 0, 10500, 1900, 5000, 0, 0, 0) 
+week2_rmt_totals <- c(2000, 24000, 28500, 3200, 2600, 5400, 0, 14300, 3000, 10500)
+week3_rmt_totals <- c(4000, 12000, 12200, 5000, 6500, 6000, 4000, 2500, 0, 2000)
+week4_rmt_totals <- c(0, 19000, 13500, 3300, 7000, 5000, 1500, 8500, 4500, 10000)
+week5_rmt_totals <- c(0, 10000,15800, 5700, 4000, 0, 0, 1750, 3000, 0)
+week6_rmt_totals <- c(0, 31400, 22400, 5200, 0, 0, 1500, 700, 7000, 1000)
+week7_rmt_totals <- c(0, 2000, 15500, 7100, 3000, 900, 5000, 8500, 0, 12600)
+week8_rmt_totals <- c(0, 18500, 16500, 5800, 0, 0, 0, 16100, 0, 500)
+week9_rmt_totals <- c(0, 7000, 29500, 11100, 0, 1000, 2000, 7300, 0, 16500)
+week10_rmt_totals <- c(0, 20000, 28000, 18400, 0, 11500, 0, 6300, 0, 7000)
+week11_rmt_totals <- c(0, 3000, 10800, 5000, 3500, 1500, 0, 4200, 2000, 900)
+week12_rmt_totals <- c(0, 14000, 10000, 5400, 7000, 0, 0, 3200, 0, 600)
+week13_rmt_totals <- c(0, 28000, 20500, 3200, 19000, 500, 0, 6500, 0, 3500)
+week14_rmt_totals <- c(0, 8000, 43550, 13000, 0, 0, 2000, 2500, 5000, 1700)
+week15_rmt_totals <- c(0, 6000, 7500, 8100, 500, 3000, 0, 3700, 5500, 24000)
+week16_rmt_totals <- c(0, 16500, 35000, 20400, 500, 0, 3200, 2400, 500, 17500)
+week17_rmt_totals <- c(0, 7000, 24000, 3400, 500, 3000, 0, 3700, 0, 10000)
+week18_rmt_totals <- c(0, 151000, 13000, 13500, 40500, 4000, 3000, 34400, 0, 11500)
+week19_rmt_totals <- c(0, 12000, 19500, 9000, 1400, 6385, 500, 5200, 0, 13000)
+week20_rmt_totals <- c(0, 1000, 10000, 0, 500, 7180, 0, 200, 0, 3000)
+week21_rmt_totals <- c(0,16000, 14500, 3000, 300, 3500, 1000, 8650, 0, 0)
+week22_rmt_totals <- c(8000, 18005, 17000, 7900, 25000, 900, 2500, 9500, 0, 8000)
+week23_rmt_totals <- c(0, 7000, 17000, 7700, 0, 9500, 0, 7000, 0, 0)
+week24_rmt_totals <- c(0, 19000, 16000, 13000, 0, 15000, 1050, 2600, 0, 13000)
+week25_rmt_totals <- c(0, 38500, 10000, 500, 0, 5000, 0, 10000, 0, 0)
+week26_rmt_totals <- c(0, 13000, 14000, 2100, 0, 6000, 8000, 500, 0, 30000)
+week27_rmt_totals <- c(0, 3000, 27300, 4000, 20000, 0, 0, 2800, 0, 0)
+week28_rmt_totals <- c(0, 0, 11500, 0, 0, 5500, 0, 9000, 2000, 15000)
+week29_rmt_totals <- c(0, 10000, 40500, 15000, 15000, 5125, 0, 11500, 5000, 3500)
+week30_rmt_totals <- c(0, 21500, 20500, 3500, 14700, 0, 0, 3100, 0, 6050)
+week31_rmt_totals <- c(0, 1500, 20200, 0, 500, 17000, 0, 1500, 7000, 0)
+week32_rmt_totals <- c(0, 30000, 5500, 13000, 300, 2000, 0, 3600, 0, 19800)
+week33_rmt_totals <- c(0, 6000, 19200, 0, 450, 14000, 0, 7500, 0, 5000)
+week34_rmt_totals <- c(0, 2000, 15500, 3000, 4350, 0, 0, 500, 2000, 0)
+week35_rmt_totals <- c(0, 7000, 45500, 13300, 8200, 3400, 0, 0, 0, 32000)
+week36_rmt_totals <- c(0, 1000, 27000, 2000, 950, 0, 0, 1000, 0, 10000)
+week37_rmt_totals <- c(0, 5000, 54200, 5000, 10550, 0, 0, 500, 0, 23000)
+week38_rmt_totals <- c(0, 37000, 18600, 8070, 9310, 1500, 0, 3000, 0, 0)
+week39_rmt_totals <- c(0, 2000, 28000, 3000, 7500, 0, 0, 6500, 0, 0)
+week40_rmt_totals <- c(500, 10600, 15600, 10070, 5830, 6200, 2500, 500, 0, 900)
+week41_rmt_totals <- c(0, 9000, 22700, 0, 3660, 1000, 0, 3000, 0, 5000)
+week42_rmt_totals <- c(5000, 25000, 15500, 2500, 1000, 7500, 5000, 5500, 0, 30000)
+week43_rmt_totals <- c(5000, 7500, 7000, 5835, 5000, 3000, 0, 10000, 0, 4000)
+week44_rmt_totals <- c(0, 6500, 11500, 800, 400, 0, 0, 3500, 0, 41000)
+week45_rmt_totals <- c(0, 22000, 27000, 3335, 2500, 5000, 0, 5600, 1800, 15000)
+week46_rmt_totals <- c(0, 22000, 27000, 3335, 2500, 5000, 0, 5600, 1800, 15000)
+week47_rmt_totals <- c(0, 4000, 28660, 11500, 5000, 0, 0, 3300, 0, 0)
+week48_rmt_totals <- c(0, 19500, 27500, 0, 2420, 17000, 0, 2400, 0, 0)
+week49_rmt_totals <- c(9700, 13000, 15600, 0, 500, 8000, 0, 3350, 0, 400)
+
+```
+
+
+# Vector of total remittance in each village per week 
+```{r}
+total_rmt_per_week <- c(week1_rmt_totals, week2_rmt_totals, week3_rmt_totals, week4_rmt_totals, week5_rmt_totals,
+                        week6_rmt_totals, week7_rmt_totals, week8_rmt_totals, week9_rmt_totals, week10_rmt_totals,
+                        week11_rmt_totals, week12_rmt_totals, week13_rmt_totals, week14_rmt_totals, week15_rmt_totals,
+                        week16_rmt_totals, week17_rmt_totals, week18_rmt_totals, week19_rmt_totals, week20_rmt_totals,
+                        week21_rmt_totals, week22_rmt_totals, week23_rmt_totals, week24_rmt_totals, week25_rmt_totals,
+                        week26_rmt_totals, week27_rmt_totals, week28_rmt_totals, week29_rmt_totals, week30_rmt_totals,
+                        week31_rmt_totals, week32_rmt_totals, week33_rmt_totals, week34_rmt_totals, week35_rmt_totals,
+                        week36_rmt_totals, week37_rmt_totals,  week38_rmt_totals, week39_rmt_totals, week40_rmt_totals,
+                        week41_rmt_totals, week42_rmt_totals, week43_rmt_totals, week44_rmt_totals, week45_rmt_totals,
+                        week46_rmt_totals, week47_rmt_totals, week48_rmt_totals, week49_rmt_totals)
+
+```
+
+# Data frame of Total remittance income for each village per week
+```{r}
+rmt_data_total_weeks <- data.frame(Villages, weeks_rep, total_rmt_per_week)
+
+```
+
+# Plot of total rmeittance income for each village over 49 week period
+```{r}
+rmt_total_plot <- ggplot(rmt_data_total_weeks, aes(x = dates #x = weeks_rep
+                                                   , y = total_rmt_per_week, color = Villages))+ 
+  geom_line() +
+  theme_classic() +
+  labs(x = "Weeks", y = "Total Village Remittance Income") +
+  ggtitle("Total Village Remittance Income Over 49 Weeks")
+rmt_total_plot
+```
+- There was a huge spike in remittance income in week 18 in the Beuakhali village. This is mostly from one resident that recieved 132000 that week
+
+
+
+# Tables for total and average remittance in each village each week
+
+## Total remittance income in each village per week
+```{r}
+# 1
+week_1 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 1)
+rmt_total_week1 <- week_1 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 2
+week_2 <- rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 2)
+rmt_total_week2 <- week_2 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 3
+week_3 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 3)
+rmt_total_week3 <- week_3 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 4
+week_4 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 4)
+rmt_total_week4 <- week_4 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 5
+week_5 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 5)
+rmt_total_week5 <- week_5 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 6
+week_6 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 6)
+rmt_total_week6 <- week_6 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 7
+week_7 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 7)
+rmt_total_week7 <- week_7 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 8
+week_8 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 8)
+rmt_total_week8 <- week_8 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 9
+week_9 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 9)
+rmt_total_week9 <- week_9 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 10
+week_10 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 10)
+rmt_total_week10 <- week_10 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 11
+week_11 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 11)
+rmt_total_week11 <- week_11 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 12
+week_12 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 12)
+rmt_total_week12 <- week_12 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 13
+week_13 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 13)
+rmt_total_week13 <- week_13 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 14
+week_14 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 14)
+rmt_total_week14 <- week_14 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 15
+week_15 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 15)
+rmt_total_week15 <- week_15 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 16
+week_16 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 16)
+rmt_total_week16 <- week_16 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 17
+week_17 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 17)
+rmt_total_week17 <- week_17 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 18
+week_18 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 18)
+rmt_total_week18 <- week_18 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 19
+week_19 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 19)
+rmt_total_week19 <- week_19 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 20
+week_20 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 20)
+rmt_total_week20 <- week_20 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 21
+week_21 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 21)
+rmt_total_week21 <- week_21 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 22
+week_22 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 22)
+rmt_total_week22 <- week_22 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 23
+week_23 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 23)
+rmt_total_week23 <- week_23 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 24
+week_24 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 24)
+rmt_total_week24 <- week_24 %>% 
+  summarise("total remittance" = sum(rmt_total))
+#25
+week_25 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 25)
+rmt_total_week25 <- week_25 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 26
+week_26 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 26)
+rmt_total_week26 <- week_26 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 27
+week_27 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 27)
+rmt_total_week27 <- week_27 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 28
+week_28 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 28)
+rmt_total_week28 <- week_28 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 29
+week_29 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 29)
+rmt_total_week29 <- week_29 %>% 
+  summarise("total remittance" = sum(rmt_total))
+ # 30
+week_30 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 30)
+rmt_total_week30 <- week_30 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 31
+week_31 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 31)
+rmt_total_week31 <- week_31 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 32
+week_32 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 32)
+rmt_total_week32 <- week_32 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 33
+week_33 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 33)
+rmt_total_week33 <- week_33 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 34
+week_34 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 34)
+rmt_total_week34 <- week_34 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 35
+week_35 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 35)
+rmt_total_week35 <- week_35 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 36
+week_36 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 36)
+rmt_total_week36 <- week_36 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 37
+week_37 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 37)
+rmt_total_week37 <- week_37 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 38
+week_38 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 38)
+rmt_total_week38 <- week_38 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 39
+week_39 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 39)
+rmt_total_week39 <- week_39 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 40
+week_40 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 40)
+rmt_total_week40 <- week_40 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 41
+week_41 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 41)
+rmt_total_week41 <- week_41 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 42
+week_42 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 42)
+rmt_total_week42 <- week_42 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 43
+week_43 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 43)
+rmt_total_week43 <- week_43 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 44
+week_44 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 44)
+rmt_total_week44 <- week_44 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 45
+week_45 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 45)
+rmt_total_week45 <- week_45 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 46
+week_46 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 46)
+rmt_total_week46 <- week_46 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 47
+week_47 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 47)
+rmt_total_week47 <- week_47 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 48
+week_48 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 48)
+rmt_total_week48 <- week_48 %>% 
+  summarise("total remittance" = sum(rmt_total))
+# 49
+week_49 <-  rmt_nonZero %>% 
+  group_by(village) %>% 
+  filter(week == 49)
+rmt_total_week49 <- week_49 %>% 
+  summarise("total remittance" = sum(rmt_total))
+
+```
+
+## Average remittance income in each village per week (tables)
+```{r}
+# 1
+rmt_mean_week1 <- week_1 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#2
+rmt_mean_week2 <- week_2 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#3
+rmt_mean_week3 <- week_3 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#4
+rmt_mean_week4 <- week_4 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#5
+rmt_mean_week5 <- week_5 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#6
+rmt_mean_week6 <- week_6 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#7
+rmt_mean_week7 <- week_7 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#8
+rmt_mean_week8 <- week_8 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#9
+rmt_mean_week9 <- week_9 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#10
+rmt_mean_week10 <- week_10 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#11
+rmt_mean_week11 <- week_11 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#12
+rmt_mean_week12 <- week_12 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#13
+rmt_mean_week13 <- week_13 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#14
+rmt_mean_week14 <- week_14 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#15
+rmt_mean_week15 <- week_15 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#16
+rmt_mean_week16 <- week_16 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#17
+rmt_mean_week17 <- week_17 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#18
+rmt_mean_week18 <- week_18 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#19
+rmt_mean_week19 <- week_19 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#20
+rmt_mean_week20 <- week_20 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#21
+rmt_mean_week21 <- week_21 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#22
+rmt_mean_week22 <- week_22 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#23
+rmt_mean_week23 <- week_23 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#24
+rmt_mean_week24 <- week_24 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#25
+rmt_mean_week25 <- week_25 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#26
+rmt_mean_week26 <- week_26 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#27
+rmt_mean_week27 <- week_27 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#28
+rmt_mean_week28 <- week_28 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#29
+rmt_mean_week29 <- week_29 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#30
+rmt_mean_week30 <- week_30 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#31
+rmt_mean_week31 <- week_31 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#32
+rmt_mean_week32 <- week_32 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#33
+rmt_mean_week33 <- week_33 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#34
+rmt_mean_week34 <- week_34 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#35
+rmt_mean_week35 <- week_35 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#36
+rmt_mean_week36 <- week_36 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#37
+rmt_mean_week37 <- week_37 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#38
+rmt_mean_week38 <- week_38 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#39
+rmt_mean_week39 <- week_39 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#40
+rmt_mean_week40 <- week_40 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#41
+rmt_mean_week41 <- week_41 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#42
+rmt_mean_week42 <- week_42 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#43
+rmt_mean_week43 <- week_43 %>% 
+ summarise("average remittance" = mean(rmt_total))
+#44
+rmt_mean_week44 <- week_44 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#45
+rmt_mean_week45 <- week_45 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#46
+rmt_mean_week46 <- week_46 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#47
+rmt_mean_week47 <- week_47 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#48
+rmt_mean_week48 <- week_48 %>% 
+  summarise("average remittance" = mean(rmt_total))
+#49
+rmt_mean_week49 <- week_49 %>% 
+  summarise("average remittance" = mean(rmt_total))
+
+```
+
+
+
+
+
+
+
