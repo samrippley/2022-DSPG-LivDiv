@@ -247,7 +247,7 @@ Method <- c("Bank", "In person", "Mobile", "Money Order", "Other")
 method_dat <- data.frame(Method, method_counts, stringsAsFactors = T)
 method_values <- c("       397", "       472", "   1", "   1", "    13")
 
-rmt_method_plot <- ggplot(method_dat, aes( x= Method, y = method_counts, fill = Method)) +
+rmt_method_plot <- ggplot(method_dat, aes( x= reorder(Method, -method_counts), y = method_counts, fill = Method)) +
   geom_col(fill = plasma(5, alpha = 1, begin = 0, end = 1, direction = 1)) +
   labs(x = "", y = "Total") +
   theme_classic() +
@@ -257,19 +257,33 @@ rmt_method_plot <- ggplot(method_dat, aes( x= Method, y = method_counts, fill = 
 #--------------------------------------------------------------------
 
 # rmt purpose plot:
-Purpose <-  c("Food/Utility Purchases", "Tuition", "Assets/Durable Purchases", "Medical Expenses", "Other", "No Reason")
-purpose_count <- c(594, 37, 27, 93, 128, 43)
+Purpose <-  c("Food/Utility Purchases", "Other", "No Reason", "Medical Expenses","Tuition", "Assets/Durable Purchases")
+purpose_count <- c(594, 128, 93, 43, 37, 27)
 purpose_dat <- data.frame(Purpose, purpose_count, stringsAsFactors = T)
-purpose_values <- c("      594", "      37", "     27", "     93", "      128", "      43")
+purpose_values <- c("      594", "      128", "     93", "     43", "      37", "      27")
 
-rmt_purpose_plot <- ggplot(purpose_dat, aes(x = Purpose, y = purpose_count, fill = Purpose)) + 
+rmt_purpose_plot <- ggplot(purpose_dat, aes(x = reorder(Purpose, -purpose_count), y = purpose_count, fill = Purpose)) + 
   geom_col(fill = plasma(6, alpha = 1, begin = 0, end = 1, direction = 1)) +
   labs(x = "", y = "Total") +
   theme_classic() +
   ggtitle("Purpose for Receiving Remittance")+
   #rotate_x_text(angle = 22, size = rel(0.8))
   coord_flip()+
-  geom_text(aes(label = purpose_values), size = 2.4)
+  geom_text(aes(label = purpose_values), size = 3)
+#--------------------------------------------------------------------
+# rmt table
+fd <- livdiv %>%
+  select(-(4:967))
+
+rmt_dat <- fd %>% 
+  select(village, date, week, rmt_total) %>% 
+  arrange(week, village) %>% 
+  group_by(week)
+rmt_dat$date <- as_date(rmt_dat$date)
+avg_rmt <- rmt_dat %>% 
+  group_by(date, village) %>% 
+  summarize("Average Remmitances" = mean(rmt_total, na.rm = T))
+
 #-----------------------------------------------------------------
 
 # Expenditure plot data:
@@ -287,12 +301,20 @@ ggplot(exbyvil, aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) 
   labs(title="Average Weekly Expenditure by Village",
        x="Date", y="Average Weekly Expenditure (INR)") +
   scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
-
+#--------------------------------------------------------------------
+# Expenditure table
+expend_table <- expen %>% 
+  group_by(date, village) %>% 
+  summarize("Average Expenditure" = mean(total_spending, na.rm = T))
+#--------------------------------------------------------------------
 # Income plot data:
 fin_diary <- livdiv %>% select(village, date, week, name, full_inc) %>% arrange(week, village) %>% group_by(week) 
 fin_diary$date <- as_date(fin_diary$date)
 avg_tot_inc <- fin_diary %>% group_by(date, village, week) %>% summarize(avg_inc = mean(full_inc, na.rm = TRUE))
-ggplot(avg_tot_inc, aes(date, avg_inc, color = village)) + geom_line() + labs(x = "", y = "Income (INR)", title = "Average Weekly Household Income by village", color = "Village") 
+ggplot(avg_tot_inc, aes(date, avg_inc, color = village)) + geom_line() + labs(x = "", y = "Income (INR)", title = "Average Weekly Household Income by village", color = "Village")
+#--------------------------------------------------------------------
+#Income table 
+avg_inc_table <- fin_diary %>% group_by(date, village) %>% summarize("Average Income" = mean(full_inc, na.rm = TRUE))
 
 #--------------------------------------------------------------------
 
@@ -461,7 +483,44 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                         
                 # FD data tab-----------------------------------------------------------
                
-                navbarMenu("High Frequency Data" , 
+                navbarMenu("High Frequency Data" ,
+                           tabPanel("Expenditure",
+                                    fluidRow(style = "margin: 6px;",
+                                             h1(strong("Expenditure"), align = "center"),
+                                             p("", style = "padding-top:10px;"),
+                                             column(12,h4(strong("Overview")),
+                                                    p("This graph shows the average total expenditure by village over the data period.
+                                                      Expenditure includes weekly total consumption (e.g., Food) and non-consumption items (e.g., Rent).
+                                                      the largest expenses inlcude house repairs and festival related costs, and the most common expenditure is 
+                                                      on food purchases. Following expenditure overtime tells us a lot about the changing nature of spending 
+                                                      in the Sundarbans region due to things such as festivals, weather, harvest seasons, etc."),
+                                                    br("")
+                                                    
+                                             )),
+                                    # Sidebar with a select input for village
+                                    sidebarLayout(
+                                      sidebarPanel(
+                                        #tags$h2("Select/Deselect all"),
+                                        pickerInput("village_exp", "Select Village:", choices = village_vector, 
+                                                    selected = village_vector,
+                                                    multiple = T, options = list(`actions-box` = T)),
+                                        
+                                        
+                                      ),
+                                      
+                                      # Show a plot of the generated plot
+                                      mainPanel(
+                                        tabsetPanel(
+                                          tabPanel("Plot",plotOutput("exp")),
+                                          tabPanel("Table", DT::DTOutput("exp_table"))
+                                        )
+                                      ),
+                                      
+                                    )
+                                    
+                                    
+                           ), 
+      
                            tabPanel("Income",
                                     fluidRow(style = "margin: 6px;",
                                              h1(strong("Income"), align = "center"),
@@ -494,44 +553,8 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                     ),
                            ),
                            
-                           tabPanel("Expenditure",
-                                    fluidRow(style = "margin: 6px;",
-                                             h1(strong("Expenditure"), align = "center"),
-                                             p("", style = "padding-top:10px;"),
-                                             column(12,h4(strong("Overview")),
-                                                    p("This graph shows the average total expenditure by village over the data period.
-                                                      Expenditure includes weekly total consumption (e.g., Food) and non-consumption items (e.g., Rent).
-                                                      the largest expenses inlcude house repairs and festival related costs, and the most common expenditure is 
-                                                      on food purchases. Following expenditure overtime tells us a lot about the changing nature of spending 
-                                                      in the Sundarbans region due to things such as festivals, weather, harvest seasons, etc."),
-                                                    br("")
-                                             
-                                    )),
-                                    # Sidebar with a select input for village
-                                    sidebarLayout(
-                                      sidebarPanel(
-                                        #tags$h2("Select/Deselect all"),
-                                        pickerInput("village_exp", "Select Village:", choices = village_vector, 
-                                                    selected = village_vector,
-                                                    multiple = T, options = list(`actions-box` = T)),
-                                        
-                                        
-                                      ),
-                                      
-                                      # Show a plot of the generated plot
-                                      mainPanel(
-                                        tabsetPanel(
-                                          tabPanel("Plot",plotOutput("exp")),
-                                          tabPanel("Table", DT::DTOutput("exp_table"))
-                                        )
-                                      ),
-                                      
-                                    )
-                                    
-                                    
-                           ), 
-                           
-                           tabPanel("Remmittance", value = "",
+
+                           tabPanel("Remmittances", value = "",
                                     fluidRow(style = "margin: 6px;",
                                              h1(strong("Remmittance"), align = "center"),
                                              p("", style = "padding-top:10px;"),
@@ -569,13 +592,13 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                           #tabPanel("Method", plotOutput("rmt_method")),
                                           #tabPanel("Purpose", plotOutput("rmt_purpose"))
                                         )
-                                      ),
+                                      ), 
                                       
                                       
                                     ),
                                     fluidRow(style = "margin: 6px;",
                                              p("", style = "padding-top:10px;"),
-                                             column(12,h4(strong("Method")),
+                                             column(12,h4(strong("Remmittances Sources")),
                                                     p("This chart shows the count of how transaction of remittance was recieved over the data period.
                                                       Remmitance was primarily recieved in person or through a bank, as those are typically the most
                                                       convenient methods. Although a money order is a very secure of sending money, there are often additional
@@ -588,8 +611,8 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                     plotOutput("rmt_method"),
                                     fluidRow(style = "margin: 6px;",
                                              p("", style = "padding-top:10px;"),
-                                             column(12,h4(strong("Purpose")),
-                                                    p("This chart shows the count of what every transaction of remittance was used for over the data period.
+                                             column(12,h4(strong("Usage of Remmittances")),
+                                                    p("This chart shows the count of what every transaction of remittances was used for over the data period.
                                                       Remmittance is primarily being used for food and utility purchases, which are often the most essential
                                                       items for households in underdevelped regions."),
                                                     br("")
@@ -790,9 +813,9 @@ server <- function(input, output, session) {
     
     
   })
-  # Render rmt filtered table
+  # Render rmt table
   output$rmt_table <- DT::renderDT({
-    filtered_rmt()
+    avg_rmt
   })
   # Render method plot
   output$rmt_method <- renderPlot({
@@ -820,7 +843,7 @@ server <- function(input, output, session) {
   })
   # Render exp filtered table 
   output$exp_table <- DT::renderDT({
-    filtered_exp()
+    expend_table
   })
   # Render income plot output
   # Filter by input
@@ -835,9 +858,9 @@ server <- function(input, output, session) {
       labs(x = "", y = "Income (INR)", title = "Average Weekly Household Income by village", color = "Village") 
     
   })
-  #Render inc filtered table
+  #Render inc table
   output$inc_table <- DT::renderDT({
-    filtered_inc()
+    avg_inc_table
   })
   
 }
