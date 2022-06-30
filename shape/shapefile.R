@@ -35,9 +35,9 @@ leaflet()  %>%
   addProviderTiles("CartoDB")  %>% 
   setView(lat = 22.3, lng = 88.7, zoom = 8) %>%
   addPolygons(data=sunshp,weight=1,col = 'black') %>% 
-  addMarkers(data=ourvill)
+  addCircleMarkers(data=ourvill, fillOpacity = .3, fillColor = "Village.Na", )
 
-
+marker cluster
     
   
 
