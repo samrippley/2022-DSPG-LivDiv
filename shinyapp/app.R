@@ -397,9 +397,19 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                    
                           ) 
                  ), 
+                 
+                 ## Sundarbans Region--------------------------------------------
+                 tabPanel("Sundarbans Region",
+                          fluidRow(style = "margin: 6px;",
+                                   h1(strong(""), align = "center"),
+                                   p("", style = "padding-top:10px;")
+                                   
+                          ) 
+                 ), 
+                 
                  ## Tab Demographics --------------------------------------------
                  navbarMenu("Demographics" , 
-                            tabPanel("Static", 
+                            tabPanel("Socioeconomic", 
                                      fluidRow(style = "margin: 6px;",
                                               h1(strong("Static Demographics"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
@@ -425,7 +435,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                                      p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
                                                      p("", style = "padding-top:10px;")) 
                                      )), 
-                            tabPanel("Dynamic", 
+                            tabPanel("Livelihood", 
                                      style = "margin: 6px;",
                                      h1(strong("Dynamic"), align = "center"),
                                      p("", style = "padding-top:10px;"), 
@@ -447,7 +457,33 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                      ) 
                                      
                                      
+                                     )
+                            
+                            tabPanel("Financial Behavior", 
+                                     style = "margin: 6px;",
+                                     h1(strong("Dynamic"), align = "center"),
+                                     p("", style = "padding-top:10px;"), 
+                                     column(4, 
+                                            h4(strong("Dynamic")), 
+                                            p("Differences by Village."), 
+                                            p("Location is important. Need water to fish. Transportation, etc. Graphed differences by village.")),
+                                     column(8,
+                                            h4(strong("Household Demographic Characteristics by Village")),
+                                            selectInput("char1", "Select Variable:", width = "100%", choices = c(
+                                              "Median Household Income" = "income",
+                                              "Household Head Average Age" = "age" ,
+                                              "Occupation" = "unemploy",
+                                              "Education" = "high"
+                                            )
+                                            ), 
+                                            withSpinner(leafletOutput("demo1")) , 
+                                            p(tags$small("Data Source: BL October 2019")),
                                      ) 
+                                     
+                                     
+                            ) 
+                            
+                            
                             ), 
                             
                                      
@@ -532,7 +568,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                
                 ## Shocks Tab --------------------------------------------
                 navbarMenu("Shocks" , 
-                tabPanel("Shock 1",
+                tabPanel("Shocks in the Sundarbans",
                          fluidRow(style = "margin: 6px;",
                                   h1(strong("Shocking"), align = "center"),
                                   p("", style = "padding-top:10px;")
@@ -542,7 +578,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                 
                 
                 
-                 tabPanel("Shock 2",
+                 tabPanel("Yearly Shocks",
                          fluidRow(style = "margin: 6px;",
                                   h1(strong("Shocking"), align = "center"),
                                   p("", style = "padding-top:10px;")
@@ -551,70 +587,6 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                 ), 
                 ), 
                 
-                ## FGD tab------------------------------------------
-                tabPanel("Focus Group Discussion",
-                         fluidRow(style = "margin: 6px;",
-                                  h1(strong("FGD"), align = "center"),
-                                  p("", style = "padding-top:10px;")
-                                  
-                         ) 
-                ), 
-              
-                 # team tab -----------------------------------------------------------
-                 tabPanel("Meet the Team", value = "contact",
-                          fluidRow(style = "margin-left: 300px; margin-right: 300px;",
-                            h1(strong("Contact"), align = "center"),
-                            br(),
-                            h4(strong("Virginia Tech Data Science for the Public Good")),
-                            p("The", a(href = 'https://aaec.vt.edu/academics/undergraduate/beyond-classroom/dspg.html', 'Data Science for the Public Good (DSPG) Young Scholars program', target = "_blank"),
-                              "is a summer immersive program held at the", a(href = 'https://aaec.vt.edu/s', 'Virginia Tech Department of Agricultural and Applied Economics.'),
-                              "In its second year, the program engages students from across the country to work together on projects that address state, federal, and local government challenges around
-                              critical social issues relevant in the world today. DSPG young scholars conduct research at the intersection of statistics, computation, and the social sciences
-                              to determine how information generated within every community can be leveraged to improve quality of life and inform public policy. For more information on program
-                              highlights, how to apply, and our annual symposium, please visit", a(href = 'https://aaec.vt.edu/academics/undergraduate/beyond-classroom/dspg.html', 'the official VT DSPG website.', target = "_blank")),
-                            p("", style = "padding-top:10px;")
-                          ),
-                          fluidRow(style = "margin-left: 300px; margin-right: 300px;",
-                            column(6, align = "center",
-                            h4(strong("DSPG Team Members")),
-                            img(src = "team-tim.jpeg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
-                            p(tags$small(a(href = 'https://www.linkedin.com/in/timothyspierce', 'Timothy Pierce', target = '_blank'), "(Virginia Tech, Agricultural and Applied Economics)"),),
-                            img(src = "team-mousa.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
-                            p(tags$small(a(href = 'https://www.linkedin.com/in/reginald-mousa-toure-32b550106/', 'Mousa Toure', target = '_blank'), "(Virginia State University, Computer Science)"),),
-                            
-                            img(src = "team-christina.jpeg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                            p(tags$small(a(href = 'https://www.linkedin.com/in/christina-prisbe-60966b218/', 'Christina Prisbe', target = '_blank'), "(Virginia Tech, Computational Modeling and Data Analytics)."),),
-                            
-                            #p(a(href = 'www.linkedin.com/in/timothyspierce', 'Timothy Pierce', target = '_blank'), "(Virginia Tech, Agricultural and Applied Economics);",
-                            #  a(href = 'https://www.linkedin.com/in/reginald-mousa-toure-32b550106/', 'Mousa Toure', target = '_blank'), "(Virginia State University, Computer Science);",
-                            #  a(href = 'https://www.linkedin.com/in/christina-prisbe-60966b218/', 'Christina Prisbe', target = '_blank'), "(Virginia Tech, Computational Modeling and Data Analytics)."),
-                            p("", style = "padding-top:10px;")
-                            ),
-                            column(6, align = "center",
-                            h4(strong("Faculty and Associate Team Members")),
-                            img(src = "faculty-gupta.jpg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
-                            p(tags$small(a(href = "https://aaec.vt.edu/people/faculty/gupta-anubhab.html", 'Dr. Anubhab Gupta', target = '_blank'), "(Faculty Lead, Virginia Tech)"),),
-                            
-                            img(src = "faculty-mulu.jpeg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
-                            p(tags$small(a(href = "https://www.vsu.edu/cet/departments/technology/faculty-staff/kahsai-mulugeta.php", 'Dr. Mulugeta Kahsai', target = '_blank'), "(Faculty Affiliate, Virginia State University)"),),
-                            
-                            img(src = "team-leo.jpeg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                            p(tags$small(a(href = 'https://aaec.vt.edu/people/graduatestudents/index/quaye-leonard-allen.html', 'Leonard-Allen Quaye', target = '_blank'), "(Research Associate, Virginia Tech)"),),
-                            
-                            #p(a(href = "https://aaec.vt.edu/people/faculty/gupta-anubhab.html", 'Dr. Anubhab Gupta', target = '_blank'), "(Faculty Lead, Virginia Tech);",
-                            #  a(href = "https://www.vsu.edu/cet/departments/technology/faculty-staff/kahsai-mulugeta.php", 'Dr. Mulugeta Kahsai', target = '_blank'), "(Faculty Affiliate, Virginia State University);",
-                            #  a(href = 'https://aaec.vt.edu/people/graduatestudents/index/quaye-leonard-allen.html', 'Leonard-Allen Quaye', target = '_blank'), "(Research Associate, Virginia Tech)."),
-                            p("", style = "padding-top:10px;")
-                            )
-                            ),
-                          fluidRow(style = "margin-left: 300px; margin-right: 300px;",
-                            h4(strong("Project Stakeholders")),
-                            p("VPI-SU Extension Professionals, Board of Supervisions, local government organizations, local field offices, and County Planning Commission in Rappahannock county"),
-                            p("", style = "padding-top:10px;"),
-                            h4(strong("Acknowledgments")),
-                            p("We would like to thank Kenner Love, Unit Coordinator Extension Agent, Agricultural and Natural Resources Crop & Soil Sciences from the Virginia Cooperative Extension for his support on this project.")
-                          )
-                 ),
                 
                 inverse = T)
                 
