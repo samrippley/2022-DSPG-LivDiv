@@ -771,12 +771,12 @@ server <- function(input, output, session) {
     
   })
   # rmt plot output
+  # Filter by inputt
   filtered_rmt <- reactive({
     rmt_data_mean_weeks %>%
-      #filter(Villages==input$village)
       filter(Villages %in% input$village_rmt)
   })
-  
+  # Plot
   output$rmt <- renderPlot({
     ggplot(filtered_rmt(), aes(x = weeks
                            , y = mean_rmt_per_week, color = Villages)) + 
@@ -803,10 +803,12 @@ server <- function(input, output, session) {
     rmt_purpose_plot
   })
   # exp plot ouput
+  # Filter by input
   filtered_exp <- reactive({
     exbyvil %>% 
       filter(village %in% input$village_exp)
   })
+  # Plot
   output$exp <- renderPlot({
     ggplot(filtered_exp(), aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) +
       geom_line() +
@@ -820,11 +822,13 @@ server <- function(input, output, session) {
   output$exp_table <- DT::renderDT({
     filtered_exp()
   })
-  # income plot output
+  # Render income plot output
+  # Filter by input
   filtered_inc <- reactive({
     avg_tot_inc %>% 
       filter(village %in% input$village_inc)
   })
+  # Plot
   output$inc <- renderPlot({
     ggplot(filtered_inc(), aes(date, avg_inc, color = village)) + 
       geom_line() + 
