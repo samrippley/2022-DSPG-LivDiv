@@ -1,4 +1,11 @@
 # Load Packages ---------------------------------------------------------------
+library(jsonlite)
+library(geojsonio)
+library(ggmap)
+library(geojson)
+library(leaflet)
+library(mapview)
+library(scales)
 library(shiny)
 library(leaflet)
 library(tidyverse)
@@ -23,7 +30,6 @@ library(ggplot2)
 library(htmltools)
 library(tigris)
 library(leaflegend)
-library(dplyr)
 library(ggplotify)
 library(grid)
 library(gridExtra)
@@ -31,7 +37,13 @@ library(ggpubr)
 library(lubridate)
 library(shinyWidgets)
 library(viridis)
-library(RColorBrewer)
+library(gdata)
+library(dplyr)
+library(lubridate)
+library(dplyr)
+library(dtplyr)
+library(dbplyr)
+
 
 prettyblue <- "#232D4B"
 navBarBlue <- '#427EDC'
@@ -43,7 +55,7 @@ village_vector = c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskat
 
 # data -----------------------------------------------------------
 
-#load("~/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data/livdivdata.RData")
+load("~/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data/livdivdata.RData")
 
 baseline <- livdiv %>%
   slice(1:307,)
@@ -457,7 +469,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                      ) 
                                      
                                      
-                                     )
+                                     ),
                             
                             tabPanel("Financial Behavior", 
                                      style = "margin: 6px;",
@@ -481,13 +493,8 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                      ) 
                                      
                                      
-                            ) 
-                            
-                            
-                            ), 
-                            
-                                     
-                        
+                            ) ), 
+                       
                 # FD data tab-----------------------------------------------------------
                
                 navbarMenu("High Frequency Data" , 
@@ -560,8 +567,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                       
                                     )
                            ),           
-                           
-                           
+                        
                            
                 ),
               
@@ -583,8 +589,8 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                   h1(strong("Shocking"), align = "center"),
                                   p("", style = "padding-top:10px;")
                                   
-                         ) 
-                ), 
+                         ),
+                 ),
                 ), 
                 
                 
