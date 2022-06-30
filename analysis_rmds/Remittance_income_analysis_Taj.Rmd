@@ -61,7 +61,7 @@ Method <- c("Bank", "In person", "Mobile", "Money Order", "Other")
 method_dat <- data.frame(Method, method_counts, stringsAsFactors = T)
 method_values <- c("       397", "       472", "   1", "   1", "    13")
 
-rmt_method_plot <- ggplot(method_dat, aes( x= Method, y = method_counts, fill = Method)) +
+rmt_method_plot <- ggplot(method_dat, aes( x= reorder(Method, -method_counts), y = method_counts, fill = Method)) +
   geom_col(fill = plasma(5, alpha = 1, begin = 0, end = 1, direction = 1)) +
   labs(x = "", y = "Total") +
   theme_classic() +
@@ -75,6 +75,7 @@ rmt_method_plot
 - Remittance income was primarily received through a bank or in person
 - Its more convenient to receive currency through person or from a bank rather than through mobile apps 
 - Money orders are often very secure ways of sending money. Many households are more likely concerned about receiving their money quickly rather than securely
+- Money orders often have additional fees attached to them and using mobile apps can be difficult in places where data usage is very limited.
 - (It wouldn't make sense to do this by village because some villages dint receive weekly remittance for a majority of the data set so there would be many gaps and wouldn't show some of the villages)
 
 
@@ -90,12 +91,12 @@ rmt_purpose_summary
 # Histogram of purpose of recieving remittance
 
 ```{r}
-Purpose <-  c("Food/Utility Purchases", "Tuition", "Assets/Durable Purchases", "Medical Expenses", "Other", "No Reason")
-purpose_count <- c(594, 37, 27, 93, 128, 43)
+Purpose <-  c("Food/Utility Purchases", "Other", "No Reason", "Medical Expenses","Tuition", "Assets/Durable Purchases")
+purpose_count <- c(594, 128, 93, 43, 37, 27)
 purpose_dat <- data.frame(Purpose, purpose_count, stringsAsFactors = T)
-purpose_values <- c("      594", "      37", "     27", "     93", "      128", "      43")
+purpose_values <- c("      594", "      128", "     93", "     43", "      37", "      27")
 
-rmt_purpose_plot <- ggplot(purpose_dat, aes(x = Purpose, y = purpose_count, fill = Purpose)) + 
+rmt_purpose_plot <- ggplot(purpose_dat, aes(x = reorder(Purpose, -purpose_count), y = purpose_count, fill = Purpose)) + 
   geom_col(fill = plasma(6, alpha = 1, begin = 0, end = 1, direction = 1)) +
   labs(x = "", y = "Total") +
   theme_classic() +
@@ -109,7 +110,7 @@ rmt_purpose_plot
 - (Across all villages)
 - Shows the count of what every transaction of remittance was used for over the data period
 - Remittance income was primarily being used for food and utility purchases
-- It makes sense that a large majority of remittance is used on food, especially if the remittance is being received after devasttaion (cyclone)
+- It makes sense that a large majority of remittance is used on food, especially if the remittance is being received after devastaion (cyclone)
 - (assets/durable purchases: appliances, furniture, goods that don't wear out quickly and are not purchased frequently)
 
 # Get average and total income by village for each week then compare across 49 week period
