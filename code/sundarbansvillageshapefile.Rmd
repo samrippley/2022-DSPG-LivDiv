@@ -79,7 +79,7 @@ d.sundarban<-st_union(sundarban)
 
 village_all <- st_read(dsn = "/Users/nandinidas/Downloads/fgd-village-selection-main/shapefiles", "Village, GP coordinates", stringsAsFactors = TRUE)
 
-village <- subset(village_all, Village.Na %in% c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur"))
+village <- subset(village_all, Village.Na %in% c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Parghumti","Purba Dwarokapur","Gangasagar","Shibpur"))
 
 icons <- awesomeIcons(
   icon = 'ios-close',
