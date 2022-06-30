@@ -44,7 +44,7 @@ village_vector = c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskat
 
 # data -----------------------------------------------------------
 
-load("~/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data/livdivdata.RData")
+#load("~/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data/livdivdata.RData")
 
 baseline <- livdiv %>%
   slice(1:307,)
@@ -132,7 +132,7 @@ countmar <- baseline %>%
                             head_female == 0 ~ "Male"))
 
 fd <- livdiv %>%
-  slice(-(4:967))
+  select(-(4:967))
 
 # remittance data
 rmt <- fd %>% 
