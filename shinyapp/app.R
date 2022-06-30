@@ -33,10 +33,7 @@ library(shinyWidgets)
 library(viridis)
 library(RColorBrewer)
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 965d733e73332c8e7de3cda5b58a8f396f1984ed
 prettyblue <- "#232D4B"
 navBarBlue <- '#427EDC'
 options(spinner.color = prettyblue, spinner.color.background = '#ffffff', spinner.size = 3, spinner.type = 7)
@@ -47,11 +44,8 @@ village_vector = c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskat
 
 # data -----------------------------------------------------------
 
-<<<<<<< HEAD
 load("~/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data/livdivdata.RData")
-=======
-#load("~/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data/livdivdata.RData")
->>>>>>> 965d733e73332c8e7de3cda5b58a8f396f1984ed
+
 
 baseline <- livdiv %>%
   slice(1:307,)
@@ -255,11 +249,8 @@ Method <- c("Bank", "In person", "Mobile", "Money Order", "Other")
 method_dat <- data.frame(Method, method_counts, stringsAsFactors = T)
 method_values <- c("       397", "       472", "   1", "   1", "    13")
 
-<<<<<<< HEAD
-rmt_method_plot <- ggplot(method_dat, aes( x= Method, y = method_counts, fill = Method)) +
-=======
 rmt_method_plot <- ggplot(method_dat, aes( x= reorder(Method, -method_counts), y = method_counts, fill = Method)) +
->>>>>>> 965d733e73332c8e7de3cda5b58a8f396f1984ed
+
   geom_col(fill = plasma(5, alpha = 1, begin = 0, end = 1, direction = 1)) +
   labs(x = "", y = "Total") +
   theme_classic() +
@@ -269,30 +260,20 @@ rmt_method_plot <- ggplot(method_dat, aes( x= reorder(Method, -method_counts), y
 #--------------------------------------------------------------------
 
 # rmt purpose plot:
-<<<<<<< HEAD
+
 Purpose <-  c("Food/Utility Purchases", "Tuition", "Assets/Durable Purchases", "Medical Expenses", "Other", "No Reason")
 purpose_count <- c(594, 37, 27, 93, 128, 43)
 purpose_dat <- data.frame(Purpose, purpose_count, stringsAsFactors = T)
 purpose_values <- c("      594", "      37", "     27", "     93", "      128", "      43")
 
-rmt_purpose_plot <- ggplot(purpose_dat, aes(x = Purpose, y = purpose_count, fill = Purpose)) + 
-=======
-Purpose <-  c("Food/Utility Purchases", "Other", "No Reason", "Medical Expenses","Tuition", "Assets/Durable Purchases")
-purpose_count <- c(594, 128, 93, 43, 37, 27)
-purpose_dat <- data.frame(Purpose, purpose_count, stringsAsFactors = T)
-purpose_values <- c("      594", "      128", "     93", "     43", "      37", "      27")
-
 rmt_purpose_plot <- ggplot(purpose_dat, aes(x = reorder(Purpose, -purpose_count), y = purpose_count, fill = Purpose)) + 
->>>>>>> 965d733e73332c8e7de3cda5b58a8f396f1984ed
+
   geom_col(fill = plasma(6, alpha = 1, begin = 0, end = 1, direction = 1)) +
   labs(x = "", y = "Total") +
   theme_classic() +
   ggtitle("Purpose for Receiving Remittance")+
   #rotate_x_text(angle = 22, size = rel(0.8))
   coord_flip()+
-<<<<<<< HEAD
-  geom_text(aes(label = purpose_values), size = 2.4)
-=======
   geom_text(aes(label = purpose_values), size = 3)
 #--------------------------------------------------------------------
 # rmt table
@@ -308,7 +289,6 @@ avg_rmt <- rmt_dat %>%
   group_by(date, village) %>% 
   summarize("Average Remmitances" = mean(rmt_total, na.rm = T))
 
->>>>>>> 965d733e73332c8e7de3cda5b58a8f396f1984ed
 #-----------------------------------------------------------------
 
 # Expenditure plot data:
@@ -327,8 +307,7 @@ ggplot(exbyvil, aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) 
        x="Date", y="Average Weekly Expenditure (INR)") +
   scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
 #--------------------------------------------------------------------
-<<<<<<< HEAD
-=======
+
 # Expenditure table
 expend_table <- expen %>% 
   group_by(date, village) %>% 
@@ -344,7 +323,7 @@ ggplot(avg_tot_inc, aes(date, avg_inc, color = village)) + geom_line() + labs(x 
 avg_inc_table <- fin_diary %>% group_by(date, village) %>% summarize("Average Income" = mean(full_inc, na.rm = TRUE))
 
 #--------------------------------------------------------------------
->>>>>>> 965d733e73332c8e7de3cda5b58a8f396f1984ed
+
 
 # CODE TO DETECT ORIGIN OF LINK AND CHANGE LOGO ACCORDINGLY
 jscode <- "function getUrlVars() {
@@ -454,8 +433,6 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                    
                           ) 
                  ), 
-<<<<<<< HEAD
-                 
                  ## Sundarbans Region--------------------------------------------
                  tabPanel("Sundarbans Region",
                           fluidRow(style = "margin: 6px;",
@@ -467,12 +444,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                  
                  ## Tab Demographics --------------------------------------------
                  navbarMenu("Demographics" , 
-                            tabPanel("Socioeconomic", 
-=======
-                 ## Tab Demographics --------------------------------------------
-                 navbarMenu("Demographics" , 
                             tabPanel("Static", 
->>>>>>> 965d733e73332c8e7de3cda5b58a8f396f1984ed
                                      fluidRow(style = "margin: 6px;",
                                               h1(strong("Static Demographics"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
@@ -498,11 +470,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                                      p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
                                                      p("", style = "padding-top:10px;")) 
                                      )), 
-<<<<<<< HEAD
                             tabPanel("Livelihood", 
-=======
-                            tabPanel("Dynamic", 
->>>>>>> 965d733e73332c8e7de3cda5b58a8f396f1984ed
                                      style = "margin: 6px;",
                                      h1(strong("Dynamic"), align = "center"),
                                      p("", style = "padding-top:10px;"), 
@@ -523,8 +491,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                                     p(tags$small("Data Source: BL October 2019")),
                                      ) 
                                      
-                                     
-<<<<<<< HEAD
+                                    
                                      ),
                             
                             tabPanel("Financial Behavior", 
@@ -551,29 +518,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                      
                             ) ), 
                        
-                # FD data tab-----------------------------------------------------------
-               
-                navbarMenu("High Frequency Data" , 
-                           tabPanel("Income",
-                                    fluidRow(style = "margin: 6px;",
-                                             h1(strong("Shocking"), align = "center"),
-                                             p("", style = "padding-top:10px;")
-                                             
-                                    ) 
-                           ),            
-                           
-                           tabPanel("Expenditure",
-                                    fluidRow(style = "margin: 6px;",
-                                             h1(strong("Shocking"), align = "center"),
-                                             p("", style = "padding-top:10px;")
-                                             
-                                    ),
-=======
-                            ) 
-                            ), 
-                            
-                                      
-                        
+
                 # FD data tab-----------------------------------------------------------
                
                 navbarMenu("High Frequency Data" ,
@@ -590,7 +535,6 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                                     br("")
                                                     
                                              )),
->>>>>>> 965d733e73332c8e7de3cda5b58a8f396f1984ed
                                     # Sidebar with a select input for village
                                     sidebarLayout(
                                       sidebarPanel(
@@ -605,12 +549,9 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                       # Show a plot of the generated plot
                                       mainPanel(
                                         tabsetPanel(
-<<<<<<< HEAD
-                                          tabPanel("Plot",plotOutput("exp"))
-=======
+
                                           tabPanel("Plot",plotOutput("exp")),
                                           tabPanel("Table", DT::DTOutput("exp_table"))
->>>>>>> 965d733e73332c8e7de3cda5b58a8f396f1984ed
                                         )
                                       ),
                                       
@@ -618,15 +559,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                     
                                     
                            ), 
-<<<<<<< HEAD
-                           
-                           tabPanel("High Frequency Data", value = "",
-                                    fluidRow(style = "margin: 6px;",
-                                             h1(strong("FD"), align = "center"),
-                                             p("", style = "padding-top:10px;"),
-                                             column(12,h4(strong("Overview")),
-                                                    p("Over time"),
-=======
+
       
                            tabPanel("Income",
                                     fluidRow(style = "margin: 6px;",
@@ -677,7 +610,6 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                                       was not reported as an area directly affected by these two cyclones, it is possible
                                                       that the region experienced some of the negative residuals of the storm due
                                                       to their proximity to the Arabian Sea."),
->>>>>>> 965d733e73332c8e7de3cda5b58a8f396f1984ed
                                                     br("")
                                                     
                                                     
@@ -686,11 +618,8 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                     sidebarLayout(
                                       sidebarPanel(
                                         #tags$h2("Select/Deselect all"),
-<<<<<<< HEAD
-                                        pickerInput("village", "Select Village:", choices = village_vector, 
-=======
                                         pickerInput("village_rmt", "Select Village:", choices = village_vector, 
->>>>>>> 965d733e73332c8e7de3cda5b58a8f396f1984ed
+
                                                     selected = village_vector,
                                                     multiple = T, options = list(`actions-box` = T)),
                                         
@@ -700,24 +629,6 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                       mainPanel(
                                         tabsetPanel(
                                           tabPanel("Plot",plotOutput("rmt")),
-<<<<<<< HEAD
-                                          tabPanel("Table",DT:: DTOutput("rmt_table")),
-                                          tabPanel("Method", plotOutput("rmt_method")),
-                                          tabPanel("Purpose", plotOutput("rmt_purpose"))
-                                        )
-                                      ),
-                                      
-                                    )
-                           ),           
-                        
-                           
-                ),
-              
-               
-                ## Shocks Tab --------------------------------------------
-                navbarMenu("Shocks" , 
-                tabPanel("Shocks in the Sundarbans",
-=======
                                           tabPanel("Table",DT:: DTOutput("rmt_table"))#,
                                           #tabPanel("Method", plotOutput("rmt_method")),
                                           #tabPanel("Purpose", plotOutput("rmt_purpose"))
@@ -758,110 +669,17 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                            
               
                 ## Shocks Tab --------------------------------------------
-                navbarMenu("Shocks" , 
-                tabPanel("Shock 1",
->>>>>>> 965d733e73332c8e7de3cda5b58a8f396f1984ed
+                tabPanel("Shocks",
                          fluidRow(style = "margin: 6px;",
-                                  h1(strong("Shocking"), align = "center"),
+                                  h1(strong(""), align = "center"),
                                   p("", style = "padding-top:10px;")
                                   
                          ) 
                 ), 
                 
-                
-                
-<<<<<<< HEAD
-                 tabPanel("Yearly Shocks",
-=======
-                 tabPanel("Shock 2",
->>>>>>> 965d733e73332c8e7de3cda5b58a8f396f1984ed
-                         fluidRow(style = "margin: 6px;",
-                                  h1(strong("Shocking"), align = "center"),
-                                  p("", style = "padding-top:10px;")
-                                  
-<<<<<<< HEAD
-                         )
-                 )
-                ), 
-           
                 inverse = T)
-
-           
-=======
-                         ) 
-                ), 
-                ), 
-                
-                ## FGD tab------------------------------------------
-                tabPanel("Focus Group Discussion",
-                         fluidRow(style = "margin: 6px;",
-                                  h1(strong("FGD"), align = "center"),
-                                  p("", style = "padding-top:10px;")
-                                  
-                         ) 
-                ), 
+         
               
-                 # team tab -----------------------------------------------------------
-                 tabPanel("Meet the Team", value = "contact",
-                          fluidRow(style = "margin-left: 300px; margin-right: 300px;",
-                            h1(strong("Contact"), align = "center"),
-                            br(),
-                            h4(strong("Virginia Tech Data Science for the Public Good")),
-                            p("The", a(href = 'https://aaec.vt.edu/academics/undergraduate/beyond-classroom/dspg.html', 'Data Science for the Public Good (DSPG) Young Scholars program', target = "_blank"),
-                              "is a summer immersive program held at the", a(href = 'https://aaec.vt.edu/s', 'Virginia Tech Department of Agricultural and Applied Economics.'),
-                              "In its second year, the program engages students from across the country to work together on projects that address state, federal, and local government challenges around
-                              critical social issues relevant in the world today. DSPG young scholars conduct research at the intersection of statistics, computation, and the social sciences
-                              to determine how information generated within every community can be leveraged to improve quality of life and inform public policy. For more information on program
-                              highlights, how to apply, and our annual symposium, please visit", a(href = 'https://aaec.vt.edu/academics/undergraduate/beyond-classroom/dspg.html', 'the official VT DSPG website.', target = "_blank")),
-                            p("", style = "padding-top:10px;")
-                          ),
-                          fluidRow(style = "margin-left: 300px; margin-right: 300px;",
-                            column(6, align = "center",
-                            h4(strong("DSPG Team Members")),
-                            img(src = "team-tim.jpeg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
-                            p(tags$small(a(href = 'https://www.linkedin.com/in/timothyspierce', 'Timothy Pierce', target = '_blank'), "(Virginia Tech, Agricultural and Applied Economics)"),),
-                            img(src = "team-mousa.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
-                            p(tags$small(a(href = 'https://www.linkedin.com/in/reginald-mousa-toure-32b550106/', 'Mousa Toure', target = '_blank'), "(Virginia State University, Computer Science)"),),
-                            
-                            img(src = "team-christina.jpeg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                            p(tags$small(a(href = 'https://www.linkedin.com/in/christina-prisbe-60966b218/', 'Christina Prisbe', target = '_blank'), "(Virginia Tech, Computational Modeling and Data Analytics)."),),
-                            
-                            #p(a(href = 'www.linkedin.com/in/timothyspierce', 'Timothy Pierce', target = '_blank'), "(Virginia Tech, Agricultural and Applied Economics);",
-                            #  a(href = 'https://www.linkedin.com/in/reginald-mousa-toure-32b550106/', 'Mousa Toure', target = '_blank'), "(Virginia State University, Computer Science);",
-                            #  a(href = 'https://www.linkedin.com/in/christina-prisbe-60966b218/', 'Christina Prisbe', target = '_blank'), "(Virginia Tech, Computational Modeling and Data Analytics)."),
-                            p("", style = "padding-top:10px;")
-                            ),
-                            column(6, align = "center",
-                            h4(strong("Faculty and Associate Team Members")),
-                            img(src = "faculty-gupta.jpg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
-                            p(tags$small(a(href = "https://aaec.vt.edu/people/faculty/gupta-anubhab.html", 'Dr. Anubhab Gupta', target = '_blank'), "(Faculty Lead, Virginia Tech)"),),
-                            
-                            img(src = "faculty-mulu.jpeg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
-                            p(tags$small(a(href = "https://www.vsu.edu/cet/departments/technology/faculty-staff/kahsai-mulugeta.php", 'Dr. Mulugeta Kahsai', target = '_blank'), "(Faculty Affiliate, Virginia State University)"),),
-                            
-                            img(src = "team-leo.jpeg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                            p(tags$small(a(href = 'https://aaec.vt.edu/people/graduatestudents/index/quaye-leonard-allen.html', 'Leonard-Allen Quaye', target = '_blank'), "(Research Associate, Virginia Tech)"),),
-                            
-                            #p(a(href = "https://aaec.vt.edu/people/faculty/gupta-anubhab.html", 'Dr. Anubhab Gupta', target = '_blank'), "(Faculty Lead, Virginia Tech);",
-                            #  a(href = "https://www.vsu.edu/cet/departments/technology/faculty-staff/kahsai-mulugeta.php", 'Dr. Mulugeta Kahsai', target = '_blank'), "(Faculty Affiliate, Virginia State University);",
-                            #  a(href = 'https://aaec.vt.edu/people/graduatestudents/index/quaye-leonard-allen.html', 'Leonard-Allen Quaye', target = '_blank'), "(Research Associate, Virginia Tech)."),
-                            p("", style = "padding-top:10px;")
-                            )
-                            ),
-                          fluidRow(style = "margin-left: 300px; margin-right: 300px;",
-                            h4(strong("Project Stakeholders")),
-                            p("VPI-SU Extension Professionals, Board of Supervisions, local government organizations, local field offices, and County Planning Commission in Rappahannock county"),
-                            p("", style = "padding-top:10px;"),
-                            h4(strong("Acknowledgments")),
-                            p("We would like to thank Kenner Love, Unit Coordinator Extension Agent, Agricultural and Natural Resources Crop & Soil Sciences from the Virginia Cooperative Extension for his support on this project.")
-                          )
-                 ),
-                
-                inverse = T)
-                
-                
-                
->>>>>>> 965d733e73332c8e7de3cda5b58a8f396f1984ed
 # server -----------------------------------------------------------
 server <- function(input, output, session) {
 # Run JavaScript Code
@@ -939,16 +757,6 @@ server <- function(input, output, session) {
     
   })
   # rmt plot output
-<<<<<<< HEAD
-  filtered <- reactive({
-    rmt_data_mean_weeks %>%
-      #filter(Villages==input$village)
-      filter(Villages %in% input$village)
-  })
-  
-  output$rmt <- renderPlot({
-    ggplot(filtered(), aes(x = weeks
-=======
   # Filter by inputt
   filtered_rmt <- reactive({
     rmt_data_mean_weeks %>%
@@ -957,7 +765,6 @@ server <- function(input, output, session) {
   # Plot
   output$rmt <- renderPlot({
     ggplot(filtered_rmt(), aes(x = weeks
->>>>>>> 965d733e73332c8e7de3cda5b58a8f396f1984ed
                            , y = mean_rmt_per_week, color = Villages)) + 
       geom_line() +
       theme_classic() +
@@ -969,14 +776,6 @@ server <- function(input, output, session) {
     
     
   })
-<<<<<<< HEAD
-  output$rmt_table <- DT::renderDT({
-    filtered()
-  })
-  output$rmt_method <- renderPlot({
-    rmt_method_plot
-  })
-=======
   # Render rmt table
   output$rmt_table <- DT::renderDT({
     avg_rmt
@@ -986,23 +785,19 @@ server <- function(input, output, session) {
     rmt_method_plot
   })
   # Render purpose plot
->>>>>>> 965d733e73332c8e7de3cda5b58a8f396f1984ed
   output$rmt_purpose <- renderPlot({
     rmt_purpose_plot
   })
   # exp plot ouput
-<<<<<<< HEAD
-=======
+
   # Filter by input
->>>>>>> 965d733e73332c8e7de3cda5b58a8f396f1984ed
+
   filtered_exp <- reactive({
     exbyvil %>% 
       filter(village %in% input$village_exp)
   })
-<<<<<<< HEAD
-=======
+
   # Plot
->>>>>>> 965d733e73332c8e7de3cda5b58a8f396f1984ed
   output$exp <- renderPlot({
     ggplot(filtered_exp(), aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) +
       geom_line() +
@@ -1010,13 +805,7 @@ server <- function(input, output, session) {
            x="Date", y="Average Weekly Expenditure (INR)") +
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
     
-    
-<<<<<<< HEAD
-  }
   
-  
-    )
-=======
   })
   # Render exp filtered table 
   output$exp_table <- DT::renderDT({
@@ -1039,10 +828,8 @@ server <- function(input, output, session) {
   output$inc_table <- DT::renderDT({
     avg_inc_table
   })
->>>>>>> 965d733e73332c8e7de3cda5b58a8f396f1984ed
-  
-}
 
+}
 
 
 shinyApp(ui = ui, server = server)
