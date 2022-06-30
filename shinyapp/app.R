@@ -625,31 +625,76 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
               
                
                 ## Shocks Tab --------------------------------------------
+                
                 navbarMenu("Shocks" , 
                 tabPanel("Shocks in the Sundarbans", value = "",
-                         fluidRow(style = "margin: 6px;",
-                                  h1(strong("Shocks"), align = "center"),
-                                  p("", style = "padding-top:10px;"),
-                                  column(12,h4(strong("Overview")),
-                                         p("Over time"),
-                                         br("")
-                                         
-                                         
-                                  ) ),
+
                            # Show a plot of the generated plot
-                               tabPanel("All The Shocks", plotOutput("shocks_all")),
-                               tabPanel("Shocks by Village", plotOutput("shocks_village")),
-                               tabPanel("Shocks by the Year", plotOutput("shocks_by_year")),
-                               tabPanel("Shocks in 2009", plotOutput("shocks_plot_2009")),
-                               tabPanel("Copes in 2009", plotOutput("cope_2009_plot")),
-                               tabPanel("Relocations after Shock in 2009", plotOutput("shock_relocation_2009_yn")),
-                               tabPanel("Where Relocation took place", plotOutput("shock_relocation_2009")),
+                  tabPanel("All The Shocks", plotOutput("shocks_all"),
+                           fluidRow(style = "margin: 6px;",
+                                    p("", style = "padding-top:10px;"),
+                                    column(12,h4(strong("Analysis")),
+                                           br("whats up ")
+                                          )
+                                  )
+                           ),
+                              
+                  
+                   tabPanel("Shocks by Village", plotOutput("shocks_village"),
+                            fluidRow(
+                                     p("", style = "padding-top:10px;"),
+                                     column(12,h4(strong("Analysis")),
+                                            br("whats up ")
+                                           )
+                                    )
+                          ),
+                    
+                  tabPanel("Shocks by the Year", plotOutput("shocks_by_year"),
+                           fluidRow(style = "margin: 6px;",
+                                    p("", style = "padding-top:10px;"),
+                                    column(12,h4(strong("Analysis")),
+                                           br("whats up ")
+                                          )
+                                  )
+                           ),
+                  
+                  tabPanel("Shocks in 2009", plotOutput("shocks_plot_2009"),
+                           fluidRow(style = "margin: 6px;",
+                                    p("", style = "padding-top:10px;"),
+                                    column(12,h4(strong("Analysis")),
+                                           br("whats up ")
+                                          )
+                                  )
+                           ),
+                  
+                  tabPanel("Copes in 2009", plotOutput("cope_2009_plot"),
+                           fluidRow(style = "margin: 6px;",
+                                    p("", style = "padding-top:10px;"),
+                                    column(12,h4(strong("Analysis")),
+                                           br("whats up ")
+                                          )
+                                    )
+                           ),
+                  
+                  tabPanel("Relocations after Shock in 2009", plotOutput("shock_relocation_2009_yn"),
+                           fluidRow(style = "margin: 6px;",
+                                    p("", style = "padding-top:10px;"),
+                                    column(12,h4(strong("Analysis")),
+                                           br("whats up ")
+                                          )
+                                   )
+                           ),
+                  
+                  tabPanel("Where Relocation took place", plotOutput("shock_relocation_2009"),
+                           fluidRow(
+                                  column(8,h4(strong("Analysis")),
+                                           br("whats up ")
+                                          )
+                                  )
+                          ),
                              
-                           
-                           
-                         
                 ),  
-                
+    #the comma above separates the two sub-tabs in Shocks            
                 
                 
                 tabPanel("Dynamic Plot",

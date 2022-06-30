@@ -23,10 +23,10 @@ slice(1:306,)
 shocks <- baseline %>% select(shk1,shk2,shk3,shk4,shk5,shk6,shk7)
 shocks <- data.frame(y=unlist(shocks))
 colnames(shocks) <- c('shock_nmb')
-shock_labels <- c('None', 'Crop Loss', 'Loss of vegetation', 'Damage caused by saline water encroachment','Forced to move due to Flooding', 'Loss of agricultural land by river erosion','Loss of home by river erosion/cyclone', 'Loss of livestock', 'Loss of business/shop/etc. due to rising water levels', 'Unexpected death or health consequence in Household', 'Other')
+shock_labels <- c('None', 'Crop Loss', 'Loss of vegetation', 'Damage(saline water)','Forced to move(Flooding)', 'Loss of agricultural land(river erosion)','Loss of home(river erosion/cyclone)', 'Loss of livestock', 'Loss of business/shop/etc.', 'Death/health issues', 'Other')
 
 
-ggplot(shocks, aes(shock_nmb)) + geom_histogram() + labs(x = "", y = "Occurances" ,title = "Frequency of Each Shock") + theme(axis.text = element_text(size = 7)) + scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10),labels = str_wrap(shock_labels, width = 25) ,limits = 0:10) + coord_flip()
+ggplot(shocks, aes(reorder(-shock_nmb)) + geom_histogram() + labs(x = "", y = "Occurances" ,title = "Frequency") + theme(axis.text = element_text(size = 7)) + scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10),labels = str_wrap(shock_labels, width = 25) ,limits = 0:10) + coord_flip()
 ```
 
 
