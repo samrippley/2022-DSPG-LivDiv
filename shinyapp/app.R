@@ -418,13 +418,41 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                  ),
                  
                  ## Tab Date Intro--------------------------------------------
-                 tabPanel("Data",
+                 tabPanel("Data", value = "overview",
+                          fluidRow(style = "margin: 2px;",
+                                   align = "center",
+                                   # br("", style = "padding-top:2px;"),
+                                   # img(src = "uva-dspg-logo.jpg", class = "topimage", width = "20%", style = "display: block; margin-left: auto; margin-right: auto;"),
+                                   br(""),
+                                   h1(strong("Data")
+                                   )
+                          ),
                           fluidRow(style = "margin: 6px;",
-                                   h1(strong("We have BL and FD"), align = "center"),
-                                   p("", style = "padding-top:10px;")
+                                   column(4,
+                                          h2(strong("The Setting")),
+                                          
+                                          
+                                          ),
+                                   column(4,
+                                          h2(strong("Project Background")),
+                                          
+                                          p("Should I talk about our stakeholders and their research here?"),
+                                          
+                                          p("There are many threats that the Sundarbans faces today due to both synthetic and natural causes. Due to the increased frequency of cyclones in the last decade, the forest has been incurring severe damage and gradually shrinking. It has nearly halved over the last two decades. The rising sea level is leading to higher salinity and reduced freshwater leading to more fallow lands. Poor infrastructure in the region leads to the area taking the brunt of the cyclones. The well-integrated ecosystem-based livelihoods are being threatened. Agricultural dependent families face a prominent level of existing poverty due to inadequate infrastructure, transportation, and storage shortages. Remittance income from domestic migration is becoming one of major sources of income. ")
+                                          
+                                   ),
                                    
-                          ) 
-                 ), 
+                                   column(4,
+                                          h2(strong("Project Goals")),
+                                          p("The climate crisis is global; however, its impact is not felt equally across all regions. Some regions will be hit worse than others due to a range of several factors. Developing countries, places with widespread poverty, countries with ineffective governments, or those facing conflicts, etc., face the gravest risks from the changing climate, and are usually poorly equipped to find ways to prepare for and prevent environmental threats. Climate change has caused higher temperatures, droughts, floods, rising sea levels, along with the worsening of extreme weather patterns."),
+                                          p("There is a disproportionate burden of climate change borne by impoverished people in developing countries. Most of these people are involved in small-scale agriculture and these farmers' lives are forcibly changing as they must diversify their livelihood strategies to cope with climate change, especially in climate-vulnerable regions of the world."),
+                                          p("Measuring the future impact of climate change is challenging, scientists’ climate change projections cannot be completely exact as there are many factors that come into play such as the risk of extreme weather events and rising temperatures. Evaluating non-climatic factors that determine how severely a city or country will be impacted by climate change could be beneficial to aid those affected."),
+                                          p("The overall goal of this project is to evaluate livelihood-diversification, using high frequency data, of the Sundarbans region. The classification of livelihood strategies is important for designing effective and targeted poverty-reducing strategies and aid those effected by shocks such as natural disasters and climate change.")
+                                   )
+                          ),
+                          fluidRow(align = "center",
+                                   p(tags$small(em('Last updated: August 2021'))))
+                 ),
                  
                  ## Sundarbans Region--------------------------------------------
                  tabPanel("Sundarbans Region",
