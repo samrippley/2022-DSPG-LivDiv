@@ -1,3 +1,4 @@
+
 # Load Packages ---------------------------------------------------------------
 library(shiny)
 library(leaflet)
@@ -33,7 +34,6 @@ library(shinyWidgets)
 library(viridis)
 library(RColorBrewer)
 
-
 prettyblue <- "#232D4B"
 navBarBlue <- '#427EDC'
 options(spinner.color = prettyblue, spinner.color.background = '#ffffff', spinner.size = 3, spinner.type = 7)
@@ -44,7 +44,7 @@ village_vector = c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskat
 
 # data -----------------------------------------------------------
 
-load("~/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data/livdivdata.RData")
+#load("~/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data/livdivdata.RData")
 
 baseline <- livdiv %>%
   slice(1:307,)
@@ -131,8 +131,10 @@ countmar <- baseline %>%
   mutate(Gender = case_when(head_female == 1 ~ "Female", 
                             head_female == 0 ~ "Male"))
 
+
 fd <- livdiv %>%
-  slice(-(4:967))
+  select(-(4:967))
+
 
 # remittance data
 rmt <- fd %>% 
@@ -318,100 +320,6 @@ ggplot(avg_tot_inc, aes(date, avg_inc, color = village)) + geom_line() + labs(x 
 avg_inc_table <- fin_diary %>% group_by(date, village) %>% summarize("Date" = date, "Village" = village,"Average Income" = mean(full_inc, na.rm = TRUE))
 avg_inc_table <- avg_inc_table[,-(1:2)]
 
-
-#Shocks Data ------------------------------------------------------------------- 
-## Frequency of each shock (Total baseline)
-shocks <- baseline %>% select(village,shk1,shk2,shk3,shk4,shk5,shk6,shk7)
-shocks <- data.frame(y=unlist(shocks))
-colnames(shocks) <- c('shock_nmb')
-shock_labels <- c('None', 'Crop Loss', 'Loss of vegetation', 'Damage(saline water)','Forced to move(Flooding)', 'Loss of agricultural land(river erosion)',
-                  'Loss of home(river erosion/cyclone)', 'Loss of livestock', 'Loss of business/shop/etc.', 'Death/health issues', 'Other')
-
-shocks_all <- ggplot(shocks, aes(shock_nmb)) + geom_bar(fill = "dark red") + 
-  labs(x = "", y = "Occurances" ,title = "Frequency") + theme(axis.text = element_text(size = 7)) + 
-  scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10),labels = str_wrap(shock_labels, width = 25) ,limits = 0:10) + 
-  coord_flip()
-## Average Shocks by Village
-shocks2 <- baseline %>% select(village, shk_count) %>% 
-  group_by(village) %>% summarize(avg_count = sum(shk_count, na.rm = TRUE)/n())
-
-shocks_village <- ggplot(shocks2, aes(village, avg_count, fill = village)) + geom_col() + 
-  labs(x = "", y = "No. of Shocks" ,title = "Shocks by Village", fill = "Village") + 
-  theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d() + coord_polar()
-
-
-## Total Shocks by Year
-shock_year <- baseline %>% select(village, shk_2009_count, shk_2010_count, shk_2011_count, 
-                                  shk_2012_count, shk_2013_count, shk_2014_count, 
-                                  shk_2015_count, shk_2016_count, shk_2017_count,shk_2018_count) %>% 
-  summarize("2009" = sum(shk_2009_count), "2010" = sum(shk_2010_count), "2011" = sum(shk_2011_count), "2012" = sum(shk_2012_count), 
-            "2013" = sum(shk_2013_count), "2014" = sum(shk_2014_count), "2015" = sum(shk_2015_count), "2016" = sum(shk_2016_count),
-            "2017" = sum(shk_2017_count), "2018" = sum(shk_2018_count))
-
-shocks_year_long <- gather(shock_year, year, count, "2009":"2018")
-
-shocks_by_year <- ggplot(shocks_year_long, aes(year, count, fill = year)) + geom_col() + 
-  labs(x = "", y = "Number of Shocks" ,title = "Total Shocks by Year") + 
-  theme(axis.ticks.x=element_blank(), legend.position="none") + scale_fill_viridis_d() 
-
-## Frequency of each shocks in 2009
-
-shocks_2009 <- baseline %>% select(shk_2009_type1, shk_2009_type2, shk_2009_type3, shk_2009_type4, shk_2009_type5, shk_2009_type6)
-shock_labels_2009 <- c('None', 'Crop Loss', 'Loss of vegetation', 'Damage caused by saline water encroachment',
-                       'Forced to move due to Flooding', 'Loss of agricultural land by river erosion',
-                       'Loss of home by river erosion/cyclone', 'Loss of livestock', 'Loss of business/shop/etc. due to rising water levels', 
-                       'Unexpected death or health consequence in Household', 'Other')
-shocks_2009 <- data.frame(y=unlist(shocks_2009))
-colnames(shocks_2009) <- c('shk')
-
-shocks_plot_2009 <-ggplot(shocks_2009, aes(shk)) + geom_bar(fill = "dark red") + 
-  labs(x = "", y = "Occurances" ,title = "Shocks for 2009") + theme(axis.text = element_text(size = 7)) + 
-  scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10),labels = str_wrap(shock_labels_2009, width = 25) ,limits = 0:10) + 
-  coord_flip()
-## Type of Cope after 2009 Shock
-
-shocks_cope <- baseline %>% select(village, shk_2009_cope) 
-
-cope_labels <- c("Did not do anything","Unconditional help provided by relatives/friends",
-                 "Unconditional help provided by local government", "Changed dietary practices involuntarily", 
-                 "Changed cropping practices", "Household member(s) took on more non-farm employment", 
-                 "Household member(s) took on more farm wage employment", "Household member(s) migrated",
-                 "Relied on savings", "Obtained credit", "Sold durable household assets", "Sold land/building", 
-                 "Rented out land/building","Distress sales of animal stock", "Sent children to live elsewhere",
-                 "Reduced expenditures on health and education","Do not know/Do not want to answer")
-
-shocks_cope$shk_2009_cope<-replace(shocks_cope$shk_2009_cope, shocks_cope$shk_2009_cope == 997, 16)
-
-cope_2009_plot <- ggplot(shocks_cope, aes(shk_2009_cope, fill = village)) + geom_bar() +
-  labs(x = "", y = "" ,title = "Type of Cope after 2009 shocks", fill = "Village") + scale_fill_viridis_d() +
-  theme(axis.text = element_text(size = 6)) +
-  scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), labels = str_wrap(cope_labels, width = 30), limits = 0:20) + 
-  coord_flip() 
-
-## Relocation Status after 2009 Shock
-
-shock_relocation <- baseline %>% select(village, shk_2009_reloc_yn)
-
-relocation_labels <- c("No", "Yes, for under a month", "Yes, for over a month")
-
-shock_relocation_2009_yn <- ggplot(shock_relocation, aes(shk_2009_reloc_yn, fill = village)) + geom_bar() + 
-  labs(x = "", y = "No. of Households" ,title = "Relocation Status after Shock", fill = "Village") + 
-  scale_x_discrete(breaks = c(0,1,2), labels = str_wrap(relocation_labels, width = 30), limits = 0:2) + 
-  scale_fill_viridis_d()
-
-## Where they Relocated after 2009 Shock
-
-shock_relocation_where <- baseline %>% select(village, shk_2009_reloc1)
-
-relocation_where_labels <- c("Within same village","Other village in Sundarbans",
-                             "Village outside Sundarbans, within West Bengal", "Kolkata", 
-                             "Other Urban area outside Sundarbans, within West Bengal","Urban area outside West Bengal")
-
-shock_relocation_2009 <- ggplot(shock_relocation_where, aes(shk_2009_reloc1, fill = village)) + geom_bar() + 
-  labs(x = "", y = "No. of Households" ,title = "Relocation Areas", fill = "Village") + 
-  scale_x_discrete(breaks = c(1,2,3,4,5,6), labels = str_wrap(relocation_where_labels, width = 20), limits = 1:6) + 
-  scale_fill_viridis_d() + coord_flip() +  theme(axis.text = element_text(size = 8))
-
 #--------------------------------------------------------------------
 
 # CODE TO DETECT ORIGIN OF LINK AND CHANGE LOGO ACCORDINGLY
@@ -466,7 +374,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                  theme = shinytheme("lumen"),
                  tags$head(tags$style('.selectize-dropdown {z-index: 10000}')),
                  useShinyjs(),
-
+                 
                  # main tab -----------------------------------------------------------
                  tabPanel("Project Overview", value = "overview",
                           fluidRow(style = "margin: 2px;",
@@ -494,7 +402,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                    ),
                                    column(4,
                                           h2(strong("Project Background")),
-                                    
+                                          
                                           p("Should I talk about our stakeholders and their research here?"),
                                           
                                           p("There are many threats that the Sundarbans faces today due to both synthetic and natural causes. Due to the increased frequency of cyclones in the last decade, the forest has been incurring severe damage and gradually shrinking. It has nearly halved over the last two decades. The rising sea level is leading to higher salinity and reduced freshwater leading to more fallow lands. Poor infrastructure in the region leads to the area taking the brunt of the cyclones. The well-integrated ecosystem-based livelihoods are being threatened. Agricultural dependent families face a prominent level of existing poverty due to inadequate infrastructure, transportation, and storage shortages. Remittance income from domestic migration is becoming one of major sources of income. ")
@@ -520,8 +428,8 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                           h2(strong("Data")),
                                           p("We have data on 300 households’ finances/consumption every week for 10 villages from Nov 2018-Oct 2019. The Data we are using consists of a baseline and weekly financial diaries. The baseline information was collected through a survey, data was collected on household demographics, shock history, migration history, agriculture, etc. During the baseline interviews, enumerators trained the households to capture their weekly household income. This was immediately followed by two more rounds of training. The intent of these training sessions was to prepare the households to independently record their financial activities in pre-printed diaries. The field team collected the baseline, along with four weeks of Financial Diaries during their trip.")
                                           
-                                          ),
-                                 
+                                   ),
+                                   
                                    column(8,
                                           h2("Baseline"),
                                           p("Baseline data is a set of information, that is used as the foundation of the data set. It can be used to compare after the high-frequency data is accumulated. This information serves as a starting point, and can be utilized to draw deeper conclusions from the financial diaries."),
@@ -536,26 +444,14 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                    p(tags$small(em('Last updated: August 2021'))))
                  ),
                  
-                
                  ## Sundarbans Region--------------------------------------------
                  tabPanel("Sundarbans Region",
                           fluidRow(style = "margin: 6px;",
                                    h1(strong(""), align = "center"),
-                                   p("", style = "padding-top:10px;")),
-                          fluidRow(style = "margin: 6px;",
-                                   p("", style = "padding-top:10px;"),
-                                   column(12,h4(strong("Map")),
-                                          p("This map shows the Sundarbans area and the 10 villages."),
-                                          br("")
-                                          
-                                          
-                                   )),
-                          fluidPage(
-                            leafletOutput("map_leaflet", width = "100%"),
-                            #p(),
-                            #actionButton("recalc", "New Points")
-                          )
-                 ),
+                                   p("", style = "padding-top:10px;")
+                                   
+                          ) 
+                 ), 
                  
                  ## Tab Demographics --------------------------------------------
                  navbarMenu("Demographics" , 
@@ -574,7 +470,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                                        "Education" = "edu", 
                                                        "Poverty" = "pov", 
                                                        "Marital Status" = "mar"),
-                                                    ), 
+                                                     ), 
                                                      withSpinner(plotOutput("ageplot", height = "500px")),
                                                      
                                               ),
@@ -596,7 +492,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                                      selectInput("ocudrop", "Select Varibiable:", width = "100%", choices = c(
                                                        "Primary Occupation" = "pocu",
                                                        "Secondary Occupation" ="socu"
-                                                       ),
+                                                     ),
                                                      ), 
                                                      withSpinner(plotOutput("ocuplot", height = "500px")),
                                                      
@@ -606,7 +502,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                                      p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
                                                      p("", style = "padding-top:10px;")) 
                                      )), 
-                                     
+                            
                             tabPanel("Financial Behavior", 
                                      fluidRow(style = "margin: 6px;",
                                               h1(strong("Financial Behavior"), align = "center"),
@@ -619,16 +515,16 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                                      h4(strong("Demographics")),
                                                      selectInput("findrop", "Select Varibiable:", width = "100%", choices = c(
                                                        "Age" = "age"
-                                                       ),
+                                                     ),
                                                      ), 
                                                      withSpinner(leafletOutput("demo1")) , 
                                                      p(tags$small("Data Source: BL October 2019")),
                                               ), 
                                               
                                               
-                                    ) ) ), 
-                            
-                                      
+                                     ) ) ), 
+                 
+                 
                  # FD data tab-----------------------------------------------------------
                  
                  navbarMenu("High Frequency Data" ,
@@ -773,147 +669,39 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                             
                             
                  ),
-                 ## Shocks Tab --------------------------------------------
                  
+                 ## Shocks Tab --------------------------------------------
                  navbarMenu("Shocks" , 
-                            tabPanel("Shocks in the Sundarbans", value = "",
-                                     
+                            tabPanel("Shock 1",
                                      fluidRow(style = "margin: 6px;",
-                                              p("", style = "padding-top:10px;"),
-                                              column(12,h4(strong("Analysis")),
-                                                     br("As the Sundarban Region is susceptible to climate change and 
-                                              extreme weather events, some of the most frequent shocks include 
-                                              Loss of home due to river erosion/cyclones, loss of livestock, and 
-                                              loss of crop. These shocks can set back a household financially 
-                                              for many years and also disturb the livelihood of the family. The least 
-                                              common shocks occurring are loss of business/shop or damage by salt water.")
-                                              )
-                                     ),
-                                     
-                                     # Show a plot of the generated plot
-                                     tabPanel("All The Shocks", plotOutput("shocks_all", width = "65%"),
-                                     ),
-                                     
-                                     fluidRow(style = "margin: 6px",
-                                              p("", style = "padding-top:10px;"),
-                                              column(12,h4(strong("Analysis")),
-                                                     br("By breaking down all the shocks that occurred over the nine year period by village, 
-                                          we were able to see if there was any specific village that had a dissproportionate impact 
-                                          by the shocks. Since many of these villages were located close to each other, many of the 
-                                          natural occuring shocks impacted all of the households in a somewhat equal manner.")
-                                              )
-                                     ),
-                                     
-                                     tabPanel("Shocks by Village", plotOutput("shocks_village", width = "65%")
-                                     ),
-                                     fluidRow(style = "margin: 6px",
-                                              p("", style = "padding-top:10px;"),
-                                              column(12,h4(strong("Analysis")),
-                                                     br("In the past decade and a half, the most devastating cyclones 
-                                           in the region took place in 2007,2009, 2019, 2020, and 2021. This graph does 
-                                           a good job showing the effect of the 2009 cyclone(Aila) and the high proportion 
-                                           of shocks taking place in that year as a result. Many of the households during 
-                                           this year had 2,3 and sometimes 4 shocks making it a devastating impact for all the households. ")
-                                              )
-                                     ),
-                                     
-                                     
-                                     tabPanel("Shocks by the Year", plotOutput("shocks_by_year", width = "65%"),
-                                              fluidRow(style = "margin: 6px;",
-                                                       p("", style = "padding-top:10px;"),
-                                                       column(12,h4(strong("Analysis")),
-                                                              br("Since 2009 had almost 900 shocks out of the 1200 in the span collected, we 
-                                              wanted to take a further look at the type of shocks taking place during that 
-                                              year. Just like the total shocks over the 9 year period, Loss of home due to 
-                                              erosion and cyclones is the leading shock due to the cyclone Aila taking place.")
-                                                       )
-                                              )
-                                     ),
-                                     
-                                     tabPanel("Shocks in 2009", plotOutput("shocks_plot_2009", width = "65%"),
-                                              fluidRow(style = "margin: 6px;",
-                                                       p("", style = "padding-top:10px;"),
-                                                       column(12,h4(strong("Analysis")),
-                                                              br("After the many shocks occurring in 2009, the households coped by taking steps like 
-                                              obtaining credit or pursuing other jobs. By far the most common cope was unconditional 
-                                              help by the government followed by help from friends or relatives. Often times, families did nothing 
-                                              and tried to 'whether the storm' until times are better.")
-                                                       )
-                                              )
-                                     ),
-                                     
-                                     tabPanel("Copes in 2009", plotOutput("cope_2009_plot", width = "65%"),
-                                              fluidRow(style = "margin: 6px;",
-                                                       p("", style = "padding-top:10px;"),
-                                                       column(12,h4(strong("Analysis")),
-                                                              br("Relocation is common after shocks occur in the region and often times households are 
-                                              relocated for less than a month. Around 80 households don't relocate after a shock and 
-                                              75 households relocate for more than a month as well. ")
-                                                       )
-                                              )
-                                              
-                                     ),
-                                     
-                                     tabPanel("Relocations after Shock in 2009", plotOutput("shock_relocation_2009_yn", width = "65%"),
-                                              fluidRow(style = "margin: 6px;",
-                                                       p("", style = "padding-top:10px;"),
-                                                       column(12,h4(strong("Analysis")),
-                                                              br("With a vast majority of households saying that they relocate for either less or more than a month, 
-                                              many of these households relocate to a safer place in the same village. Less frequently do the 
-                                              households relocate to Kolkata(the biggest city nearby) or other villages around the Sundarbans.")
-                                                       )
-                                              )
-                                     ),
-                                     
-                                     tabPanel("Where Relocation took place", plotOutput("shock_relocation_2009", width = "65%")
-                                     ),
-                                     
-                            ),  
-                            #the comma above separates the two sub-tabs in Shocks            
-                            
-                            
-                            tabPanel("Dynamic Plot",
-                                     fluidRow(style = "margin: 6px;",
-                                              h1(strong("Dynamic Shocks"), align = "center"),
+                                              h1(strong("Shocking"), align = "center"),
                                               p("", style = "padding-top:10px;")
                                               
-                                     ),
-                                     
-                                     sidebarLayout(
-                                       sidebarPanel(
-                                         #tags$h2("Select/Deselect all"),
-                                         pickerInput("village_selecter", "Select Village:", choices = village_vector, 
-                                                     selected = village_vector,
-                                                     multiple = T, options = list(`actions-box` = T)),
-                                         
-                                       ),
-                                       
-                                       # Show a plot of the generated plot
-                                       mainPanel(
-                                         tabsetPanel(
-                                           tabPanel("Cope",plotOutput("cope_2009")),
-                                           tabPanel("Relocation_yn",plotOutput("relocation_2009_yn")),
-                                           tabPanel("Relocation",plotOutput("relocation_2009")),
-                                         )
-                                       ),
-                                       
-                                     )
-                                     
+                                     ) 
                             ), 
                             
+                            
+                            
+                            tabPanel("Shock 2",
+                                     fluidRow(style = "margin: 6px;",
+                                              h1(strong("Shocking"), align = "center"),
+                                              p("", style = "padding-top:10px;")
+                                              
+                                     ) 
+                            ), 
                  ), 
                  
-       
-                inverse = T)
-                
-                
-                
+                 
+                 inverse = T)
+
+
+
 # server -----------------------------------------------------------
 server <- function(input, output, session) {
-# Run JavaScript Code
- runjs(jscode)
-                  
-
+  # Run JavaScript Code
+  runjs(jscode)
+  
+  
   #age tabset -----------------------------------------------------
   ageVar <- reactive({
     input$agedrop
@@ -922,24 +710,24 @@ server <- function(input, output, session) {
   output$ageplot <- renderPlot({
     if (ageVar() == "age") {
       
-    fplot <- ggplot(baseline, aes(x = head_age)) +
-      geom_histogram(fill = "cornflowerblue", 
-                     color = "white", bins = 20
-      ) + 
-      labs(title="Age of Household Heads",
-           y = "Number of Household Heads") +
-      theme_classic() +
-      scale_x_continuous(breaks = c(20, 30, 40, 50, 60, 70, 80), name="Age", limits=c(20, 80))
-    fplot
+      fplot <- ggplot(baseline, aes(x = head_age)) +
+        geom_histogram(fill = "cornflowerblue", 
+                       color = "white", bins = 20
+        ) + 
+        labs(title="Age of Household Heads",
+             y = "Number of Household Heads") +
+        theme_classic() +
+        scale_x_continuous(breaks = c(20, 30, 40, 50, 60, 70, 80), name="Age", limits=c(20, 80))
+      fplot
     }
     else if (ageVar() == "edu") {
-    splot <- ggplot(by_villagemore, aes(x = "", y= head_edu, fill = village)) +
-      geom_bar(width = 1, stat = "identity") +
-      facet_wrap(~village, ncol = 5) +
-      geom_text(aes(label = sub), position = position_stack(vjust=1.1)) +
-      labs(title = "Mean Years of Education for Head of Households", x = NULL, y = "Years of Education") +
-      theme(legend.position="none") 
-    splot
+      splot <- ggplot(by_villagemore, aes(x = "", y= head_edu, fill = village)) +
+        geom_bar(width = 1, stat = "identity") +
+        facet_wrap(~village, ncol = 5) +
+        geom_text(aes(label = sub), position = position_stack(vjust=1.1)) +
+        labs(title = "Mean Years of Education for Head of Households", x = NULL, y = "Years of Education") +
+        theme(legend.position="none") 
+      splot
     }
     else if (ageVar() == "pov") {
       village_pl_count_plot <- ggplot(dat_pl, aes(x= villages_2, y = values_pl, fill = Key)) + 
@@ -951,7 +739,7 @@ server <- function(input, output, session) {
         geom_text(aes(label = prop_pl_values), size = 2.5, nudge_y = -1)
       village_pl_count_plot
     }
- else if (ageVar() == "mar") {
+    else if (ageVar() == "mar") {
       marplot <- ggplot(countmar, aes(x = head_married, y = n, fill = Gender)) +
         geom_col() +
         labs(title = "Household Heads' Marital Status", x = "Not Married                       Married", y = "Number of Household Heads") +
@@ -980,182 +768,96 @@ server <- function(input, output, session) {
         scale_x_continuous(breaks = c(20, 30, 40, 50, 60, 70, 80), name="Age", limits=c(20, 80))
       fplot
     } 
-  else if (ocuVar() == "socu") {
-    socplot <- ggplot(scountv, aes(x = job, y = n, fill = village)) +
-      geom_col() +
-      scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
-      coord_flip() +
-      theme_minimal () +
-      labs(title = "Secondary Occupation of Household Heads", x = "", y = "") +
-      scale_fill_brewer(palette="Spectral")
-    socplot
-  }
+    else if (ocuVar() == "socu") {
+      socplot <- ggplot(scountv, aes(x = job, y = n, fill = village)) +
+        geom_col() +
+        scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
+        coord_flip() +
+        theme_minimal () +
+        labs(title = "Secondary Occupation of Household Heads", x = "", y = "") +
+        scale_fill_brewer(palette="Spectral")
+      socplot
+    }
   })
-
+  
+  
   
   # rmt plot output
-# Filter by inputt
-filtered_rmt <- reactive({
-  rmt_data_mean_weeks %>%
-    filter(Villages %in% input$village_rmt)
-})
-# Plot
-output$rmt <- renderPlot({
-  ggplot(filtered_rmt(), aes(x = weeks
-                             , y = mean_rmt_per_week, color = Villages)) + 
-    geom_line() +
-    theme_classic() +
-    labs(x = "Date", y = "Average Remittance Income [Rupee]") +
-    ggtitle("Average Weekly Remittance Income")+ #(11/16/18 - 10/31/19)
-    #scale_color_brewer(palette = "Spectral")+
-    scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
-  #annotate(geom = "text", aes(x = unlist(months)))
-
-})
-
-# Render rmt table
-output$rmt_table <- DT::renderDT({
-  avg_rmt
-})
-# Render method plot
-output$rmt_method <- renderPlot({
-  rmt_method_plot
-})
-# Render purpose plot
-output$rmt_purpose <- renderPlot({
-  rmt_purpose_plot
-})
-# exp plot ouput
-# Filter by input
-filtered_exp <- reactive({
-  exbyvil %>% 
-    filter(village %in% input$village_exp)
-})
-# Plot
-output$exp <- renderPlot({
-  ggplot(filtered_exp(), aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) +
-    geom_line() +
-    labs(title="Average Weekly Expenditure by Village",
-         x="Date", y="Average Weekly Expenditure (INR)") +
-    scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+  # Filter by inputt
+  filtered_rmt <- reactive({
+    rmt_data_mean_weeks %>%
+      filter(Villages %in% input$village_rmt)
+  })
+  # Plot
+  output$rmt <- renderPlot({
+    ggplot(filtered_rmt(), aes(x = weeks
+                               , y = mean_rmt_per_week, color = Villages)) + 
+      geom_line() +
+      theme_classic() +
+      labs(x = "Date", y = "Average Remittance Income [Rupee]") +
+      ggtitle("Average Weekly Remittance Income")+ #(11/16/18 - 10/31/19)
+      #scale_color_brewer(palette = "Spectral")+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+    #annotate(geom = "text", aes(x = unlist(months)))
+    
+    
+  })
+  # Render rmt table
+  output$rmt_table <- DT::renderDT({
+    avg_rmt
+  })
+  # Render method plot
+  output$rmt_method <- renderPlot({
+    rmt_method_plot
+  })
+  # Render purpose plot
+  output$rmt_purpose <- renderPlot({
+    rmt_purpose_plot
+  })
+  # exp plot ouput
+  # Filter by input
+  filtered_exp <- reactive({
+    exbyvil %>% 
+      filter(village %in% input$village_exp)
+  })
+  # Plot
+  output$exp <- renderPlot({
+    ggplot(filtered_exp(), aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) +
+      geom_line() +
+      labs(title="Average Weekly Expenditure by Village",
+           x="Date", y="Average Weekly Expenditure (INR)") +
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+    
+    
+  })
+  # Render exp table 
+  output$exp_table <- DT::renderDT({
+    expend_table
+  })
+  # Render income plot output
+  # Filter by input
+  filtered_inc <- reactive({
+    avg_tot_inc %>% 
+      filter(village %in% input$village_inc)
+  })
+  # Plot
+  output$inc <- renderPlot({
+    ggplot(filtered_inc(), aes(date, avg_inc, color = village)) + 
+      geom_line() + 
+      labs(x = "", y = "Income (INR)", title = "Average Weekly Household Income by village", color = "Village") 
+    
+  })
+  #Render inc table
+  output$inc_table <- DT::renderDT({
+    avg_inc_table
+  })
+  # Render coast vid
   
-  
-})
-# Render exp table 
-output$exp_table <- DT::renderDT({
-  expend_table
-})
-# Render income plot output
-# Filter by input
-filtered_inc <- reactive({
-  avg_tot_inc %>% 
-    filter(village %in% input$village_inc)
-})
-# Plot
-output$inc <- renderPlot({
-  ggplot(filtered_inc(), aes(date, avg_inc, color = village)) + 
-    geom_line() + 
-    labs(x = "", y = "Income (INR)", title = "Average Weekly Household Income by village", color = "Village") 
-  
-})
-#Render inc table
-output$inc_table <- DT::renderDT({
-  avg_inc_table
-})
-
-
-
-
-###Shock plot output  -----------------------------------------------------
-
-#shock_all plot output
-output$shocks_all <- renderPlot({
-  shocks_all
-})
-
-#shock_village plot output
-output$shocks_village <- renderPlot({
-  shocks_village
-})
-
-#shock_by_year plot output
-output$shocks_by_year <- renderPlot({
-  shocks_by_year
-})
-
-#shock_2009 plot output
-output$shocks_plot_2009 <- renderPlot({
-  shocks_plot_2009
-})
-
-#cope_2009 plot output
-output$cope_2009_plot <- renderPlot({
-  cope_2009_plot
-})
-
-#shock_relocation_2009_yn plot output
-output$shock_relocation_2009_yn <- renderPlot({
-  shock_relocation_2009_yn
-})
-
-#shock_relocation_2009 plot output
-output$shock_relocation_2009 <- renderPlot({
-  shock_relocation_2009
-})
-
-#Cope_plot_2009 filter 
-
-filtered_cope <- reactive({
-  shocks_cope %>%
-    filter(village %in% input$village_selecter)
-})
-
-output$cope_2009 <- renderPlot({
-  ggplot(filtered_cope(), aes(shk_2009_cope, fill = village)) + geom_histogram() + 
-    labs(x = "", y = "" ,title = "Type of cope after 2009 shocks", fill = "Village") + scale_fill_viridis_d() + 
-    theme(axis.text = element_text(size = 5)) +
-    scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), labels = str_wrap(cope_labels, width = 30), limits = 0:20) + 
-    coord_flip() 
-})
-
-#Cope_plot_2009 filter 
-
-filtered_relocation_yn <- reactive({
-  shock_relocation %>%
-    filter(village %in% input$village_selecter)
-})
-
-output$relocation_2009_yn <- renderPlot({
-  ggplot(filtered_relocation_yn(), aes(shk_2009_reloc_yn, fill = village)) + geom_bar() + 
-    labs(x = "", y = "No. of Households" ,title = "Relocation Status after Shock", fill = "Village") + 
-    scale_x_discrete(breaks = c(0,1,2), labels = str_wrap(relocation_labels, width = 30), limits = 0:2) + 
-    scale_fill_viridis_d()
-  
-})
-
-
-
-filtered_relocation <- reactive({
-  shock_relocation_where %>%
-    filter(village %in% input$village_selecter)
-  
-})
-
-
-output$relocation_2009 <- renderPlot({
-  
-  ggplot(filtered_relocation(), aes(shk_2009_reloc1, fill = village)) + 
-    geom_bar() + labs(x = "", y = "No. of Households" ,title = "Relocation Areas", fill = "Village") + 
-    scale_x_discrete(breaks = c(1,2,3,4,5,6), labels = str_wrap(relocation_where_labels, width = 20), limits = 1:6) + 
-    scale_fill_viridis_d() + coord_flip() +  theme(axis.text = element_text(size = 8))
-  
-  
-})
 }
 
+
+
 shinyApp(ui = ui, server = server)
-
-
 
 
 
