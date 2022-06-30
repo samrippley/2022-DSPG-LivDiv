@@ -29,7 +29,7 @@ plot(gadm_shp)
 
 
 
-sunshp <- subset(gadm_shp, NAME_2 == c('South 24 Parganas', 'North 24 Parganas'))
+sunshp <- subset(gadm_shp, NAME_2 %in% c('South 24 Parganas', 'North 24 Parganas'))
 
 leaflet()  %>% 
   addProviderTiles("CartoDB")  %>% 
