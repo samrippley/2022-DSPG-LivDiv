@@ -33,7 +33,6 @@ library(shinyWidgets)
 library(viridis)
 library(RColorBrewer)
 
-
 prettyblue <- "#232D4B"
 navBarBlue <- '#427EDC'
 options(spinner.color = prettyblue, spinner.color.background = '#ffffff', spinner.size = 3, spinner.type = 7)
@@ -45,7 +44,6 @@ village_vector = c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskat
 # data -----------------------------------------------------------
 
 load("~/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data/livdivdata.RData")
-
 
 baseline <- livdiv %>%
   slice(1:307,)
@@ -677,7 +675,9 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                           ) 
                  ), 
                  
+                 
                  inverse = T)
+
 
 
 # server -----------------------------------------------------------
@@ -830,6 +830,7 @@ server <- function(input, output, session) {
   })
   
 }
+
 
 
 shinyApp(ui = ui, server = server)
