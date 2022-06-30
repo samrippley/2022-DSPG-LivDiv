@@ -1,0 +1,112 @@
+---
+title: "Sundarbans&Villages"
+author: "Nandini Das"
+date: '2022-06-29'
+output: 
+  html_document:
+    toc: yes
+    toc_depth: 4
+    toc_float:
+      collapsed: yes
+    theme: readable
+  pdf_document:
+    toc: yes
+    toc_depth: '4'
+colorlinks: yes
+urlcolor: blue
+linkcolor: blue
+citecolor: blue
+anchorcolor: blue
+toccolor: blue
+fontsize: 14pt
+---
+```{r, message=FALSE}
+library(dplyr)
+library(tidycensus)
+library(ggplot2)
+library(mapdeck)
+library(shiny)
+library(shinythemes)
+library(shinyjs)
+library(ggplot2)
+library(maps)
+library(plotly)
+library(DT)
+library(dplyr)
+library(tigris)
+library(tidyverse)
+library(tidycensus)
+library(readxl)
+library(collapsibleTree)
+library(shinycssloaders)
+library(leaflet)
+library(leaflet.extras)
+library(rvest)
+library(sf)
+library(shinydashboard)
+library(shinydashboardPlus)
+library(tidygeocoder)
+library(janitor)
+library(dplyr)
+library(ggplot2)
+library(magrittr)
+options(tigris_use_cache = TRUE)
+library(ggwordcloud)
+```
+
+
+
+```{r, message=FALSE}
+require(rgdal)
+ind <- st_read(dsn = "/Users/nandinidas/Desktop/2022-DSPG-LivDiv-/data/GADM", "gadm36_IND_3", stringsAsFactors = TRUE)
+
+sundarban <- subset(ind, NAME_2 %in% c('North 24 Parganas','South 24 Parganas'))
+d.sundarban<-st_union(sundarban)
+#summary(shape@data)
+
+#shape$INTPTLAT <- as.numeric(shape$INTPTLAT)
+#shape$INTPTLON <- as.numeric(shape$INTPTLON)
+
+#par(mar=c(0,0,0,0))
+#plot(d.sundarban, col="darkgreen", bg="white", lwd=0.25, border=0 )
+
+#shp_df <- broom::tidy(shapemap, region = "")
+#lapply(shp_df, class)
+
+```
+
+```{r}
+
+village_all <- st_read(dsn = "/Users/nandinidas/Downloads/fgd-village-selection-main/shapefiles", "Village, GP coordinates", stringsAsFactors = TRUE)
+
+village <- subset(village_all, Village.Na %in% c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur"))
+
+icons <- awesomeIcons(
+  icon = 'ios-close',
+  iconColor = 'black',
+  library = 'ion',
+  markerColor = "lightred"
+)
+
+leaflet(data = d.sundarban) %>%
+  addTiles() %>%
+  addPolygons(
+    fillColor = "green",
+    stroke=TRUE,
+    weight = 1,
+    smoothFactor = 0.2,
+    opacity = 1.0,
+    fillOpacity = 0.7,
+    highlightOptions = highlightOptions(color = "white",
+                                        weight = 2,
+                                        bringToFront = TRUE)) %>%
+   addAwesomeMarkers(~lon, ~lat, label = ~as.character(Village.Na), icon=icons, data=village)
+
+```
+
+#Birajnagar is right behind Bijoynagar
+
+# Pragumti is not there --- I found Praghumti 
+
+# Sagar is not there too --- Gangasagar and Sagar Madhabpur
+
