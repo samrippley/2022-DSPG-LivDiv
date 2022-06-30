@@ -32,6 +32,8 @@ library(lubridate)
 library(shinyWidgets)
 library(viridis)
 library(RColorBrewer)
+library(tidyselect)
+library(magrittr)
 
 
 prettyblue <- "#232D4B"
@@ -132,7 +134,7 @@ countmar <- baseline %>%
                             head_female == 0 ~ "Male"))
 
 fd <- livdiv %>%
-  select(-(4:967))
+  subset(select = c(-(4:967)))
 
 # remittance data
 rmt <- fd %>% 
