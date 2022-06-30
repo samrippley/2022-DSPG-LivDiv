@@ -43,7 +43,7 @@ village_vector = c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskat
 
 # data -----------------------------------------------------------
 
-load("~/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data/livdivdata.RData")
+#load("~/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data/livdivdata.RData")
 
 baseline <- livdiv %>%
   slice(1:307,)
@@ -287,6 +287,100 @@ ggplot(exbyvil, aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) 
   labs(title="Average Weekly Expenditure by Village",
        x="Date", y="Average Weekly Expenditure (INR)") +
   scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+
+#Shocks Data ------------------------------------------------------------------- 
+## Frequency of each shock (Total baseline)
+shocks <- baseline %>% select(village,shk1,shk2,shk3,shk4,shk5,shk6,shk7)
+shocks <- data.frame(y=unlist(shocks))
+colnames(shocks) <- c('shock_nmb')
+shock_labels <- c('None', 'Crop Loss', 'Loss of vegetation', 'Damage caused by saline water encroachment','Forced to move due to Flooding',
+                  'Loss of agricultural land by river erosion','Loss of home by river erosion/cyclone', 'Loss of livestock',
+                  'Loss of business/shop/etc. due to rising water levels', 'Unexpected death or health consequence in Household', 'Other')
+
+shocks_all <- ggplot(shocks, aes(shock_nmb)) + geom_bar() + labs(x = "", y = "Occurances" ,title = "Frequency of Each Shock") + 
+  theme(axis.text = element_text(size = 7)) + 
+  scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10),labels = str_wrap(shock_labels, width = 25) ,limits = 0:10) + coord_flip()
+
+## Average Shocks by Village
+shocks2 <- baseline %>% select(village, shk_count) %>% 
+  group_by(village) %>% summarize(avg_count = sum(shk_count, na.rm = TRUE)/n())
+
+shocks_village <- ggplot(shocks2, aes(village, avg_count, fill = village)) + geom_col() + 
+  labs(x = "", y = "Average number of Shocks" ,title = "Average Shocks by Village", fill = "Village") + 
+  theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d() + coord_polar()
+
+
+## Total Shocks by Year
+shock_year <- baseline %>% select(village, shk_2009_count, shk_2010_count, shk_2011_count, 
+                                  shk_2012_count, shk_2013_count, shk_2014_count, 
+                                  shk_2015_count, shk_2016_count, shk_2017_count,shk_2018_count) %>% 
+  summarize("2009" = sum(shk_2009_count), "2010" = sum(shk_2010_count), "2011" = sum(shk_2011_count), "2012" = sum(shk_2012_count), 
+            "2013" = sum(shk_2013_count), "2014" = sum(shk_2014_count), "2015" = sum(shk_2015_count), "2016" = sum(shk_2016_count),
+            "2017" = sum(shk_2017_count), "2018" = sum(shk_2018_count))
+
+shocks_year_long <- gather(shock_year, year, count, "2009":"2018")
+
+shocks_by_year <- ggplot(shocks_year_long, aes(year, count, fill = year)) + geom_col() + 
+  labs(x = "", y = "Count" ,title = "Total Shocks by Year") + theme(axis.ticks.x=element_blank(), legend.position="none") + 
+  scale_fill_viridis_d() 
+
+## Frequency of each shocks in 2009
+
+shocks_2009 <- baseline %>% select(shk_2009_type1, shk_2009_type2, shk_2009_type3, shk_2009_type4, shk_2009_type5, shk_2009_type6)
+shock_labels_2009 <- c('None', 'Crop Loss', 'Loss of vegetation', 'Damage caused by saline water encroachment',
+                       'Forced to move due to Flooding', 'Loss of agricultural land by river erosion',
+                       'Loss of home by river erosion/cyclone', 'Loss of livestock', 'Loss of business/shop/etc. due to rising water levels', 
+                       'Unexpected death or health consequence in Household', 'Other')
+shocks_2009 <- data.frame(y=unlist(shocks_2009))
+colnames(shocks_2009) <- c('shk')
+
+shocks_plot_2009 <- ggplot(shocks_2009, aes(shk)) + geom_histogram() + 
+  labs(x = "", y = "Occurances" ,title = "Frequency of Each Shock in 2009") + theme(axis.text = element_text(size = 7)) + 
+  scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10),labels = str_wrap(shock_labels_2009, width = 25) ,limits = 0:10) + coord_flip()
+
+## Type of Cope after 2009 Shock
+
+shocks_cope <- baseline %>% select(village, shk_2009_cope) 
+
+cope_labels <- c("Did not do anything","Unconditional help provided by relatives/friends",
+                 "Unconditional help provided by local government", "Changed dietary practices involuntarily", 
+                 "Changed cropping practices", "Household member(s) took on more non-farm employment", 
+                 "Household member(s) took on more farm wage employment", "Household member(s) migrated",
+                 "Relied on savings", "Obtained credit", "Sold durable household assets", "Sold land/building", 
+                 "Rented out land/building","Distress sales of animal stock", "Sent children to live elsewhere",
+                 "Reduced expenditures on health and education","Do not know/Do not want to answer")
+
+shocks_cope$shk_2009_cope<-replace(shocks_cope$shk_2009_cope, shocks_cope$shk_2009_cope == 997, 16)
+
+cope_2009_plot <- ggplot(shocks_cope, aes(shk_2009_cope, fill = village)) + geom_histogram() + 
+  labs(x = "", y = "" ,title = "Type of cope after 2009 shocks", fill = "Village") + scale_fill_viridis_d() + 
+  theme(axis.text = element_text(size = 5)) +
+  scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), labels = str_wrap(cope_labels, width = 30), limits = 0:20) + 
+  coord_flip() 
+
+## Relocation Status after 2009 Shock
+
+shock_relocation <- baseline %>% select(village, shk_2009_reloc_yn)
+
+relocation_labels <- c("No", "Yes, for under a month", "Yes, for over a month")
+
+shock_relocation_2009_yn <- ggplot(shock_relocation, aes(shk_2009_reloc_yn, fill = village)) + geom_histogram() + 
+  labs(x = "", y = "Count" ,title = "Relocation Status after Shock", fill = "Village") + 
+  scale_x_discrete(breaks = c(0,1,2), labels = str_wrap(relocation_labels, width = 30), limits = 0:2) + scale_fill_viridis_d()
+
+## Where they Relocated after 2009 Shock
+
+shock_relocation_where <- baseline %>% select(village, shk_2009_reloc1)
+
+relocation_where_labels <- c("Within same village","Other village in Sundarbans","Village outside Sundarbans, within West Bengal", 
+                             "Kolkata", "Other Urban area outside Sundarbans, within West Bengal",
+                             "Urban area outside West Bengal","Rural area outside West Bengal")
+
+shock_relocation_2009 <- ggplot(shock_relocation_where, aes(shk_2009_reloc1, fill = village)) + geom_histogram() + 
+  labs(x = "", y = "Count" ,title = "Relocation Status after Shock", fill = "Village") + 
+  scale_x_discrete(breaks = c(1,2,3,4,5,6,7), labels = str_wrap(relocation_where_labels, width = 20), limits = 1:7) + 
+  scale_fill_viridis_d() + coord_flip() + theme(plot.title = element_text(hjust = 2))
+
 #--------------------------------------------------------------------
 
 # CODE TO DETECT ORIGIN OF LINK AND CHANGE LOGO ACCORDINGLY
@@ -532,24 +626,41 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                
                 ## Shocks Tab --------------------------------------------
                 navbarMenu("Shocks" , 
-                tabPanel("Shock 1",
+                tabPanel("Shocks in the Sundarbans", value = "",
                          fluidRow(style = "margin: 6px;",
-                                  h1(strong("Shocking"), align = "center"),
+                                  h1(strong("Shocks"), align = "center"),
+                                  p("", style = "padding-top:10px;"),
+                                  column(12,h4(strong("Overview")),
+                                         p("Over time"),
+                                         br("")
+                                         
+                                         
+                                  ) ),
+                           # Show a plot of the generated plot
+                               tabPanel("All The Shocks", plotOutput("shocks_all")),
+                               tabPanel("Shocks by Village", plotOutput("shocks_village")),
+                               tabPanel("Shocks by the Year", plotOutput("shocks_by_year")),
+                               tabPanel("Shocks in 2009", plotOutput("shocks_plot_2009")),
+                               tabPanel("Copes in 2009", plotOutput("cope_2009_plot")),
+                               tabPanel("Relocations after Shock in 2009", plotOutput("shock_relocation_2009_yn")),
+                               tabPanel("Where Relocation took place", plotOutput("shock_relocation_2009")),
+                             
+                           
+                           
+                         
+                ),  
+                
+                
+                
+                tabPanel("Dynamic Plot",
+                         fluidRow(style = "margin: 6px;",
+                                  h1(strong("Dynamic Shocks"), align = "center"),
                                   p("", style = "padding-top:10px;")
                                   
                          ) 
                 ), 
-                
-                
-                
-                 tabPanel("Shock 2",
-                         fluidRow(style = "margin: 6px;",
-                                  h1(strong("Shocking"), align = "center"),
-                                  p("", style = "padding-top:10px;")
-                                  
-                         ) 
-                ), 
-                ), 
+
+            ), 
                 
                 ## FGD tab------------------------------------------
                 tabPanel("Focus Group Discussion",
@@ -725,7 +836,7 @@ server <- function(input, output, session) {
   output$rmt_purpose <- renderPlot({
     rmt_purpose_plot
   })
-  # exp plot ouput
+  # exp plot output
   filtered_exp <- reactive({
     exbyvil %>% 
       filter(village %in% input$village_exp)
@@ -738,14 +849,52 @@ server <- function(input, output, session) {
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
     
     
-  }
+  })
   
+###Shock plot output  -----------------------------------------------------
   
-    )
+  #shock_all plot output
+  output$shocks_all <- renderPlot({
+    shocks_all
+  })
   
+  #shock_village plot output
+  output$shocks_village <- renderPlot({
+    shocks_village
+  })
+  
+  #shock_by_year plot output
+  output$shocks_by_year <- renderPlot({
+    shocks_by_year
+  })
+  
+  #shock_2009 plot output
+  output$shocks_plot_2009 <- renderPlot({
+    shocks_plot_2009
+  })
+  
+  #cope_2009 plot output
+  output$cope_2009_plot <- renderPlot({
+    cope_2009_plot
+  })
+  
+  #shock_relocation_2009_yn plot output
+  output$shock_relocation_2009_yn <- renderPlot({
+    shock_relocation_2009_yn
+  })
+  
+  #shock_relocation_2009 plot output
+  output$shock_relocation_2009 <- renderPlot({
+    shock_relocation_2009
+  })
+
+  
+
+
 }
 
-
-
 shinyApp(ui = ui, server = server)
+
+
+
 
