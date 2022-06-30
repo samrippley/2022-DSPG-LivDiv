@@ -37,7 +37,7 @@ leaflet()  %>%
   addPolygons(data=sunshp,weight=1,col = 'black') %>% 
   addCircleMarkers(data=ourvill, fillOpacity = .3, fillColor = "Village.Na", )
 
-marker cluster
+
     
   
 
