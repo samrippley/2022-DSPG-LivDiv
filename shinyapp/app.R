@@ -33,6 +33,7 @@ library(shinyWidgets)
 library(viridis)
 library(RColorBrewer)
 
+
 prettyblue <- "#232D4B"
 navBarBlue <- '#427EDC'
 options(spinner.color = prettyblue, spinner.color.background = '#ffffff', spinner.size = 3, spinner.type = 7)
@@ -44,6 +45,7 @@ village_vector = c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskat
 # data -----------------------------------------------------------
 
 load("~/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data/livdivdata.RData")
+
 
 baseline <- livdiv %>%
   slice(1:307,)
@@ -158,10 +160,10 @@ rmt2$date <- as_date(rmt2$date)
 village <- c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur") 
 Villages <- rep(village, 49)
 weeks <- c(rep(1,10), rep(2, 10), rep(3,10), rep(4,10), rep(5,10), rep(6,10), rep(7,10), rep(8,10), rep(9,10), rep(10,10), 
-               rep(11,10), rep(12,10), rep(13, 10), rep(14,10), rep(15,10), rep(16, 10), rep(17, 10), rep(18,10), rep(19,10), rep(20,10),
-               rep(21, 10), rep(22,10), rep(23,10), rep(24,10), rep(25,10), rep(26, 10), rep(27,10), rep(28,10), rep(29,10), rep(30,10),
-               rep(31,10), rep(32,10), rep(33,10), rep(34,10), rep(35,10), rep(36,10), rep(37,10), rep(38,10), rep(39,10), rep(40,10),
-               rep(41,10), rep(42,10), rep(43,10), rep(44,10), rep(45,10), rep(46,10), rep(47,10), rep(48,10), rep(49,10)) 
+           rep(11,10), rep(12,10), rep(13, 10), rep(14,10), rep(15,10), rep(16, 10), rep(17, 10), rep(18,10), rep(19,10), rep(20,10),
+           rep(21, 10), rep(22,10), rep(23,10), rep(24,10), rep(25,10), rep(26, 10), rep(27,10), rep(28,10), rep(29,10), rep(30,10),
+           rep(31,10), rep(32,10), rep(33,10), rep(34,10), rep(35,10), rep(36,10), rep(37,10), rep(38,10), rep(39,10), rep(40,10),
+           rep(41,10), rep(42,10), rep(43,10), rep(44,10), rep(45,10), rep(46,10), rep(47,10), rep(48,10), rep(49,10)) 
 week1_rmt_means <- c(0, 5166.667, 11100, 0, 5250, 950, 5000, 0, 0, 0)
 week2_rmt_means <- c(2000, 6000, 4071.429, 1600, 1300, 2700, 0, 2383.333, 3000, 2625)
 week3_rmt_means <- c(2000, 3000, 2033.333, 2500, 3250, 3000, 2000, 1250, 0, 2000)
@@ -247,7 +249,8 @@ Method <- c("Bank", "In person", "Mobile", "Money Order", "Other")
 method_dat <- data.frame(Method, method_counts, stringsAsFactors = T)
 method_values <- c("       397", "       472", "   1", "   1", "    13")
 
-rmt_method_plot <- ggplot(method_dat, aes( x= Method, y = method_counts, fill = Method)) +
+rmt_method_plot <- ggplot(method_dat, aes( x= reorder(Method, -method_counts), y = method_counts, fill = Method)) +
+  
   geom_col(fill = plasma(5, alpha = 1, begin = 0, end = 1, direction = 1)) +
   labs(x = "", y = "Total") +
   theme_classic() +
@@ -257,19 +260,35 @@ rmt_method_plot <- ggplot(method_dat, aes( x= Method, y = method_counts, fill = 
 #--------------------------------------------------------------------
 
 # rmt purpose plot:
+
 Purpose <-  c("Food/Utility Purchases", "Tuition", "Assets/Durable Purchases", "Medical Expenses", "Other", "No Reason")
 purpose_count <- c(594, 37, 27, 93, 128, 43)
 purpose_dat <- data.frame(Purpose, purpose_count, stringsAsFactors = T)
 purpose_values <- c("      594", "      37", "     27", "     93", "      128", "      43")
 
-rmt_purpose_plot <- ggplot(purpose_dat, aes(x = Purpose, y = purpose_count, fill = Purpose)) + 
+rmt_purpose_plot <- ggplot(purpose_dat, aes(x = reorder(Purpose, -purpose_count), y = purpose_count, fill = Purpose)) + 
+  
   geom_col(fill = plasma(6, alpha = 1, begin = 0, end = 1, direction = 1)) +
   labs(x = "", y = "Total") +
   theme_classic() +
   ggtitle("Purpose for Receiving Remittance")+
   #rotate_x_text(angle = 22, size = rel(0.8))
   coord_flip()+
-  geom_text(aes(label = purpose_values), size = 2.4)
+  geom_text(aes(label = purpose_values), size = 3)
+#--------------------------------------------------------------------
+# rmt table
+fd <- livdiv %>%
+  select(-(4:967))
+
+rmt_dat <- fd %>% 
+  select(village, date, week, rmt_total) %>% 
+  arrange(week, village) %>% 
+  group_by(week)
+rmt_dat$date <- as_date(rmt_dat$date)
+avg_rmt <- rmt_dat %>% 
+  group_by(date, village) %>% 
+  summarize("Average Remmitances" = mean(rmt_total, na.rm = T))
+
 #-----------------------------------------------------------------
 
 # Expenditure plot data:
@@ -288,6 +307,23 @@ ggplot(exbyvil, aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) 
        x="Date", y="Average Weekly Expenditure (INR)") +
   scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
 #--------------------------------------------------------------------
+
+# Expenditure table
+expend_table <- expen %>% 
+  group_by(date, village) %>% 
+  summarize("Average Expenditure" = mean(total_spending, na.rm = T))
+#--------------------------------------------------------------------
+# Income plot data:
+fin_diary <- livdiv %>% select(village, date, week, name, full_inc) %>% arrange(week, village) %>% group_by(week) 
+fin_diary$date <- as_date(fin_diary$date)
+avg_tot_inc <- fin_diary %>% group_by(date, village, week) %>% summarize(avg_inc = mean(full_inc, na.rm = TRUE))
+ggplot(avg_tot_inc, aes(date, avg_inc, color = village)) + geom_line() + labs(x = "", y = "Income (INR)", title = "Average Weekly Household Income by village", color = "Village")
+#--------------------------------------------------------------------
+#Income table 
+avg_inc_table <- fin_diary %>% group_by(date, village) %>% summarize("Average Income" = mean(full_inc, na.rm = TRUE))
+
+#--------------------------------------------------------------------
+
 
 # CODE TO DETECT ORIGIN OF LINK AND CHANGE LOGO ACCORDINGLY
 jscode <- "function getUrlVars() {
@@ -341,7 +377,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                  theme = shinytheme("lumen"),
                  tags$head(tags$style('.selectize-dropdown {z-index: 10000}')),
                  useShinyjs(),
-
+                 
                  # main tab -----------------------------------------------------------
                  tabPanel("Project Overview", value = "overview",
                           fluidRow(style = "margin: 2px;",
@@ -363,11 +399,11 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                           h2(strong("Project Introduction")),
                                           p(strong("Sundarbans,"), "Largest delta in the world in India & Bangladesh"),
                                           p("Population of over 4 million"),
-                                         
+                                          
                                    ),
                                    column(4,
                                           h2(strong("Our Work")),
-                                    
+                                          
                                           p(),
                                           p("Provide insights to help stakeholders design effective and targeted poverty-reducing strategies to aid those affected by natural disasters and climate change​"),
                                           p(),
@@ -382,7 +418,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                           p(" We hope that the analysis presented here will be useful  "),
                                           tags$li(strong("Woot"))
                                           
-                              
+                                          
                                    )
                           ),
                           fluidRow(align = "center",
@@ -397,6 +433,15 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                    
                           ) 
                  ), 
+                 ## Sundarbans Region--------------------------------------------
+                 tabPanel("Sundarbans Region",
+                          fluidRow(style = "margin: 6px;",
+                                   h1(strong(""), align = "center"),
+                                   p("", style = "padding-top:10px;")
+                                   
+                          ) 
+                 ), 
+                 
                  ## Tab Demographics --------------------------------------------
                  navbarMenu("Demographics" , 
                             tabPanel("Static", 
@@ -416,7 +461,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                                        "Secondary Occupation" ="socu",
                                                        "Poverty" = "pov", 
                                                        "Marital Status" = "mar"),
-                                                    ), 
+                                                     ), 
                                                      withSpinner(plotOutput("ageplot", height = "500px")),
                                                      
                                               ),
@@ -425,7 +470,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                                      p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
                                                      p("", style = "padding-top:10px;")) 
                                      )), 
-                            tabPanel("Dynamic", 
+                            tabPanel("Livelihood", 
                                      style = "margin: 6px;",
                                      h1(strong("Dynamic"), align = "center"),
                                      p("", style = "padding-top:10px;"), 
@@ -434,198 +479,213 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                             p("Differences by Village."), 
                                             p("Location is important. Need water to fish. Transportation, etc. Graphed differences by village.")),
                                      column(8,
-                                                    h4(strong("Household Demographic Characteristics by Village")),
-                                                    selectInput("char1", "Select Variable:", width = "100%", choices = c(
-                                                      "Median Household Income" = "income",
-                                                      "Household Head Average Age" = "age" ,
-                                                      "Occupation" = "unemploy",
-                                                      "Education" = "high"
-                                                    )
-                                                    ), 
-                                                    withSpinner(leafletOutput("demo1")) , 
-                                                    p(tags$small("Data Source: BL October 2019")),
+                                            h4(strong("Household Demographic Characteristics by Village")),
+                                            selectInput("char1", "Select Variable:", width = "100%", choices = c(
+                                              "Median Household Income" = "income",
+                                              "Household Head Average Age" = "age" ,
+                                              "Occupation" = "unemploy",
+                                              "Education" = "high"
+                                            )
+                                            ), 
+                                            withSpinner(leafletOutput("demo1")) , 
+                                            p(tags$small("Data Source: BL October 2019")),
                                      ) 
                                      
                                      
+                            ),
+                            
+                            tabPanel("Financial Behavior", 
+                                     style = "margin: 6px;",
+                                     h1(strong("Dynamic"), align = "center"),
+                                     p("", style = "padding-top:10px;"), 
+                                     column(4, 
+                                            h4(strong("Dynamic")), 
+                                            p("Differences by Village."), 
+                                            p("Location is important. Need water to fish. Transportation, etc. Graphed differences by village.")),
+                                     column(8,
+                                            h4(strong("Household Demographic Characteristics by Village")),
+                                            selectInput("char1", "Select Variable:", width = "100%", choices = c(
+                                              "Median Household Income" = "income",
+                                              "Household Head Average Age" = "age" ,
+                                              "Occupation" = "unemploy",
+                                              "Education" = "high"
+                                            )
+                                            ), 
+                                            withSpinner(leafletOutput("demo1")) , 
+                                            p(tags$small("Data Source: BL October 2019")),
                                      ) 
+                                     
+                                     
+                            ) ), 
+                 
+                 
+                 # FD data tab-----------------------------------------------------------
+                 
+                 navbarMenu("High Frequency Data" ,
+                            tabPanel("Expenditure",
+                                     fluidRow(style = "margin: 6px;",
+                                              h1(strong("Expenditure"), align = "center"),
+                                              p("", style = "padding-top:10px;"),
+                                              column(12,h4(strong("Overview")),
+                                                     p("This graph shows the average total expenditure by village over the data period.
+                                                      Expenditure includes weekly total consumption (e.g., Food) and non-consumption items (e.g., Rent).
+                                                      the largest expenses inlcude house repairs and festival related costs, and the most common expenditure is 
+                                                      on food purchases. Following expenditure overtime tells us a lot about the changing nature of spending 
+                                                      in the Sundarbans region due to things such as festivals, weather, harvest seasons, etc."),
+                                                     br("")
+                                                     
+                                              )),
+                                     # Sidebar with a select input for village
+                                     sidebarLayout(
+                                       sidebarPanel(
+                                         #tags$h2("Select/Deselect all"),
+                                         pickerInput("village_exp", "Select Village:", choices = village_vector, 
+                                                     selected = village_vector,
+                                                     multiple = T, options = list(`actions-box` = T)),
+                                         
+                                         
+                                       ),
+                                       
+                                       # Show a plot of the generated plot
+                                       mainPanel(
+                                         tabsetPanel(
+                                           
+                                           tabPanel("Plot",plotOutput("exp")),
+                                           tabPanel("Table", DT::DTOutput("exp_table"))
+                                         )
+                                       ),
+                                       
+                                     )
+                                     
+                                     
                             ), 
                             
-                                     
-                        
-                # FD data tab-----------------------------------------------------------
-               
-                navbarMenu("High Frequency Data" , 
-                           tabPanel("Income",
-                                    fluidRow(style = "margin: 6px;",
-                                             h1(strong("Shocking"), align = "center"),
-                                             p("", style = "padding-top:10px;")
-                                             
-                                    ) 
-                           ),            
-                           
-                           tabPanel("Expenditure",
-                                    fluidRow(style = "margin: 6px;",
-                                             h1(strong("Shocking"), align = "center"),
-                                             p("", style = "padding-top:10px;")
-                                             
-                                    ),
-                                    # Sidebar with a select input for village
-                                    sidebarLayout(
-                                      sidebarPanel(
-                                        #tags$h2("Select/Deselect all"),
-                                        pickerInput("village_exp", "Select Village:", choices = village_vector, 
-                                                    selected = village_vector,
-                                                    multiple = T, options = list(`actions-box` = T)),
-                                        
-                                        
-                                      ),
-                                      
-                                      # Show a plot of the generated plot
-                                      mainPanel(
-                                        tabsetPanel(
-                                          tabPanel("Plot",plotOutput("exp"))
-                                        )
-                                      ),
-                                      
-                                    )
-                                    
-                                    
-                           ), 
-                           
-                           tabPanel("High Frequency Data", value = "",
-                                    fluidRow(style = "margin: 6px;",
-                                             h1(strong("FD"), align = "center"),
-                                             p("", style = "padding-top:10px;"),
-                                             column(12,h4(strong("Overview")),
-                                                    p("Over time"),
-                                                    br("")
-                                                    
-                                                    
-                                             ) ),
-                                    # Sidebar with a select input for village
-                                    sidebarLayout(
-                                      sidebarPanel(
-                                        #tags$h2("Select/Deselect all"),
-                                        pickerInput("village", "Select Village:", choices = village_vector, 
-                                                    selected = village_vector,
-                                                    multiple = T, options = list(`actions-box` = T)),
-                                        
-                                      ),
-                                      
-                                      # Show a plot of the generated plot
-                                      mainPanel(
-                                        tabsetPanel(
-                                          tabPanel("Plot",plotOutput("rmt")),
-                                          tabPanel("Table",DT:: DTOutput("rmt_table")),
-                                          tabPanel("Method", plotOutput("rmt_method")),
-                                          tabPanel("Purpose", plotOutput("rmt_purpose"))
-                                        )
-                                      ),
-                                      
-                                    )
-                           ),           
-                           
-                           
-                           
-                ),
-              
-               
-                ## Shocks Tab --------------------------------------------
-                navbarMenu("Shocks" , 
-                tabPanel("Shock 1",
-                         fluidRow(style = "margin: 6px;",
-                                  h1(strong("Shocking"), align = "center"),
-                                  p("", style = "padding-top:10px;")
-                                  
-                         ) 
-                ), 
-                
-                
-                
-                 tabPanel("Shock 2",
-                         fluidRow(style = "margin: 6px;",
-                                  h1(strong("Shocking"), align = "center"),
-                                  p("", style = "padding-top:10px;")
-                                  
-                         ) 
-                ), 
-                ), 
-                
-                ## FGD tab------------------------------------------
-                tabPanel("Focus Group Discussion",
-                         fluidRow(style = "margin: 6px;",
-                                  h1(strong("FGD"), align = "center"),
-                                  p("", style = "padding-top:10px;")
-                                  
-                         ) 
-                ), 
-              
-                 # team tab -----------------------------------------------------------
-                 tabPanel("Meet the Team", value = "contact",
-                          fluidRow(style = "margin-left: 300px; margin-right: 300px;",
-                            h1(strong("Contact"), align = "center"),
-                            br(),
-                            h4(strong("Virginia Tech Data Science for the Public Good")),
-                            p("The", a(href = 'https://aaec.vt.edu/academics/undergraduate/beyond-classroom/dspg.html', 'Data Science for the Public Good (DSPG) Young Scholars program', target = "_blank"),
-                              "is a summer immersive program held at the", a(href = 'https://aaec.vt.edu/s', 'Virginia Tech Department of Agricultural and Applied Economics.'),
-                              "In its second year, the program engages students from across the country to work together on projects that address state, federal, and local government challenges around
-                              critical social issues relevant in the world today. DSPG young scholars conduct research at the intersection of statistics, computation, and the social sciences
-                              to determine how information generated within every community can be leveraged to improve quality of life and inform public policy. For more information on program
-                              highlights, how to apply, and our annual symposium, please visit", a(href = 'https://aaec.vt.edu/academics/undergraduate/beyond-classroom/dspg.html', 'the official VT DSPG website.', target = "_blank")),
-                            p("", style = "padding-top:10px;")
-                          ),
-                          fluidRow(style = "margin-left: 300px; margin-right: 300px;",
-                            column(6, align = "center",
-                            h4(strong("DSPG Team Members")),
-                            img(src = "team-tim.jpeg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
-                            p(tags$small(a(href = 'https://www.linkedin.com/in/timothyspierce', 'Timothy Pierce', target = '_blank'), "(Virginia Tech, Agricultural and Applied Economics)"),),
-                            img(src = "team-mousa.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
-                            p(tags$small(a(href = 'https://www.linkedin.com/in/reginald-mousa-toure-32b550106/', 'Mousa Toure', target = '_blank'), "(Virginia State University, Computer Science)"),),
                             
-                            img(src = "team-christina.jpeg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                            p(tags$small(a(href = 'https://www.linkedin.com/in/christina-prisbe-60966b218/', 'Christina Prisbe', target = '_blank'), "(Virginia Tech, Computational Modeling and Data Analytics)."),),
-                            
-                            #p(a(href = 'www.linkedin.com/in/timothyspierce', 'Timothy Pierce', target = '_blank'), "(Virginia Tech, Agricultural and Applied Economics);",
-                            #  a(href = 'https://www.linkedin.com/in/reginald-mousa-toure-32b550106/', 'Mousa Toure', target = '_blank'), "(Virginia State University, Computer Science);",
-                            #  a(href = 'https://www.linkedin.com/in/christina-prisbe-60966b218/', 'Christina Prisbe', target = '_blank'), "(Virginia Tech, Computational Modeling and Data Analytics)."),
-                            p("", style = "padding-top:10px;")
+                            tabPanel("Income",
+                                     fluidRow(style = "margin: 6px;",
+                                              h1(strong("Income"), align = "center"),
+                                              p("", style = "padding-top:10px;"),
+                                              column(12,h4(strong("Overview")),
+                                                     p("This graph shows the average weekly hosuehold income over the data period.
+                                                      Spikes of income can mean many things, such as harvest time, salary bonuses, or an addition of
+                                                      remmittance to weekly income. The largest spike, in late March, indicates the largest harvest for
+                                                      farmers in the region. In addition, dips in the plot can indicate things such as shocks from
+                                                      environmental impacts or other unexpected household incidents."),
+                                                     br("")
+                                                     
+                                              )),
+                                     # Sidebar with a select input for village
+                                     sidebarLayout(
+                                       sidebarPanel(
+                                         #tags$h2("Select/Deselect all"),
+                                         pickerInput("village_inc", "Select Village:", choices = village_vector, 
+                                                     selected = village_vector,
+                                                     multiple = T, options = list(`actions-box` = T)),
+                                         
+                                       ),
+                                       # Show a plot of the generated plot
+                                       mainPanel(
+                                         tabsetPanel(
+                                           tabPanel("Plot",plotOutput("inc")),
+                                           tabPanel("Table", DT::DTOutput("inc_table"))
+                                         )
+                                       ),
+                                     ),
                             ),
-                            column(6, align = "center",
-                            h4(strong("Faculty and Associate Team Members")),
-                            img(src = "faculty-gupta.jpg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
-                            p(tags$small(a(href = "https://aaec.vt.edu/people/faculty/gupta-anubhab.html", 'Dr. Anubhab Gupta', target = '_blank'), "(Faculty Lead, Virginia Tech)"),),
                             
-                            img(src = "faculty-mulu.jpeg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
-                            p(tags$small(a(href = "https://www.vsu.edu/cet/departments/technology/faculty-staff/kahsai-mulugeta.php", 'Dr. Mulugeta Kahsai', target = '_blank'), "(Faculty Affiliate, Virginia State University)"),),
                             
-                            img(src = "team-leo.jpeg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                            p(tags$small(a(href = 'https://aaec.vt.edu/people/graduatestudents/index/quaye-leonard-allen.html', 'Leonard-Allen Quaye', target = '_blank'), "(Research Associate, Virginia Tech)"),),
+                            tabPanel("Remmittances", value = "",
+                                     fluidRow(style = "margin: 6px;",
+                                              h1(strong("Remmittance"), align = "center"),
+                                              p("", style = "padding-top:10px;"),
+                                              column(12,h4(strong("Overview")),
+                                                     p("This graph shows the average weekly remmittance received by village over the data period.
+                                                      Following expenditure over time can help identify where shocks may have occurred, and which villages were affected the most. 
+                                                      Large spikes in remmittance begin in late march and continue to occur frequently throughout the rest
+                                                      of the data period. Within this time period, the Sundarbans region was affeted by three 
+                                                      sever cyclones that hit the Bengal Bay: Fani (Category 4, April 25- May 4 2019) and 
+                                                      Bulbul and Matmo (Category 1, October 28 - November 11 2019). The Sundarbans also could have
+                                                      been negatively impacted by two cyclones that hit the Arabian Sea during this time period:
+                                                      Vayu (Category 1, June 8-18) and Hikaa (Category 1, September 20-26). While the Sundarbans
+                                                      was not reported as an area directly affected by these two cyclones, it is possible
+                                                      that the region experienced some of the negative residuals of the storm due
+                                                      to their proximity to the Arabian Sea."),
+                                                     br("")
+                                                     
+                                                     
+                                              ) ),
+                                     # Sidebar with a select input for village
+                                     sidebarLayout(
+                                       sidebarPanel(
+                                         #tags$h2("Select/Deselect all"),
+                                         pickerInput("village_rmt", "Select Village:", choices = village_vector, 
+                                                     
+                                                     selected = village_vector,
+                                                     multiple = T, options = list(`actions-box` = T)),
+                                         
+                                       ),
+                                       
+                                       # Show a plot of the generated plot
+                                       mainPanel(
+                                         tabsetPanel(
+                                           tabPanel("Plot",plotOutput("rmt")),
+                                           tabPanel("Table",DT:: DTOutput("rmt_table"))#,
+                                           #tabPanel("Method", plotOutput("rmt_method")),
+                                           #tabPanel("Purpose", plotOutput("rmt_purpose"))
+                                         )
+                                       ), 
+                                       
+                                       
+                                     ),
+                                     fluidRow(style = "margin: 6px;",
+                                              p("", style = "padding-top:10px;"),
+                                              column(12,h4(strong("Remmittances Sources")),
+                                                     p("This chart shows the count of how transaction of remittance was recieved over the data period.
+                                                      Remmitance was primarily recieved in person or through a bank, as those are typically the most
+                                                      convenient methods. Although a money order is a very secure of sending money, there are often additional
+                                                      fees attahched to it, and households are more likely concerned about recieving the remittance quickly
+                                                      rather than safely. Using moile apps can be difficult in regions where data usage is limited."),
+                                                     br("")
+                                                     
+                                                     
+                                              )),
+                                     plotOutput("rmt_method"),
+                                     fluidRow(style = "margin: 6px;",
+                                              p("", style = "padding-top:10px;"),
+                                              column(12,h4(strong("Usage of Remmittances")),
+                                                     p("This chart shows the count of what every transaction of remittances was used for over the data period.
+                                                      Remmittance is primarily being used for food and utility purchases, which are often the most essential
+                                                      items for households in underdevelped regions."),
+                                                     br("")
+                                                     
+                                                     
+                                              )),
+                                     plotOutput("rmt_purpose")
+                            ),           
                             
-                            #p(a(href = "https://aaec.vt.edu/people/faculty/gupta-anubhab.html", 'Dr. Anubhab Gupta', target = '_blank'), "(Faculty Lead, Virginia Tech);",
-                            #  a(href = "https://www.vsu.edu/cet/departments/technology/faculty-staff/kahsai-mulugeta.php", 'Dr. Mulugeta Kahsai', target = '_blank'), "(Faculty Affiliate, Virginia State University);",
-                            #  a(href = 'https://aaec.vt.edu/people/graduatestudents/index/quaye-leonard-allen.html', 'Leonard-Allen Quaye', target = '_blank'), "(Research Associate, Virginia Tech)."),
-                            p("", style = "padding-top:10px;")
-                            )
-                            ),
-                          fluidRow(style = "margin-left: 300px; margin-right: 300px;",
-                            h4(strong("Project Stakeholders")),
-                            p("VPI-SU Extension Professionals, Board of Supervisions, local government organizations, local field offices, and County Planning Commission in Rappahannock county"),
-                            p("", style = "padding-top:10px;"),
-                            h4(strong("Acknowledgments")),
-                            p("We would like to thank Kenner Love, Unit Coordinator Extension Agent, Agricultural and Natural Resources Crop & Soil Sciences from the Virginia Cooperative Extension for his support on this project.")
-                          )
+                            
+                            
                  ),
-                
-                inverse = T)
-                
-                
-                
+                 
+                 
+                 ## Shocks Tab --------------------------------------------
+                 tabPanel("Shocks",
+                          fluidRow(style = "margin: 6px;",
+                                   h1(strong(""), align = "center"),
+                                   p("", style = "padding-top:10px;")
+                                   
+                          ) 
+                 ), 
+                 
+                 inverse = T)
+
+
 # server -----------------------------------------------------------
 server <- function(input, output, session) {
-# Run JavaScript Code
- runjs(jscode)
-                  
-
+  # Run JavaScript Code
+  runjs(jscode)
+  
+  
   #age tabset -----------------------------------------------------
   ageVar <- reactive({
     input$agedrop
@@ -634,35 +694,35 @@ server <- function(input, output, session) {
   output$ageplot <- renderPlot({
     if (ageVar() == "age") {
       
-    fplot <- ggplot(baseline, aes(x = head_age)) +
-      geom_histogram(fill = "cornflowerblue", 
-                     color = "white", bins = 20
-      ) + 
-      labs(title="Age of Household Heads",
-           y = "Number of Household Heads") +
-      theme_classic() +
-      scale_x_continuous(breaks = c(20, 30, 40, 50, 60, 70, 80), name="Age", limits=c(20, 80))
-    fplot
+      fplot <- ggplot(baseline, aes(x = head_age)) +
+        geom_histogram(fill = "cornflowerblue", 
+                       color = "white", bins = 20
+        ) + 
+        labs(title="Age of Household Heads",
+             y = "Number of Household Heads") +
+        theme_classic() +
+        scale_x_continuous(breaks = c(20, 30, 40, 50, 60, 70, 80), name="Age", limits=c(20, 80))
+      fplot
     }
     else if (ageVar() == "edu") {
-    splot <- ggplot(by_villagemore, aes(x = "", y= head_edu, fill = village)) +
-      geom_bar(width = 1, stat = "identity") +
-      facet_wrap(~village, ncol = 5) +
-      geom_text(aes(label = sub), position = position_stack(vjust=1.1)) +
-      labs(title = "Mean Years of Education for Head of Households", x = NULL, y = "Years of Education") +
-      theme(legend.position="none") 
-    splot
+      splot <- ggplot(by_villagemore, aes(x = "", y= head_edu, fill = village)) +
+        geom_bar(width = 1, stat = "identity") +
+        facet_wrap(~village, ncol = 5) +
+        geom_text(aes(label = sub), position = position_stack(vjust=1.1)) +
+        labs(title = "Mean Years of Education for Head of Households", x = NULL, y = "Years of Education") +
+        theme(legend.position="none") 
+      splot
     }
-  
+    
     else if (ageVar() == "pocu") {
-     pocplot <- ggplot(countv, aes(x = job, y = n, fill = village)) +
+      pocplot <- ggplot(countv, aes(x = job, y = n, fill = village)) +
         geom_col() +
         scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
         coord_flip() +
         theme_minimal () +
         labs(title = "Primary Occupation of Household Heads", x = "", y = "") +
         scale_fill_brewer(palette="Spectral")
-     pocplot
+      pocplot
     }
     
     else if (ageVar() == "socu") {
@@ -686,7 +746,7 @@ server <- function(input, output, session) {
         geom_text(aes(label = prop_pl_values), size = 2.5, nudge_y = -1)
       village_pl_count_plot
     }
- else if (ageVar() == "mar") {
+    else if (ageVar() == "mar") {
       marplot <- ggplot(countmar, aes(x = head_married, y = n, fill = Gender)) +
         geom_col() +
         labs(title = "Household Heads' Marital Status", x = "Not Married                       Married", y = "Number of Household Heads") +
@@ -697,39 +757,47 @@ server <- function(input, output, session) {
     
   })
   # rmt plot output
-  filtered <- reactive({
+  # Filter by inputt
+  filtered_rmt <- reactive({
     rmt_data_mean_weeks %>%
-      #filter(Villages==input$village)
-      filter(Villages %in% input$village)
+      filter(Villages %in% input$village_rmt)
   })
-  
+  # Plot
   output$rmt <- renderPlot({
-    ggplot(filtered(), aes(x = weeks
-                           , y = mean_rmt_per_week, color = Villages)) + 
+    ggplot(filtered_rmt(), aes(x = weeks
+                               , y = mean_rmt_per_week, color = Villages)) + 
       geom_line() +
       theme_classic() +
       labs(x = "Date", y = "Average Remittance Income [Rupee]") +
       ggtitle("Average Weekly Remittance Income")+ #(11/16/18 - 10/31/19)
       #scale_color_brewer(palette = "Spectral")+
-    scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
     #annotate(geom = "text", aes(x = unlist(months)))
     
     
   })
+  # Render rmt table
   output$rmt_table <- DT::renderDT({
-    filtered()
+    avg_rmt
   })
+  # Render method plot
   output$rmt_method <- renderPlot({
     rmt_method_plot
   })
+  # Render purpose plot
   output$rmt_purpose <- renderPlot({
     rmt_purpose_plot
   })
   # exp plot ouput
+  
+  # Filter by input
+  
   filtered_exp <- reactive({
     exbyvil %>% 
       filter(village %in% input$village_exp)
   })
+  
+  # Plot
   output$exp <- renderPlot({
     ggplot(filtered_exp(), aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) +
       geom_line() +
@@ -738,13 +806,30 @@ server <- function(input, output, session) {
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
     
     
-  }
-  
-  
-    )
+  })
+  # Render exp filtered table 
+  output$exp_table <- DT::renderDT({
+    expend_table
+  })
+  # Render income plot output
+  # Filter by input
+  filtered_inc <- reactive({
+    avg_tot_inc %>% 
+      filter(village %in% input$village_inc)
+  })
+  # Plot
+  output$inc <- renderPlot({
+    ggplot(filtered_inc(), aes(date, avg_inc, color = village)) + 
+      geom_line() + 
+      labs(x = "", y = "Income (INR)", title = "Average Weekly Household Income by village", color = "Village") 
+    
+  })
+  #Render inc table
+  output$inc_table <- DT::renderDT({
+    avg_inc_table
+  })
   
 }
-
 
 
 shinyApp(ui = ui, server = server)
