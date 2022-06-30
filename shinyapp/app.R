@@ -135,6 +135,38 @@ fd <- livdiv %>%
   select(-(4:967))
 
 
+#Map of Sundarbans and villages 
+require(rgdal)
+ind <- st_read(dsn = "/Users/nandinidas/Desktop/2022-DSPG-LivDiv-/data/GADM", "gadm36_IND_3", stringsAsFactors = TRUE)
+
+sundarban <- subset(ind, NAME_2 %in% c('North 24 Parganas','South 24 Parganas'))
+d.sundarban<-st_union(sundarban)
+
+village_all <- st_read(dsn = "/Users/nandinidas/Downloads/fgd-village-selection-main/shapefiles", "Village, GP coordinates", stringsAsFactors = TRUE)
+
+village <- subset(village_all, Village.Na %in% c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Parghumti","Purba Dwarokapur","Gangasagar","Shibpur"))
+
+icons <- awesomeIcons(
+  icon = 'ios-close',
+  iconColor = 'black',
+  library = 'ion',
+  markerColor = "lightred"
+)
+
+map_leaflet <- leaflet(data = d.sundarban) %>%
+  addTiles() %>%
+  addPolygons(
+    fillColor = "green",
+    stroke=TRUE,
+    weight = 1,
+    smoothFactor = 0.2,
+    opacity = 1.0,
+    fillOpacity = 0.7,
+    highlightOptions = highlightOptions(color = "white",
+                                        weight = 2,
+                                        bringToFront = TRUE)) %>%
+  addAwesomeMarkers(~lon, ~lat, label = ~as.character(Village.Na), icon=icons, data=village)
+
 # remittance data
 rmt <- fd %>% 
   select(village, hhid, name, week, date, 
