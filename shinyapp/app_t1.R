@@ -913,9 +913,9 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                             #the comma above separates the two sub-tabs in Shocks            
                             
                             
-                            tabPanel("Dynamic Plot",
+                            tabPanel("Yearly Shocks",
                                      fluidRow(style = "margin: 6px;",
-                                              h1(strong("Dynamic Shocks"), align = "center"),
+                                              h1(strong("2009 Shocks"), align = "center"),
                                               p("", style = "padding-top:10px;")
                                               
                                      ),
@@ -932,9 +932,9 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Cope",plotOutput("cope_2009")),
-                                           tabPanel("Relocation_yn",plotOutput("relocation_2009_yn")),
-                                           tabPanel("Relocation",plotOutput("relocation_2009")),
+                                           tabPanel("Coping Strategies",plotOutput("cope_2009")),
+                                           tabPanel("Relocation",plotOutput("relocation_2009_yn")),
+                                           tabPanel("Relocation Area",plotOutput("relocation_2009")),
                                          )
                                        ),
                                        
