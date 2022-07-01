@@ -44,14 +44,10 @@ village_vector = c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskat
 
 # data -----------------------------------------------------------
 
-<<<<<<< HEAD
+
 #load("~/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data/livdivdata.RData")
-#addResourcePath("vid", "/Users/tajcole/2022-DSPG-LivDiv-/data/Sundarbans_coast_degredation.mp4")
-=======
-load("~/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data/livdivdata.RData")
 
 
->>>>>>> 1162e8a2b79faf8cd7ed5dae85c65b19de12d4f2
 baseline <- livdiv %>%
   slice(1:307,)
 
@@ -254,12 +250,10 @@ Method <- c("Bank", "In person", "Mobile", "Money Order", "Other")
 method_dat <- data.frame(Method, method_counts, stringsAsFactors = T)
 method_values <- c("       397", "       472", "   1", "   1", "    13")
 
-<<<<<<< HEAD
-rmt_method_plot <- ggplot(method_dat, aes( x= reorder(Method, method_counts), y = method_counts, fill = Method)) +
-=======
+
 rmt_method_plot <- ggplot(method_dat, aes( x= reorder(Method, -method_counts), y = method_counts, fill = Method)) +
 
->>>>>>> 1162e8a2b79faf8cd7ed5dae85c65b19de12d4f2
+
   geom_col(fill = plasma(5, alpha = 1, begin = 0, end = 1, direction = 1)) +
   labs(x = "", y = "Total") +
   theme_classic() +
@@ -275,12 +269,9 @@ purpose_count <- c(594, 37, 27, 93, 128, 43)
 purpose_dat <- data.frame(Purpose, purpose_count, stringsAsFactors = T)
 purpose_values <- c("      594", "      37", "     27", "     93", "      128", "      43")
 
-<<<<<<< HEAD
-rmt_purpose_plot <- ggplot(purpose_dat, aes(x = reorder(Purpose, purpose_count), y = purpose_count, fill = Purpose)) + 
-=======
+
 rmt_purpose_plot <- ggplot(purpose_dat, aes(x = reorder(Purpose, -purpose_count), y = purpose_count, fill = Purpose)) + 
 
->>>>>>> 1162e8a2b79faf8cd7ed5dae85c65b19de12d4f2
   geom_col(fill = plasma(6, alpha = 1, begin = 0, end = 1, direction = 1)) +
   labs(x = "", y = "Total") +
   theme_classic() +
@@ -302,7 +293,6 @@ avg_rmt <- rmt_dat %>%
   group_by(date, village) %>% 
   summarize("Average Remitances" = mean(rmt_total, na.rm = T))
 names(avg_rmt) <- c("Date", "Village", "Average Remittances")
-#avg_rmt <- avg_rmt[,-(1:2)]
 
 #-----------------------------------------------------------------
 
@@ -451,14 +441,22 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                           ) 
                  ), 
                  ## Sundarbans Region--------------------------------------------
-                 tabPanel("Sundarbans Region",
+                 navbarMenu("Sundarbans Region",
                           fluidRow(style = "margin: 6px;",
                                    h1(strong(""), align = "center"),
                                    p("", style = "padding-top:10px;")
                                    
-                          ) 
-                 ), 
-                 
+                          ),
+                          tabPanel("Leaflet of Sundarbans",
+                            )
+                          
+                          
+                          
+                          
+                          
+                        
+                          ), 
+
                  ## Tab Demographics --------------------------------------------
                  navbarMenu("Demographics" , 
                             tabPanel("Static", 
@@ -543,11 +541,10 @@ navbarMenu("High Frequency Data" ,
                                              h1(strong("Expenditure"), align = "center"),
                                              p("", style = "padding-top:10px;"),
                                              column(12,h4(strong("Overview")),
-                                                    p("To determine the spending behavior of households in the region, we visualized average weekly expenditure over the data period.
-                                                      Expenditure includes weekly total consumption (e.g., Food) and non-consumption items (e.g., Rent).
-                                                      the largest expenses inlcude house repairs and festival related costs, and the most common expenditure is 
-                                                      on food purchases. Following expenditure overtime tells us a lot about the changing nature of spending 
-                                                      in the Sundarbans region due to things such as festivals, weather, harvest seasons, etc."),
+                                                    p("We present average weekly expenditure from Nov 2018 - Oct 2019 to examine the spending behaviors of households in the region. 
+                                                      This will provide information on the changing nature of spending in the Sundarbans region due to events such as 
+                                                      festivals, harvest seasons, and weather-related shocks. Expenditure is defined as total weekly consumption (e.g., food) and non-consumption (e.g., rent) items.
+                                                      It appears that the largest expense for households during this period include house repairs and festival-related costs. The most common expenditures are food purchases."),
                                                     br("")
                                                     
                                              )),
@@ -582,11 +579,10 @@ navbarMenu("High Frequency Data" ,
                                              h1(strong("Income"), align = "center"),
                                              p("", style = "padding-top:10px;"),
                                              column(12,h4(strong("Overview")),
-                                                    p("Knowing the Sundarbans is an impoverished area, we visualized the average weekly hosuehold income over the data period.
-                                                      Spikes of income can mean many things, such as harvest time, salary bonuses, or an addition of
-                                                      remmittance to weekly income. The largest spike, in late March, indicates the largest harvest for
-                                                      farmers in the region. In addition, dips in the plot can indicate things such as shocks from
-                                                      environmental impacts or other unexpected household incidents."),
+                                                    p("We also report average weekly household income for households across villages over 52 weeks. 
+                                                      There is a significant increase in households’ income across most villages in late March. 
+                                                      This increase coincides with the largest harvest for farmers in the region. We will investigate the different variations (spikes and dips) 
+                                                      to determine the correlation between environmental shocks or unexpected household incidents."),
                                                     br("")
                                              
                                     )),
@@ -615,16 +611,12 @@ navbarMenu("High Frequency Data" ,
                                              h1(strong("Remittances"), align = "center"),
                                              p("", style = "padding-top:10px;"),
                                              column(12,h4(strong("Overview")),
-                                                    p("To identify where shocks may have occured over the data period, and which villages may have been affected the most, we visualized average weekly remmittances.
-                                                      Large spikes in remittances begin in late March and continue to occur frequently throughout the rest
-                                                      of the data period. Within this time period, the Sundarbans region was affected by three 
-                                                      sever cyclones that hit the Bengal Bay: Fani (Category 4, April 25- May 4 2019) and 
-                                                      Bulbul and Matmo (Category 1, October 28 - November 11 2019). The Sundarbans also could have
-                                                      been negatively impacted by two cyclones that hit the Arabian Sea during this period:
-                                                      Vayu (Category 1, June 8-18) and Hikaa (Category 1, September 20-26). While the Sundarbans
-                                                      was not reported as an area directly affected by these two cyclones, it is possible
-                                                      that the region experienced some of the negative residuals of the storm due
-                                                      to their proximity to the Arabian Sea."),
+                                                    p("In recent years, households have become more reliant on remittances as a significant source of income. 
+                                                      As such, we examine temporal changes in remittances between October 2018 and November 2019. There is a substantial increase 
+                                                      In late March (what year). This increase continues to occur frequently throughout the data period. Notably, the Sundarbans region was 
+                                                      affected by three severe cyclones during this period: Fani, Category 4 (April – May 2019), and Category 1, Bulbul and Matmo (October – November 2019). 
+                                                      The Sundarbans also could have been negatively impacted by two cyclones that hit the Arabian Sea during this period: Vayu (Category 1, June 8-18) 
+                                                      and Hikaa (Category 1, September 20-26). It is possible households are using remittances to cope with these cyclones and weather-related shocks."),
                                                     br("")
                                                     
                                                     
@@ -653,11 +645,10 @@ navbarMenu("High Frequency Data" ,
                                     fluidRow(style = "margin: 6px;",
                                              p("", style = "padding-top:10px;"),
                                              column(12,h4(strong("Remittances Sources")),
-                                                    p("
-                                                      Remittances was primarily received in person or through a bank, as those are typically the most
-                                                      convenient methods. Although a money order is a secure method of sending money, there are often additional
-                                                      fees attached to it, and households are more likely concerned about receiving the remittances quickly,
-                                                      rather than safely. Also, using moile apps can be difficult in regions where data usage is limited."),
+                                                    p("We also examine how households received remittances. We find that households primarily collected remittances in person 
+                                                      or through a bank suggesting these methods to be the most convenient. Although a money order is a secure method of sending/receiving money, 
+                                                      it requires additional fees, which may make it more expensive for this poverty-stricken area. Moreover, households may be more concerned about 
+                                                      receiving the remittance quickly rather than safely. Also, using mobile apps can be difficult in regions where data usage is limited."),
                                                     br("")
                                                     
                                                     
@@ -673,9 +664,7 @@ navbarMenu("High Frequency Data" ,
                                                     
                                                     
                                              )),
-                                    plotOutput("rmt_purpose", width = "65%"),
-                                    tags$video(type = "video/mp4",src = "SundarbansCoast.mp4", 
-                                               width = "500px", height = "350px",controls = "controls")
+                                    plotOutput("rmt_purpose", width = "65%")
                            ),           
                            
                            
