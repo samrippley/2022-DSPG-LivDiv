@@ -625,20 +625,20 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                               h1(strong("Livelihood"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
-                                                     h4(strong("Livelihood")),
+                                                     h4(strong("Education")),
                                                      p("These are demographics"),
                                               ) ,
                                               column(8, 
-                                                     h4(strong("Livelihood")),
-                                                     selectInput("livdrop", "Select Varibiable:", width = "100%", choices = c(
+                                                     h4(strong("Demographics")),
+                                                     selectInput("ocudrop", "Select Varibiable:", width = "100%", choices = c(
                                                        "Primary Occupation" = "pocu",
-                                                       "Secondary Occupation" ="socu",
-                                                       "Agricultural Farming" = "agfa",
+                                                       "Secondary Occupation" ="socu", 
+                                                       "Agriculture Farming" = "agfa",
                                                        "Land Holding" = "laho",
-                                                       "Crops" = "cro" 
+                                                       "Crops" = "cro"
                                                      ),
                                                      ), 
-                                                     withSpinner(plotOutput("livplot", height = "500px")),
+                                                     withSpinner(plotOutput("ocuplot", height = "500px")),
                                                      
                                               ),
                                               column(12, 
@@ -652,23 +652,31 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                               h1(strong("Financial Behavior"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
-                                                     h4(strong("Financial Behavior")),
+                                                     h4(strong("Education")),
                                                      p("These are demographics"),
                                               ) ,
                                               column(8, 
                                                      h4(strong("Financial Behavior")),
                                                      selectInput("findrop", "Select Varibiable:", width = "100%", choices = c(
                                                        "Household Business" = "hobu",
+                                                       "Income" = "inc",
                                                        "Salary" = "sal",
                                                        "Savings" = "sav"
                                                      ),
                                                      ), 
-                                                     withSpinner(leafletOutput("demo1")) , 
-                                                     p(tags$small("Data Source: BL October 2019")),
-                                              ), 
+                                                     withSpinner(plotOutput("finplot", height = "500px")),
+                                                     
+                                              ),
+                                              column(12, 
+                                                     h4("References: "), 
+                                                     p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
+                                                     p("", style = "padding-top:10px;")) 
+                                     )), 
+                            
                                               
-                                              
-                                     ) ) ), 
+                                      ), 
+                 
+                 
                  
                  
                  # FD data tab-----------------------------------------------------------
@@ -1005,14 +1013,60 @@ server <- function(input, output, session) {
     
   })
 
+  
+  #livelihood tabset -----------------------------------------------------
+  ocuVar <- reactive({
+    input$ocudrop
+  })
+  
+  output$ocuplot <- renderPlot({
+    if (ocuVar() == "pocu") {
+      pocuplot <- ggplot(countv, aes(x = job, y = n, fill = village)) +
+        geom_col() +
+        scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
+        coord_flip() +
+        theme_minimal () +
+        labs(title = "Primary Occupation of Household Heads", x = "", y = "") +
+        scale_fill_brewer(palette="Spectral")
+      pocuplot
+    } 
+    else if (ocuVar() == "socu") {
+      socplot <- ggplot(scountv, aes(x = job, y = n, fill = village)) +
+        geom_col() +
+        scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
+        coord_flip() +
+        theme_minimal () +
+        labs(title = "Secondary Occupation of Household Heads", x = "", y = "") +
+        scale_fill_brewer(palette="Spectral")
+      socplot
+    }
+    else if (ocuVar() == "agfa") {
+     agfaplot <- ggplot(grouped, aes(village,prop_farm)) + geom_col(fill = "navy blue") + labs(x = "", y = "Proportion", title = "Proportion of Households Involved in Agricultural Farming") + coord_flip() + theme_classic()
+    agfaplot
+     }
+    else if (ocuVar() == "laho") {
+     mean_land_plot <- ggplot(land_stats, aes(x = villages, y = mean_land_value, fill = villages)) +
+       geom_col(fill = plasma(10, alpha = 1, begin = 0, end = 1, direction = 1)) +
+       coord_flip() +
+       ggtitle("Average Amount of Land Owned in Each Village") +
+       labs(x = "", y = "Land Owned [Kathas]")
+     mean_land_plot
+     }
+    else if (ocuVar() == "cro") {
+     croplot <- ggplot(grouped, aes(village,prop_farm)) + geom_col(fill = "navy blue") + labs(x = "", y = "Proportion", title = "Proportion of Households that cultivated crops") + coord_flip() + theme_classic()
+   croplot
+      }
+    
+  })
+  
   #financial  tabset -----------------------------------------------------
   finVar <- reactive({
-    input$agedrop
+    input$findrop
   })
   
   output$finplot <- renderPlot({
     if (finVar() == "hobu") {
-     village_bus_count_plot <- ggplot(dat_bus, aes(x= villages_2, y = values_bus, fill = Key)) + 
+      village_bus_count_plot <- ggplot(dat_bus, aes(x= villages_2, y = values_bus, fill = Key)) + 
         geom_col(position = 'stack') + 
         labs( x= "", y = "Total Number of Households") + 
         theme_classic() + 
@@ -1021,9 +1075,13 @@ server <- function(input, output, session) {
         geom_text(aes(label = prop_bus_values), size = 2.5, nudge_y = -1)
       village_bus_count_plot
     }
+    else if (finVar() == "inc") {
+      incplot <- ggplot(baseline, aes(inc_total, village, color = village)) + geom_point() + labs(x = "INR", y = "" ,title = "Total income per household", color = "Village") + coord_flip() + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_color_viridis_d()
+      incplot
+    }
     else if (finVar() == "sal") {
-     salplot <- ggplot(m_salary, aes(village, avg_salary, fill = village)) + geom_col() + labs(x = "", y = "INR" ,title = "Average Monthly Salary per Household", fill = "Village") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d()
-     salplot
+      salplot <- ggplot(m_salary, aes(village, avg_salary, fill = village)) + geom_col() + labs(x = "", y = "INR" ,title = "Average Monthly Salary per Household", fill = "Village") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d()
+      salplot
     }
     else if (finVar() == "sav") {
       savplot <- ggplot(nbsavcount, aes(x = nb_put_saving, y = n, fill = "red")) +
@@ -1037,52 +1095,6 @@ server <- function(input, output, session) {
     
   })
   
-  
-    
-  #livelihood tabset -----------------------------------------------------
-  ocuVar <- reactive({
-    input$ocudrop
-  })
-  
-  output$ocuplot <- renderPlot({
-    if (ocuVar() == "pocu") {
-      
-      fplot <- ggplot(baseline, aes(x = head_age)) +
-        geom_histogram(fill = "cornflowerblue", 
-                       color = "white", bins = 20
-        ) + 
-        labs(title="Age of Household Heads",
-             y = "Number of Household Heads") +
-        theme_classic() +
-        scale_x_continuous(breaks = c(20, 30, 40, 50, 60, 70, 80), name="Age", limits=c(20, 80))
-      fplot
-    } 
-    else if (ocuVar() == "socu") {
-      socplot <- ggplot(scountv, aes(x = job, y = n, fill = village)) +
-        geom_col() +
-        scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
-        coord_flip() +
-        theme_minimal () +
-        labs(title = "Secondary Occupation of Household Heads", x = "", y = "") +
-        scale_fill_brewer(palette="Spectral")
-      socplot
-    }
-    else if (finVar() == "agfa") {
-     agfaplot <- ggplot(grouped, aes(village,prop_farm)) + geom_col(fill = "navy blue") + labs(x = "", y = "Proportion", title = "Proportion of Households Involved in Agricultural Farming") + coord_flip() + theme_classic()
-    agfaplot
-     }
-    else if (finVar() == "laho") {
-     lahoplot <- ggplot(m_salary, aes(village, avg_salary, fill = village)) + geom_col() + labs(x = "", y = "INR" ,title = "Average Monthly Salary per Household", fill = "Village") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d()
-    lahoplot
-     }
-    else if (finVar() == "cro") {
-     croplot <- ggplot(grouped, aes(village,prop_farm)) + geom_col(fill = "navy blue") + labs(x = "", y = "Proportion", title = "Proportion of Households that cultivated crops") + coord_flip() + theme_classic()
-   croplot
-      }
-    
-  })
-  
-
   
   
   # rmt plot output
