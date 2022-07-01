@@ -32,6 +32,7 @@ library(lubridate)
 library(shinyWidgets)
 library(viridis)
 library(RColorBrewer)
+library(plotly)
 
 prettyblue <- "#232D4B"
 navBarBlue <- '#427EDC'
@@ -48,10 +49,14 @@ village_vector = c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskat
 baseline <- livdiv %>%
   slice(1:307,)
 
-# participate in ag graph 
+# participate in ag data 
 
 grouped <- baseline %>% group_by(village) %>% summarize(prop_farm = sum(farm_yn)/n())
 
+
+# remmitences v income data 
+
+baseline.summary <- baseline %>% select(village, exp_total, full_inc, rmt_total) %>% group_by(village) %>%summarise_all(mean) 
 
 #land owned data 
 villages <- c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur") 
@@ -614,7 +619,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                                      p("These are demographics"),
                                               ) ,
                                               column(8, 
-                                                     h4(strong("Demographics")),
+                                                     h4(strong("Demographics - October 2018")),
                                                      selectInput("ocudrop", "Select Varibiable:", width = "100%", choices = c(
                                                        "Primary Occupation" = "pocu",
                                                        "Secondary Occupation" ="socu", 
@@ -641,11 +646,11 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                                      p("These are demographics"),
                                               ) ,
                                               column(8, 
-                                                     h4(strong("Financial Behavior")),
+                                                     h4(strong("Financial Behavior - October 2018")),
                                                      selectInput("findrop", "Select Varibiable:", width = "100%", choices = c(
                                                        "Household Business" = "hobu",
-                                                       "Income" = "inc",
                                                        "Salary" = "sal",
+                                                       "Income/Remmitances" = "inc",
                                                        "Savings" = "sav"
                                                      ),
                                                      ), 
@@ -1061,8 +1066,9 @@ server <- function(input, output, session) {
       village_bus_count_plot
     }
     else if (finVar() == "inc") {
-      incplot <- ggplot(baseline, aes(inc_total, village, color = village)) + geom_point() + labs(x = "INR", y = "" ,title = "Total income per household", color = "Village") + coord_flip() + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_color_viridis_d()
-      incplot
+      figure_inc_spending <- ggplot(baseline.summary, aes(rmt_total, full_inc, color= village))+geom_point(data=baseline.summary, shape=17, size=3) +labs(x="Total mean weekly remittances", y="Total mean weekly income", color="Villages") + ggtitle("Average total income vs average total remittances in Baseline week") 
+      p<-figure_inc_spending +coord_flip() #+ scale_x_continuous(trans='log2') 
+      p
     }
     else if (finVar() == "sal") {
       salplot <- ggplot(m_salary, aes(village, avg_salary, fill = village)) + geom_col() + labs(x = "", y = "INR" ,title = "Average Monthly Salary per Household", fill = "Village") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d()
