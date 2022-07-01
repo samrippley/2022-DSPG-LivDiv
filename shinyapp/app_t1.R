@@ -594,7 +594,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                    p("", style = "padding-top:10px;"),
                                    column(12, align = "center", h4(strong("Timelapse showing coastal degradaiton")),
                                           p("This map shows the changing coastal line in the last two decades. This uses LANDSAT images from Google Earth Engine."),
-                                          br(""), tags$video(type = "video/mp4",src = "sundarbans.mp4", width = "600px", align = "center", height = "500px",controls = "controls")
+                                          br(""), tags$video(type = "video/mp4",src = "sundarbansv2.mp4", width = "600px", align = "center", height = "500px",controls = "controls")
                                           ), 
                                    )
                           
