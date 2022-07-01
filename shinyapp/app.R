@@ -589,17 +589,20 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                               h1(strong("Livelihood"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
-                                                     h4(strong("Education")),
+                                                     h4(strong("Livelihood")),
                                                      p("These are demographics"),
                                               ) ,
                                               column(8, 
-                                                     h4(strong("Demographics")),
-                                                     selectInput("ocudrop", "Select Varibiable:", width = "100%", choices = c(
+                                                     h4(strong("Livelihood")),
+                                                     selectInput("livdrop", "Select Varibiable:", width = "100%", choices = c(
                                                        "Primary Occupation" = "pocu",
-                                                       "Secondary Occupation" ="socu"
+                                                       "Secondary Occupation" ="socu",
+                                                       "Agricultural Farming" = "agfa",
+                                                       "Land Holding" = "laho",
+                                                       "Crops" = "cro" 
                                                      ),
                                                      ), 
-                                                     withSpinner(plotOutput("ocuplot", height = "500px")),
+                                                     withSpinner(plotOutput("livplot", height = "500px")),
                                                      
                                               ),
                                               column(12, 
@@ -613,13 +616,16 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                               h1(strong("Financial Behavior"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
-                                                     h4(strong("Education")),
+                                                     h4(strong("Financial Behavior")),
                                                      p("These are demographics"),
                                               ) ,
                                               column(8, 
-                                                     h4(strong("Demographics")),
+                                                     h4(strong("Financial Behavior")),
                                                      selectInput("findrop", "Select Varibiable:", width = "100%", choices = c(
-                                                       "Age" = "age"
+                                                       "Household Business" = "hobu",
+                                                       "Salary" = "sal",
+                                                       "Income/Remittances" = "inre",
+                                                       "Savings" = "sav"
                                                      ),
                                                      ), 
                                                      withSpinner(leafletOutput("demo1")) , 
@@ -915,7 +921,7 @@ server <- function(input, output, session) {
   runjs(jscode)
   
   
-  #age tabset -----------------------------------------------------
+  #sociodemo tabset -----------------------------------------------------
   ageVar <- reactive({
     input$agedrop
   })
@@ -962,8 +968,31 @@ server <- function(input, output, session) {
     
     
   })
+
+  #financial  tabset -----------------------------------------------------
+  finVar <- reactive({
+    input$agedrop
+  })
   
-  #ocy tabset -----------------------------------------------------
+  output$finplot <- renderPlot({
+    if (finVar() == "hobu") {
+      
+    }
+    else if (finVar() == "sal") {
+     
+    }
+    else if (finVar() == "inre") {
+      
+    }
+    else if (finVar() == "sav") {
+      
+    }
+    
+  })
+  
+  
+    
+  #livelihood tabset -----------------------------------------------------
   ocuVar <- reactive({
     input$ocudrop
   })
@@ -991,8 +1020,21 @@ server <- function(input, output, session) {
         scale_fill_brewer(palette="Spectral")
       socplot
     }
+    else if (finVar() == "agfa") {
+      
+    }
+    else if (finVar() == "laho") {
+      
+    }
+    else if (finVar() == "cro") {
+      
+    }
+    
   })
   
+  
+  
+  agfa
   
   
   # rmt plot output
