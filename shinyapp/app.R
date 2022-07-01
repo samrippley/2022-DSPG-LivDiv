@@ -459,7 +459,6 @@ jscode <- "function getUrlVars() {
                 });
                 return vars;
             }
-
            function getUrlParam(parameter, defaultvalue){
                 var urlparameter = defaultvalue;
                 if(window.location.href.indexOf(parameter) > -1){
@@ -467,32 +466,25 @@ jscode <- "function getUrlVars() {
                     }
                 return urlparameter;
             }
-
             var mytype = getUrlParam('type','Empty');
-
             function changeLinks(parameter) {
                 links = document.getElementsByTagName(\"a\");
-
                 for(var i = 0; i < links.length; i++) {
                    var link = links[i];
                    var newurl = link.href + '?type=' + parameter;
                    link.setAttribute('href', newurl);
                  }
             }
-
            var x = document.getElementsByClassName('navbar-brand');
-
            if (mytype != 'economic') {
              x[0].innerHTML = '<div style=\"margin-top:-14px\"><a href=\"https://datascienceforthepublicgood.org/node/451\">' +
                               '<img src=\"DSPG_black-01.png\", alt=\"DSPG 2020 Symposium Proceedings\", style=\"height:42px;\">' +
                               '</a></div>';
-
              //changeLinks('dspg');
            } else {
              x[0].innerHTML = '<div style=\"margin-top:-14px\"><a href=\"https://datascienceforthepublicgood.org/economic-mobility/community-insights/case-studies\">' +
                               '<img src=\"AEMLogoGatesColorsBlack-11.png\", alt=\"Gates Economic Mobility Case Studies\", style=\"height:42px;\">' +
                               '</a></div>';
-
              //changeLinks('economic');
            }
            "
@@ -511,7 +503,8 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                    # br("", style = "padding-top:2px;"),
                                    # img(src = "uva-dspg-logo.jpg", class = "topimage", width = "20%", style = "display: block; margin-left: auto; margin-right: auto;"),
                                    br(""),
-                                   h1(strong("Livelihood Diversification Using High-Frequency Data")),
+                                   h1(strong("LivDiv"),
+                                      h2(strong("Livelihood Diversification Using High-Frequency Data")),
                                       br(""),
                                       h4("Data Science for the Public Good Program"),
                                       h4("Virginia Polytechnic Institute and State University"),
@@ -552,18 +545,18 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                  ## Tab Date Intro--------------------------------------------
                  tabPanel("Data", value = "overview",
                           fluidRow(style = "margin: 6px;",
-                                   column(8, 
+                                   column(6, 
                                           h2(strong("Data")),
                                           p("We have data on 300 households’ finances/consumption every week for 10 villages from Nov 2018-Oct 2019. The Data we are using consists of a baseline and weekly financial diaries. The baseline information was collected through a survey, data was collected on household demographics, shock history, migration history, agriculture, etc. During the baseline interviews, enumerators trained the households to capture their weekly household income. This was immediately followed by two more rounds of training. The intent of these training sessions was to prepare the households to independently record their financial activities in pre-printed diaries. The field team collected the baseline, along with four weeks of Financial Diaries during their trip.")
                                           
                                    ),
                                    
-                                   column(8,
+                                   column(6,
                                           h2("Baseline"),
                                           p("Baseline data is a set of information, that is used as the foundation of the data set. It can be used to compare after the high-frequency data is accumulated. This information serves as a starting point, and can be utilized to draw deeper conclusions from the financial diaries."),
                                           p("The baseline, or initial, survey was conducted in Nov 2018.")
                                    ),
-                                   column(8,
+                                   column(6,
                                           h2("Financial Diaries"),
                                           p("Although the method of collection is expensive and involves a lot of effort, collecting individual household data for 305 randomly chosen allows for a more accurate understanding of the economic effects of covid-19 on these households. To understand the livelihood in the Sundarbans region, two baseline data collections took place, one between November 2018 to October 2019 and another restricted baseline from March to April 2019.  When India’s phase-I lockdown started on March 24th, 2020, questions about basic supplies and food were given to community leaders to gather more information. The field team trained the households on data collection methods as well as aided via phone calls. The financial diaries consisted of many questions such as both male and female weekly household income, remittance, borrowing, lending, and expenditure on consumption and non-consumption items.")
                                    )
@@ -672,8 +665,8 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                                      p("", style = "padding-top:10px;")) 
                                      )), 
                             
-                                              
-                                      ), 
+                            
+                 ), 
                  
                  
                  
@@ -1011,7 +1004,7 @@ server <- function(input, output, session) {
     
     
   })
-
+  
   
   #livelihood tabset -----------------------------------------------------
   ocuVar <- reactive({
@@ -1040,21 +1033,21 @@ server <- function(input, output, session) {
       socplot
     }
     else if (ocuVar() == "agfa") {
-     agfaplot <- ggplot(grouped, aes(village,prop_farm)) + geom_col(fill = "navy blue") + labs(x = "", y = "Proportion", title = "Proportion of Households Involved in Agricultural Farming") + coord_flip() + theme_classic()
-    agfaplot
-     }
+      agfaplot <- ggplot(grouped, aes(village,prop_farm)) + geom_col(fill = "navy blue") + labs(x = "", y = "Proportion", title = "Proportion of Households Involved in Agricultural Farming") + coord_flip() + theme_classic()
+      agfaplot
+    }
     else if (ocuVar() == "laho") {
-     mean_land_plot <- ggplot(land_stats, aes(x = villages, y = mean_land_value, fill = villages)) +
-       geom_col(fill = plasma(10, alpha = 1, begin = 0, end = 1, direction = 1)) +
-       coord_flip() +
-       ggtitle("Average Amount of Land Owned in Each Village") +
-       labs(x = "", y = "Land Owned [Kathas]")
-     mean_land_plot
-     }
+      mean_land_plot <- ggplot(land_stats, aes(x = villages, y = mean_land_value, fill = villages)) +
+        geom_col(fill = plasma(10, alpha = 1, begin = 0, end = 1, direction = 1)) +
+        coord_flip() +
+        ggtitle("Average Amount of Land Owned in Each Village") +
+        labs(x = "", y = "Land Owned [Kathas]")
+      mean_land_plot
+    }
     else if (ocuVar() == "cro") {
-     croplot <- ggplot(grouped, aes(village,prop_farm)) + geom_col(fill = "navy blue") + labs(x = "", y = "Proportion", title = "Proportion of Households that cultivated crops") + coord_flip() + theme_classic()
-   croplot
-      }
+      croplot <- ggplot(grouped, aes(village,prop_farm)) + geom_col(fill = "navy blue") + labs(x = "", y = "Proportion", title = "Proportion of Households that cultivated crops") + coord_flip() + theme_classic()
+      croplot
+    }
     
   })
   
@@ -1257,8 +1250,3 @@ server <- function(input, output, session) {
 }
 
 shinyApp(ui = ui, server = server)
-
-
-
-
-
