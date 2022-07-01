@@ -551,8 +551,8 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                    # br("", style = "padding-top:2px;"),
                                    # img(src = "uva-dspg-logo.jpg", class = "topimage", width = "20%", style = "display: block; margin-left: auto; margin-right: auto;"),
                                    br(""),
-                                   h1(strong("LivDiv"),
-                                      h2(strong("Livelihood Diversification Using High-Frequency Data")),
+                                   h1(strong("Livelihood Diversification Using High-Frequency Data"),
+                                      h2(strong("Sundarbans")),
                                       br(""),
                                       h4("Data Science for the Public Good Program"),
                                       h4("Virginia Polytechnic Institute and State University"),
@@ -564,30 +564,26 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                    column(4,
                                           h2(strong("The Setting")),
                                           
-                                          p("A UNESCO World Heritage Centre, the Sundarbans is a complex ecosystem housing one of the largest continuous mangrove forests and supports an exceptionally rich diversity of flora and fauna; some of which are threatened with extinction (the Bengal tiger, the estuarine crocodile, the Indian python, Irawadi dolphins, among many others.) Located in India and Bangladesh, the vast delta is formed by the super confluence of rivers Ganga, Brahmaputra, and Meghna. The area is intersected by a complex network of tidal waterways, mudflats, and small islands of salt-tolerant mangrove forests (which have above the ground roots or “breathing roots.”) The region also acts as a shelter belt to protect the inland from storms, cyclones, tidal surges, sea water seepage and soil erosion. The often-flooded Sundarbans freshwater swamp forests lie inshore from the mangrove forests on the coastal fringe. Despite protective measures, the Indian Sundarbans is considered endangered under the IUCN Red List of Ecosystems, 2020." ),
-                                          p("The Sundarbans plays an indispensable role in the local economy by supplying sustainable livelihoods for 4 million people living in small villages in the vicinity of the site. 95% of the population in this area depends on agriculture. The farmers who are mostly landless laborers commonly farm a single crop (Aman paddy) in rainy season and sell food to intermediaries or traders. The forest caters to the needs of the wood-based industries. In addition to traditional forest produce like timber, fuelwood, pulpwood, large-scale harvest of non-wood forest products such as thatching materials, shrimps, honey, fish, crustacean, and mollusk resources of the forest is also common. The people work as woodcutters, fishermen, honey gatherers, leaves and grass gatherers. However, forest conservation efforts have put a cap on how much these resources can be exploited. For example, from 2022, three-month honey passes are being issued by authorities for collecting wax from beehives. "),
-                                          
-                                          
+                                          p("The Sundarbans is a cluster of low-lying islands in the Bay of Bengal spans across India and Bangladesh. The Sundarbans area hosts the largest mangrove forests in the world, supporting an exceptionally rich diversity of flora and endangered fauna such as the Bengal tiger, Estuarine crocodile, Indian python, and Irawadi dolphins."),
+                                          p("The vast delta is formed by the connection of the Ganga, Brahmaputra, and Meghna rivers. It also has a complex network of tidal waterways, creeks, and mudflats. The area's unique boundaries act as a shelter belt from natural disasters such as cyclones, tidal surges, and seawater seepage. Despite this natural protective system and being a World Heritage Site with conservation requirements, the Sundarbans is considered endangered under the ICUN Red List of Ecosystems due to increasing climate, population and agricultural farming."),
+                                          p("The Sundarbans supplies sustainable livelihoods for 4 million people living in small villages near the mangrove forests. Most residents work in various agricultural occupations, including farmers, woodcutters, fishers, and honey gatherers. Farmers, primarily landless laborers, commonly farm a single crop (Aman paddy) in the rainy season and sell food to intermediaries or traders. The woodcutters obtain traditional forest produce like timber, fuelwood, and pulpwood. A large-scale harvest of shrimps, fish, crustaceans, and honey from the forests are also typical. However, with the ongoing climate and population changes, forest conservation efforts have placed a cap on harvesting. For example, in 2022, authorities began issuing three-month honey passes to collect wax from beehives.")
                                    ),
                                    column(4,
                                           h2(strong("Project Background")),
                                           
-                                          p("Should I talk about our stakeholders and their research here?"),
-                                          
-                                          p("There are many threats that the Sundarbans faces today due to both synthetic and natural causes. Due to the increased frequency of cyclones in the last decade, the forest has been incurring severe damage and gradually shrinking. It has nearly halved over the last two decades. The rising sea level is leading to higher salinity and reduced freshwater leading to more fallow lands. Poor infrastructure in the region leads to the area taking the brunt of the cyclones. The well-integrated ecosystem-based livelihoods are being threatened. Agricultural dependent families face a prominent level of existing poverty due to inadequate infrastructure, transportation, and storage shortages. Remittance income from domestic migration is becoming one of major sources of income. ")
-                                          
+                                          p("The Sundarbans faces an increasing threat to its ecological system due to several manmade and natural causes. First, cyclones, common to this area, are getting more frequent and more serve. From 1961 to 2022, 15 cyclones hit this area, with at least one occurring yearly in the past four years. This has led to the forest incurring severe damages, gradually causing the area to shrink. Second, there is an increase in deforestation due to increasing population and commercial uses. There is also a decrease in aquatic animals due to increased fishing. Additionally, the biological makeup of the forest, such as salinity, soil pH, and reduced freshwater, are being altered due to climate change leading to more fallow land."),
+                                          p("Agricultural-dependent families bear the brunt of these increasing threats to the Sundarbans. This is evident by the growing out-migration of the working population to cities and towns as a coping mechanism. Remittance income from this domestic migration has become one of the significant sources of income to protect residents' livelihood.")
                                    ),
                                    
                                    column(4,
                                           h2(strong("Project Goals")),
-                                          p("The climate crisis is global; however, its impact is not felt equally across all regions. Some regions will be hit worse than others due to a range of several factors. Developing countries, places with widespread poverty, countries with ineffective governments, or those facing conflicts, etc., face the gravest risks from the changing climate, and are usually poorly equipped to find ways to prepare for and prevent environmental threats. Climate change has caused higher temperatures, droughts, floods, rising sea levels, along with the worsening of extreme weather patterns."),
-                                          p("There is a disproportionate burden of climate change borne by impoverished people in developing countries. Most of these people are involved in small-scale agriculture and these farmers' lives are forcibly changing as they must diversify their livelihood strategies to cope with climate change, especially in climate-vulnerable regions of the world."),
-                                          p("Measuring the future impact of climate change is challenging, scientists’ climate change projections cannot be completely exact as there are many factors that come into play such as the risk of extreme weather events and rising temperatures. Evaluating non-climatic factors that determine how severely a city or country will be impacted by climate change could be beneficial to aid those affected."),
-                                          p("The overall goal of this project is to evaluate livelihood-diversification, using high frequency data, of the Sundarbans region. The classification of livelihood strategies is important for designing effective and targeted poverty-reducing strategies and aid those effected by shocks such as natural disasters and climate change.")
-                                   )
+                                          p("Climate change is a global issue; however, its impact is not felt equally across all regions. Developing countries, especially areas with widespread poverty and poor infrastructure, are more ill-equipped to cope with these environmental threats. The worsening of extreme weather patterns such as high temperatures, droughts, floods, and rising sea levels are especially problematic for countries with large coastal areas and populations that primarily depend on agriculture for their livelihood."),
+                                          p("We examine the Sundarbans in West Bengal, India, which has faced increasing climate changes in recent years for this project. The Sundarbans region has experienced a disproportionate number of climate disasters such as flooding and cyclones over the past decade. Residents who primarily engage in small-scale agriculture are forced to diversify their likelihood strategies using out-migration and reduced farming to cope with the increasing environmental changes."),
+                                          p("The overall goal of this project is to evaluate livelihood-diversification strategies using weekly financial data for approximately 300 households from 10 representative villages in the region. The team aims to create a public-facing dashboard to describe and visualize households' livelihood diversification strategies, including changes in income, expenditure, and consumption patterns. The insights from this dashboard are important for designing effective and targeted poverty-reducing strategies and aiding those affected by shocks such as natural disasters and climate change.")
+                                          )
                           ),
-                          fluidRow(align = "center",
-                                   p(tags$small(em('Last updated: August 2021'))))
+                          #fluidRow(align = "center",
+                                  # p(tags$small(em('Last updated: August 2021'))))
                  ),
                  
                  ## Tab Date Intro--------------------------------------------
@@ -595,22 +591,24 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                           fluidRow(style = "margin: 6px;",
                                    column(4, 
                                           h2(strong("Data")),
-                                          p("We have data on 300 households’ finances/consumption every week for 10 villages from Nov 2018-Oct 2019. The Data we are using consists of a baseline and weekly financial diaries. The baseline information was collected through a survey, data was collected on household demographics, shock history, migration history, agriculture, etc. During the baseline interviews, enumerators trained the households to capture their weekly household income. This was immediately followed by two more rounds of training. The intent of these training sessions was to prepare the households to independently record their financial activities in pre-printed diaries. The field team collected the baseline, along with four weeks of Financial Diaries during their trip.")
-                                          
+                                          p("We acquire weekly household financial and consumption data for this project from Gupta et.al (2021).  Data was collected from about 300 households in 10 representative village in the Sundarbans region from November 2018 to October 2019. ")
                                    ),
                                    
                                    column(4,
-                                          h2(strong("Baseline")),
-                                          p("Baseline data is a set of information, that is used as the foundation of the data set. It can be used to compare after the high-frequency data is accumulated. This information serves as a starting point, and can be utilized to draw deeper conclusions from the financial diaries."),
-                                          p("The baseline, or initial, survey was conducted in Nov 2018.")
-                                   ),
+                                          h2(strong("Initial/Baseline")),
+                                          p("The initial or baseline survey was conducted in November 2018. This data is the foundation of our data, allowing the team to understand this region's demographic and socio-economic characteristics. The baseline survey collected information on household demographics, economic activities, assets and landholding, shock history, migration, and agricultural behaviors.")
+                                          
+                                            
+                                            ),
                                    column(4,
-                                          h2(strong("Financial Diaries"),
-                                          p("Although the method of collection is expensive and involves a lot of effort, collecting individual household data for 305 randomly chosen allows for a more accurate understanding of the economic effects of covid-19 on these households. To understand the livelihood in the Sundarbans region, two baseline data collections took place, one between November 2018 to October 2019 and another restricted baseline from March to April 2019.  When India’s phase-I lockdown started on March 24th, 2020, questions about basic supplies and food were given to community leaders to gather more information. The field team trained the households on data collection methods as well as aided via phone calls. The financial diaries consisted of many questions such as both male and female weekly household income, remittance, borrowing, lending, and expenditure on consumption and non-consumption items.")
-                                   )
+                                          h2(strong("Financial Diaries")),
+                                          p("Gupta et al. (2021) use financial diaries to capture high-frequency data on household income, expenditure, and consumption behavior. As such, we have weekly financial and economic activities for approximately 300 households for an entire year (November 2018 to October 2019)."),
+                                          p("Household members were trained and provided instructions to independently record their financial activities in diaries (see image below, insert screenshot of image) before data collection. These diaries include information on weekly income, remittances, borrowing, lending, expenditure on consumption, and non-consumption items.")
+                                            
+                                          
                           ),
-                          fluidRow(align = "center",
-                                   p(tags$small(em('Last updated: August 2021'))))
+                          #fluidRow(align = "center",
+                               #    p(tags$small(em('Last updated: August 2021'))))
                  )),
                  
                  
@@ -648,19 +646,19 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                      fluidRow(style = "margin: 6px;",
                                               h1(strong("Socioeconomic"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
-                                              column(4, 
-                                                     h4(strong("Education")),
-                                                     p("These are demographics"),
-                                              ) ,
-                                              column(8, 
-                                                     h4(strong("Demographics")),
+                                              #column(4, 
+                                               #      h4(strong("Education")),
+                                                #     p("These are demographics"),
+                                              #) ,
+                                              column(12, 
+                                                     h4(strong("Head of Household Demographics")),
                                                      selectInput("agedrop", "Select Varibiable:", width = "100%", choices = c(
                                                        "Age" = "age",
                                                        "Education" = "edu", 
                                                        "Poverty" = "pov", 
                                                        "Marital Status" = "mar"),
                                                      ), 
-                                                     withSpinner(plotOutput("ageplot", height = "500px")),
+                                                     withSpinner(plotOutput("ageplot", height = "500px", width = "100%")),
                                                      
                                               ),
                                               # column(12, 
@@ -672,11 +670,11 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                      fluidRow(style = "margin: 6px;",
                                               h1(strong("Livelihood"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
-                                              column(4, 
-                                                     h4(strong("Education")),
-                                                     p("These are demographics"),
-                                              ) ,
-                                              column(8, 
+                                              #column(4, 
+                                               #      h4(strong("Education")),
+                                                #     p("These are demographics"),
+                                            #  ) ,
+                                              column(12, 
                                                      h4(strong("Demographics - October 2018")),
                                                      selectInput("ocudrop", "Select Varibiable:", width = "100%", choices = c(
                                                        "Primary Occupation" = "pocu",
@@ -699,11 +697,11 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                      fluidRow(style = "margin: 6px;",
                                               h1(strong("Financial Behavior"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
-                                              column(4, 
-                                                     h4(strong("Education")),
-                                                     p("These are demographics"),
-                                              ) ,
-                                              column(8, 
+                                           #   column(4, 
+                                            #         h4(strong("Education")),
+                                             #        p("These are demographics"),
+                                            #  ) ,
+                                              column(12, 
                                                      h4(strong("Financial Behavior - October 2018")),
                                                      selectInput("findrop", "Select Varibiable:", width = "100%", choices = c(
                                                        "Household Business" = "hobu",
