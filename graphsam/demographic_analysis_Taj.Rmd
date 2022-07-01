@@ -18,7 +18,7 @@ library(viridis)
 
 ```{r, include=FALSE}
 ### Load data and set baseline
-load("~/2022-DSPG-LivDiv-/data/livdivdata.RData")
+#load("~/2022-DSPG-LivDiv-/data/livdivdata.RData")
 baseline <- livdiv %>%
   slice(1:306)
 

@@ -293,9 +293,8 @@ ggplot(exbyvil, aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) 
 shocks <- baseline %>% select(village,shk1,shk2,shk3,shk4,shk5,shk6,shk7)
 shocks <- data.frame(y=unlist(shocks))
 colnames(shocks) <- c('shock_nmb')
-shock_labels <- c('None', 'Crop Loss', 'Loss of vegetation', 'Damage caused by saline water encroachment','Forced to move due to Flooding',
-                  'Loss of agricultural land by river erosion','Loss of home by river erosion/cyclone', 'Loss of livestock',
-                  'Loss of business/shop/etc. due to rising water levels', 'Unexpected death or health consequence in Household', 'Other')
+shock_labels <- c('None', 'Crop Loss', 'Loss of vegetation', 'Damage(saline water)','Forced to move(Flooding)', 'Loss of agricultural land(river erosion)',
+                  'Loss of home(river erosion/cyclone)', 'Loss of livestock', 'Loss of business/shop/etc.', 'Death/health issues', 'Other')
 
 shocks_all <- ggplot(shocks, aes(shock_nmb)) + geom_bar(fill = "dark red") + 
   labs(x = "", y = "Occurances" ,title = "Frequency") + theme(axis.text = element_text(size = 7)) + 
