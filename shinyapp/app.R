@@ -32,7 +32,6 @@ library(lubridate)
 library(shinyWidgets)
 library(viridis)
 library(RColorBrewer)
-library(plotly)
 
 prettyblue <- "#232D4B"
 navBarBlue <- '#427EDC'
@@ -295,7 +294,44 @@ rmt_method_plot <- ggplot(method_dat, aes( x= reorder(Method, method_counts), y 
   coord_flip()+
   ggtitle("Method of Receiving Remittances")+
   geom_text(aes(label = method_values), size = 3)
-#--------------------------------------------------------------------
+
+
+# leaflet data --------------------------------------------------------------------
+
+require(rgdal)
+ind <- st_read(dsn = "/Users/tajcole/2022-DSPG-LivDiv-/data/fgd-village-selection-main/GADM", "gadm36_IND_3", stringsAsFactors = TRUE)
+
+sundarban <- subset(ind, NAME_2 %in% c('North 24 Parganas','South 24 Parganas'))
+d.sundarban<-st_union(sundarban)
+
+village_all <- st_read(dsn = "/Users/tajcole/2022-DSPG-LivDiv-/data/fgd-village-selection-main/shapefiles", "Village, GP coordinates", stringsAsFactors = TRUE)
+
+village <- subset(village_all, Village.Na %in% c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Parghumti","Purba Dwarokapur","Gangasagar","Shibpur"))
+
+icons <- awesomeIcons(
+  icon = 'ios-close',
+  iconColor = 'black',
+  library = 'ion',
+  markerColor = "lightred"
+)
+
+map_leaflet <- leaflet(data = d.sundarban) %>%
+  addTiles() %>%
+  addPolygons(
+    fillColor = "green",
+    stroke=TRUE,
+    weight = 1,
+    smoothFactor = 0.2,
+    opacity = 1.0,
+    fillOpacity = 0.7,
+    highlightOptions = highlightOptions(color = "white",
+                                        weight = 2,
+                                        bringToFront = TRUE)) %>%
+  addAwesomeMarkers(~lon, ~lat, label = ~as.character(Village.Na), icon=icons, data=village)
+
+
+#-------------------------------
+
 
 # rmt purpose plot:
 Purpose <-  c("Food/Utility Purchases", "Other", "No Reason", "Medical Expenses","Tuition", "Assets/Durable Purchases")
@@ -323,8 +359,8 @@ rmt_dat <- fd %>%
 rmt_dat$date <- as_date(rmt_dat$date)
 avg_rmt <- rmt_dat %>% 
   group_by(date, village) %>% 
-  summarize("Date" = date, "Village" = village, "Average Remitances" = mean(rmt_total, na.rm = T))
-avg_rmt <- avg_rmt[,-(1:2)]
+  summarize("Average Remitances" = mean(rmt_total, na.rm = T))
+names(avg_rmt) <- c("Date", "Village", "Average Remittances")
 
 #-----------------------------------------------------------------
 
@@ -347,8 +383,8 @@ ggplot(exbyvil, aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) 
 # Expenditure table
 expend_table <- expen %>% 
   group_by(date, village) %>% 
-  summarize("Date" = date, "Village" = village, "Average Expenditure" = mean(total_spending, na.rm = T))
-expend_table <- expend_table[,-(1:2)]
+  summarize("Average Expenditure" = mean(total_spending, na.rm = T))
+names(expend_table) <- c("Date", "Village", "Average Expenditure")
 #--------------------------------------------------------------------
 # Income plot data:
 fin_diary <- livdiv %>% select(village, date, week, name, full_inc) %>% arrange(week, village) %>% group_by(week) 
@@ -357,9 +393,8 @@ avg_tot_inc <- fin_diary %>% group_by(date, village, week) %>% summarize(avg_inc
 ggplot(avg_tot_inc, aes(date, avg_inc, color = village)) + geom_line() + labs(x = "", y = "Income (INR)", title = "Average Weekly Household Income by village", color = "Village")
 #--------------------------------------------------------------------
 #Income table 
-avg_inc_table <- fin_diary %>% group_by(date, village) %>% summarize("Date" = date, "Village" = village,"Average Income" = mean(full_inc, na.rm = TRUE))
-avg_inc_table <- avg_inc_table[,-(1:2)]
-
+avg_inc_table <- fin_diary %>% group_by(date, village) %>% summarize("Average Income" = mean(full_inc, na.rm = TRUE))
+names(avg_inc_table) <- c("Date", "Village", "Average Income")
 
 #Shocks Data ------------------------------------------------------------------- 
 ## Frequency of each shock (Total baseline)
@@ -464,6 +499,7 @@ jscode <- "function getUrlVars() {
                 });
                 return vars;
             }
+
            function getUrlParam(parameter, defaultvalue){
                 var urlparameter = defaultvalue;
                 if(window.location.href.indexOf(parameter) > -1){
@@ -471,25 +507,32 @@ jscode <- "function getUrlVars() {
                     }
                 return urlparameter;
             }
+
             var mytype = getUrlParam('type','Empty');
+
             function changeLinks(parameter) {
                 links = document.getElementsByTagName(\"a\");
+
                 for(var i = 0; i < links.length; i++) {
                    var link = links[i];
                    var newurl = link.href + '?type=' + parameter;
                    link.setAttribute('href', newurl);
                  }
             }
+
            var x = document.getElementsByClassName('navbar-brand');
+
            if (mytype != 'economic') {
              x[0].innerHTML = '<div style=\"margin-top:-14px\"><a href=\"https://datascienceforthepublicgood.org/node/451\">' +
                               '<img src=\"DSPG_black-01.png\", alt=\"DSPG 2020 Symposium Proceedings\", style=\"height:42px;\">' +
                               '</a></div>';
+
              //changeLinks('dspg');
            } else {
              x[0].innerHTML = '<div style=\"margin-top:-14px\"><a href=\"https://datascienceforthepublicgood.org/economic-mobility/community-insights/case-studies\">' +
                               '<img src=\"AEMLogoGatesColorsBlack-11.png\", alt=\"Gates Economic Mobility Case Studies\", style=\"height:42px;\">' +
                               '</a></div>';
+
              //changeLinks('economic');
            }
            "
@@ -505,11 +548,15 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                  tabPanel("Project Overview", value = "overview",
                           fluidRow(style = "margin: 2px;",
                                    align = "center",
+                                   # br("", style = "padding-top:2px;"),
+                                   # img(src = "uva-dspg-logo.jpg", class = "topimage", width = "20%", style = "display: block; margin-left: auto; margin-right: auto;"),
                                    br(""),
-                                   h1(strong("Livelihood Diversification Using High-Frequency Data"),
-                                      h2("Data Science for the Public Good Program"),
+                                   h1(strong("LivDiv"),
+                                      h2(strong("Livelihood Diversification Using High-Frequency Data")),
+                                      br(""),
+                                      h4("Data Science for the Public Good Program"),
                                       h4("Virginia Polytechnic Institute and State University"),
-                                      
+                                      #h4("[updat this]"),
                                       br()
                                    )
                           ),
@@ -517,50 +564,53 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                    column(4,
                                           h2(strong("The Setting")),
                                           
-                                          p("The Sundarbans is a cluster of low-lying islands in the Bay of Bengal spans across India and Bangladesh. The Sundarbans area hosts the largest mangrove forests in the world, supporting an exceptionally rich diversity of flora and endangered fauna such as the Bengal tiger, Estuarine crocodile, Indian python, and Irawadi dolphins."),
-                                          p("The vast delta is formed by the connection of the Ganga, Brahmaputra, and Meghna rivers. It also has a complex network of tidal waterways, creeks, and mudflats. The area's unique boundaries act as a shelter belt from natural disasters such as cyclones, tidal surges, and seawater seepage. Despite this natural protective system and being a World Heritage Site with conservation requirements, the Sundarbans is considered endangered under the ICUN Red List of Ecosystems due to increasing climate, population and agricultural farming.  "),
-                                          p("The Sundarbans supplies sustainable livelihoods for 4 million people living in small villages near the mangrove forests. Most residents work in various agricultural occupations, including farmers, woodcutters, fishers, and honey gatherers. Farmers, primarily landless laborers, commonly farm a single crop (Aman paddy) in the rainy season and sell food to intermediaries or traders. The woodcutters obtain traditional forest produce like timber, fuelwood, and pulpwood. A large-scale harvest of shrimps, fish, crustaceans, and honey from the forests are also typical. However, with the ongoing climate and population changes, forest conservation efforts have placed a cap on harvesting. For example, in 2022, authorities began issuing three-month honey passes to collect wax from beehives.")                                     
+                                          p("A UNESCO World Heritage Centre, the Sundarbans is a complex ecosystem housing one of the largest continuous mangrove forests and supports an exceptionally rich diversity of flora and fauna; some of which are threatened with extinction (the Bengal tiger, the estuarine crocodile, the Indian python, Irawadi dolphins, among many others.) Located in India and Bangladesh, the vast delta is formed by the super confluence of rivers Ganga, Brahmaputra, and Meghna. The area is intersected by a complex network of tidal waterways, mudflats, and small islands of salt-tolerant mangrove forests (which have above the ground roots or “breathing roots.”) The region also acts as a shelter belt to protect the inland from storms, cyclones, tidal surges, sea water seepage and soil erosion. The often-flooded Sundarbans freshwater swamp forests lie inshore from the mangrove forests on the coastal fringe. Despite protective measures, the Indian Sundarbans is considered endangered under the IUCN Red List of Ecosystems, 2020." ),
+                                          p("The Sundarbans plays an indispensable role in the local economy by supplying sustainable livelihoods for 4 million people living in small villages in the vicinity of the site. 95% of the population in this area depends on agriculture. The farmers who are mostly landless laborers commonly farm a single crop (Aman paddy) in rainy season and sell food to intermediaries or traders. The forest caters to the needs of the wood-based industries. In addition to traditional forest produce like timber, fuelwood, pulpwood, large-scale harvest of non-wood forest products such as thatching materials, shrimps, honey, fish, crustacean, and mollusk resources of the forest is also common. The people work as woodcutters, fishermen, honey gatherers, leaves and grass gatherers. However, forest conservation efforts have put a cap on how much these resources can be exploited. For example, from 2022, three-month honey passes are being issued by authorities for collecting wax from beehives. "),
+                                          
+                                          
                                    ),
                                    column(4,
                                           h2(strong("Project Background")),
                                           
-                                          p("The Sundarbans faces an increasing threat to its ecological system due to several manmade and natural causes. First, cyclones, common to this area, are getting more frequent and more serve. From 1961 to 2022, 15 cyclones hit this area, with at least one occurring yearly in the past four years. This has led to the forest incurring severe damages, gradually causing the area to shrink. Second, there is an increase in deforestation due to increasing population and commercial uses. There is also a decrease in aquatic animals due to increased fishing. Additionally, the biological makeup of the forest, such as salinity, soil pH, and reduced freshwater, are being altered due to climate change leading to more fallow land."),
-                                          p("Agricultural-dependent families bear the brunt of these increasing threats to the Sundarbans. This is evident by the growing out-migration of the working population to cities and towns as a coping mechanism. Remittance income from this domestic migration has become one of the significant sources of income to protect residents' livelihood.")
+                                          p("Should I talk about our stakeholders and their research here?"),
+                                          
+                                          p("There are many threats that the Sundarbans faces today due to both synthetic and natural causes. Due to the increased frequency of cyclones in the last decade, the forest has been incurring severe damage and gradually shrinking. It has nearly halved over the last two decades. The rising sea level is leading to higher salinity and reduced freshwater leading to more fallow lands. Poor infrastructure in the region leads to the area taking the brunt of the cyclones. The well-integrated ecosystem-based livelihoods are being threatened. Agricultural dependent families face a prominent level of existing poverty due to inadequate infrastructure, transportation, and storage shortages. Remittance income from domestic migration is becoming one of major sources of income. ")
+                                          
                                    ),
                                    
                                    column(4,
                                           h2(strong("Project Goals")),
-                                          p("Climate change is a global issue; however, its impact is not felt equally across all regions. Developing countries, especially areas with widespread poverty and poor infrastructure, are more ill-equipped to cope with these environmental threats. The worsening of extreme weather patterns such as high temperatures, droughts, floods, and rising sea levels are especially problematic for countries with large coastal areas and populations that primarily depend on agriculture for their livelihood."),
-                                          p("We examine the Sundarbans in West Bengal, India, which has faced increasing climate changes in recent years for this project. The Sundarbans region has experienced a disproportionate number of climate disasters such as flooding and cyclones over the past decade. Residents who primarily engage in small-scale agriculture are forced to diversify their likelihood strategies using out-migration and reduced farming to cope with the increasing environmental changes. "),
-                                          p("The overall goal of this project is to evaluate livelihood-diversification strategies using weekly financial data for approximately 300 households from 10 representative villages in the region. The team aims to create a public-facing dashboard to describe and visualize households' livelihood diversification strategies, including changes in income, expenditure, and consumption patterns. The insights from this dashboard are important for designing effective and targeted poverty-reducing strategies and aiding those affected by shocks such as natural disasters and climate change. ")
-                                          
+                                          p("The climate crisis is global; however, its impact is not felt equally across all regions. Some regions will be hit worse than others due to a range of several factors. Developing countries, places with widespread poverty, countries with ineffective governments, or those facing conflicts, etc., face the gravest risks from the changing climate, and are usually poorly equipped to find ways to prepare for and prevent environmental threats. Climate change has caused higher temperatures, droughts, floods, rising sea levels, along with the worsening of extreme weather patterns."),
+                                          p("There is a disproportionate burden of climate change borne by impoverished people in developing countries. Most of these people are involved in small-scale agriculture and these farmers' lives are forcibly changing as they must diversify their livelihood strategies to cope with climate change, especially in climate-vulnerable regions of the world."),
+                                          p("Measuring the future impact of climate change is challenging, scientists’ climate change projections cannot be completely exact as there are many factors that come into play such as the risk of extreme weather events and rising temperatures. Evaluating non-climatic factors that determine how severely a city or country will be impacted by climate change could be beneficial to aid those affected."),
+                                          p("The overall goal of this project is to evaluate livelihood-diversification, using high frequency data, of the Sundarbans region. The classification of livelihood strategies is important for designing effective and targeted poverty-reducing strategies and aid those effected by shocks such as natural disasters and climate change.")
                                    )
                           ),
-                          #  fluidRow(align = "center",
-                          #         p(tags$small(em('Last updated: August 2021'))))
+                          fluidRow(align = "center",
+                                   p(tags$small(em('Last updated: August 2021'))))
                  ),
                  
                  ## Tab Date Intro--------------------------------------------
                  tabPanel("Data", value = "overview",
                           fluidRow(style = "margin: 6px;",
-                                   column(6, 
+                                   column(8, 
                                           h2(strong("Data")),
-                                          p("We acquire weekly household financial and consumption data for this project from Gupta et.al (2021).  Data was collected from about 300 households in 10 representative village in the Sundarbans region from November 2018 to October 2019. ")
-                                   ),
-                                   
-                                   column(6,
-                                          h2(strong("Initial/Baseline")),
-                                          p("The initial or baseline survey was conducted in November 2018. This data is the foundation of our data, allowing the team to understand this region's demographic and socio-economic characteristics. The baseline survey collected information on household demographics, economic activities, assets and landholding, shock history, migration, and agricultural behaviors. ")
+                                          p("We have data on 300 households’ finances/consumption every week for 10 villages from Nov 2018-Oct 2019. The Data we are using consists of a baseline and weekly financial diaries. The baseline information was collected through a survey, data was collected on household demographics, shock history, migration history, agriculture, etc. During the baseline interviews, enumerators trained the households to capture their weekly household income. This was immediately followed by two more rounds of training. The intent of these training sessions was to prepare the households to independently record their financial activities in pre-printed diaries. The field team collected the baseline, along with four weeks of Financial Diaries during their trip.")
                                           
                                    ),
-                                   column(6,
-                                          h2(strong("Financial Diaries")),
-                                          p("Gupta et al. (2021) use financial diaries to capture high-frequency data on household income, expenditure, and consumption behavior. As such, we have weekly financial and economic activities for approximately 300 households for an entire year (November 2018 to October 2019).  "), 
-                                          p("Household members were trained and provided instructions to independently record their financial activities in diaries (see image below, insert screenshot of image) before data collection. These diaries include information on weekly income, remittances, borrowing, lending, expenditure on consumption, and non-consumption items.")
+                                   
+                                   column(8,
+                                          h2("Baseline"),
+                                          p("Baseline data is a set of information, that is used as the foundation of the data set. It can be used to compare after the high-frequency data is accumulated. This information serves as a starting point, and can be utilized to draw deeper conclusions from the financial diaries."),
+                                          p("The baseline, or initial, survey was conducted in Nov 2018.")
+                                   ),
+                                   column(8,
+                                          h2("Financial Diaries"),
+                                          p("Although the method of collection is expensive and involves a lot of effort, collecting individual household data for 305 randomly chosen allows for a more accurate understanding of the economic effects of covid-19 on these households. To understand the livelihood in the Sundarbans region, two baseline data collections took place, one between November 2018 to October 2019 and another restricted baseline from March to April 2019.  When India’s phase-I lockdown started on March 24th, 2020, questions about basic supplies and food were given to community leaders to gather more information. The field team trained the households on data collection methods as well as aided via phone calls. The financial diaries consisted of many questions such as both male and female weekly household income, remittance, borrowing, lending, and expenditure on consumption and non-consumption items.")
                                    )
                           ),
-                          #  fluidRow(align = "center",
-                          #          p(tags$small(em('Last updated: August 2021'))))
+                          fluidRow(align = "center",
+                                   p(tags$small(em('Last updated: August 2021'))))
                  ),
                  
                  
@@ -571,7 +621,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                    p("", style = "padding-top:10px;")),
                           fluidRow(style = "margin: 6px;",
                                    p("", style = "padding-top:10px;"),
-                                   column(12,h4(strong("Map")),
+                                   column(12, align = "center",h4(strong("Map")),
                                           p("This map shows the Sundarbans area and the 10 villages."),
                                           br("")
                                           
@@ -581,8 +631,16 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                             leafletOutput("map_leaflet", width = "100%"),
                             #p(),
                             #actionButton("recalc", "New Points")
-                          )
-                 ),
+                          ),
+                          fluidRow(style = "margin: 6px;",
+                                   p("", style = "padding-top:10px;"),
+                                   column(12, align = "center", h4(strong("Timelapse showing coastal degradaiton")),
+                                          p("This map shows the changing coastal line in the last two decades. This uses LANDSAT images from Google Earth Engine."),
+                                          br(""), tags$video(type = "video/mp4",src = "sundarbansv2.mp4", width = "600px", align = "center", height = "500px",controls = "controls")
+                                          ), 
+                                   )
+                          
+                            ),
                  
                  ## Tab Demographics --------------------------------------------
                  navbarMenu("Demographics" , 
@@ -677,11 +735,12 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                               h1(strong("Expenditure"), align = "center"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
-                                                     p("To determine the spending behavior of households in the region, we visualized average weekly expenditure over the data period.
-                                                      Expenditure includes weekly total consumption (e.g., Food) and non-consumption items (e.g., Rent).
-                                                      the largest expenses inlcude house repairs and festival related costs, and the most common expenditure is 
-                                                      on food purchases. Following expenditure overtime tells us a lot about the changing nature of spending 
-                                                      in the Sundarbans region due to things such as festivals, weather, harvest seasons, etc."),
+                                                     p("We present average weekly expenditure from Nov 2018 - Oct 2019 to examine the spending behaviors of households in the region. 
+                                                       This will provide information on the changing nature of spending in the Sundarbans region due to events such as festivals, 
+                                                       harvest seasons, and weather-related shocks.  "),
+                                                     p("Expenditure is defined as total weekly consumption (e.g., food) and non-consumption (e.g., rent) items. 
+                                                       It appears that the largest expense for households during this period include house repairs and festival-related costs. 
+                                                       The most common expenditures are food purchases."),
                                                      br("")
                                                      
                                               )),
@@ -714,11 +773,10 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                               h1(strong("Income"), align = "center"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
-                                                     p("Knowing the Sundarbans is an impoverished area, we visualized the average weekly hosuehold income over the data period.
-                                                      Spikes of income can mean many things, such as harvest time, salary bonuses, or an addition of
-                                                      remmittance to weekly income. The largest spike, in late March, indicates the largest harvest for
-                                                      farmers in the region. In addition, dips in the plot can indicate things such as shocks from
-                                                      environmental impacts or other unexpected household incidents."),
+                                                     p("We also report average weekly household income for households across villages over 52 weeks. 
+                                                       There is a significant increase in households’ income across most villages in late March. This increase coincides 
+                                                       with the largest harvest for farmers in the region. We will investigate the different variations (spikes and dips) 
+                                                       to determine the correlation between environmental shocks or unexpected household incidents."),
                                                      br("")
                                                      
                                               )),
@@ -747,16 +805,13 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                               h1(strong("Remittances"), align = "center"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
-                                                     p("To identify where shocks may have occured over the data period, and which villages may have been affected the most, we visualized average weekly remmittances.
-                                                      Large spikes in remittances begin in late March and continue to occur frequently throughout the rest
-                                                      of the data period. Within this time period, the Sundarbans region was affected by three 
-                                                      sever cyclones that hit the Bengal Bay: Fani (Category 4, April 25- May 4 2019) and 
-                                                      Bulbul and Matmo (Category 1, October 28 - November 11 2019). The Sundarbans also could have
-                                                      been negatively impacted by two cyclones that hit the Arabian Sea during this period:
-                                                      Vayu (Category 1, June 8-18) and Hikaa (Category 1, September 20-26). While the Sundarbans
-                                                      was not reported as an area directly affected by these two cyclones, it is possible
-                                                      that the region experienced some of the negative residuals of the storm due
-                                                      to their proximity to the Arabian Sea."),
+                                                     p("In recent years, households have become more reliant on remittances as a significant source of income. 
+                                                       As such, we examine temporal changes in remittances between October 2018 and November 2019. There is a substantial increase 
+                                                       In late March (what year). This increase continues to occur frequently throughout the data period. Notably, 
+                                                       the Sundarbans region was affected by three severe cyclones during this period: Fani, Category 4 (April – May 2019), 
+                                                       and Category 1, Bulbul and Matmo (October – November 2019). The Sundarbans also could have been negatively impacted by two 
+                                                       cyclones that hit the Arabian Sea during this period: Vayu (Category 1, June 8-18) and Hikaa (Category 1, September 20-26). 
+                                                       It is possible households are using remittances to cope with these cyclones and weather-related shocks."),
                                                      br("")
                                                      
                                                      
@@ -785,30 +840,31 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                      ),
                                      fluidRow(style = "margin: 6px;",
                                               p("", style = "padding-top:10px;"),
-                                              column(12,h4(strong("Remittances Sources")),
-                                                     p("
-                                                      Remittances was primarily received in person or through a bank, as those are typically the most
-                                                      convenient methods. Although a money order is a secure method of sending money, there are often additional
-                                                      fees attached to it, and households are more likely concerned about receiving the remittances quickly,
-                                                      rather than safely. Also, using moile apps can be difficult in regions where data usage is limited."),
-                                                     br("")
+                                              column(12, align = "center", h4(strong("Remittances Sources")),
+                                                     p("We also examine how households received remittances. We find that households primarily collected remittances 
+                                                       in person or through a bank suggesting these methods to be the most convenient. Although a money order is a 
+                                                       secure method of sending/receiving money, it requires additional fees, which may make it more expensive for 
+                                                       this poverty-stricken area. Moreover, households may be more concerned about receiving the remittance quickly 
+                                                       rather than safely. Also, using mobile apps can be difficult in regions where data usage is limited."),
+                                                     br(""), plotOutput("rmt_method", width = "70%")
                                                      
                                                      
                                               )),
-                                     plotOutput("rmt_method", width = "65%"),
+                                     #plotOutput("rmt_method", width = "65%"),
+                                     
                                      fluidRow(style = "margin: 6px;",
                                               p("", style = "padding-top:10px;"),
-                                              column(12,h4(strong("Usage of Remmittances")),
-                                                     p("
-                                                      Remittances is primarily being used for food and utility purchases, which are often the most essential
-                                                      items for households in underdeveloped regions."),
-                                                     br("")
+                                              column(12, align = "center", h4(strong("Usage of Remmittances")),
+                                                     p("Remittances is primarily being used for food and utility purchases, which are 
+                                                       often the most essential items for households in underdeveloped regions."),
+                                                     br(""), plotOutput("rmt_purpose", width = "70%")
                                                      
                                                      
                                               )),
-                                     plotOutput("rmt_purpose", width = "65%")#,
-                                     #tags$video(id="coast_vid", type = "video/mp4",src = "Sundarbans_coast_degredation.mp4", controls = "controls")
-                            ),           
+                                
+                                     
+                  
+                            ),
                             
                             
                             
@@ -912,9 +968,9 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                             #the comma above separates the two sub-tabs in Shocks            
                             
                             
-                            tabPanel("Dynamic Plot",
+                            tabPanel("Yearly Shocks",
                                      fluidRow(style = "margin: 6px;",
-                                              h1(strong("Dynamic Shocks"), align = "center"),
+                                              h1(strong("2009 Shocks"), align = "center"),
                                               p("", style = "padding-top:10px;")
                                               
                                      ),
@@ -931,9 +987,9 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Cope",plotOutput("cope_2009")),
-                                           tabPanel("Relocation_yn",plotOutput("relocation_2009_yn")),
-                                           tabPanel("Relocation",plotOutput("relocation_2009")),
+                                           tabPanel("Coping Strategies",plotOutput("cope_2009")),
+                                           tabPanel("Relocation",plotOutput("relocation_2009_yn")),
+                                           tabPanel("Relocation Area",plotOutput("relocation_2009")),
                                          )
                                        ),
                                        
@@ -1086,7 +1142,7 @@ server <- function(input, output, session) {
     
   })
   
-  
+
   
   # rmt plot output
   # Filter by inputt
@@ -1116,6 +1172,11 @@ server <- function(input, output, session) {
   output$rmt_method <- renderPlot({
     rmt_method_plot
   })
+  # Render map 
+  output$map_leaflet <- renderLeaflet({
+    map_leaflet
+  })
+  
   # Render purpose plot
   output$rmt_purpose <- renderPlot({
     rmt_purpose_plot
@@ -1249,3 +1310,8 @@ server <- function(input, output, session) {
 }
 
 shinyApp(ui = ui, server = server)
+
+
+
+
+
