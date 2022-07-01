@@ -44,7 +44,7 @@ village_vector = c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskat
 # data -----------------------------------------------------------
 
 #load("~/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data/livdivdata.RData")
-
+#addResourcePath("vid", "/Users/tajcole/2022-DSPG-LivDiv-/data/Sundarbans_coast_degredation.mp4")
 baseline <- livdiv %>%
   slice(1:307,)
 
@@ -234,7 +234,7 @@ average_rmt_plot <- ggplot(rmt_data_mean_weeks, aes(x = weeks
   geom_line() +
   theme_classic() +
   labs(x = "Date", y = "Average Remittance Income [Rupee]") +
-  ggtitle("Average Remittance Income Per Village") + #(11/16/18 - 10/31/19)
+  ggtitle("Average Remittance Income by Village") + #(11/16/18 - 10/31/19)
   #scale_color_brewer(palette = "Spectral")+
   scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
 #annotate(geom = "text", aes(x = unlist(months)))
@@ -247,12 +247,12 @@ Method <- c("Bank", "In person", "Mobile", "Money Order", "Other")
 method_dat <- data.frame(Method, method_counts, stringsAsFactors = T)
 method_values <- c("       397", "       472", "   1", "   1", "    13")
 
-rmt_method_plot <- ggplot(method_dat, aes( x= reorder(Method, -method_counts), y = method_counts, fill = Method)) +
+rmt_method_plot <- ggplot(method_dat, aes( x= reorder(Method, method_counts), y = method_counts, fill = Method)) +
   geom_col(fill = plasma(5, alpha = 1, begin = 0, end = 1, direction = 1)) +
   labs(x = "", y = "Total") +
   theme_classic() +
   coord_flip()+
-  ggtitle("Method of Receiving Remittance")+
+  ggtitle("Method of Receiving Remittances")+
   geom_text(aes(label = method_values), size = 3)
 #--------------------------------------------------------------------
 
@@ -262,11 +262,11 @@ purpose_count <- c(594, 128, 93, 43, 37, 27)
 purpose_dat <- data.frame(Purpose, purpose_count, stringsAsFactors = T)
 purpose_values <- c("      594", "      128", "     93", "     43", "      37", "      27")
 
-rmt_purpose_plot <- ggplot(purpose_dat, aes(x = reorder(Purpose, -purpose_count), y = purpose_count, fill = Purpose)) + 
+rmt_purpose_plot <- ggplot(purpose_dat, aes(x = reorder(Purpose, purpose_count), y = purpose_count, fill = Purpose)) + 
   geom_col(fill = plasma(6, alpha = 1, begin = 0, end = 1, direction = 1)) +
   labs(x = "", y = "Total") +
   theme_classic() +
-  ggtitle("Purpose for Receiving Remittance")+
+  ggtitle("Purpose for Receiving Remittances")+
   #rotate_x_text(angle = 22, size = rel(0.8))
   coord_flip()+
   geom_text(aes(label = purpose_values), size = 3)
@@ -282,7 +282,9 @@ rmt_dat <- fd %>%
 rmt_dat$date <- as_date(rmt_dat$date)
 avg_rmt <- rmt_dat %>% 
   group_by(date, village) %>% 
-  summarize("Average Remmitances" = mean(rmt_total, na.rm = T))
+  summarize("Average Remitances" = mean(rmt_total, na.rm = T))
+names(avg_rmt) <- c("Date", "Village", "Average Remittances")
+#avg_rmt <- avg_rmt[,-(1:2)]
 
 #-----------------------------------------------------------------
 
@@ -306,6 +308,7 @@ ggplot(exbyvil, aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) 
 expend_table <- expen %>% 
   group_by(date, village) %>% 
   summarize("Average Expenditure" = mean(total_spending, na.rm = T))
+names(expend_table) <- c("Date", "Village", "Average Expenditure")
 #--------------------------------------------------------------------
 # Income plot data:
 fin_diary <- livdiv %>% select(village, date, week, name, full_inc) %>% arrange(week, village) %>% group_by(week) 
@@ -315,6 +318,7 @@ ggplot(avg_tot_inc, aes(date, avg_inc, color = village)) + geom_line() + labs(x 
 #--------------------------------------------------------------------
 #Income table 
 avg_inc_table <- fin_diary %>% group_by(date, village) %>% summarize("Average Income" = mean(full_inc, na.rm = TRUE))
+names(avg_inc_table) <- c("Date", "Village", "Average Income")
 
 #--------------------------------------------------------------------
 
@@ -489,7 +493,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                              h1(strong("Expenditure"), align = "center"),
                                              p("", style = "padding-top:10px;"),
                                              column(12,h4(strong("Overview")),
-                                                    p("This graph shows the average total expenditure by village over the data period.
+                                                    p("To determine the spending behavior of households in the region, we visualized average weekly expenditure over the data period.
                                                       Expenditure includes weekly total consumption (e.g., Food) and non-consumption items (e.g., Rent).
                                                       the largest expenses inlcude house repairs and festival related costs, and the most common expenditure is 
                                                       on food purchases. Following expenditure overtime tells us a lot about the changing nature of spending 
@@ -526,7 +530,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                              h1(strong("Income"), align = "center"),
                                              p("", style = "padding-top:10px;"),
                                              column(12,h4(strong("Overview")),
-                                                    p("This graph shows the average weekly hosuehold income over the data period.
+                                                    p("Knowing the Sundarbans is an impoverished area, we visualized the average weekly hosuehold income over the data period.
                                                       Spikes of income can mean many things, such as harvest time, salary bonuses, or an addition of
                                                       remmittance to weekly income. The largest spike, in late March, indicates the largest harvest for
                                                       farmers in the region. In addition, dips in the plot can indicate things such as shocks from
@@ -554,18 +558,17 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                            ),
                            
 
-                           tabPanel("Remmittances", value = "",
+                           tabPanel("Remittances", value = "",
                                     fluidRow(style = "margin: 6px;",
-                                             h1(strong("Remmittance"), align = "center"),
+                                             h1(strong("Remittances"), align = "center"),
                                              p("", style = "padding-top:10px;"),
                                              column(12,h4(strong("Overview")),
-                                                    p("This graph shows the average weekly remmittance received by village over the data period.
-                                                      Following expenditure over time can help identify where shocks may have occurred, and which villages were affected the most. 
-                                                      Large spikes in remmittance begin in late march and continue to occur frequently throughout the rest
-                                                      of the data period. Within this time period, the Sundarbans region was affeted by three 
+                                                    p("To identify where shocks may have occured over the data period, and which villages may have been affected the most, we visualized average weekly remmittances.
+                                                      Large spikes in remittances begin in late March and continue to occur frequently throughout the rest
+                                                      of the data period. Within this time period, the Sundarbans region was affected by three 
                                                       sever cyclones that hit the Bengal Bay: Fani (Category 4, April 25- May 4 2019) and 
                                                       Bulbul and Matmo (Category 1, October 28 - November 11 2019). The Sundarbans also could have
-                                                      been negatively impacted by two cyclones that hit the Arabian Sea during this time period:
+                                                      been negatively impacted by two cyclones that hit the Arabian Sea during this period:
                                                       Vayu (Category 1, June 8-18) and Hikaa (Category 1, September 20-26). While the Sundarbans
                                                       was not reported as an area directly affected by these two cyclones, it is possible
                                                       that the region experienced some of the negative residuals of the storm due
@@ -588,9 +591,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                       mainPanel(
                                         tabsetPanel(
                                           tabPanel("Plot",plotOutput("rmt")),
-                                          tabPanel("Table",DT:: DTOutput("rmt_table"))#,
-                                          #tabPanel("Method", plotOutput("rmt_method")),
-                                          #tabPanel("Purpose", plotOutput("rmt_purpose"))
+                                          tabPanel("Table",DT:: DTOutput("rmt_table"))
                                         )
                                       ), 
                                       
@@ -598,28 +599,30 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                     ),
                                     fluidRow(style = "margin: 6px;",
                                              p("", style = "padding-top:10px;"),
-                                             column(12,h4(strong("Remmittances Sources")),
-                                                    p("This chart shows the count of how transaction of remittance was recieved over the data period.
-                                                      Remmitance was primarily recieved in person or through a bank, as those are typically the most
-                                                      convenient methods. Although a money order is a very secure of sending money, there are often additional
-                                                      fees attahched to it, and households are more likely concerned about recieving the remittance quickly
-                                                      rather than safely. Using moile apps can be difficult in regions where data usage is limited."),
+                                             column(12,h4(strong("Remittances Sources")),
+                                                    p("
+                                                      Remittances was primarily received in person or through a bank, as those are typically the most
+                                                      convenient methods. Although a money order is a secure method of sending money, there are often additional
+                                                      fees attached to it, and households are more likely concerned about receiving the remittances quickly,
+                                                      rather than safely. Also, using moile apps can be difficult in regions where data usage is limited."),
                                                     br("")
                                                     
                                                     
                                              )),
-                                    plotOutput("rmt_method"),
+                                    plotOutput("rmt_method", width = "65%"),
                                     fluidRow(style = "margin: 6px;",
                                              p("", style = "padding-top:10px;"),
                                              column(12,h4(strong("Usage of Remmittances")),
-                                                    p("This chart shows the count of what every transaction of remittances was used for over the data period.
-                                                      Remmittance is primarily being used for food and utility purchases, which are often the most essential
-                                                      items for households in underdevelped regions."),
+                                                    p("
+                                                      Remittances is primarily being used for food and utility purchases, which are often the most essential
+                                                      items for households in underdeveloped regions."),
                                                     br("")
                                                     
                                                     
                                              )),
-                                    plotOutput("rmt_purpose")
+                                    plotOutput("rmt_purpose", width = "65%"),
+                                    tags$video(type = "video/mp4",src = "SundarbansCoast.mp4", 
+                                               width = "500px", height = "350px",controls = "controls")
                            ),           
                            
                            
@@ -841,7 +844,7 @@ server <- function(input, output, session) {
     
     
   })
-  # Render exp filtered table 
+  # Render exp table 
   output$exp_table <- DT::renderDT({
     expend_table
   })
@@ -862,6 +865,7 @@ server <- function(input, output, session) {
   output$inc_table <- DT::renderDT({
     avg_inc_table
   })
+  # Render coast vid
   
 }
 
