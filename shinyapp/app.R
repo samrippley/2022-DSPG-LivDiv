@@ -48,6 +48,42 @@ village_vector = c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskat
 baseline <- livdiv %>%
   slice(1:307,)
 
+# participate in ag graph 
+
+grouped <- baseline %>% group_by(village) %>% summarize(prop_farm = sum(farm_yn)/n())
+
+
+#land owned data 
+villages <- c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur") 
+land_owners <- c(2, 18, 41, 14, 25, 21, 24, 21, 10, 24)
+max_land_value <- c(16, 160, 510, 80, 120, 200, 250, 70, 80, 180 )
+min_land_value <- c(10, 10, 8, 10, 1, 10, 3, 7, 2, 3)
+mean_land_value <- c(13, 45.44, 60.95, 42.14, 45.44, 50.9, 64, 36.35, 23.7, 41.58)
+sum_value <- c(26, 818, 2499, 590, 1136, 1069, 1537, 763.5, 237, 998)
+land_stats <- data.frame(villages, land_owners, max_land_value, min_land_value, mean_land_value, sum_value)
+
+# savings data 
+nbsav <- baseline %>% 
+  group_by(village) %>% 
+  summarize_at(c("nb_put_saving"), mean, na.rm=TRUE)
+
+nbsavcount <- baseline %>% 
+  group_by(village) %>% 
+  count(nb_put_saving) 
+
+#land holding data 
+
+land <- baseline %>% select(village, no_farm_reason) %>% na.omit(no_farm_reason)
+land$no_farm_reason <- as.numeric(as.factor(land$no_farm_reason))
+
+# salary data 
+
+m_salary <-  baseline %>% group_by(village) %>% select(job1_salary1) %>% summarize(avg_salary = sum(job1_salary1, na.rm = TRUE)/n())
+
+#crops data
+
+grouped <- baseline %>% group_by(village) %>% summarize(prop_farm = sum(farm_yn)/n())
+
 #edu and age data 
 by_villagemore <- baseline %>% 
   group_by(village ) %>% 
@@ -624,7 +660,6 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                                      selectInput("findrop", "Select Varibiable:", width = "100%", choices = c(
                                                        "Household Business" = "hobu",
                                                        "Salary" = "sal",
-                                                       "Income/Remittances" = "inre",
                                                        "Savings" = "sav"
                                                      ),
                                                      ), 
@@ -929,14 +964,15 @@ server <- function(input, output, session) {
   output$ageplot <- renderPlot({
     if (ageVar() == "age") {
       
-      fplot <- ggplot(baseline, aes(x = head_age)) +
-        geom_histogram(fill = "cornflowerblue", 
-                       color = "white", bins = 20
-        ) + 
-        labs(title="Age of Household Heads",
-             y = "Number of Household Heads") +
-        theme_classic() +
-        scale_x_continuous(breaks = c(20, 30, 40, 50, 60, 70, 80), name="Age", limits=c(20, 80))
+      fplot <-  ggplot(by_villagemore, aes(x = village, y = head_age, fill = village, width=0.5, srt = 45)) +
+        geom_col(width = "5") +
+        ylab("Age") + 
+        xlab("")+
+        ggtitle("Household Heads Average Age") +
+        labs(subtitle = "by Village") +
+        theme(axis.line = element_line(size = 3, colour = "grey80")) +
+        theme(legend.position = "none") +
+        rotate_x_text(angle = 33, size = rel(1)) 
       fplot
     }
     else if (ageVar() == "edu") {
@@ -976,16 +1012,27 @@ server <- function(input, output, session) {
   
   output$finplot <- renderPlot({
     if (finVar() == "hobu") {
-      
+     village_bus_count_plot <- ggplot(dat_bus, aes(x= villages_2, y = values_bus, fill = Key)) + 
+        geom_col(position = 'stack') + 
+        labs( x= "", y = "Total Number of Households") + 
+        theme_classic() + 
+        ggtitle("Households That Own a Business") +
+        coord_flip()+
+        geom_text(aes(label = prop_bus_values), size = 2.5, nudge_y = -1)
+      village_bus_count_plot
     }
     else if (finVar() == "sal") {
-     
-    }
-    else if (finVar() == "inre") {
-      
+     salplot <- ggplot(m_salary, aes(village, avg_salary, fill = village)) + geom_col() + labs(x = "", y = "INR" ,title = "Average Monthly Salary per Household", fill = "Village") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d()
+     salplot
     }
     else if (finVar() == "sav") {
-      
+      savplot <- ggplot(nbsavcount, aes(x = nb_put_saving, y = n, fill = "red")) +
+        geom_col() +
+        labs(title="Number of Times Households Saved Money in a Year",
+             x = "Numer of Times Able to Save", y = "Number of Household Heads") +
+        theme_classic() +
+        theme(legend.position="none")
+      savplot
     }
     
   })
@@ -1021,20 +1068,21 @@ server <- function(input, output, session) {
       socplot
     }
     else if (finVar() == "agfa") {
-      
-    }
+     agfaplot <- ggplot(grouped, aes(village,prop_farm)) + geom_col(fill = "navy blue") + labs(x = "", y = "Proportion", title = "Proportion of Households Involved in Agricultural Farming") + coord_flip() + theme_classic()
+    agfaplot
+     }
     else if (finVar() == "laho") {
-      
-    }
+     lahoplot <- ggplot(m_salary, aes(village, avg_salary, fill = village)) + geom_col() + labs(x = "", y = "INR" ,title = "Average Monthly Salary per Household", fill = "Village") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d()
+    lahoplot
+     }
     else if (finVar() == "cro") {
-      
-    }
+     croplot <- ggplot(grouped, aes(village,prop_farm)) + geom_col(fill = "navy blue") + labs(x = "", y = "Proportion", title = "Proportion of Households that cultivated crops") + coord_flip() + theme_classic()
+   croplot
+      }
     
   })
   
-  
-  
-  agfa
+
   
   
   # rmt plot output
