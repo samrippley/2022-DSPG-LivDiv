@@ -876,13 +876,13 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                      
                                      fluidRow(style = "margin: 6px;",
                                               p("", style = "padding-top:10px;"),
-                                              column(12,h4(strong("Analysis")),
-                                                     br("As the Sundarban Region is susceptible to climate change and 
-                                              extreme weather events, some of the most frequent shocks include 
-                                              Loss of home due to river erosion/cyclones, loss of livestock, and 
-                                              loss of crop. These shocks can set back a household financially 
-                                              for many years and also disturb the livelihood of the family. The least 
-                                              common shocks occurring are loss of business/shop or damage by salt water.")
+                                              column(12,h4(strong("The Sundarbans region is highly susceptible to climate change and extreme weather events, 
+                                                                  especially in the last decade. These weather changes negatively impact the Sundarbans population 
+                                                                  in terms of their economic activities and livelihoods. ")),
+                                                     br("We present the frequency of different shocks households experience from 2009 to 2018.
+                                                        Most households indicate experiencing home loss due to river erosion and cyclone. The 
+                                                        loss of livestock is also a significant negative shock impacting families in this region. 
+                                                        The least common occurring shock is the loss of business/shop. ")
                                               )
                                      ),
                                      
@@ -892,11 +892,12 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                      
                                      fluidRow(style = "margin: 6px",
                                               p("", style = "padding-top:10px;"),
-                                              column(12,h4(strong("Analysis")),
-                                                     br("By breaking down all the shocks that occurred over the nine year period by village, 
-                                          we were able to see if there was any specific village that had a dissproportionate impact 
-                                          by the shocks. Since many of these villages were located close to each other, many of the 
-                                          natural occuring shocks impacted all of the households in a somewhat equal manner.")
+                                              column(12,h4(strong("")),
+                                                     br("Given the significance of the different shocks over the nine-year period, we 
+                                                        examine whether there was a disproportionate impact of shocks by villages. On average, households 
+                                                        in each village tend to experience 2 to 3 different shocks each year from 2009 to 2018. We 
+                                                        suspect that this even distribution across villages is due to villages being relatively close. 
+                                                        Thus, many of the natural shocks will impact all households in each village. ")
                                               )
                                      ),
                                      
@@ -904,12 +905,15 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                      ),
                                      fluidRow(style = "margin: 6px",
                                               p("", style = "padding-top:10px;"),
-                                              column(12,h4(strong("Analysis")),
-                                                     br("In the past decade and a half, the most devastating cyclones 
-                                           in the region took place in 2007,2009, 2019, 2020, and 2021. This graph does 
-                                           a good job showing the effect of the 2009 cyclone(Aila) and the high proportion 
-                                           of shocks taking place in that year as a result. Many of the households during 
-                                           this year had 2,3 and sometimes 4 shocks making it a devastating impact for all the households. ")
+                                              column(12,h4(strong("")),
+                                                     br("The Sundarbans area typically face tropical events such as cyclones. However, the frequency 
+                                                     and intensity of cyclones have increased in the past decade. Specially, the most devasting cyclones 
+                                                     in the region occurred in 2007, 2009, 2019, 2020, and 2021.  
+
+                                                  The impact of the cyclone in 2009 (Alia) is still evident as the majority of households reported a shock 
+                                                        in 2009, even though this interview was done in 2018. Moreover, many families reported experiencing 2 
+                                                        to 3 shocks, with some reporting a high of 4 shocks in 2009. This graph highlights that 2009 was a devasting 
+                                                        year for most households. ")
                                               )
                                      ),
                                      
@@ -918,10 +922,10 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                               fluidRow(style = "margin: 6px;",
                                                        p("", style = "padding-top:10px;"),
                                                        column(12,h4(strong("Analysis")),
-                                                              br("Since 2009 had almost 900 shocks out of the 1200 in the span collected, we 
-                                              wanted to take a further look at the type of shocks taking place during that 
-                                              year. Just like the total shocks over the 9 year period, Loss of home due to 
-                                              erosion and cyclones is the leading shock due to the cyclone Aila taking place.")
+                                                              br("We further investigate the impact of the 2009 shock on household livelihood. 
+                                                                 During this year, many families lost their homes due to the cyclone. Families also lost livestock, 
+                                                                 vegetation, and crops. They were also forced to move due to flooding, which may be related to the 
+                                                                 aftermath of the cyclone.")
                                                        )
                                               )
                                      ),
@@ -930,10 +934,10 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                               fluidRow(style = "margin: 6px;",
                                                        p("", style = "padding-top:10px;"),
                                                        column(12,h4(strong("Analysis")),
-                                                              br("After the many shocks occurring in 2009, the households coped by taking steps like 
-                                              obtaining credit or pursuing other jobs. By far the most common cope was unconditional 
-                                              help by the government followed by help from friends or relatives. Often times, families did nothing 
-                                              and tried to 'whether the storm' until times are better.")
+                                                              br("After the many shocks in 2009, families in the Sundarbans region coped by taking steps such as 
+                                                                 obtaining credit or pursuing other jobs. Notably, the most common coping method was unconditional 
+                                                                 help from the government, followed by receiving support from friends or relatives. Often, families 
+                                                                 did nothing and tried to “weather the storm” until better times. ")
                                                        )
                                               )
                                      ),
@@ -942,9 +946,9 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                               fluidRow(style = "margin: 6px;",
                                                        p("", style = "padding-top:10px;"),
                                                        column(12,h4(strong("Analysis")),
-                                                              br("Relocation is common after shocks occur in the region and often times households are 
-                                              relocated for less than a month. Around 80 households don't relocate after a shock and 
-                                              75 households relocate for more than a month as well. ")
+                                                              br("Relocation is common after shocks occur in the region and often times households are relocated 
+                                                                 for less than a month. Around 80 households don’t relocate after a shock and 75 households relocate 
+                                                                 for more than a month as well. ")
                                                        )
                                               )
                                               
@@ -955,8 +959,8 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                                        p("", style = "padding-top:10px;"),
                                                        column(12,h4(strong("Analysis")),
                                                               br("With a vast majority of households saying that they relocate for either less or more than a month, 
-                                              many of these households relocate to a safer place in the same village. Less frequently do the 
-                                              households relocate to Kolkata(the biggest city nearby) or other villages around the Sundarbans.")
+                                                                 many of these households relocate to a safer place in the same village. Less frequently do the households 
+                                                                 relocate to Kolkata (the biggest city nearby) or other villages around the Sundarbans. ")
                                                        )
                                               )
                                      ),
