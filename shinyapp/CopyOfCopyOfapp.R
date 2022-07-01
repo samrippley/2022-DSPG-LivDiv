@@ -580,10 +580,10 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                           p("Climate change is a global issue; however, its impact is not felt equally across all regions. Developing countries, especially areas with widespread poverty and poor infrastructure, are more ill-equipped to cope with these environmental threats. The worsening of extreme weather patterns such as high temperatures, droughts, floods, and rising sea levels are especially problematic for countries with large coastal areas and populations that primarily depend on agriculture for their livelihood."),
                                           p("We examine the Sundarbans in West Bengal, India, which has faced increasing climate changes in recent years for this project. The Sundarbans region has experienced a disproportionate number of climate disasters such as flooding and cyclones over the past decade. Residents who primarily engage in small-scale agriculture are forced to diversify their likelihood strategies using out-migration and reduced farming to cope with the increasing environmental changes."),
                                           p("The overall goal of this project is to evaluate livelihood-diversification strategies using weekly financial data for approximately 300 households from 10 representative villages in the region. The team aims to create a public-facing dashboard to describe and visualize households' livelihood diversification strategies, including changes in income, expenditure, and consumption patterns. The insights from this dashboard are important for designing effective and targeted poverty-reducing strategies and aiding those affected by shocks such as natural disasters and climate change.")
-                                   )
+                                          )
                           ),
                           #fluidRow(align = "center",
-                          # p(tags$small(em('Last updated: August 2021'))))
+                                  # p(tags$small(em('Last updated: August 2021'))))
                  ),
                  
                  ## Tab Date Intro--------------------------------------------
@@ -598,18 +598,18 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                           h2(strong("Initial/Baseline")),
                                           p("The initial or baseline survey was conducted in November 2018. This data is the foundation of our data, allowing the team to understand this region's demographic and socio-economic characteristics. The baseline survey collected information on household demographics, economic activities, assets and landholding, shock history, migration, and agricultural behaviors.")
                                           
-                                          
-                                   ),
+                                            
+                                            ),
                                    column(4,
                                           h2(strong("Financial Diaries")),
                                           p("Gupta et al. (2021) use financial diaries to capture high-frequency data on household income, expenditure, and consumption behavior. As such, we have weekly financial and economic activities for approximately 300 households for an entire year (November 2018 to October 2019)."),
                                           p("Household members were trained and provided instructions to independently record their financial activities in diaries (see image below, insert screenshot of image) before data collection. These diaries include information on weekly income, remittances, borrowing, lending, expenditure on consumption, and non-consumption items.")
+                                            
                                           
-                                          
-                                   ),
-                                   #fluidRow(align = "center",
-                                   #    p(tags$small(em('Last updated: August 2021'))))
-                          )),
+                          ),
+                          #fluidRow(align = "center",
+                               #    p(tags$small(em('Last updated: August 2021'))))
+                 )),
                  
                  
                  ## Sundarbans Region--------------------------------------------
@@ -635,10 +635,10 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                    column(12, align = "center", h4(strong("Timelapse showing coastal degradaiton")),
                                           p("This map shows the changing coastal line in the last two decades. This uses LANDSAT images from Google Earth Engine."),
                                           br(""), tags$video(type = "video/mp4",src = "sundarbansv2.mp4", width = "600px", align = "center", height = "500px",controls = "controls")
-                                   ), 
-                          )
+                                          ), 
+                                   )
                           
-                 ),
+                            ),
                  
                  ## Tab Demographics --------------------------------------------
                  navbarMenu("Demographics" , 
@@ -647,8 +647,8 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                               h1(strong("Socioeconomic"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
                                               #column(4, 
-                                              #      h4(strong("Education")),
-                                              #     p("These are demographics"),
+                                               #      h4(strong("Education")),
+                                                #     p("These are demographics"),
                                               #) ,
                                               column(12, 
                                                      h4(strong("Head of Household Demographics")),
@@ -671,9 +671,9 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                               h1(strong("Livelihood"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
                                               #column(4, 
-                                              #      h4(strong("Education")),
-                                              #     p("These are demographics"),
-                                              #  ) ,
+                                               #      h4(strong("Education")),
+                                                #     p("These are demographics"),
+                                            #  ) ,
                                               column(12, 
                                                      h4(strong("Demographics - October 2018")),
                                                      selectInput("ocudrop", "Select Varibiable:", width = "100%", choices = c(
@@ -697,10 +697,10 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                      fluidRow(style = "margin: 6px;",
                                               h1(strong("Financial Behavior"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
-                                              #   column(4, 
-                                              #         h4(strong("Education")),
-                                              #        p("These are demographics"),
-                                              #  ) ,
+                                           #   column(4, 
+                                            #         h4(strong("Education")),
+                                             #        p("These are demographics"),
+                                            #  ) ,
                                               column(12, 
                                                      h4(strong("Financial Behavior - October 2018")),
                                                      selectInput("findrop", "Select Varibiable:", width = "100%", choices = c(
@@ -859,9 +859,9 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                                      
                                                      
                                               )),
+                                
                                      
-                                     
-                                     
+                  
                             ),
                             
                             
@@ -1144,7 +1144,7 @@ server <- function(input, output, session) {
     
   })
   
-  
+
   
   # rmt plot output
   # Filter by inputt
@@ -1312,12 +1312,6 @@ server <- function(input, output, session) {
 }
 
 shinyApp(ui = ui, server = server)
-
-
-
-
-
-
 
 
 
