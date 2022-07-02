@@ -520,25 +520,11 @@ jscode <- "function getUrlVars() {
                  }
             }
 
-           var x = document.getElementsByClassName('navbar-brand');
-
-           if (mytype != 'economic') {
-             x[0].innerHTML = '<div style=\"margin-top:-14px\"><a href=\"https://datascienceforthepublicgood.org/node/451\">' +
-                              '<img src=\"DSPG_black-01.png\", alt=\"DSPG 2020 Symposium Proceedings\", style=\"height:42px;\">' +
-                              '</a></div>';
-
-             //changeLinks('dspg');
-           } else {
-             x[0].innerHTML = '<div style=\"margin-top:-14px\"><a href=\"https://datascienceforthepublicgood.org/economic-mobility/community-insights/case-studies\">' +
-                              '<img src=\"AEMLogoGatesColorsBlack-11.png\", alt=\"Gates Economic Mobility Case Studies\", style=\"height:42px;\">' +
-                              '</a></div>';
-
-             //changeLinks('economic');
-           }
+        
            "
 
 # user -------------------------------------------------------------
-ui <- navbarPage(title = "DSPG-LivDiv 2022",
+ui <- navbarPage(title = "",
                  selected = "overview",
                  theme = shinytheme("lumen"),
                  tags$head(tags$style('.selectize-dropdown {z-index: 10000}')),
@@ -620,7 +606,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                           fluidRow(style = "margin: 6px;",
                                    p("", style = "padding-top:10px;"),
                                    column(12, align = "center",h4(strong("Map")),
-                                          p("This map shows the Sundarbans area and the 10 villages."),
+                                          p(""),
                                           br("")
                                           
                                           
@@ -632,8 +618,8 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                           ),
                           fluidRow(style = "margin: 6px;",
                                    p("", style = "padding-top:10px;"),
-                                   column(12, align = "center", h4(strong("Timelapse showing coastal degradaiton")),
-                                          p("This map shows the changing coastal line in the last two decades. This uses LANDSAT images from Google Earth Engine."),
+                                   column(12, align = "center", h4(strong("Timelapse Showing Coastal Degradation")),
+                                          p(""),
                                           br(""), tags$video(type = "video/mp4",src = "sundarbansv2.mp4", width = "600px", align = "center", height = "500px",controls = "controls")
                                           ), 
                                    )
