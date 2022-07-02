@@ -43,7 +43,7 @@ village_vector = c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskat
 
 # data -----------------------------------------------------------
 
-#load("~/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data/livdivdata.RData")
+load("data/livdivdata.RData")
 
 baseline <- livdiv %>%
   slice(1:307,)
@@ -299,12 +299,12 @@ rmt_method_plot <- ggplot(method_dat, aes( x= reorder(Method, method_counts), y 
 # leaflet data --------------------------------------------------------------------
 
 require(rgdal)
-ind <- st_read(dsn = "/Users/samrippley/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data", "gadm36_IND_3", stringsAsFactors = TRUE)
+
+ind <- st_read(dsn = paste0(getwd(), "/data"), "gadm36_IND_3", stringsAsFactors = TRUE)
 
 sundarban <- subset(ind, NAME_2 %in% c('North 24 Parganas','South 24 Parganas'))
 d.sundarban<-st_union(sundarban)
-
-village_all <- st_read(dsn = "/Users/samrippley/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data", "Village, GP coordinates", stringsAsFactors = TRUE)
+village_all <- st_read(dsn = paste0(getwd(), "/data"), "Village, GP coordinates", stringsAsFactors = TRUE)
 
 village <- subset(village_all, Village.Na %in% c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Parghumti","Purba Dwarokapur","Gangasagar","Shibpur"))
 
