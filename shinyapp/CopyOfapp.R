@@ -605,7 +605,7 @@ ui <- navbarPage(title = "",
                                    p("", style = "padding-top:10px;")),
                           fluidRow(style = "margin: 6px;",
                                    p("", style = "padding-top:10px;"),
-                                   column(12, align = "center",h4(strong("Map")),
+                                   column(12, align = "center",h4(strong("Sundarbans Villages")),
                                           p(""),
                                           br("")
                                           
@@ -630,13 +630,13 @@ ui <- navbarPage(title = "",
                  navbarMenu("Demographics" , 
                             tabPanel("Socioeconomic", 
                                      fluidRow(style = "margin: 6px;",
-                                              h1(strong("Socioeconomic"), align = "center"),
+                                              h1(strong("Socioeconomic Characteristics"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
-                                              #column(4, 
-                                               #      h4(strong("Education")),
-                                                #     p("These are demographics"),
-                                              #) ,
-                                              column(12, 
+                                              column(4, 
+                                                     h4(strong("Description")),
+                                                     p("")
+                                              ) ,
+                                              column(8, 
                                                      h4(strong("Head of Household Demographics")),
                                                      selectInput("agedrop", "Select Varibiable:", width = "100%", choices = c(
                                                        "Age" = "age",
@@ -648,47 +648,47 @@ ui <- navbarPage(title = "",
                                                      
                                               ),
                                               # column(12, 
-                                              #      h4("References: "), 
-                                              #     p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
-                                              #     p("", style = "padding-top:10px;")) 
+                                               #     h4("References: "), 
+                                                #   p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
+                                                 #  p("", style = "padding-top:10px;")) 
                                      )), 
                             tabPanel("Livelihood", 
                                      fluidRow(style = "margin: 6px;",
-                                              h1(strong("Livelihood"), align = "center"),
+                                              h1(strong("Livelihood Behavior"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
-                                              #column(4, 
-                                               #      h4(strong("Education")),
-                                                #     p("These are demographics"),
-                                            #  ) ,
-                                              column(12, 
-                                                     h4(strong("Demographics - October 2018")),
+                                              column(4, 
+                                                     h4(strong("Description")),
+                                                     p("")
+                                              ) ,
+                                              column(8, 
+                                                     h4(strong("Livelihood - October 2018")),
                                                      selectInput("ocudrop", "Select Varibiable:", width = "100%", choices = c(
                                                        "Primary Occupation" = "pocu",
                                                        "Secondary Occupation" ="socu", 
                                                        "Agriculture Farming" = "agfa",
-                                                       "Land Holding" = "laho",
-                                                       "Crops" = "cro"
+                                                       "Land Holding" = "laho"
+                                                       #"Crops" = "cro"
                                                      ),
                                                      ), 
                                                      withSpinner(plotOutput("ocuplot", height = "500px")),
                                                      
-                                              ),
+                                              )
                                               # column(12, 
                                               #       h4("References: "), 
                                               #       p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
                                               #      p("", style = "padding-top:10px;")) 
                                      )), 
                             
-                            tabPanel("Financial Behavior", 
+                            tabPanel("Financial", 
                                      fluidRow(style = "margin: 6px;",
-                                              h1(strong("Financial Behavior"), align = "center"),
+                                              h1(strong("Financial Practices"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
-                                           #   column(4, 
-                                            #         h4(strong("Education")),
-                                             #        p("These are demographics"),
-                                            #  ) ,
-                                              column(12, 
-                                                     h4(strong("Financial Behavior - October 2018")),
+                                              column(4, 
+                                                     h4(strong("Analysis")),
+                                                     p("")
+                                              ) ,
+                                              column(8, 
+                                                     h4(strong("Financial - October 2018")),
                                                      selectInput("findrop", "Select Varibiable:", width = "100%", choices = c(
                                                        "Household Business" = "hobu",
                                                        "Salary" = "sal",
@@ -981,11 +981,21 @@ ui <- navbarPage(title = "",
                                          )
                                        ),
                                        
-                                     )
-                                     
-                            ), 
+                                     ),
+                            ),
+                 ),
                             
-                 ), 
+                            
+                            ## Tab thanks--------------------------------------------
+                            tabPanel("Thank you",
+                                     fluidRow(style = "margin: 6px;",
+                                              h1(strong("Thank you!"), align = "center"),
+                                              p("", style = "padding-top:10px;")
+                                              
+                                     ) 
+                            ),
+                 
+                            
                  
                  
                  inverse = T)
