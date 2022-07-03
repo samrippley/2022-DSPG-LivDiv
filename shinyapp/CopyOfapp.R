@@ -1154,7 +1154,7 @@ server <- function(input, output, session) {
                                , y = mean_rmt_per_week, color = Villages)) + 
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Remittance Income [Rupee]") +
+      labs(x = "Date", y = "Average Remittance Income (INR)") +
       ggtitle("Average Weekly Remittance Income")+ #(11/16/18 - 10/31/19)
       #scale_color_brewer(palette = "Spectral")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
