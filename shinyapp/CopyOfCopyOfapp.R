@@ -43,7 +43,7 @@ village_vector = c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskat
 
 # data -----------------------------------------------------------
 
-#load("~/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data/livdivdata.RData")
+load("data/livdivdata.RData")
 
 baseline <- livdiv %>%
   slice(1:307,)
@@ -299,12 +299,12 @@ rmt_method_plot <- ggplot(method_dat, aes( x= reorder(Method, method_counts), y 
 # leaflet data --------------------------------------------------------------------
 
 require(rgdal)
-ind <- st_read(dsn = "/Users/samrippley/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data", "gadm36_IND_3", stringsAsFactors = TRUE)
+
+ind <- st_read(dsn = paste0(getwd(), "/data"), "gadm36_IND_3", stringsAsFactors = TRUE)
 
 sundarban <- subset(ind, NAME_2 %in% c('North 24 Parganas','South 24 Parganas'))
 d.sundarban<-st_union(sundarban)
-
-village_all <- st_read(dsn = "/Users/samrippley/Virginia Tech/Internship 2022/2022-DSPG-LivDiv-/data", "Village, GP coordinates", stringsAsFactors = TRUE)
+village_all <- st_read(dsn = paste0(getwd(), "/data"), "Village, GP coordinates", stringsAsFactors = TRUE)
 
 village <- subset(village_all, Village.Na %in% c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Parghumti","Purba Dwarokapur","Gangasagar","Shibpur"))
 
@@ -520,25 +520,11 @@ jscode <- "function getUrlVars() {
                  }
             }
 
-           var x = document.getElementsByClassName('navbar-brand');
-
-           if (mytype != 'economic') {
-             x[0].innerHTML = '<div style=\"margin-top:-14px\"><a href=\"https://datascienceforthepublicgood.org/node/451\">' +
-                              '<img src=\"DSPG_black-01.png\", alt=\"DSPG 2020 Symposium Proceedings\", style=\"height:42px;\">' +
-                              '</a></div>';
-
-             //changeLinks('dspg');
-           } else {
-             x[0].innerHTML = '<div style=\"margin-top:-14px\"><a href=\"https://datascienceforthepublicgood.org/economic-mobility/community-insights/case-studies\">' +
-                              '<img src=\"AEMLogoGatesColorsBlack-11.png\", alt=\"Gates Economic Mobility Case Studies\", style=\"height:42px;\">' +
-                              '</a></div>';
-
-             //changeLinks('economic');
-           }
+        
            "
 
 # user -------------------------------------------------------------
-ui <- navbarPage(title = "DSPG-LivDiv 2022",
+ui <- navbarPage(title = "",
                  selected = "overview",
                  theme = shinytheme("lumen"),
                  tags$head(tags$style('.selectize-dropdown {z-index: 10000}')),
@@ -609,9 +595,10 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                           ),
                           #fluidRow(align = "center",
                                #    p(tags$small(em('Last updated: August 2021'))))
-                 )),
-                 
-                 
+                 ),
+                 mainPanel(
+                   img(src='Picture1.png', align = "right"),
+                 )), 
                  ## Sundarbans Region--------------------------------------------
                  tabPanel("Sundarbans Region",
                           fluidRow(style = "margin: 6px;",
@@ -619,8 +606,8 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                    p("", style = "padding-top:10px;")),
                           fluidRow(style = "margin: 6px;",
                                    p("", style = "padding-top:10px;"),
-                                   column(12, align = "center",h4(strong("Map")),
-                                          p("This map shows the Sundarbans area and the 10 villages."),
+                                   column(12, align = "center",h4(strong("Sundarbans Villages")),
+                                          p(""),
                                           br("")
                                           
                                           
@@ -632,8 +619,8 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                           ),
                           fluidRow(style = "margin: 6px;",
                                    p("", style = "padding-top:10px;"),
-                                   column(12, align = "center", h4(strong("Timelapse showing coastal degradaiton")),
-                                          p("This map shows the changing coastal line in the last two decades. This uses LANDSAT images from Google Earth Engine."),
+                                   column(12, align = "center", h4(strong("Timelapse Showing Coastal Degradation")),
+                                          p(""),
                                           br(""), tags$video(type = "video/mp4",src = "sundarbansv2.mp4", width = "600px", align = "center", height = "500px",controls = "controls")
                                           ), 
                                    )
@@ -644,13 +631,13 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                  navbarMenu("Demographics" , 
                             tabPanel("Socioeconomic", 
                                      fluidRow(style = "margin: 6px;",
-                                              h1(strong("Socioeconomic"), align = "center"),
+                                              h1(strong("Socioeconomic Characteristics"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
-                                              #column(4, 
-                                               #      h4(strong("Education")),
-                                                #     p("These are demographics"),
-                                              #) ,
-                                              column(12, 
+                                              column(4, 
+                                                     h4(strong("Description")),
+                                                     p("")
+                                              ) ,
+                                              column(8, 
                                                      h4(strong("Head of Household Demographics")),
                                                      selectInput("agedrop", "Select Varibiable:", width = "100%", choices = c(
                                                        "Age" = "age",
@@ -662,47 +649,47 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                                      
                                               ),
                                               # column(12, 
-                                              #      h4("References: "), 
-                                              #     p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
-                                              #     p("", style = "padding-top:10px;")) 
+                                               #     h4("References: "), 
+                                                #   p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
+                                                 #  p("", style = "padding-top:10px;")) 
                                      )), 
                             tabPanel("Livelihood", 
                                      fluidRow(style = "margin: 6px;",
-                                              h1(strong("Livelihood"), align = "center"),
+                                              h1(strong("Livelihood Behavior"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
-                                              #column(4, 
-                                               #      h4(strong("Education")),
-                                                #     p("These are demographics"),
-                                            #  ) ,
-                                              column(12, 
-                                                     h4(strong("Demographics - October 2018")),
+                                              column(4, 
+                                                     h4(strong("Description")),
+                                                     p("")
+                                              ) ,
+                                              column(8, 
+                                                     h4(strong("Livelihood - October 2018")),
                                                      selectInput("ocudrop", "Select Varibiable:", width = "100%", choices = c(
                                                        "Primary Occupation" = "pocu",
                                                        "Secondary Occupation" ="socu", 
                                                        "Agriculture Farming" = "agfa",
-                                                       "Land Holding" = "laho",
-                                                       "Crops" = "cro"
+                                                       "Land Holding" = "laho"
+                                                       #"Crops" = "cro"
                                                      ),
                                                      ), 
                                                      withSpinner(plotOutput("ocuplot", height = "500px")),
                                                      
-                                              ),
+                                              )
                                               # column(12, 
                                               #       h4("References: "), 
                                               #       p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
                                               #      p("", style = "padding-top:10px;")) 
                                      )), 
                             
-                            tabPanel("Financial Behavior", 
+                            tabPanel("Financial", 
                                      fluidRow(style = "margin: 6px;",
-                                              h1(strong("Financial Behavior"), align = "center"),
+                                              h1(strong("Financial Practices"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
-                                           #   column(4, 
-                                            #         h4(strong("Education")),
-                                             #        p("These are demographics"),
-                                            #  ) ,
-                                              column(12, 
-                                                     h4(strong("Financial Behavior - October 2018")),
+                                              column(4, 
+                                                     h4(strong("Analysis")),
+                                                     p("")
+                                              ) ,
+                                              column(8, 
+                                                     h4(strong("Financial - October 2018")),
                                                      selectInput("findrop", "Select Varibiable:", width = "100%", choices = c(
                                                        "Household Business" = "hobu",
                                                        "Salary" = "sal",
@@ -870,7 +857,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                  ## Shocks Tab --------------------------------------------
                  
                  navbarMenu("Shocks" , 
-                            tabPanel("Shocks in the Sundarbans", value = "",
+                            tabPanel("Shocks in the Sundarbans", value = "", align = "center",
                                      
                                      fluidRow(style = "margin: 6px;",
                                               p("", style = "padding-top:10px;"),
@@ -919,7 +906,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                      tabPanel("Shocks by the Year", plotOutput("shocks_by_year", width = "65%"),
                                               fluidRow(style = "margin: 6px;",
                                                        p("", style = "padding-top:10px;"),
-                                                       column(12,h4(strong("Analysis")),
+                                                       column(12,h4(strong("")),
                                                               br("We further investigate the impact of the 2009 shock on household livelihood. 
                                                                  During this year, many families lost their homes due to the cyclone. Families also lost livestock, 
                                                                  vegetation, and crops. They were also forced to move due to flooding, which may be related to the 
@@ -931,7 +918,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                      tabPanel("Shocks in 2009", plotOutput("shocks_plot_2009", width = "65%"),
                                               fluidRow(style = "margin: 6px;",
                                                        p("", style = "padding-top:10px;"),
-                                                       column(12,h4(strong("Analysis")),
+                                                       column(12,h4(strong("")),
                                                               br("After the many shocks in 2009, families in the Sundarbans region coped by taking steps such as 
                                                                  obtaining credit or pursuing other jobs. Notably, the most common coping method was unconditional 
                                                                  help from the government, followed by receiving support from friends or relatives. Often, families 
@@ -943,7 +930,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                      tabPanel("Copes in 2009", plotOutput("cope_2009_plot", width = "65%"),
                                               fluidRow(style = "margin: 6px;",
                                                        p("", style = "padding-top:10px;"),
-                                                       column(12,h4(strong("Analysis")),
+                                                       column(12,h4(strong("")),
                                                               br("Relocation is common after shocks occur in the region and often times households are relocated 
                                                                  for less than a month. Around 80 households don’t relocate after a shock and 75 households relocate 
                                                                  for more than a month as well. ")
@@ -955,7 +942,7 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                      tabPanel("Relocations after Shock in 2009", plotOutput("shock_relocation_2009_yn", width = "65%"),
                                               fluidRow(style = "margin: 6px;",
                                                        p("", style = "padding-top:10px;"),
-                                                       column(12,h4(strong("Analysis")),
+                                                       column(12,h4(strong("")),
                                                               br("With a vast majority of households saying that they relocate for either less or more than a month, 
                                                                  many of these households relocate to a safer place in the same village. Less frequently do the households 
                                                                  relocate to Kolkata (the biggest city nearby) or other villages around the Sundarbans. ")
@@ -995,11 +982,21 @@ ui <- navbarPage(title = "DSPG-LivDiv 2022",
                                          )
                                        ),
                                        
-                                     )
-                                     
-                            ), 
+                                     ),
+                            ),
+                 ),
                             
-                 ), 
+                            
+                            ## Tab thanks--------------------------------------------
+                            tabPanel("Thank you",
+                                     fluidRow(style = "margin: 6px;",
+                                              h1(strong("Thank you!"), align = "center"),
+                                              p("", style = "padding-top:10px;")
+                                              
+                                     ) 
+                            ),
+                 
+                            
                  
                  
                  inverse = T)
