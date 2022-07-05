@@ -48,9 +48,31 @@ load("data/livdivdata.RData")
 baseline <- livdiv %>%
   slice(1:307,)
 
+# land fallowed data 
+land_fallow <- baseline %>% 
+  select(village, land_fallow)
+land_fallow <- land_fallow %>% 
+  group_by(village) %>% 
+  summarise("avg" = mean(na.omit(land_fallow)), "sum" = sum(na.omit(land_fallow)))
+
 # participate in ag data 
 
 grouped <- baseline %>% group_by(village) %>% summarize(prop_farm = sum(farm_yn)/n())
+
+# household asset data 
+assets <- baseline %>% select(contains("asset")) %>% select(contains("num"))  %>% summarize(Stove = sum(asset_stove_num)/n(), Bike = sum(asset_bike_num)/n(), Car = sum(asset_car_num)/n(), Waterpump = sum(asset_waterpump_num)/n(), Generator = sum(asset_generator_num)/n(), Solarpanel = sum(asset_solarpanel_num)/n(), Bed = sum(asset_bed_num)/n(), Fridge = sum(asset_fridge_num)/n(), Almirah = sum(asset_almirah_num)/n(), PC = sum(asset_pc_num)/n(), TV = sum(asset_tv_num)/n(), Phone = sum(asset_mobile_num)/n(), Waterfilter = sum(asset_waterfilter_num)/n())
+
+assets_long <- gather(assets, property, measurement, Stove:Waterfilter)
+assets_long["measurement"] <- round(assets_long$measurement, digits = 2)
+
+
+#household size data
+hhsize <- baseline %>% 
+  select(village, hhid, nb_hhmem) 
+median_hhsize <- hhsize %>% 
+  group_by(village) %>% 
+  summarise("median" = median(nb_hhmem))
+
 
 
 # remmitences v income data 
@@ -643,7 +665,8 @@ ui <- navbarPage(title = "",
                                                        "Age" = "age",
                                                        "Education" = "edu", 
                                                        "Poverty" = "pov", 
-                                                       "Marital Status" = "mar"),
+                                                       "Marital Status" = "mar",
+                                                       "Household Size" = "hosi"),
                                                      ), 
                                                      withSpinner(plotOutput("ageplot", height = "500px", width = "100%")),
                                                      
@@ -666,9 +689,13 @@ ui <- navbarPage(title = "",
                                                      selectInput("ocudrop", "Select Varibiable:", width = "100%", choices = c(
                                                        "Primary Occupation" = "pocu",
                                                        "Secondary Occupation" ="socu", 
+                                                       #"Job Duration" = "jodu",
                                                        "Agriculture Farming" = "agfa",
-                                                       "Land Holding" = "laho"
-                                                       #"Crops" = "cro"
+                                                       "Land Holding" = "laho",
+                                                       "Crops" = "cro",
+                                                       "Household Assets" = "hoas",
+                                                       "Land Fallow" = "lafa"
+                                                       
                                                      ),
                                                      ), 
                                                      withSpinner(plotOutput("ocuplot", height = "500px")),
@@ -1054,7 +1081,16 @@ server <- function(input, output, session) {
         scale_x_discrete() + theme_classic()
       marplot
     }
-    
+    else if (ageVar() == "hosi") {
+      hh_size_plot <- ggplot(median_hhsize, aes(x = village, y = median, fill = village)) +
+        geom_col() +
+        labs( x = "", y = "Median Household Size")+
+        coord_flip()+
+        ggtitle("Household Size by Village") +
+        theme(legend.position="none") +
+        theme_classic()
+      hh_size_plot
+    }
     
   })
   
@@ -1101,6 +1137,21 @@ server <- function(input, output, session) {
       croplot <- ggplot(grouped, aes(village,prop_farm)) + geom_col(fill = "navy blue") + labs(x = "", y = "Proportion", title = "Proportion of Households that cultivated crops") + coord_flip() + theme_classic()
       croplot
     }
+    else if (ocuVar() == "hoas") {
+     assetplot <- ggplot(assets_long, aes(property, measurement, fill = property)) + geom_col() + labs(x = "", y = "Proportion" ,title = "Proportion of Households Owning Assets", fill  = "Asset") + theme(axis.text.y=element_blank(),axis.ticks.y=element_blank()) + geom_text(aes(label = measurement), size = 3, nudge_y = .05) + coord_flip() + scale_fill_viridis_d()
+    assetplot
+     }
+    else if (ocuVar() == "lafa") {
+      land_fallow_plot <- ggplot(land_fallow, aes(x = village, y = sum, fill = village)) +
+        geom_col(fill = plasma(10, alpha = 1, begin = 0, end = 1, direction = 1))+
+        theme_classic() +
+        labs(x = "", y = "Total Land fallowed")+
+        ggtitle("Total Land Followed by Village") +
+        coord_flip()
+      land_fallow_plot
+    }
+   # else if (ocuVar() == "jodu") {
+      #}
     
   })
   
