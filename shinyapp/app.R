@@ -406,7 +406,7 @@ average_rmt_plot <- ggplot(rmt_data_mean_weeks, aes(x = weeks
   labs(x = "Date", y = "Average Remittance Income [Rupee]") +
   ggtitle("Average Remittance Income by Village") + #(11/16/18 - 10/31/19)
   #scale_color_brewer(palette = "Spectral")+
-  scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+  scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) + scale_color_viridis_d()
 #annotate(geom = "text", aes(x = unlist(months)))
 #--------------------------------------------------------------------
 
@@ -509,7 +509,7 @@ ggplot(exbyvil, aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) 
   geom_line() +
   labs(title="Average Weekly Expenditure by Village",
        x="Date", y="Average Weekly Expenditure (INR)") +
-  scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+  scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) + scale_color_viridis_d()
 #--------------------------------------------------------------------
 # Expenditure table
 expend_table <- expen %>% 
@@ -522,7 +522,7 @@ names(expend_table) <- c("Date", "Village", "Average Expenditure")
 fin_diary <- livdiv %>% select(village, date, week, name, full_inc) %>% arrange(week, village) %>% group_by(week) 
 fin_diary$date <- as_date(fin_diary$date)
 avg_tot_inc <- fin_diary %>% group_by(date, village, week) %>% summarize(avg_inc = mean(full_inc, na.rm = TRUE))
-ggplot(avg_tot_inc, aes(date, avg_inc, color = village)) + geom_line() + labs(x = "", y = "Income (INR)", title = "Average Weekly Household Income by village", color = "Village")
+ggplot(avg_tot_inc, aes(date, avg_inc, color = village)) + geom_line() + labs(x = "", y = "Income (INR)", title = "Average Weekly Household Income by village", color = "Village") + scale_color_viridis_d()
 #--------------------------------------------------------------------
 #Income table 
 avg_inc_table <- fin_diary %>% group_by(date, village) %>% summarize("Average Income" = mean(full_inc, na.rm = TRUE))
@@ -1218,8 +1218,7 @@ server <- function(input, output, session) {
         scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
         coord_flip() +
         theme_minimal () +
-        labs(title = "Primary Occupation of Household Heads", x = "", y = "") +
-        scale_fill_brewer(palette="Spectral")
+        labs(title = "Primary Occupation of Household Heads", x = "", y = "") + scale_color_viridis_d()
       pocuplot
     } 
     else if (ocuVar() == "socu") {
@@ -1228,8 +1227,7 @@ server <- function(input, output, session) {
         scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
         coord_flip() +
         theme_minimal () +
-        labs(title = "Secondary Occupation of Household Heads", x = "", y = "") +
-        scale_fill_brewer(palette="Spectral")
+        labs(title = "Secondary Occupation of Household Heads", x = "", y = "") + scale_color_viridis_d()
       socplot
     }
     else if (ocuVar() == "agfa") {
