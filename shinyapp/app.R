@@ -360,6 +360,7 @@ rmt_dat$date <- as_date(rmt_dat$date)
 avg_rmt <- rmt_dat %>% 
   group_by(date, village) %>% 
   summarize("Average Remitances" = mean(rmt_total, na.rm = T))
+avg_rmt[,3] <- round(avg_rmt[,3], digits = 2)
 names(avg_rmt) <- c("Date", "Village", "Average Remittances")
 
 #-----------------------------------------------------------------
@@ -384,6 +385,7 @@ ggplot(exbyvil, aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) 
 expend_table <- expen %>% 
   group_by(date, village) %>% 
   summarize("Average Expenditure" = mean(total_spending, na.rm = T))
+expend_table[,3] <- round(expend_table[,3], digits = 2)
 names(expend_table) <- c("Date", "Village", "Average Expenditure")
 #--------------------------------------------------------------------
 # Income plot data:
@@ -394,6 +396,7 @@ ggplot(avg_tot_inc, aes(date, avg_inc, color = village)) + geom_line() + labs(x 
 #--------------------------------------------------------------------
 #Income table 
 avg_inc_table <- fin_diary %>% group_by(date, village) %>% summarize("Average Income" = mean(full_inc, na.rm = TRUE))
+avg_inc_table[,3] <- round(avg_inc_table[,3], digits = 2)
 names(avg_inc_table) <- c("Date", "Village", "Average Income")
 
 #Shocks Data ------------------------------------------------------------------- 
