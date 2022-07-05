@@ -62,7 +62,7 @@ grouped <- baseline %>% group_by(village) %>% summarize(prop_farm = sum(farm_yn)
 
 # household asset data 
 
-
+villages <- c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur") 
 assets <- baseline %>% select(contains("asset")) %>% select(contains("num"))  %>% summarize(Stove = sum(asset_stove_num)/n(), Bike = sum(asset_bike_num)/n(), Car = sum(asset_car_num)/n(), Waterpump = sum(asset_waterpump_num)/n(), Generator = sum(asset_generator_num)/n(), Solarpanel = sum(asset_solarpanel_num)/n(), Bed = sum(asset_bed_num)/n(), Fridge = sum(asset_fridge_num)/n(), Almirah = sum(asset_almirah_num)/n(), PC = sum(asset_pc_num)/n(), TV = sum(asset_tv_num)/n(), Phone = sum(asset_mobile_num)/n(), Waterfilter = sum(asset_waterfilter_num)/n())
 
 assets_long <- gather(assets, property, measurement, Stove:Waterfilter)
@@ -76,7 +76,100 @@ median_hhsize <- hhsize %>%
   group_by(village) %>% 
   summarise("median" = median(nb_hhmem))
 
+# job duration 
+job_duration <- baseline %>% 
+  select(village, relationship1, relationship2, relationship3, relationship4,
+         job1_duration1, job1_duration2, job1_duration3,
+         job1_duration4, job1_duration5, job1_duration6, 
+         job1_duration7, job1_duration9, job1_duration12)
+amrabati_job_duration <- job_duration %>% 
+  filter(village == "Amrabati") %>% 
+  select(-c(relationship2, relationship3,relationship3, relationship4, job1_duration2, job1_duration3,
+            job1_duration4, job1_duration5, job1_duration6, 
+            job1_duration7, job1_duration9, job1_duration12)) 
+amrabati_job_duration_summary <- amrabati_job_duration %>% 
+  summarise("avg job duration" = mean(na.omit(job1_duration1 )))
 
+beguakhali_job_duration <- job_duration %>% 
+  filter(village == "Beguakhali") %>% 
+  select(-c(relationship3, relationship4, job1_duration3,
+            job1_duration4, job1_duration5, job1_duration6, 
+            job1_duration7, job1_duration9, job1_duration12))
+beguakhali_job_duration_summary <- beguakhali_job_duration %>% 
+  summarise("avg job duration" = mean(na.omit(job1_duration1)))
+
+bijoynagar_job_duration <- job_duration %>% 
+  filter(village == "Bijoynagar") %>% 
+  select(-c(relationship3, relationship4, job1_duration3,
+            job1_duration4, job1_duration5, job1_duration6, 
+            job1_duration7, job1_duration9, job1_duration12))
+bijoynagar_job_duration_summary <- bijoynagar_job_duration %>% 
+  summarise("avg job duration" = mean(na.omit(job1_duration1)))
+
+birajnagar_job_duration <- job_duration %>% 
+  filter(village == "Birajnagar") %>% 
+  select(-c(relationship4,
+            job1_duration4, job1_duration5, job1_duration6, 
+            job1_duration7, job1_duration9, job1_duration12))
+birajnagar_job_duration_summary <-  birajnagar_job_duration %>% 
+  summarise("avg job duration" = mean(na.omit(job1_duration1)))
+
+hsam_job_duration <- job_duration %>% 
+  filter(village == "Haridaskati Samsernagar") %>% 
+  select(-c(relationship2, relationship3, relationship4, job1_duration3,
+            job1_duration4, job1_duration5, job1_duration6, 
+            job1_duration7, job1_duration9, job1_duration12))
+hsam_job_duration_summary <- hsam_job_duration %>% 
+  summarise("avg job duration" = mean(na.omit(job1_duration1)))
+
+ljan_job_duration <- job_duration %>% 
+  filter(village == "Lakshmi Janardanpur")%>% 
+  select(-c(relationship3, relationship4, job1_duration3,
+            job1_duration4, job1_duration5, job1_duration6, 
+            job1_duration7, job1_duration9, job1_duration12))
+ljan_job_duration_summary <- ljan_job_duration %>% 
+  summarise("avg job duration" = mean(na.omit(job1_duration1)))
+
+pargumti_job_duration <- job_duration %>% 
+  filter(village == "Pargumti") %>% 
+  select(-c(relationship4,
+            job1_duration4, job1_duration5, job1_duration6, 
+            job1_duration7, job1_duration9, job1_duration12))
+pargumti_job_duration_summary <- pargumti_job_duration %>% 
+  summarise("avg job duration" = mean(na.omit(job1_duration1)))
+
+pdwar_job_duration <- job_duration %>% 
+  filter(village == "Purba Dwarokapur") %>% 
+  select(-c(relationship4,
+            job1_duration4, job1_duration5, job1_duration6, 
+            job1_duration7, job1_duration9, job1_duration12))
+pdwar_job_duration_summary <- pdwar_job_duration %>% 
+  summarise("avg job duration" = mean(na.omit(job1_duration1)))
+
+sagar_job_duration <- job_duration %>% 
+  filter(village == "Sagar")%>% 
+  select(-c(relationship3, relationship4, job1_duration3,
+            job1_duration4, job1_duration5, job1_duration6, 
+            job1_duration7, job1_duration9, job1_duration12))
+sagar_job_duration_summary <- sagar_job_duration %>% 
+  summarise("avg job duration" = mean(na.omit(job1_duration1)))
+
+shibpur_job_duration <- job_duration %>% 
+  filter(village == "Shibpur")%>% 
+  select(-c(relationship4,
+            job1_duration4, job1_duration5, job1_duration6, 
+            job1_duration7, job1_duration9, job1_duration12))
+shibpur_job_duration_summary <- shibpur_job_duration %>% 
+  summarise("avg job duration" = mean(na.omit(job1_duration1)))
+
+job_duration_avg <- c(amrabati_job_duration_summary$`avg job duration`, beguakhali_job_duration_summary$`avg job duration`,
+                      bijoynagar_job_duration_summary$`avg job duration`,birajnagar_job_duration_summary$`avg job duration`,
+                      hsam_job_duration_summary$`avg job duration`,
+                      ljan_job_duration_summary$`avg job duration`, pargumti_job_duration_summary$`avg job duration`,
+                      pdwar_job_duration_summary$`avg job duration`, sagar_job_duration_summary$`avg job duration`,
+                      shibpur_job_duration_summary$`avg job duration`)
+
+job_duration_summary <- data.frame(villages, job_duration_avg)
 
 # remmitences v income data 
 
@@ -692,7 +785,7 @@ ui <- navbarPage(title = "",
                                                      selectInput("ocudrop", "Select Varibiable:", width = "100%", choices = c(
                                                        "Primary Occupation" = "pocu",
                                                        "Secondary Occupation" ="socu", 
-                                                       #"Job Duration" = "jodu",
+                                                       "Job Duration" = "jodu",
                                                        "Agriculture Farming" = "agfa",
                                                        "Land Holding" = "laho",
                                                        "Crops" = "cro",
@@ -1153,8 +1246,15 @@ server <- function(input, output, session) {
         coord_flip()
       land_fallow_plot
     }
-   # else if (ocuVar() == "jodu") {
-      #}
+    else if (ocuVar() == "jodu") {
+      job_duration_plot <- ggplot(job_duration_summary, aes(x = villages, y = job_duration_avg, fill = villages)) +
+        geom_col( fill = plasma(10, alpha = 1, begin = 0, end = 1, direction = 1)) + 
+        coord_flip()+
+        labs(x= "", y = "Average Job Duration [Months]")+
+        ggtitle("Average Job Duration for the Head of the Household") +
+        theme_classic()
+      job_duration_plot
+      }
     
   })
   
