@@ -33,6 +33,7 @@ library(shinyWidgets)
 library(viridis)
 library(RColorBrewer)
 
+
 prettyblue <- "#232D4B"
 navBarBlue <- '#427EDC'
 options(spinner.color = prettyblue, spinner.color.background = '#ffffff', spinner.size = 3, spinner.type = 7)
@@ -60,6 +61,8 @@ land_fallow <- land_fallow %>%
 grouped <- baseline %>% group_by(village) %>% summarize(prop_farm = sum(farm_yn)/n())
 
 # household asset data 
+
+
 assets <- baseline %>% select(contains("asset")) %>% select(contains("num"))  %>% summarize(Stove = sum(asset_stove_num)/n(), Bike = sum(asset_bike_num)/n(), Car = sum(asset_car_num)/n(), Waterpump = sum(asset_waterpump_num)/n(), Generator = sum(asset_generator_num)/n(), Solarpanel = sum(asset_solarpanel_num)/n(), Bed = sum(asset_bed_num)/n(), Fridge = sum(asset_fridge_num)/n(), Almirah = sum(asset_almirah_num)/n(), PC = sum(asset_pc_num)/n(), TV = sum(asset_tv_num)/n(), Phone = sum(asset_mobile_num)/n(), Waterfilter = sum(asset_waterfilter_num)/n())
 
 assets_long <- gather(assets, property, measurement, Stove:Waterfilter)
@@ -1138,7 +1141,7 @@ server <- function(input, output, session) {
       croplot
     }
     else if (ocuVar() == "hoas") {
-     assetplot <- ggplot(assets_long, aes(property, measurement, fill = property)) + geom_col() + labs(x = "", y = "Proportion" ,title = "Proportion of Households Owning Assets", fill  = "Asset") + theme(axis.text.y=element_blank(),axis.ticks.y=element_blank()) + geom_text(aes(label = measurement), size = 3, nudge_y = .05) + coord_flip() + scale_fill_viridis_d()
+     assetplot <- ggplot(assets_long, aes(x = property, y = measurement, fill = property)) + geom_col() + labs(x = "", y = "Proportion" ,title = "Proportion of Households Owning Assets", fill  = "Asset") + theme(axis.text.y=element_blank(),axis.ticks.y=element_blank()) + geom_text(aes(label = measurement), size = 3, nudge_y = .05) + coord_flip() + scale_fill_viridis_d()
     assetplot
      }
     else if (ocuVar() == "lafa") {
