@@ -1249,9 +1249,9 @@ server <- function(input, output, session) {
       croplot
     }
     else if (ocuVar() == "hoas") {
-      assetplot <- ggplot(assets_long, aes(x = property, y = measurement, fill = property)) + geom_col() + labs(x = "", y = "Proportion" ,title = "Proportion of Households Owning Assets", fill  = "Asset") + theme(axis.text.y=element_blank(),axis.ticks.y=element_blank()) + geom_text(aes(label = measurement), size = 3, nudge_y = .05) + coord_flip() + scale_fill_viridis_d()
-      assetplot
-    }
+      assetplot <- ggplot(assets_long, aes(property, measurement, fill = property)) + geom_col() + labs(x = "", y = "Proportion" ,title = "Proportion of Households Owning Assets", fill  = "Asset") + theme(axis.text.y=element_blank(),axis.ticks.y=element_blank()) + geom_text(aes(label = measurement), size = 3, nudge_y = .05) + coord_flip() + scale_fill_viridis_d()
+    assetplot
+      }
     else if (ocuVar() == "lafa") {
       land_fallow_plot <- ggplot(land_fallow, aes(x = village, y = sum, fill = village)) +
         geom_col(fill = plasma(10, alpha = 1, begin = 0, end = 1, direction = 1))+
