@@ -278,10 +278,9 @@ average_rmt_plot <- ggplot(rmt_data_mean_weeks, aes(x = weeks
   #scale_color_brewer(palette = "Spectral")+
   scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
 #annotate(geom = "text", aes(x = unlist(months)))
-#--------------------------------------------------------------------
+# rmt method plot--------------------------------------------------------------------
 
 
-# rmt method plot:
 method_counts <- c(397, 472, 1, 1, 13)
 Method <- c("Bank", "In person", "Mobile", "Money Order", "Other")
 method_dat <- data.frame(Method, method_counts, stringsAsFactors = T)
@@ -330,10 +329,8 @@ map_leaflet <- leaflet(data = d.sundarban) %>%
   addAwesomeMarkers(~lon, ~lat, label = ~as.character(Village.Na), icon=icons, data=village)
 
 
-#-------------------------------
+# rmt purpose plot -------------------------------
 
-
-# rmt purpose plot:
 Purpose <-  c("Food/Utility Purchases", "Other", "No Reason", "Medical Expenses","Tuition", "Assets/Durable Purchases")
 purpose_count <- c(594, 128, 93, 43, 37, 27)
 purpose_dat <- data.frame(Purpose, purpose_count, stringsAsFactors = T)
@@ -347,8 +344,9 @@ rmt_purpose_plot <- ggplot(purpose_dat, aes(x = reorder(Purpose, purpose_count),
   #rotate_x_text(angle = 22, size = rel(0.8))
   coord_flip()+
   geom_text(aes(label = purpose_values), size = 3)
-#--------------------------------------------------------------------
-# rmt table
+
+# rmt tabl e--------------------------------------------------------------------
+
 fd <- livdiv %>%
   select(-(4:967))
 
@@ -362,9 +360,8 @@ avg_rmt <- rmt_dat %>%
   summarize("Average Remitances" = mean(rmt_total, na.rm = T))
 names(avg_rmt) <- c("Date", "Village", "Average Remittances")
 
-#-----------------------------------------------------------------
+# Expenditure plot -----------------------------------------------------------------
 
-# Expenditure plot data:
 expen <- fd %>%
   select(c("hhid", "week_num", "date", "total_spending", "village","hhid")) 
 expen$date <- as_date(expen$date)
@@ -379,20 +376,20 @@ ggplot(exbyvil, aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) 
   labs(title="Average Weekly Expenditure by Village",
        x="Date", y="Average Weekly Expenditure (INR)") +
   scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
-#--------------------------------------------------------------------
-# Expenditure table
+# Expenditure table --------------------------------------------------------------------
+
 expend_table <- expen %>% 
   group_by(date, village) %>% 
   summarize("Average Expenditure" = mean(total_spending, na.rm = T))
 names(expend_table) <- c("Date", "Village", "Average Expenditure")
-#--------------------------------------------------------------------
-# Income plot data:
+# Income plot data --------------------------------------------------------------------
+
 fin_diary <- livdiv %>% select(village, date, week, name, full_inc) %>% arrange(week, village) %>% group_by(week) 
 fin_diary$date <- as_date(fin_diary$date)
 avg_tot_inc <- fin_diary %>% group_by(date, village, week) %>% summarize(avg_inc = mean(full_inc, na.rm = TRUE))
 ggplot(avg_tot_inc, aes(date, avg_inc, color = village)) + geom_line() + labs(x = "", y = "Income (INR)", title = "Average Weekly Household Income by village", color = "Village")
-#--------------------------------------------------------------------
-#Income table 
+
+#Income table-------------------------------------------------------- 
 avg_inc_table <- fin_diary %>% group_by(date, village) %>% summarize("Average Income" = mean(full_inc, na.rm = TRUE))
 names(avg_inc_table) <- c("Date", "Village", "Average Income")
 
@@ -783,7 +780,7 @@ ui <- navbarPage(title = "",
                                      ),
                             ),
                             
-                            
+                            # Remittances---------------
                             tabPanel("Remittances", value = "",
                                      fluidRow(style = "margin: 6px;",
                                               h1(strong("Remittances"), align = "center"),
@@ -1154,7 +1151,7 @@ server <- function(input, output, session) {
                                , y = mean_rmt_per_week, color = Villages)) + 
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Remittance Income [Rupee]") +
+      labs(x = "Date", y = "Average Remittance Income (INR)") +
       ggtitle("Average Weekly Remittance Income")+ #(11/16/18 - 10/31/19)
       #scale_color_brewer(palette = "Spectral")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
