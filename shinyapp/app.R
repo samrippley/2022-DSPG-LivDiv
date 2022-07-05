@@ -1191,6 +1191,16 @@ server <- function(input, output, session) {
         scale_x_discrete() + theme_classic()
       marplot
     }
+    else if (ageVar() == "hosi") {
+      hh_size_plot <- ggplot(median_hhsize, aes(x = village, y = median, fill = village)) +
+        geom_col() +
+        labs( x = "", y = "Median Household Size")+
+        coord_flip()+
+        ggtitle("Household Size by Village") +
+        theme(legend.position="none") +
+        theme_classic()
+      hh_size_plot
+    }
     
     
   })
@@ -1297,16 +1307,7 @@ server <- function(input, output, session) {
         theme(legend.position="none")
       savplot
     }
-    else if (ageVar() == "hosi") {
-      hh_size_plot <- ggplot(median_hhsize, aes(x = village, y = median, fill = village)) +
-        geom_col() +
-        labs( x = "", y = "Median Household Size")+
-        coord_flip()+
-        ggtitle("Household Size by Village") +
-        theme(legend.position="none") +
-        theme_classic()
-      hh_size_plot
-    }
+
     
   })
   
