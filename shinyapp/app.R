@@ -46,7 +46,7 @@ village_vector = c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskat
 load("data/livdivdata.RData")
 
 baseline <- livdiv %>%
-  slice(1:307,)
+  slice(1:306,)
 
 # participate in ag data 
 
@@ -1075,7 +1075,7 @@ server <- function(input, output, session) {
         coord_flip() +
         theme_minimal () +
         labs(title = "Primary Occupation of Household Heads", x = "", y = "") +
-        scale_fill_brewer(palette="Spectral")
+        scale_fill_viridis_d()
       pocuplot
     } 
     else if (ocuVar() == "socu") {
@@ -1085,7 +1085,7 @@ server <- function(input, output, session) {
         coord_flip() +
         theme_minimal () +
         labs(title = "Secondary Occupation of Household Heads", x = "", y = "") +
-        scale_fill_brewer(palette="Spectral")
+        scale_fill_viridis_d()
       socplot
     }
     else if (ocuVar() == "agfa") {
@@ -1120,12 +1120,12 @@ server <- function(input, output, session) {
         theme_classic() + 
         ggtitle("Households That Own a Business") +
         coord_flip()+
-        geom_text(aes(label = prop_bus_values), size = 2.5, nudge_y = -1)
+        geom_text(aes(label = prop_bus_values), size = 2.5, nudge_y = -1) + scale_fill_viridis_d()
       village_bus_count_plot
     }
     else if (finVar() == "inc") {
       figure_inc_spending <- ggplot(baseline.summary, aes(rmt_total, full_inc, color= village))+geom_point(data=baseline.summary, shape=17, size=3) +labs(x="Total mean weekly remittances", y="Total mean weekly income", color="Villages") + ggtitle("Average total income vs average total remittances in Baseline week") 
-      p<-figure_inc_spending +coord_flip() #+ scale_x_continuous(trans='log2') 
+      p<-figure_inc_spending +coord_flip() + scale_fill_viridis_d()
       p
     }
     else if (finVar() == "sal") {
@@ -1138,7 +1138,7 @@ server <- function(input, output, session) {
         labs(title="Number of Times Households Saved Money in a Year",
              x = "Numer of Times Able to Save", y = "Number of Household Heads") +
         theme_classic() +
-        theme(legend.position="none")
+        theme(legend.position="none") + scale_fill_viridis_d()
       savplot
     }
     
@@ -1161,7 +1161,7 @@ server <- function(input, output, session) {
       labs(x = "Date", y = "Average Remittance Income (INR)") +
       ggtitle("Average Weekly Remittance Income")+ #(11/16/18 - 10/31/19)
       #scale_color_brewer(palette = "Spectral")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) + scale_fill_viridis_d()
     #annotate(geom = "text", aes(x = unlist(months)))
     
   })
@@ -1195,7 +1195,7 @@ server <- function(input, output, session) {
       geom_line() +
       labs(title="Average Weekly Expenditure by Village",
            x="Date", y="Average Weekly Expenditure (INR)") +
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) + scale_color_viridis_d()
     
     
   })
@@ -1213,7 +1213,7 @@ server <- function(input, output, session) {
   output$inc <- renderPlot({
     ggplot(filtered_inc(), aes(date, avg_inc, color = village)) + 
       geom_line() + 
-      labs(x = "", y = "Income (INR)", title = "Average Weekly Household Income by village", color = "Village") 
+      labs(x = "", y = "Income (INR)", title = "Average Weekly Household Income by village", color = "Village") + scale_color_viridis_d()
     
   })
   #Render inc table
