@@ -1165,7 +1165,7 @@ server <- function(input, output, session) {
         labs(subtitle = "by Village") +
         theme(axis.line = element_line(size = 3, colour = "grey80")) +
         theme(legend.position = "none") +
-        rotate_x_text(angle = 33, size = rel(1)) 
+        rotate_x_text(angle = 33, size = rel(1)) + scale_fill_viridis_d()
       fplot
     }
     else if (ageVar() == "edu") {
@@ -1174,7 +1174,7 @@ server <- function(input, output, session) {
         facet_wrap(~village, ncol = 5) +
         geom_text(aes(label = sub), position = position_stack(vjust=1.1)) +
         labs(title = "Mean Years of Education for Head of Households", x = NULL, y = "Years of Education") +
-        theme(legend.position="none") 
+        theme(legend.position="none") + scale_fill_viridis_d()
       splot
     }
     else if (ageVar() == "pov") {
@@ -1184,14 +1184,14 @@ server <- function(input, output, session) {
         theme_classic() + 
         ggtitle("Households That Live Below the Poverty Line") +
         coord_flip()+
-        geom_text(aes(label = prop_pl_values), size = 2.5, nudge_y = -1)
+        geom_text(aes(label = prop_pl_values), size = 2.5, nudge_y = -1) + scale_fill_viridis_d()
       village_pl_count_plot
     }
     else if (ageVar() == "mar") {
       marplot <- ggplot(countmar, aes(x = head_married, y = n, fill = Gender)) +
         geom_col() +
         labs(title = "Household Heads' Marital Status", x = "Not Married                       Married", y = "Number of Household Heads") +
-        scale_x_discrete() + theme_classic()
+        scale_x_discrete() + theme_classic() + scale_fill_viridis_d()
       marplot
     }
     else if (ageVar() == "hosi") {
@@ -1201,7 +1201,7 @@ server <- function(input, output, session) {
         coord_flip()+
         ggtitle("Household Size by Village") +
         theme(legend.position="none") +
-        theme_classic()
+        theme_classic() + scale_fill_viridis_d()
       hh_size_plot
     }
     else if (ageVar() == "chho") {
