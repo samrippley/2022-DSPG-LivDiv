@@ -754,7 +754,7 @@ ui <- navbarPage(title = "",
                                    p("", style = "padding-top:10px;"),
                                    column(12, align = "center", h4(strong("Timelapse Showing Coastal Degradation")),
                                           p(""),
-                                          br(""), tags$video(type = "video/mp4",src = "sundarbansv2.mp4", width = "600px", align = "center", height = "500px",controls = "controls")
+                                          br(""), tags$video(type = "video/mp4",src = "sundarbansv2.mp4", width = "80%", align = "center",controls = "controls")
                                           ), 
                                    )
                           
@@ -1165,24 +1165,24 @@ ui <- navbarPage(title = "",
                                           br(), 
                                           img(src = "team-ryan.jpg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
                                           img(src = "team-john.jpg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                          p(a(href = 'https://www.linkedin.com/in/esha-dwibedi-83a63476/', 'Esha Dwibedi', target = '_blank'), "(Virginia Tech, PHD in Economics);",
+                                          p(a(href = 'https://www.linkedin.com/in/samantha-rippley-58846119b/', 'Samantha Rippley', target = '_blank'), "(Virginia Tech, M.S in Agriculture and Applied Economics);",
                                             br(), 
-                                            a(href = 'https://www.linkedin.com/in/julie-rebstock', 'Julie Rebstock', target = '_blank'), "(Virgina Tech, Undergraduate in Economics and Computational Modeling and Data Analytics);",
+                                            a(href = 'https://www.linkedin.com/in/julie-rebstock', 'Nandini Das', target = '_blank'), "(Virgina Tech, PHD in Economics);",
                                             br(), 
-                                            a(href = 'https://www.linkedin.com/in/ryan-jacobs-bb5727174/', 'Ryan Jacobs', target = '_blank'), "(Virginia Tech, Undergraduate in Environmental Economics, Management, and Policy, and Minoring in Industrial Design).",
+                                            a(href = 'https://www.linkedin.com/in/ryan-jacobs-bb5727174/', 'Taj Cole', target = '_blank'), "(Virginia Tech, Undergraduate in Environmental Economics, Management, and Policy, and Minoring in Industrial Design).",
                                             br(), 
-                                            a(href = 'https://www.linkedin.com/in/john-wright-9a13621a0/', 'John Wright', target = '_blank'), "(Virginia State Univeristy, Undergraduate in Statistical and Data Science)."),
+                                            a(href = 'https://www.linkedin.com/in/john-wright-9a13621a0/', 'Siddarth Ravikanti', target = '_blank'), "(Virginia Tech, Undergraduate in Statistical and Data Science)."),
                                           p("", style = "padding-top:10px;") 
                                    ),
                                    column(6, align = "center",
                                           h4(strong("VT Faculty Team Members")),
-                                          img(src = "team-posadas.jpg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
+                                         # img(src = "team-posadas.jpg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
                                           img(src = "team-sarah.jpg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                          p(a(href = "https://www.linkedin.com/in/briannaposadas/", 'Dr. Brianna B. Posadas', target = '_blank'), "(Postdoctoral Associate Department of Agricultural, Leadership, & Community Education);",
-                                            br(), 
-                                            a(href = '', 'Dr. Sarah Melissa Witiak', target = '_blank'), "(Associate Professor Department of Biology Virginia State University)."),
-                                          p("", style = "padding-top:10px;")
-                                   )
+                                          p(a(href = "https://www.linkedin.com/in/chanita-holmes-385577234/", 'Dr. Chanita Holmes', target = '_blank'), "(Research Assistant Professor Department of Agriculture and Applied Economics Virginia Tech)",
+                                          #  br(), 
+                                          #  a(href = '', 'Dr. Chanita Holmes', target = '_blank'), "(Associate Professor Department of Biology Virginia State University)."),
+                                         # p("", style = "padding-top:10px;")
+                                   ) ), 
                           ),
                           fluidRow(tyle = "margin-left: 100px; margin-right: 100px;",
                                    align = "center",
@@ -1354,7 +1354,7 @@ server <- function(input, output, session) {
       village_bus_count_plot
     }
     else if (finVar() == "inc") {
-      figure_inc_spending <- ggplot(baseline.summary, aes(rmt_total, full_inc, color= village))+geom_point(data=baseline.summary, shape=17, size=3) +labs(x="Total mean weekly remittances", y="Total mean weekly income", color="Villages") + ggtitle("Average total income vs average total remittances in Baseline week") + + scale_color_viridis_d()
+      figure_inc_spending <- ggplot(baseline.summary, aes(rmt_total, full_inc, color= village))+geom_point(data=baseline.summary, shape=17, size=3) +labs(x="Total mean weekly remittances", y="Total mean weekly income", color="Villages") + ggtitle("Average total income vs average total remittances in Baseline week") + scale_color_viridis_d()
       p<-figure_inc_spending +coord_flip() #+ scale_x_continuous(trans='log2') 
       p
     }
