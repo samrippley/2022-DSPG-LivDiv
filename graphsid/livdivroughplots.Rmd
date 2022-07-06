@@ -19,7 +19,7 @@ library(plotly)
 
 load("~/Documents/2022-DSPG-LivDiv-/data/livdivdata.RData")
 baseline <- livdiv %>%
-slice(1:306,)
+slice(1:307,)
 
 ```
 
