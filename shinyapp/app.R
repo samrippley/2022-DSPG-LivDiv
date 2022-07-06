@@ -679,7 +679,7 @@ ui <- navbarPage(title = "",
                                       br()
                                    )
                           ),
-                          fluidRow(style = "margin: 6px;",
+                          fluidRow(style = "margin: 6px;", align = "justify",
                                    column(4,
                                           h2(strong("The Setting")),
                                           
@@ -707,7 +707,7 @@ ui <- navbarPage(title = "",
                  
                  ## Tab Date Intro--------------------------------------------
                  tabPanel("Data", value = "overview",
-                          fluidRow(style = "margin: 6px;",
+                          fluidRow(style = "margin: 6px;", align = "justify",
                                    column(4, 
                                           h2(strong("Data")),
                                           p("We acquire weekly household financial and consumption data for this project from Gupta et.al (2021).  Data was collected from about 300 households in 10 representative village in the Sundarbans region from November 2018 to October 2019. ")
@@ -999,7 +999,7 @@ ui <- navbarPage(title = "",
                  navbarMenu("Shocks" , 
                             tabPanel("Shocks in the Sundarbans", value = "", align = "center",
                                      
-                                     fluidRow(style = "margin: 6px;",
+                                     fluidRow(style = "margin: 6px;", align = "justify",
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("The Sundarbans region is highly susceptible to climate change and extreme weather events, 
                                                                   especially in the last decade. These weather changes negatively impact the Sundarbans population 
