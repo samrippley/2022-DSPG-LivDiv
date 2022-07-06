@@ -46,12 +46,12 @@ village_vector = c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskat
 load("data/livdivdata.RData")
 
 baseline <- livdiv %>%
-  slice(1:307,)
+  slice(1:306,)
 
 
+# children data
 
-
-
+avg_children <- baseline %>% group_by(village) %>% summarize(avg_children = sum(nb_children)/n())
 
 
 
@@ -418,12 +418,12 @@ method_dat <- data.frame(Method, method_counts, stringsAsFactors = T)
 method_values <- c("       397", "       472", "   1", "   1", "    13")
 
 rmt_method_plot <- ggplot(method_dat, aes( x= reorder(Method, method_counts), y = method_counts, fill = Method)) +
-  geom_col(fill = plasma(5, alpha = 1, begin = 0, end = 1, direction = 1)) +
+  geom_col() +
   labs(x = "", y = "Total") +
   theme_classic() +
   coord_flip()+
   ggtitle("Method of Receiving Remittances")+
-  geom_text(aes(label = method_values), size = 3)
+  geom_text(aes(label = method_values), size = 3) + scale_fill_viridis_d()
 
 
 # leaflet data --------------------------------------------------------------------
@@ -470,13 +470,13 @@ purpose_dat <- data.frame(Purpose, purpose_count, stringsAsFactors = T)
 purpose_values <- c("      594", "      128", "     93", "     43", "      37", "      27")
 
 rmt_purpose_plot <- ggplot(purpose_dat, aes(x = reorder(Purpose, purpose_count), y = purpose_count, fill = Purpose)) + 
-  geom_col(fill = plasma(6, alpha = 1, begin = 0, end = 1, direction = 1)) +
+  geom_col() +
   labs(x = "", y = "Total") +
   theme_classic() +
   ggtitle("Purpose for Receiving Remittances")+
   #rotate_x_text(angle = 22, size = rel(0.8))
   coord_flip()+
-  geom_text(aes(label = purpose_values), size = 3)
+  geom_text(aes(label = purpose_values), size = 3) + scale_fill_viridis_d()
 #--------------------------------------------------------------------
 # rmt table
 fd <- livdiv %>%
@@ -679,7 +679,7 @@ ui <- navbarPage(title = "",
                                       br()
                                    )
                           ),
-                          fluidRow(style = "margin: 6px;",
+                          fluidRow(style = "margin: 6px;", align = "justify",
                                    column(4,
                                           h2(strong("The Setting")),
                                           
@@ -707,7 +707,7 @@ ui <- navbarPage(title = "",
                  
                  ## Tab Date Intro--------------------------------------------
                  tabPanel("Data", value = "overview",
-                          fluidRow(style = "margin: 6px;",
+                          fluidRow(style = "margin: 6px;", align = "justify",
                                    column(4, 
                                           h2(strong("Data")),
                                           p("We acquire weekly household financial and consumption data for this project from Gupta et.al (2021).  Data was collected from about 300 households in 10 representative village in the Sundarbans region from November 2018 to October 2019. ")
@@ -754,7 +754,7 @@ ui <- navbarPage(title = "",
                                    p("", style = "padding-top:10px;"),
                                    column(12, align = "center", h4(strong("Timelapse Showing Coastal Degradation")),
                                           p(""),
-                                          br(""), tags$video(type = "video/mp4",src = "sundarbansv2.mp4", width = "600px", align = "center", height = "500px",controls = "controls")
+                                          br(""), tags$video(type = "video/mp4",src = "sundarbansv2.mp4", width = "80%", align = "center",controls = "controls")
                                           ), 
                                    )
                           
@@ -777,7 +777,10 @@ ui <- navbarPage(title = "",
                                                        "Education" = "edu", 
                                                        "Poverty" = "pov", 
                                                        "Marital Status" = "mar",
-                                                       "Household Size" = "hosi"),
+                                                       "Household Size" = "hosi", 
+                                                       "Number of Children in Household" = "chho"
+                                                       ),
+                                                    
                                                      ), 
                                                      withSpinner(plotOutput("ageplot", height = "500px", width = "100%")),
                                                      
@@ -996,7 +999,7 @@ ui <- navbarPage(title = "",
                  navbarMenu("Shocks" , 
                             tabPanel("Shocks in the Sundarbans", value = "", align = "center",
                                      
-                                     fluidRow(style = "margin: 6px;",
+                                     fluidRow(style = "margin: 6px;", align = "justify",
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("The Sundarbans region is highly susceptible to climate change and extreme weather events, 
                                                                   especially in the last decade. These weather changes negatively impact the Sundarbans population 
@@ -1012,7 +1015,7 @@ ui <- navbarPage(title = "",
                                      tabPanel("All The Shocks", plotOutput("shocks_all", width = "65%"),
                                      ),
                                      
-                                     fluidRow(style = "margin: 6px",
+                                     fluidRow(style = "margin: 6px", align = "justify",
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("")),
                                                      br("Given the significance of the different shocks over the nine-year period, we 
@@ -1025,7 +1028,7 @@ ui <- navbarPage(title = "",
                                      
                                      tabPanel("Shocks by Village", plotOutput("shocks_village", width = "65%")
                                      ),
-                                     fluidRow(style = "margin: 6px",
+                                     fluidRow(style = "margin: 6px", align = "justify",
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("")),
                                                      br("The Sundarbans area typically face tropical events such as cyclones. However, the frequency 
@@ -1041,7 +1044,7 @@ ui <- navbarPage(title = "",
                                      
                                      
                                      tabPanel("Shocks by the Year", plotOutput("shocks_by_year", width = "65%"),
-                                              fluidRow(style = "margin: 6px;",
+                                              fluidRow(style = "margin: 6px;", align = "justify",
                                                        p("", style = "padding-top:10px;"),
                                                        column(12,h4(strong("")),
                                                               br("We further investigate the impact of the 2009 shock on household livelihood. 
@@ -1053,7 +1056,7 @@ ui <- navbarPage(title = "",
                                      ),
                                      
                                      tabPanel("Shocks in 2009", plotOutput("shocks_plot_2009", width = "65%"),
-                                              fluidRow(style = "margin: 6px;",
+                                              fluidRow(style = "margin: 6px;", align = "justify",
                                                        p("", style = "padding-top:10px;"),
                                                        column(12,h4(strong("")),
                                                               br("After the many shocks in 2009, families in the Sundarbans region coped by taking steps such as 
@@ -1065,7 +1068,7 @@ ui <- navbarPage(title = "",
                                      ),
                                      
                                      tabPanel("Copes in 2009", plotOutput("cope_2009_plot", width = "65%"),
-                                              fluidRow(style = "margin: 6px;",
+                                              fluidRow(style = "margin: 6px;", align = "justify",
                                                        p("", style = "padding-top:10px;"),
                                                        column(12,h4(strong("")),
                                                               br("Relocation is common after shocks occur in the region and often times households are relocated 
@@ -1077,7 +1080,7 @@ ui <- navbarPage(title = "",
                                      ),
                                      
                                      tabPanel("Relocations after Shock in 2009", plotOutput("shock_relocation_2009_yn", width = "65%"),
-                                              fluidRow(style = "margin: 6px;",
+                                              fluidRow(style = "margin: 6px;", align = "justify",
                                                        p("", style = "padding-top:10px;"),
                                                        column(12,h4(strong("")),
                                                               br("With a vast majority of households saying that they relocate for either less or more than a month, 
@@ -1095,7 +1098,7 @@ ui <- navbarPage(title = "",
                             
                             
                             tabPanel("Yearly Shocks",
-                                     fluidRow(style = "margin: 6px;",
+                                     fluidRow(style = "margin: 6px;", 
                                               h1(strong("2009 Shocks"), align = "center"),
                                               p("", style = "padding-top:10px;")
                                               
@@ -1123,19 +1126,77 @@ ui <- navbarPage(title = "",
                             ),
                  ),
                             
-                            
-                            ## Tab thanks--------------------------------------------
-                            tabPanel("Thank you",
-                                     fluidRow(style = "margin: 6px;",
-                                              h1(strong("Thank you!"), align = "center"),
-                                              p("", style = "padding-top:10px;")
-                                              
-                                     ) 
-                            ),
-                 
-                            
-                 
-                 
+                 ## FGD tab --------------------------------------------
+                 tabPanel("Focus Group Discussions",
+                          fluidRow(style = "margin: 6px;",
+                                   h1(strong(""), align = "center"),
+                                   p("", style = "padding-top:10px;")),
+                          fluidRow(style = "margin: 6px;",
+                                   p("", style = "padding-top:10px;"),
+                                   column(12, align = "center",h4(strong("FGD")),
+                                          p(""),
+                                          br("")
+                                          
+                                          
+                                   )),
+                          
+                 ),             
+                ## Tab Team --------------------------------------------
+                 tabPanel("Team", 
+                          fluidRow(style = "margin-left: 100px; margin-right: 100px;",
+                                   align = "center",
+                                   br(""),
+                                   h1(strong("Team")),
+                                   h4(strong("VT Data Science for the Public Good")),
+                                   p("The", a(href = 'https://aaec.vt.edu/academics/undergraduate/beyond-classroom/dspg.html', 'Data Science for the Public Good (DSPG) Young Scholars program', target = "_blank"),
+                                     "is a summer immersive program held at the", a(href = 'https://aaec.vt.edu/index.html', 'Virginia Tech Department of Agricultural'), "and", a(href = 'https://ext.vt.edu/','Applied Economics and the Virginia Cooperative Extension Service.'),
+                                     "In its second year, the program engages students from across the country to work together on projects that address state, federal, and local government challenges around critical
+                                social issues relevant in the world today. DSPG young scholars conduct research at the intersection of statistics, computation, and the social sciences to determine how 
+                                information generated within every community can be leveraged to improve quality of life and inform public policy. For more information on program highlights, how to apply,
+                                and our annual symposium, please visit", 
+                                     a(href = 'https://aaec.vt.edu/content/aaec_vt_edu/en/academics/undergraduate/beyond-classroom/dspg.html#select=1.html', 'the official VT DSPG website.', target = "_blank")),
+                                   p("", style = "padding-top:10px;")
+                          ),
+                          fluidRow(style = "margin-left: 100px; margin-right: 100px;",
+                                   column(6, align = "center",
+                                          h4(strong("DSPG Team Members")),
+                                          img(src = "team-esha.jpg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                          img(src = "team-julie.jpg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                          br(), 
+                                          img(src = "team-ryan.jpg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                          img(src = "team-john.jpg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                          p(a(href = 'https://www.linkedin.com/in/samantha-rippley-58846119b/', 'Samantha Rippley', target = '_blank'), "(Virginia Tech, M.S in Agriculture and Applied Economics);",
+                                            br(), 
+                                            a(href = 'https://www.linkedin.com/in/julie-rebstock', 'Nandini Das', target = '_blank'), "(Virgina Tech, PHD in Economics);",
+                                            br(), 
+                                            a(href = 'https://www.linkedin.com/in/ryan-jacobs-bb5727174/', 'Taj Cole', target = '_blank'), "(Virginia Tech, Undergraduate in Environmental Economics, Management, and Policy, and Minoring in Industrial Design).",
+                                            br(), 
+                                            a(href = 'https://www.linkedin.com/in/john-wright-9a13621a0/', 'Siddarth Ravikanti', target = '_blank'), "(Virginia Tech, Undergraduate in Statistical and Data Science)."),
+                                          p("", style = "padding-top:10px;") 
+                                   ),
+                                   column(6, align = "center",
+                                          h4(strong("VT Faculty Team Members")),
+                                         # img(src = "team-posadas.jpg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
+                                          img(src = "team-sarah.jpg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                          p(a(href = "https://www.linkedin.com/in/chanita-holmes-385577234/", 'Dr. Chanita Holmes', target = '_blank'), "(Research Assistant Professor Department of Agriculture and Applied Economics Virginia Tech)",
+                                          #  br(), 
+                                          #  a(href = '', 'Dr. Chanita Holmes', target = '_blank'), "(Associate Professor Department of Biology Virginia State University)."),
+                                         # p("", style = "padding-top:10px;")
+                                   ) ), 
+                          ),
+                          fluidRow(tyle = "margin-left: 100px; margin-right: 100px;",
+                                   align = "center",
+                                   h4(strong("Project Stakeholders")),
+                                   img(src = "stake-dawn.jpg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
+                                   img(src = "stake-john.jpg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                   p(a(href = '', 'Dawn Barnes', target = '_blank'), "(Virginia Cooperative Extension, Floyd County at Virginia Tech);",
+                                     br(), 
+                                     a(href = '', 'Jon Vest', target = '_blank'), "(Virginia Cooperative Extension, Floyd County at Virginia Tech)."),
+                                   p("", style = "padding-top:10px;")
+                          )
+                 ),
+                
+                
                  inverse = T)
 
 
@@ -1162,7 +1223,7 @@ server <- function(input, output, session) {
         labs(subtitle = "by Village") +
         theme(axis.line = element_line(size = 3, colour = "grey80")) +
         theme(legend.position = "none") +
-        rotate_x_text(angle = 33, size = rel(1)) 
+        rotate_x_text(angle = 33, size = rel(1)) + scale_fill_viridis_d()
       fplot
     }
     else if (ageVar() == "edu") {
@@ -1171,7 +1232,7 @@ server <- function(input, output, session) {
         facet_wrap(~village, ncol = 5) +
         geom_text(aes(label = sub), position = position_stack(vjust=1.1)) +
         labs(title = "Mean Years of Education for Head of Households", x = NULL, y = "Years of Education") +
-        theme(legend.position="none") 
+        theme(legend.position="none") + scale_fill_viridis_d()
       splot
     }
     else if (ageVar() == "pov") {
@@ -1181,14 +1242,14 @@ server <- function(input, output, session) {
         theme_classic() + 
         ggtitle("Households That Live Below the Poverty Line") +
         coord_flip()+
-        geom_text(aes(label = prop_pl_values), size = 2.5, nudge_y = -1)
+        geom_text(aes(label = prop_pl_values), size = 2.5, nudge_y = -1) + scale_fill_viridis_d()
       village_pl_count_plot
     }
     else if (ageVar() == "mar") {
       marplot <- ggplot(countmar, aes(x = head_married, y = n, fill = Gender)) +
         geom_col() +
         labs(title = "Household Heads' Marital Status", x = "Not Married                       Married", y = "Number of Household Heads") +
-        scale_x_discrete() + theme_classic()
+        scale_x_discrete() + theme_classic() + scale_fill_viridis_d()
       marplot
     }
     else if (ageVar() == "hosi") {
@@ -1198,11 +1259,13 @@ server <- function(input, output, session) {
         coord_flip()+
         ggtitle("Household Size by Village") +
         theme(legend.position="none") +
-        theme_classic()
+        theme_classic() + scale_fill_viridis_d()
       hh_size_plot
     }
-    
-    
+    else if (ageVar() == "chho") {
+    chhoplot <- ggplot(avg_children, aes(village, avg_children, fill = village)) + geom_col() + labs(x = "", y = "Number of Children" ,title = "Number of Children per Household", fill = "Village") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d()
+    chhoplot
+    }
   })
   
   
@@ -1218,7 +1281,7 @@ server <- function(input, output, session) {
         scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
         coord_flip() +
         theme_minimal () +
-        labs(title = "Primary Occupation of Household Heads", x = "", y = "") + scale_color_viridis_d()
+        labs(title = "Primary Occupation of Household Heads", x = "", y = "") + scale_fill_viridis_d()
       pocuplot
     } 
     else if (ocuVar() == "socu") {
@@ -1227,7 +1290,7 @@ server <- function(input, output, session) {
         scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
         coord_flip() +
         theme_minimal () +
-        labs(title = "Secondary Occupation of Household Heads", x = "", y = "") + scale_color_viridis_d()
+        labs(title = "Secondary Occupation of Household Heads", x = "", y = "") + scale_fill_viridis_d()
       socplot
     }
     else if (ocuVar() == "agfa") {
@@ -1239,7 +1302,7 @@ server <- function(input, output, session) {
         geom_col(fill = plasma(10, alpha = 1, begin = 0, end = 1, direction = 1)) +
         coord_flip() +
         ggtitle("Average Amount of Land Owned in Each Village") +
-        labs(x = "", y = "Land Owned [Kathas]")
+        labs(x = "", y = "Land Owned [Kathas]") + scale_fill_viridis_d()
       mean_land_plot
     }
     else if (ocuVar() == "cro") {
@@ -1247,7 +1310,10 @@ server <- function(input, output, session) {
       croplot
     }
     else if (ocuVar() == "hoas") {
-      assetplot <- ggplot(assets_long, aes(property, measurement, fill = property)) + geom_col() + labs(x = "", y = "Proportion" ,title = "Proportion of Households Owning Assets", fill  = "Asset") + theme(axis.text.y=element_blank(),axis.ticks.y=element_blank()) + geom_text(aes(label = measurement), size = 3, nudge_y = .05) + coord_flip() + scale_fill_viridis_d()
+      assetplot <- ggplot(assets_long, aes(property, measurement, fill = property)) + geom_col() + 
+        labs(x = "", y = "Proportion" ,title = "Proportion of Households Owning Assets", fill  = "Asset") + 
+        theme(axis.text.y=element_blank(),axis.ticks.y=element_blank()) +
+        geom_text(aes(label = measurement), size = 3, nudge_y = .05) + coord_flip() + scale_fill_viridis_d()
     assetplot
       }
     else if (ocuVar() == "lafa") {
@@ -1256,7 +1322,7 @@ server <- function(input, output, session) {
         theme_classic() +
         labs(x = "", y = "Total Land fallowed")+
         ggtitle("Total Land Followed by Village") +
-        coord_flip()
+        coord_flip() + scale_fill_viridis_d()
       land_fallow_plot
     }
     else if (ocuVar() == "jodu") {
@@ -1265,7 +1331,7 @@ server <- function(input, output, session) {
         coord_flip()+
         labs(x= "", y = "Average Job Duration [Months]")+
         ggtitle("Average Job Duration for the Head of the Household") +
-        theme_classic()
+        theme_classic() + scale_fill_viridis_d()
       job_duration_plot
     }
     
@@ -1284,16 +1350,16 @@ server <- function(input, output, session) {
         theme_classic() + 
         ggtitle("Households That Own a Business") +
         coord_flip()+
-        geom_text(aes(label = prop_bus_values), size = 2.5, nudge_y = -1)
+        geom_text(aes(label = prop_bus_values), size = 2.5, nudge_y = -1) + scale_fill_viridis_d()
       village_bus_count_plot
     }
     else if (finVar() == "inc") {
-      figure_inc_spending <- ggplot(baseline.summary, aes(rmt_total, full_inc, color= village))+geom_point(data=baseline.summary, shape=17, size=3) +labs(x="Total mean weekly remittances", y="Total mean weekly income", color="Villages") + ggtitle("Average total income vs average total remittances in Baseline week") 
+      figure_inc_spending <- ggplot(baseline.summary, aes(rmt_total, full_inc, color= village))+geom_point(data=baseline.summary, shape=17, size=3) +labs(x="Total mean weekly remittances", y="Total mean weekly income", color="Villages") + ggtitle("Average total income vs average total remittances in Baseline week") + scale_color_viridis_d()
       p<-figure_inc_spending +coord_flip() #+ scale_x_continuous(trans='log2') 
       p
     }
     else if (finVar() == "sal") {
-      salplot <- ggplot(m_salary, aes(village, avg_salary, fill = village)) + geom_col() + labs(x = "", y = "INR" ,title = "Average Monthly Salary per Household", fill = "Village") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d()
+      salplot <- ggplot(m_salary, aes(village, avg_salary, fill = village)) + geom_col() + labs(x = "", y = "INR" ,title = "Average Monthly Salary per Household", fill = "Village") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_color_viridis_d()
       salplot
     }
     else if (finVar() == "sav") {
@@ -1326,7 +1392,7 @@ server <- function(input, output, session) {
       labs(x = "Date", y = "Average Remittance Income (INR)", caption = "Mean: 2622.5   Median: 1731.66") +
       ggtitle("Average Weekly Household Remittance Income by Village")+ #(11/16/18 - 10/31/19)
       #scale_color_brewer(palette = "Spectral")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) + scale_color_viridis_d()
     #annotate(geom = "text", aes(x = unlist(months)))
     
   })
@@ -1360,8 +1426,10 @@ server <- function(input, output, session) {
     ggplot(filtered_exp(), aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) +
       geom_line() +
       labs(title="Average Weekly Household Expenditure by Village",
-           x="Date", y="Average Weekly Expenditure (INR)", caption = "Mean: 1395.61   Median: 1341.82") +
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+
+           x="Date", y="Average Weekly Expenditure (INR)", caption = "Mean: 1982.77   Median: 1832.1") +
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) + scale_color_viridis_d()
+
     
   })
   # Render exp table 
@@ -1381,7 +1449,7 @@ server <- function(input, output, session) {
     ggplot(filtered_inc(), aes(date, avg_inc, color = village)) + 
       geom_line() + 
       labs(x = "", y = "Income (INR)", title = "Average Weekly Household Income by Village", color = "Village",
-           caption = "Mean: 1395.61   Median: 1341.82") 
+           caption = "Mean: 1395.61   Median: 1341.82") + scale_color_viridis_d()
     
   })
   #Render inc table
