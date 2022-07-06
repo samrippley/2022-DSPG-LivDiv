@@ -46,7 +46,7 @@ village_vector = c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskat
 load("data/livdivdata.RData")
 
 baseline <- livdiv %>%
-  slice(1:307,)
+  slice(1:306,)
 
 
 # children data
