@@ -1126,19 +1126,77 @@ ui <- navbarPage(title = "",
                             ),
                  ),
                             
-                            
-                            ## Tab thanks--------------------------------------------
-                            tabPanel("Thank you",
-                                     fluidRow(style = "margin: 6px;",
-                                              h1(strong("Thank you!"), align = "center"),
-                                              p("", style = "padding-top:10px;")
-                                              
-                                     ) 
-                            ),
-                 
-                            
-                 
-                 
+                 ## FGD tab --------------------------------------------
+                 tabPanel("Focus Group Discussions",
+                          fluidRow(style = "margin: 6px;",
+                                   h1(strong(""), align = "center"),
+                                   p("", style = "padding-top:10px;")),
+                          fluidRow(style = "margin: 6px;",
+                                   p("", style = "padding-top:10px;"),
+                                   column(12, align = "center",h4(strong("FGD")),
+                                          p(""),
+                                          br("")
+                                          
+                                          
+                                   )),
+                          
+                 ),             
+                ## Tab Team --------------------------------------------
+                 tabPanel("Team", 
+                          fluidRow(style = "margin-left: 100px; margin-right: 100px;",
+                                   align = "center",
+                                   br(""),
+                                   h1(strong("Team")),
+                                   h4(strong("VT Data Science for the Public Good")),
+                                   p("The", a(href = 'https://aaec.vt.edu/academics/undergraduate/beyond-classroom/dspg.html', 'Data Science for the Public Good (DSPG) Young Scholars program', target = "_blank"),
+                                     "is a summer immersive program held at the", a(href = 'https://aaec.vt.edu/index.html', 'Virginia Tech Department of Agricultural'), "and", a(href = 'https://ext.vt.edu/','Applied Economics and the Virginia Cooperative Extension Service.'),
+                                     "In its second year, the program engages students from across the country to work together on projects that address state, federal, and local government challenges around critical
+                                social issues relevant in the world today. DSPG young scholars conduct research at the intersection of statistics, computation, and the social sciences to determine how 
+                                information generated within every community can be leveraged to improve quality of life and inform public policy. For more information on program highlights, how to apply,
+                                and our annual symposium, please visit", 
+                                     a(href = 'https://aaec.vt.edu/content/aaec_vt_edu/en/academics/undergraduate/beyond-classroom/dspg.html#select=1.html', 'the official VT DSPG website.', target = "_blank")),
+                                   p("", style = "padding-top:10px;")
+                          ),
+                          fluidRow(style = "margin-left: 100px; margin-right: 100px;",
+                                   column(6, align = "center",
+                                          h4(strong("DSPG Team Members")),
+                                          img(src = "team-esha.jpg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                          img(src = "team-julie.jpg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                          br(), 
+                                          img(src = "team-ryan.jpg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                          img(src = "team-john.jpg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                          p(a(href = 'https://www.linkedin.com/in/esha-dwibedi-83a63476/', 'Esha Dwibedi', target = '_blank'), "(Virginia Tech, PHD in Economics);",
+                                            br(), 
+                                            a(href = 'https://www.linkedin.com/in/julie-rebstock', 'Julie Rebstock', target = '_blank'), "(Virgina Tech, Undergraduate in Economics and Computational Modeling and Data Analytics);",
+                                            br(), 
+                                            a(href = 'https://www.linkedin.com/in/ryan-jacobs-bb5727174/', 'Ryan Jacobs', target = '_blank'), "(Virginia Tech, Undergraduate in Environmental Economics, Management, and Policy, and Minoring in Industrial Design).",
+                                            br(), 
+                                            a(href = 'https://www.linkedin.com/in/john-wright-9a13621a0/', 'John Wright', target = '_blank'), "(Virginia State Univeristy, Undergraduate in Statistical and Data Science)."),
+                                          p("", style = "padding-top:10px;") 
+                                   ),
+                                   column(6, align = "center",
+                                          h4(strong("VT Faculty Team Members")),
+                                          img(src = "team-posadas.jpg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
+                                          img(src = "team-sarah.jpg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                          p(a(href = "https://www.linkedin.com/in/briannaposadas/", 'Dr. Brianna B. Posadas', target = '_blank'), "(Postdoctoral Associate Department of Agricultural, Leadership, & Community Education);",
+                                            br(), 
+                                            a(href = '', 'Dr. Sarah Melissa Witiak', target = '_blank'), "(Associate Professor Department of Biology Virginia State University)."),
+                                          p("", style = "padding-top:10px;")
+                                   )
+                          ),
+                          fluidRow(tyle = "margin-left: 100px; margin-right: 100px;",
+                                   align = "center",
+                                   h4(strong("Project Stakeholders")),
+                                   img(src = "stake-dawn.jpg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
+                                   img(src = "stake-john.jpg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                   p(a(href = '', 'Dawn Barnes', target = '_blank'), "(Virginia Cooperative Extension, Floyd County at Virginia Tech);",
+                                     br(), 
+                                     a(href = '', 'Jon Vest', target = '_blank'), "(Virginia Cooperative Extension, Floyd County at Virginia Tech)."),
+                                   p("", style = "padding-top:10px;")
+                          )
+                 ),
+                
+                
                  inverse = T)
 
 
