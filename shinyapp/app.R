@@ -490,7 +490,7 @@ rmt_dat$date <- as_date(rmt_dat$date)
 avg_rmt <- rmt_dat %>% 
   group_by(date, village) %>% 
   summarize("Average Remitances" = mean(rmt_total, na.rm = T))
-avg_rmt[,3] <- round(avg_rmt[,3], digits = 2)
+avg_rmt[,3] <- format(round(unlist(avg_rmt[,3]), digits = 2), nsmall = 2)
 names(avg_rmt) <- c("Date", "Village", "Average Remittances")
 
 #-----------------------------------------------------------------
@@ -515,7 +515,7 @@ ggplot(exbyvil, aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) 
 expend_table <- expen %>% 
   group_by(date, village) %>% 
   summarize("Average Expenditure" = mean(total_spending, na.rm = T))
-expend_table[,3] <- round(expend_table[,3], digits = 2)
+expend_table[,3] <- format(round(unlist(expend_table[,3]), digits = 2), nsmall = 2)
 names(expend_table) <- c("Date", "Village", "Average Expenditure")
 #--------------------------------------------------------------------
 # Income plot data:
@@ -526,7 +526,7 @@ ggplot(avg_tot_inc, aes(date, avg_inc, color = village)) + geom_line() + labs(x 
 #--------------------------------------------------------------------
 #Income table 
 avg_inc_table <- fin_diary %>% group_by(date, village) %>% summarize("Average Income" = mean(full_inc, na.rm = TRUE))
-avg_inc_table[,3] <- round(avg_inc_table[,3], digits = 2)
+avg_inc_table[,3] <- format(round(unlist(avg_inc_table[,3]), digits = 2), nsmall = 2)
 names(avg_inc_table) <- c("Date", "Village", "Average Income")
 
 #Shocks Data ------------------------------------------------------------------- 
@@ -1392,9 +1392,10 @@ server <- function(input, output, session) {
       labs(x = "Date", y = "Average Remittance Income (INR)", caption = "Mean: 2622.5   Median: 1731.66") +
       ggtitle("Average Weekly Household Remittance Income by Village")+ #(11/16/18 - 10/31/19)
       #scale_color_brewer(palette = "Spectral")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) + scale_color_viridis_d()
-    #annotate(geom = "text", aes(x = unlist(months)))
-    
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) + 
+      scale_color_viridis_d()+
+      theme(plot.caption = element_text(size = 12))
+
   })
   
   # Render rmt table
@@ -1428,7 +1429,10 @@ server <- function(input, output, session) {
       labs(title="Average Weekly Household Expenditure by Village",
 
            x="Date", y="Average Weekly Expenditure (INR)", caption = "Mean: 1982.77   Median: 1832.1") +
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) + scale_color_viridis_d()
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) + 
+      scale_color_viridis_d()+
+      theme_classic()+
+      theme(plot.caption = element_text(size = 12))
 
     
   })
@@ -1449,7 +1453,10 @@ server <- function(input, output, session) {
     ggplot(filtered_inc(), aes(date, avg_inc, color = village)) + 
       geom_line() + 
       labs(x = "", y = "Income (INR)", title = "Average Weekly Household Income by Village", color = "Village",
-           caption = "Mean: 1395.61   Median: 1341.82") + scale_color_viridis_d()
+           caption = "Mean: 1395.61   Median: 1341.82") + 
+      scale_color_viridis_d()+
+      theme_classic()+
+      theme(plot.caption = element_text(size = 12))
     
   })
   #Render inc table
