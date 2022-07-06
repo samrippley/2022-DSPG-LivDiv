@@ -730,11 +730,12 @@ ui <- navbarPage(title = "",
                                #    p(tags$small(em('Last updated: August 2021'))))
                  ),
                  mainPanel(
-                   img(src='Picture1.png', align = "right"),
+                   img(src='Picture1.png', align = "right", width = "75%"),
                  )), 
                  ## Sundarbans Region--------------------------------------------
-                 tabPanel("Sundarbans Region",
-                          fluidRow(style = "margin: 6px;",
+                 navbarMenu("Sundarbans Region" ,
+                          tabPanel("Sundarbans Villages", 
+                           fluidRow(style = "margin: 6px;",
                                    h1(strong(""), align = "center"),
                                    p("", style = "padding-top:10px;")),
                           fluidRow(style = "margin: 6px;",
@@ -750,6 +751,8 @@ ui <- navbarPage(title = "",
                             #p(),
                             #actionButton("recalc", "New Points")
                           ),
+                          ),
+                          tabPanel("Timelapse", 
                           fluidRow(style = "margin: 6px;",
                                    p("", style = "padding-top:10px;"),
                                    column(12, align = "center", h4(strong("Timelapse Showing Coastal Degradation")),
@@ -758,7 +761,7 @@ ui <- navbarPage(title = "",
                                           ), 
                                    )
                           
-                            ),
+                            )),
                  
                  ## Tab Demographics --------------------------------------------
                  navbarMenu("Demographics" , 
