@@ -49,9 +49,9 @@ baseline <- livdiv %>%
   slice(1:307,)
 
 
+# children data
 
-
-
+avg_children <- baseline %>% group_by(village) %>% summarize(avg_children = sum(nb_children)/n())
 
 
 
@@ -777,7 +777,10 @@ ui <- navbarPage(title = "",
                                                        "Education" = "edu", 
                                                        "Poverty" = "pov", 
                                                        "Marital Status" = "mar",
-                                                       "Household Size" = "hosi"),
+                                                       "Household Size" = "hosi", 
+                                                       "Number of Children in Household" = "chho"
+                                                       ),
+                                                    
                                                      ), 
                                                      withSpinner(plotOutput("ageplot", height = "500px", width = "100%")),
                                                      
@@ -1201,8 +1204,10 @@ server <- function(input, output, session) {
         theme_classic()
       hh_size_plot
     }
-    
-    
+    else if (ageVar() == "chho") {
+    chhoplot <- ggplot(avg_children, aes(village, avg_children, fill = village)) + geom_col() + labs(x = "", y = "Number of Children" ,title = "Number of Children per Household", fill = "Village") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d()
+    chhoplot
+    }
   })
   
   
