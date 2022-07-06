@@ -423,7 +423,7 @@ rmt_method_plot <- ggplot(method_dat, aes( x= reorder(Method, method_counts), y 
   theme_classic() +
   coord_flip()+
   ggtitle("Method of Receiving Remittances")+
-  geom_text(aes(label = method_values), size = 3)
+  geom_text(aes(label = method_values), size = 3) + scale_fill_viridis_d()
 
 
 # leaflet data --------------------------------------------------------------------
@@ -476,7 +476,7 @@ rmt_purpose_plot <- ggplot(purpose_dat, aes(x = reorder(Purpose, purpose_count),
   ggtitle("Purpose for Receiving Remittances")+
   #rotate_x_text(angle = 22, size = rel(0.8))
   coord_flip()+
-  geom_text(aes(label = purpose_values), size = 3)
+  geom_text(aes(label = purpose_values), size = 3) + scale_fill_viridis_d()
 #--------------------------------------------------------------------
 # rmt table
 fd <- livdiv %>%
@@ -1223,7 +1223,7 @@ server <- function(input, output, session) {
         scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
         coord_flip() +
         theme_minimal () +
-        labs(title = "Primary Occupation of Household Heads", x = "", y = "") + scale_color_viridis_d()
+        labs(title = "Primary Occupation of Household Heads", x = "", y = "") + scale_fill_viridis_d()
       pocuplot
     } 
     else if (ocuVar() == "socu") {
@@ -1232,7 +1232,7 @@ server <- function(input, output, session) {
         scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
         coord_flip() +
         theme_minimal () +
-        labs(title = "Secondary Occupation of Household Heads", x = "", y = "") + scale_color_viridis_d()
+        labs(title = "Secondary Occupation of Household Heads", x = "", y = "") + scale_fill_viridis_d()
       socplot
     }
     else if (ocuVar() == "agfa") {
@@ -1244,7 +1244,7 @@ server <- function(input, output, session) {
         geom_col(fill = plasma(10, alpha = 1, begin = 0, end = 1, direction = 1)) +
         coord_flip() +
         ggtitle("Average Amount of Land Owned in Each Village") +
-        labs(x = "", y = "Land Owned [Kathas]")
+        labs(x = "", y = "Land Owned [Kathas]") + scale_fill_viridis_d()
       mean_land_plot
     }
     else if (ocuVar() == "cro") {
@@ -1252,7 +1252,10 @@ server <- function(input, output, session) {
       croplot
     }
     else if (ocuVar() == "hoas") {
-      assetplot <- ggplot(assets_long, aes(property, measurement, fill = property)) + geom_col() + labs(x = "", y = "Proportion" ,title = "Proportion of Households Owning Assets", fill  = "Asset") + theme(axis.text.y=element_blank(),axis.ticks.y=element_blank()) + geom_text(aes(label = measurement), size = 3, nudge_y = .05) + coord_flip() + scale_fill_viridis_d()
+      assetplot <- ggplot(assets_long, aes(property, measurement, fill = property)) + geom_col() + 
+        labs(x = "", y = "Proportion" ,title = "Proportion of Households Owning Assets", fill  = "Asset") + 
+        theme(axis.text.y=element_blank(),axis.ticks.y=element_blank()) +
+        geom_text(aes(label = measurement), size = 3, nudge_y = .05) + coord_flip() + scale_fill_viridis_d()
     assetplot
       }
     else if (ocuVar() == "lafa") {
@@ -1261,7 +1264,7 @@ server <- function(input, output, session) {
         theme_classic() +
         labs(x = "", y = "Total Land fallowed")+
         ggtitle("Total Land Followed by Village") +
-        coord_flip()
+        coord_flip() + scale_fill_viridis_d()
       land_fallow_plot
     }
     else if (ocuVar() == "jodu") {
@@ -1270,7 +1273,7 @@ server <- function(input, output, session) {
         coord_flip()+
         labs(x= "", y = "Average Job Duration [Months]")+
         ggtitle("Average Job Duration for the Head of the Household") +
-        theme_classic()
+        theme_classic() + scale_fill_viridis_d()
       job_duration_plot
     }
     
@@ -1289,16 +1292,16 @@ server <- function(input, output, session) {
         theme_classic() + 
         ggtitle("Households That Own a Business") +
         coord_flip()+
-        geom_text(aes(label = prop_bus_values), size = 2.5, nudge_y = -1)
+        geom_text(aes(label = prop_bus_values), size = 2.5, nudge_y = -1) + scale_fill_viridis_d()
       village_bus_count_plot
     }
     else if (finVar() == "inc") {
-      figure_inc_spending <- ggplot(baseline.summary, aes(rmt_total, full_inc, color= village))+geom_point(data=baseline.summary, shape=17, size=3) +labs(x="Total mean weekly remittances", y="Total mean weekly income", color="Villages") + ggtitle("Average total income vs average total remittances in Baseline week") 
+      figure_inc_spending <- ggplot(baseline.summary, aes(rmt_total, full_inc, color= village))+geom_point(data=baseline.summary, shape=17, size=3) +labs(x="Total mean weekly remittances", y="Total mean weekly income", color="Villages") + ggtitle("Average total income vs average total remittances in Baseline week") + + scale_color_viridis_d()
       p<-figure_inc_spending +coord_flip() #+ scale_x_continuous(trans='log2') 
       p
     }
     else if (finVar() == "sal") {
-      salplot <- ggplot(m_salary, aes(village, avg_salary, fill = village)) + geom_col() + labs(x = "", y = "INR" ,title = "Average Monthly Salary per Household", fill = "Village") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d()
+      salplot <- ggplot(m_salary, aes(village, avg_salary, fill = village)) + geom_col() + labs(x = "", y = "INR" ,title = "Average Monthly Salary per Household", fill = "Village") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_color_viridis_d()
       salplot
     }
     else if (finVar() == "sav") {
@@ -1331,7 +1334,7 @@ server <- function(input, output, session) {
       labs(x = "Date", y = "Average Remittance Income (INR)", caption = "Mean: 2622.5   Median: 1731.66") +
       ggtitle("Average Weekly Household Remittance Income by Village")+ #(11/16/18 - 10/31/19)
       #scale_color_brewer(palette = "Spectral")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) + scale_color_viridis_d()
     #annotate(geom = "text", aes(x = unlist(months)))
     
   })
@@ -1365,7 +1368,7 @@ server <- function(input, output, session) {
       geom_line() +
       labs(title="Average Weekly Household Expenditure by Village",
            x="Date", y="Average Weekly Expenditure (INR)", caption = "Mean: 1982.77   Median: 1832.1") +
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) + scale_color_viridis_d()
     
     
   })
@@ -1384,7 +1387,7 @@ server <- function(input, output, session) {
     ggplot(filtered_inc(), aes(date, avg_inc, color = village)) + 
       geom_line() + 
       labs(x = "", y = "Income (INR)", title = "Average Weekly Household Income by Village", color = "Village",
-           caption = "Mean: 1395.61   Median: 1341.82") 
+           caption = "Mean: 1395.61   Median: 1341.82") + scale_color_viridis_d()
     
   })
   #Render inc table
