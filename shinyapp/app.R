@@ -418,7 +418,7 @@ method_dat <- data.frame(Method, method_counts, stringsAsFactors = T)
 method_values <- c("       397", "       472", "   1", "   1", "    13")
 
 rmt_method_plot <- ggplot(method_dat, aes( x= reorder(Method, method_counts), y = method_counts, fill = Method)) +
-  geom_col(fill = plasma(5, alpha = 1, begin = 0, end = 1, direction = 1)) +
+  geom_col() +
   labs(x = "", y = "Total") +
   theme_classic() +
   coord_flip()+
@@ -470,7 +470,7 @@ purpose_dat <- data.frame(Purpose, purpose_count, stringsAsFactors = T)
 purpose_values <- c("      594", "      128", "     93", "     43", "      37", "      27")
 
 rmt_purpose_plot <- ggplot(purpose_dat, aes(x = reorder(Purpose, purpose_count), y = purpose_count, fill = Purpose)) + 
-  geom_col(fill = plasma(6, alpha = 1, begin = 0, end = 1, direction = 1)) +
+  geom_col() +
   labs(x = "", y = "Total") +
   theme_classic() +
   ggtitle("Purpose for Receiving Remittances")+
