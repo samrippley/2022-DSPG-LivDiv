@@ -1354,14 +1354,14 @@ server <- function(input, output, session) {
     exbyvil %>% 
       filter(village %in% input$village_exp)
   })
+
   # Plot
   output$exp <- renderPlot({
     ggplot(filtered_exp(), aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) +
       geom_line() +
       labs(title="Average Weekly Household Expenditure by Village",
-           x="Date", y="Average Weekly Expenditure (INR)", caption = "Mean: 1982.77   Median: 1832.1") +
+           x="Date", y="Average Weekly Expenditure (INR)", caption = "Mean: 1395.61   Median: 1341.82") +
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
-    
     
   })
   # Render exp table 
@@ -1374,6 +1374,8 @@ server <- function(input, output, session) {
     avg_tot_inc %>% 
       filter(village %in% input$village_inc)
   })
+
+
   # Plot
   output$inc <- renderPlot({
     ggplot(filtered_inc(), aes(date, avg_inc, color = village)) + 
