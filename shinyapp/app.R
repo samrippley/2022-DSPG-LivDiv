@@ -1329,7 +1329,7 @@ server <- function(input, output, session) {
       geom_line() +
       theme_classic() +
       labs(x = "Date", y = "Average Remittance Income (INR)", caption = "Mean: 2622.5   Median: 1731.66") +
-      ggtitle("Average Weekly Remittance Income")+ #(11/16/18 - 10/31/19)
+      ggtitle("Average Weekly Household Remittance Income by Village")+ #(11/16/18 - 10/31/19)
       #scale_color_brewer(palette = "Spectral")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
     #annotate(geom = "text", aes(x = unlist(months)))
@@ -1363,7 +1363,7 @@ server <- function(input, output, session) {
   output$exp <- renderPlot({
     ggplot(filtered_exp(), aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) +
       geom_line() +
-      labs(title="Average Weekly Expenditure by Village",
+      labs(title="Average Weekly Household Expenditure by Village",
            x="Date", y="Average Weekly Expenditure (INR)", caption = "Mean: 1982.77   Median: 1832.1") +
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
     
