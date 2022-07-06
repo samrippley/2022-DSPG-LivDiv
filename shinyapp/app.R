@@ -1015,7 +1015,7 @@ ui <- navbarPage(title = "",
                                      tabPanel("All The Shocks", plotOutput("shocks_all", width = "65%"),
                                      ),
                                      
-                                     fluidRow(style = "margin: 6px",
+                                     fluidRow(style = "margin: 6px", align = "justify",
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("")),
                                                      br("Given the significance of the different shocks over the nine-year period, we 
@@ -1028,7 +1028,7 @@ ui <- navbarPage(title = "",
                                      
                                      tabPanel("Shocks by Village", plotOutput("shocks_village", width = "65%")
                                      ),
-                                     fluidRow(style = "margin: 6px",
+                                     fluidRow(style = "margin: 6px", align = "justify",
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("")),
                                                      br("The Sundarbans area typically face tropical events such as cyclones. However, the frequency 
@@ -1044,7 +1044,7 @@ ui <- navbarPage(title = "",
                                      
                                      
                                      tabPanel("Shocks by the Year", plotOutput("shocks_by_year", width = "65%"),
-                                              fluidRow(style = "margin: 6px;",
+                                              fluidRow(style = "margin: 6px;", align = "justify",
                                                        p("", style = "padding-top:10px;"),
                                                        column(12,h4(strong("")),
                                                               br("We further investigate the impact of the 2009 shock on household livelihood. 
@@ -1056,7 +1056,7 @@ ui <- navbarPage(title = "",
                                      ),
                                      
                                      tabPanel("Shocks in 2009", plotOutput("shocks_plot_2009", width = "65%"),
-                                              fluidRow(style = "margin: 6px;",
+                                              fluidRow(style = "margin: 6px;", align = "justify",
                                                        p("", style = "padding-top:10px;"),
                                                        column(12,h4(strong("")),
                                                               br("After the many shocks in 2009, families in the Sundarbans region coped by taking steps such as 
@@ -1068,7 +1068,7 @@ ui <- navbarPage(title = "",
                                      ),
                                      
                                      tabPanel("Copes in 2009", plotOutput("cope_2009_plot", width = "65%"),
-                                              fluidRow(style = "margin: 6px;",
+                                              fluidRow(style = "margin: 6px;", align = "justify",
                                                        p("", style = "padding-top:10px;"),
                                                        column(12,h4(strong("")),
                                                               br("Relocation is common after shocks occur in the region and often times households are relocated 
@@ -1080,7 +1080,7 @@ ui <- navbarPage(title = "",
                                      ),
                                      
                                      tabPanel("Relocations after Shock in 2009", plotOutput("shock_relocation_2009_yn", width = "65%"),
-                                              fluidRow(style = "margin: 6px;",
+                                              fluidRow(style = "margin: 6px;", align = "justify",
                                                        p("", style = "padding-top:10px;"),
                                                        column(12,h4(strong("")),
                                                               br("With a vast majority of households saying that they relocate for either less or more than a month, 
@@ -1098,7 +1098,7 @@ ui <- navbarPage(title = "",
                             
                             
                             tabPanel("Yearly Shocks",
-                                     fluidRow(style = "margin: 6px;",
+                                     fluidRow(style = "margin: 6px;", 
                                               h1(strong("2009 Shocks"), align = "center"),
                                               p("", style = "padding-top:10px;")
                                               
