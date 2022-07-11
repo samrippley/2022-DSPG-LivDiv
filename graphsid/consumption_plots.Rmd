@@ -1,0 +1,123 @@
+---
+title: "Consumptionplots"
+author: "Siddarth Ravikanti"
+date: "7/11/2022"
+output: html_document
+---
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(tidyverse)
+library(viridis)
+library(plotly)
+
+
+load("~/Documents/2022-DSPG-LivDiv-/data/livdivdata.RData")
+fin_diary <- livdiv
+fin_diary$date <- as_date(fin_diary$date)
+
+```
+
+```{r}
+#Weekly expenditure on clothes 
+
+clothes_week <- fin_diary %>% select(village, week, aggregated_exp_clothes) %>% group_by(week, village) %>% summarize(avg_inc_clothes = mean(aggregated_exp_clothes, na.rm = TRUE))
+
+ggplot(clothes_week, aes(week, avg_inc_clothes, color = village)) + geom_line() + labs(x = "", y = "Income (INR)", title = "Average Income per week for clothes") + scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) 
+```
+```{r}
+#Weekly expenditure on books/tuition 
+
+books_week <- fin_diary %>% select(village, week, exp_bookstuition) %>% group_by(week, village) %>% summarize(avg_bookstuition = mean(exp_bookstuition, na.rm = TRUE))
+
+
+ggplot(books_week, aes(week, avg_bookstuition, color = village)) + geom_line() + labs(x = "", y = "Income (INR)", title = "Weekly expenditure on books/tuition") + scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) 
+```
+
+```{r}
+#Weekly expenditure on Utility 
+
+utility_week <- fin_diary %>% select(village, week, exp_utility) %>% group_by(week, village) %>% summarize(avg_utility = mean(exp_utility, na.rm = TRUE))
+
+
+ggplot(utility_week, aes(week, avg_utility, color = village)) + geom_line() + labs(x = "", y = "Income (INR)", title = "Weekly Utilities") + scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) 
+```
+
+```{r}
+#Weekly expenditure on toiletries 
+
+toilet_week <- fin_diary %>% select(village, week, exp_toiletries) %>% group_by(week, village) %>% summarize(avg_toilet = mean(exp_toiletries, na.rm = TRUE))
+
+
+ggplot(toilet_week, aes(week, avg_toilet, color = village)) + geom_line() + labs(x = "", y = "Income (INR)", title = "Weekly expenditure on toiletries") + scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) 
+```
+```{r}
+#Weekly expenditure on durables 
+
+durab_week <- fin_diary %>% select(village, week, exp_durables) %>% group_by(week, village) %>% summarize(avg_durables = mean(exp_durables, na.rm = TRUE))
+
+
+ggplot(durab_week, aes(week, avg_durables, color = village)) + geom_line() + labs(x = "", y = "Income (INR)", title = "Weekly Durable expenditure") + scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) 
+```
+```{r}
+#Weekly expenditure on health
+
+health_week <- fin_diary %>% select(village, week, exp_health) %>% group_by(week, village) %>% summarize(avg_health = mean(exp_health, na.rm = TRUE))
+
+
+ggplot(health_week, aes(week, avg_health, color = village)) + geom_line() + labs(x = "", y = "Income (INR)", title = "Weekly health expenditure") + scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) 
+```
+```{r}
+#Weekly expenditure on home repairs 
+
+homerepairs_week <- fin_diary %>% select(village, week, exp_homerepairs) %>% group_by(week, village) %>% summarize(avg_homerepairs = mean(exp_homerepairs, na.rm = TRUE))
+
+
+ggplot(homerepairs_week, aes(week, avg_homerepairs, color = village)) + geom_line() + labs(x = "", y = "Income (INR)", title = "Weekly Homerepair Expenditure") + scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) 
+```
+
+```{r}
+#Weekly expenditure on transportation 
+
+transport_week <- fin_diary %>% select(village, week, exp_transport) %>% group_by(week, village) %>% summarize(avg_transport = mean(exp_transport, na.rm = TRUE))
+
+
+ggplot(transport_week, aes(week, avg_transport, color = village)) + geom_line() + labs(x = "", y = "Income (INR)", title = "Weekly Transportation Expenditure", color = "Village") + scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) 
+```
+
+```{r}
+festivals_week <- fin_diary %>% select(village, week, exp_festivals) %>% group_by(week, village) %>% summarize(avg_festivals = mean(exp_festivals, na.rm = TRUE))
+
+
+ggplot(festivals_week, aes(week, avg_festivals, color = village)) + geom_line() + labs(x = "", y = "Money (INR)", title = "Weekly Festival Expenditure") + scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) 
+```
+
+```{r}
+livestock_week <- fin_diary %>% select(village, week, exp_livestock) %>% group_by(week, village) %>% summarize(avg_livestock = mean(exp_livestock, na.rm = TRUE))
+
+
+ggplot(livestock_week, aes(week, avg_livestock, color = village)) + geom_line() + labs(x = "", y = "Income (INR)", title = "Weekly Livestock Expenditure") + scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) 
+```
+
+```{r}
+aginputs_week <- fin_diary %>% select(village, week, exp_aginputs) %>% group_by(week, village) %>% summarize(avg_aginputs = mean(exp_aginputs, na.rm = TRUE))
+
+
+ggplot(aginputs_week, aes(week, avg_aginputs, color = village)) + geom_line() + labs(x = "", y = "Income (INR)", title = "Weekly Agricultural Expenditure") + scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) 
+```
+
+```{r}
+labor_week <- fin_diary %>% select(village, week, exp_labor) %>% group_by(week, village) %>% summarize(avg_labor = mean(exp_labor, na.rm = TRUE))
+
+
+ggplot(labor_week, aes(week, avg_labor, color = village)) + geom_line() + labs(x = "", y = "Income (INR)", title = "Weekly Labor Expenditure") + scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) 
+```
+
+```{r}
+nonfoodother_week <- fin_diary %>% select(village, week, exp_nonfoodother) %>% group_by(week, village) %>% summarize(avg_nonfoodother = mean(exp_nonfoodother, na.rm = TRUE))
+
+
+ggplot(nonfoodother_week, aes(week, avg_nonfoodother, color = village)) + geom_line() + labs(x = "", y = "Income (INR)", title = "Other Weekly Expenditure(non-cosumption)") + scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) 
+```
+
