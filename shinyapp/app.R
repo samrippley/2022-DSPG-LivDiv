@@ -49,6 +49,45 @@ baseline <- livdiv %>%
   slice(1:306,)
 
 
+#borrowing data 
+fd <- livdiv 
+meals <- fd %>%
+  select(c("hhid", "date", "fs_skipmeals", "fs_reducemeals", "village","hhid", "week_num"))
+meals$date <- as_date(meals$date)
+borrow <- fd %>%
+  select(c("hhid", "date", "d_br", "d_br_cash","d_br_inkind", "br_amt","br_amtdue", "village","hhid", "week_num"))
+borrow$date <- as_date(borrow$date)
+purp <- fd %>%
+  select(c("date", "br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag", "village","hhid", "week_num"))
+purp$date <- as_date(purp$date)
+bramt <- borrow %>%
+  select(c("br_amt", "date", "village", "week_num")) %>%
+  group_by(village,week_num) %>%
+  summarize_at(c("br_amt"), mean, na.rm=TRUE) 
+dbr <- borrow %>%
+  select(c("d_br", "d_br_cash", "d_br_inkind", "date", "village", "week_num")) %>%
+  group_by(village,week_num) %>%
+  summarize_at(c("d_br", "d_br_cash", "d_br_inkind"), sum, na.rm=TRUE) 
+
+purpose <- purp %>%
+  select(c("br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag", "village", "week_num")) %>%
+  group_by(village) %>%
+  summarize_at(c("br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag"), sum, na.rm=TRUE) 
+pamr <- purpose %>% 
+  filter(village == "Amrabati") 
+pamr <- t(pamr)
+pamr <- as.data.frame(pamr)
+pamr <- pamr %>% slice(-c(1))
+pamr <- data.frame(A = c("Consumption", "Other Expenses", "Fees Due", "Payback Other Loan", "Asset Purchase", "Agriculture Purchases"),
+                   B = c(pamr$V1))
+purposenv <- purp %>%
+  select(c("br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag", "village", "week_num")) %>%
+  summarize_at(c("br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag"), sum, na.rm=TRUE) 
+purposenv <- t(purposenv)
+purposenv <- as.data.frame(purposenv)
+df <- data.frame(A = c("Consumption", "Other Expenses", "Fees Due", "Payback Other Loan", "Asset Purchase", "Agriculture Purchases"),
+                 B = c(purposenv$V1))
+
 # children data
 
 avg_children <- baseline %>% group_by(village) %>% summarize(avg_children = sum(nb_children)/n())
@@ -939,11 +978,35 @@ ui <- navbarPage(title = "",
                                               h1(strong("Borrowing"), align = "center"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
-                                                     p(""),
+                                                     p("Households borrow"),
                                                      br("")
                                                      
-                                              )),
-                                     
+                                                     
+                                              ) ),
+                                     # Sidebar with a select input for village
+                                     sidebarLayout(
+                                       sidebarPanel(
+                                         #tags$h2("Select/Deselect all"),
+                                         pickerInput("village_bramt", "Select Village:", choices = village_vector, 
+                                                     selected = village_vector,
+                                                     multiple = T, options = list(`actions-box` = T)),
+                                         pickerInput("village_borr", "Select Village:", choices = village_vector, 
+                                                     selected = village_vector, 
+                                                     multiple = T, options = list(`actions-box` = T)),
+                                         
+                                       ),
+                                       
+                                       # Show a plot of the generated plot
+                                       mainPanel(
+                                         tabsetPanel(
+                                           tabPanel("Amount",plotOutput("bor")),
+                                           tabPanel("Count",plotOutput("borr"))
+                                           
+                                         )
+                                       ), 
+                                       
+                                       
+                                     ),  
                             ),
                             
                             tabPanel("Remittances", value = "",
@@ -1225,6 +1288,44 @@ ui <- navbarPage(title = "",
 server <- function(input, output, session) {
   # Run JavaScript Code
   runjs(jscode)
+  
+  
+ #borrowing tab-------------------------
+  #borrowing amount
+
+  filtered_bramt <- reactive({
+    bramt %>%
+      filter(village %in% input$village_bramt)
+  })
+  # Plot
+  output$bor <- renderPlot({
+    ggplot(filtered_bramt(), aes(x=week_num, y=br_amt, color = village, na.rm=TRUE)) +
+      geom_line() +
+      labs(title ="Amount Borrowed by Village") + 
+      xlab("Date") +
+      ylab("Amount Borrowed (INR)")+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) +
+      scale_color_viridis_d() +
+      theme(legend.position = "none") 
+  })  
+  
+# borrowing count 
+  filtered_dbr <- reactive({
+    dbr %>%
+      filter(village %in% input$village_borr)
+  })
+  # Plot
+  output$borr <- renderPlot({
+  ggplot(filtered_dbr(), aes(x=week_num, y=d_br, color = village, na.rm=TRUE)) +
+             geom_line() +
+             labs(title = "Number of Households Borrowing (Cash or in Kind)") + 
+             xlab("Date") +
+             ylab("Number of HH")+
+             scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) +
+             scale_color_viridis_d() +
+             theme(legend.position = "none")
+  })  
+
   
   
   #sociodemo tabset -----------------------------------------------------
