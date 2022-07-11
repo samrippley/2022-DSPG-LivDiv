@@ -2,7 +2,9 @@
 title: "Consumptionplots"
 author: "Siddarth Ravikanti"
 date: "7/11/2022"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r}
@@ -15,7 +17,6 @@ library(plotly)
 
 load("~/Documents/2022-DSPG-LivDiv-/data/livdivdata.RData")
 fin_diary <- livdiv
-fin_diary$date <- as_date(fin_diary$date)
 
 ```
 
