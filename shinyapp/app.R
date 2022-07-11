@@ -632,7 +632,6 @@ jscode <- "function getUrlVars() {
                 });
                 return vars;
             }
-
            function getUrlParam(parameter, defaultvalue){
                 var urlparameter = defaultvalue;
                 if(window.location.href.indexOf(parameter) > -1){
@@ -640,19 +639,15 @@ jscode <- "function getUrlVars() {
                     }
                 return urlparameter;
             }
-
             var mytype = getUrlParam('type','Empty');
-
             function changeLinks(parameter) {
                 links = document.getElementsByTagName(\"a\");
-
                 for(var i = 0; i < links.length; i++) {
                    var link = links[i];
                    var newurl = link.href + '?type=' + parameter;
                    link.setAttribute('href', newurl);
                  }
             }
-
         
            "
 
@@ -699,10 +694,10 @@ ui <- navbarPage(title = "",
                                           p("Climate change is a global issue; however, its impact is not felt equally across all regions. Developing countries, especially areas with widespread poverty and poor infrastructure, are more ill-equipped to cope with these environmental threats. The worsening of extreme weather patterns such as high temperatures, droughts, floods, and rising sea levels are especially problematic for countries with large coastal areas and populations that primarily depend on agriculture for their livelihood."),
                                           p("We examine the Sundarbans in West Bengal, India, which has faced increasing climate changes in recent years for this project. The Sundarbans region has experienced a disproportionate number of climate disasters such as flooding and cyclones over the past decade. Residents who primarily engage in small-scale agriculture are forced to diversify their likelihood strategies using out-migration and reduced farming to cope with the increasing environmental changes."),
                                           p("The overall goal of this project is to evaluate livelihood-diversification strategies using weekly financial data for approximately 300 households from 10 representative villages in the region. The team aims to create a public-facing dashboard to describe and visualize households' livelihood diversification strategies, including changes in income, expenditure, and consumption patterns. The insights from this dashboard are important for designing effective and targeted poverty-reducing strategies and aiding those affected by shocks such as natural disasters and climate change.")
-                                          )
+                                   )
                           ),
                           #fluidRow(align = "center",
-                                  # p(tags$small(em('Last updated: August 2021'))))
+                          # p(tags$small(em('Last updated: August 2021'))))
                  ),
                  
                  ## Tab Date Intro--------------------------------------------
@@ -717,50 +712,50 @@ ui <- navbarPage(title = "",
                                           h2(strong("Initial/Baseline")),
                                           p("The initial or baseline survey was conducted in November 2018. This data is the foundation of our data, allowing the team to understand this region's demographic and socio-economic characteristics. The baseline survey collected information on household demographics, economic activities, assets and landholding, shock history, migration, and agricultural behaviors.")
                                           
-                                            
-                                            ),
+                                          
+                                   ),
                                    column(4,
                                           h2(strong("Financial Diaries")),
                                           p("Gupta et al. (2021) use financial diaries to capture high-frequency data on household income, expenditure, and consumption behavior. As such, we have weekly financial and economic activities for approximately 300 households for an entire year (November 2018 to October 2019)."),
                                           p("Household members were trained and provided instructions to independently record their financial activities in diaries (see image below, insert screenshot of image) before data collection. These diaries include information on weekly income, remittances, borrowing, lending, expenditure on consumption, and non-consumption items.")
-                                            
                                           
+                                          
+                                   ),
+                                   #fluidRow(align = "center",
+                                   #    p(tags$small(em('Last updated: August 2021'))))
                           ),
-                          #fluidRow(align = "center",
-                               #    p(tags$small(em('Last updated: August 2021'))))
-                 ),
-                 mainPanel(
-                   img(src='Picture1.png', align = "right", width = "75%"),
-                 )), 
+                          mainPanel(
+                            img(src='Picture1.png', align = "right", width = "75%"),
+                          )), 
                  ## Sundarbans Region--------------------------------------------
                  navbarMenu("Sundarbans Region" ,
-                          tabPanel("Sundarbans Villages", 
-                           fluidRow(style = "margin: 6px;",
-                                   h1(strong(""), align = "center"),
-                                   p("", style = "padding-top:10px;")),
-                          fluidRow(style = "margin: 6px;",
-                                   p("", style = "padding-top:10px;"),
-                                   column(12, align = "center",h4(strong("Sundarbans Villages")),
-                                          p(""),
-                                          br("")
-                                          
-                                          
-                                   )),
-                          fluidPage(
-                            leafletOutput("map_leaflet", width = "100%"),
-                            #p(),
-                            #actionButton("recalc", "New Points")
-                          ),
-                          ),
-                          tabPanel("Timelapse", 
-                          fluidRow(style = "margin: 6px;",
-                                   p("", style = "padding-top:10px;"),
-                                   column(12, align = "center", h4(strong("Timelapse Showing Coastal Degradation")),
-                                          p(""),
-                                          br(""), tags$video(type = "video/mp4",src = "sundarbansv2.mp4", width = "80%", align = "center",controls = "controls")
-                                          ), 
-                                   )
-                          
+                            tabPanel("Sundarbans Villages", 
+                                     fluidRow(style = "margin: 6px;",
+                                              h1(strong(""), align = "center"),
+                                              p("", style = "padding-top:10px;")),
+                                     fluidRow(style = "margin: 6px;",
+                                              p("", style = "padding-top:10px;"),
+                                              column(12, align = "center",h4(strong("Sundarbans Villages")),
+                                                     p(""),
+                                                     br("")
+                                                     
+                                                     
+                                              )),
+                                     fluidPage(
+                                       leafletOutput("map_leaflet", width = "100%"),
+                                       #p(),
+                                       #actionButton("recalc", "New Points")
+                                     ),
+                            ),
+                            tabPanel("Timelapse", 
+                                     fluidRow(style = "margin: 6px;",
+                                              p("", style = "padding-top:10px;"),
+                                              column(12, align = "center", h4(strong("Timelapse Showing Coastal Degradation")),
+                                                     p(""),
+                                                     br(""), tags$video(type = "video/mp4",src = "sundarbansv2.mp4", width = "80%", align = "center",controls = "controls")
+                                              ), 
+                                     )
+                                     
                             )),
                  
                  ## Tab Demographics --------------------------------------------
@@ -782,16 +777,16 @@ ui <- navbarPage(title = "",
                                                        "Marital Status" = "mar",
                                                        "Household Size" = "hosi", 
                                                        "Number of Children in Household" = "chho"
-                                                       ),
-                                                    
+                                                     ),
+                                                     
                                                      ), 
                                                      withSpinner(plotOutput("ageplot", height = "500px", width = "100%")),
                                                      
                                               ),
                                               # column(12, 
-                                               #     h4("References: "), 
-                                                #   p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
-                                                 #  p("", style = "padding-top:10px;")) 
+                                              #     h4("References: "), 
+                                              #   p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
+                                              #  p("", style = "padding-top:10px;")) 
                                      )), 
                             tabPanel("Livelihood", 
                                      fluidRow(style = "margin: 6px;",
@@ -927,6 +922,29 @@ ui <- navbarPage(title = "",
                                      ),
                             ),
                             
+                            tabPanel("Consumption",
+                                     fluidRow(style = "margin: 6px;",
+                                              h1(strong("Consumption"), align = "center"),
+                                              p("", style = "padding-top:10px;"),
+                                              column(12,h4(strong("Overview")),
+                                                     p(""),
+                                                     br("")
+                                                     
+                                              )),
+                                    
+                            ),
+                            
+                            tabPanel("Borrowing",
+                                     fluidRow(style = "margin: 6px;",
+                                              h1(strong("Borrowing"), align = "center"),
+                                              p("", style = "padding-top:10px;"),
+                                              column(12,h4(strong("Overview")),
+                                                     p(""),
+                                                     br("")
+                                                     
+                                              )),
+                                     
+                            ),
                             
                             tabPanel("Remittances", value = "",
                                      fluidRow(style = "margin: 6px;",
@@ -989,9 +1007,9 @@ ui <- navbarPage(title = "",
                                                      
                                                      
                                               )),
-                                
                                      
-                  
+                                     
+                                     
                             ),
                             
                             
@@ -1037,7 +1055,6 @@ ui <- navbarPage(title = "",
                                                      br("The Sundarbans area typically face tropical events such as cyclones. However, the frequency 
                                                      and intensity of cyclones have increased in the past decade. Specially, the most devasting cyclones 
                                                      in the region occurred in 2007, 2009, 2019, 2020, and 2021.  
-
                                                   The impact of the cyclone in 2009 (Alia) is still evident as the majority of households reported a shock 
                                                         in 2009, even though this interview was done in 2018. Moreover, many families reported experiencing 2 
                                                         to 3 shocks, with some reporting a high of 4 shocks in 2009. This graph highlights that 2009 was a devasting 
@@ -1128,7 +1145,7 @@ ui <- navbarPage(title = "",
                                      ),
                             ),
                  ),
-                            
+                 
                  ## FGD tab --------------------------------------------
                  tabPanel("Focus Group Discussions",
                           fluidRow(style = "margin: 6px;",
@@ -1144,7 +1161,7 @@ ui <- navbarPage(title = "",
                                    )),
                           
                  ),             
-                ## Tab Team --------------------------------------------
+                 ## Tab Team --------------------------------------------
                  tabPanel("Team", 
                           fluidRow(style = "margin-left: 100px; margin-right: 100px;",
                                    align = "center",
@@ -1179,13 +1196,13 @@ ui <- navbarPage(title = "",
                                    ),
                                    column(6, align = "center",
                                           h4(strong("VT Faculty Team Members")),
-                                         # img(src = "team-posadas.jpg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
+                                          # img(src = "team-posadas.jpg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
                                           img(src = "team-sarah.jpg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
                                           p(a(href = "https://www.linkedin.com/in/chanita-holmes-385577234/", 'Dr. Chanita Holmes', target = '_blank'), "(Research Assistant Professor Department of Agriculture and Applied Economics Virginia Tech)",
-                                          #  br(), 
-                                          #  a(href = '', 'Dr. Chanita Holmes', target = '_blank'), "(Associate Professor Department of Biology Virginia State University)."),
-                                         # p("", style = "padding-top:10px;")
-                                   ) ), 
+                                            #  br(), 
+                                            #  a(href = '', 'Dr. Chanita Holmes', target = '_blank'), "(Associate Professor Department of Biology Virginia State University)."),
+                                            # p("", style = "padding-top:10px;")
+                                          ) ), 
                           ),
                           fluidRow(tyle = "margin-left: 100px; margin-right: 100px;",
                                    align = "center",
@@ -1198,8 +1215,8 @@ ui <- navbarPage(title = "",
                                    p("", style = "padding-top:10px;")
                           )
                  ),
-                
-                
+                 
+                 
                  inverse = T)
 
 
@@ -1266,8 +1283,8 @@ server <- function(input, output, session) {
       hh_size_plot
     }
     else if (ageVar() == "chho") {
-    chhoplot <- ggplot(avg_children, aes(village, avg_children, fill = village)) + geom_col() + labs(x = "", y = "Number of Children" ,title = "Number of Children per Household", fill = "Village") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d()
-    chhoplot
+      chhoplot <- ggplot(avg_children, aes(village, avg_children, fill = village)) + geom_col() + labs(x = "", y = "Number of Children" ,title = "Number of Children per Household", fill = "Village") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d()
+      chhoplot
     }
   })
   
@@ -1317,8 +1334,8 @@ server <- function(input, output, session) {
         labs(x = "", y = "Proportion" ,title = "Proportion of Households Owning Assets", fill  = "Asset") + 
         theme(axis.text.y=element_blank(),axis.ticks.y=element_blank()) +
         geom_text(aes(label = measurement), size = 3, nudge_y = .05) + coord_flip() + scale_fill_viridis_d()
-    assetplot
-      }
+      assetplot
+    }
     else if (ocuVar() == "lafa") {
       land_fallow_plot <- ggplot(land_fallow, aes(x = village, y = sum, fill = village)) +
         geom_col(fill = plasma(10, alpha = 1, begin = 0, end = 1, direction = 1))+
@@ -1374,11 +1391,11 @@ server <- function(input, output, session) {
         theme(legend.position="none")
       savplot
     }
-
+    
     
   })
   
-
+  
   
   # rmt plot output
   # Filter by inputt
@@ -1398,7 +1415,7 @@ server <- function(input, output, session) {
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) + 
       scale_color_viridis_d()+
       theme(plot.caption = element_text(size = 12))
-
+    
   })
   
   # Render rmt table
@@ -1424,19 +1441,19 @@ server <- function(input, output, session) {
     exbyvil %>% 
       filter(village %in% input$village_exp)
   })
-
+  
   # Plot
   output$exp <- renderPlot({
     ggplot(filtered_exp(), aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) +
       geom_line() +
       labs(title="Average Weekly Household Expenditure by Village",
-
+           
            x="Date", y="Average Weekly Expenditure (INR)", caption = "Mean: 1982.77   Median: 1832.1") +
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) + 
       scale_color_viridis_d()+
       theme_classic()+
       theme(plot.caption = element_text(size = 12))
-
+    
     
   })
   # Render exp table 
@@ -1449,8 +1466,8 @@ server <- function(input, output, session) {
     avg_tot_inc %>% 
       filter(village %in% input$village_inc)
   })
-
-
+  
+  
   # Plot
   output$inc <- renderPlot({
     ggplot(filtered_inc(), aes(date, avg_inc, color = village)) + 
