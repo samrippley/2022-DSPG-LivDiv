@@ -983,31 +983,29 @@ ui <- navbarPage(title = "",
                                                      
                                                      
                                               ) ),
-                                     # Sidebar with a select input for village
-                                     sidebarLayout(
-                                       sidebarPanel(
-                                         #tags$h2("Select/Deselect all"),
-                                         pickerInput("village_bramt", "Select Village:", choices = village_vector, 
-                                                     selected = village_vector,
-                                                     multiple = T, options = list(`actions-box` = T)),
-                                         pickerInput("village_borr", "Select Village:", choices = village_vector, 
-                                                     selected = village_vector, 
-                                                     multiple = T, options = list(`actions-box` = T)),
-                                         
-                                       ),
-                                       
+                                  
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Amount",plotOutput("bor")),
-                                           tabPanel("Count",plotOutput("borr"))
+                                           tabPanel("Amount",plotOutput("bor"),
+                                           sidebarPanel(
+                                             pickerInput("village_bramt", "Select Village:", choices = village_vector, 
+                                                         selected = village_vector, 
+                                                         multiple = T, options = list(`actions-box` = T))), 
+                                                ),
+                                           tabPanel("Count",plotOutput("borr"),
+                                             sidebarPanel(
+                                               pickerInput("village_borr", "Select Village:", choices = village_vector, 
+                                                           selected = village_vector,
+                                                           multiple = T, options = list(`actions-box` = T))),
+
+                                        
+                                           ),
                                            
                                          )
-                                       ), 
-                                       
-                                       
-                                     ),  
-                            ),
+                                     )),
+                                     
+                              
                             
                             tabPanel("Remittances", value = "",
                                      fluidRow(style = "margin: 6px;",
