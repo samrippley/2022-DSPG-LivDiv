@@ -53,14 +53,7 @@ toilet_week <- fin_diary %>% select(village, week, exp_toiletries) %>% group_by(
 
 ggplot(toilet_week, aes(week, avg_toilet, color = village)) + geom_line() + labs(x = "", y = "Income (INR)", title = "Weekly expenditure on toiletries") + scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) 
 ```
-```{r}
-#Weekly expenditure on durables 
 
-durab_week <- fin_diary %>% select(village, week, exp_durables) %>% group_by(week, village) %>% summarize(avg_durables = mean(exp_durables, na.rm = TRUE))
-
-
-ggplot(durab_week, aes(week, avg_durables, color = village)) + geom_line() + labs(x = "", y = "Income (INR)", title = "Weekly Durable expenditure") + scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) 
-```
 ```{r}
 #Weekly expenditure on health
 
@@ -87,12 +80,6 @@ transport_week <- fin_diary %>% select(village, week, exp_transport) %>% group_b
 ggplot(transport_week, aes(week, avg_transport, color = village)) + geom_line() + labs(x = "", y = "Income (INR)", title = "Weekly Transportation Expenditure", color = "Village") + scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) 
 ```
 
-```{r}
-festivals_week <- fin_diary %>% select(village, week, exp_festivals) %>% group_by(week, village) %>% summarize(avg_festivals = mean(exp_festivals, na.rm = TRUE))
-
-
-ggplot(festivals_week, aes(week, avg_festivals, color = village)) + geom_line() + labs(x = "", y = "Money (INR)", title = "Weekly Festival Expenditure") + scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) 
-```
 
 ```{r}
 livestock_week <- fin_diary %>% select(village, week, exp_livestock) %>% group_by(week, village) %>% summarize(avg_livestock = mean(exp_livestock, na.rm = TRUE))
