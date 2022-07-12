@@ -1787,7 +1787,7 @@ server <- function(input, output, session) {
   output$food_plot <- renderPlot({
     ggplot(filtered_cs_food(), aes(x = week, y = !!input$food_group, color = village))+
       geom_line()
-    
+  
   })
   
   # Staple items plot
