@@ -661,6 +661,31 @@ shock_relocation_2009 <- ggplot(shock_relocation_where, aes(shk_2009_reloc1, fil
   scale_x_discrete(breaks = c(1,2,3,4,5,6), labels = str_wrap(relocation_where_labels, width = 20), limits = 1:6) + 
   scale_fill_viridis_d() + coord_flip() +  theme(axis.text = element_text(size = 8))
 
+##Male and Female Income
+
+malefemale_inc <- livdiv %>% select(village, week, inc_female, inc_male) %>% 
+  group_by(week, village) %>% 
+  summarize(avg_male_inc = mean(inc_male, na.rm = TRUE), avg_female_inc = mean(inc_female, na.rm = TRUE)) 
+
+ggplot(malefemale_inc, aes(x = week)) + geom_line(aes(y = avg_male_inc, color = village)) + 
+  geom_line(aes(y = avg_female_inc, color = village)) + 
+  labs(x = "", y = "Income (INR)", title = "Male and Female Income", color = "Village") + 
+  scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) 
+
+##Full income
+
+fullinc <- livdiv %>%
+  select(c("full_inc", "date", "village", "week_num")) %>%
+  group_by(village,week_num) %>%
+  summarize_at(c("full_inc"), mean, na.rm=TRUE) 
+
+##Total income
+
+totinc <- livdiv %>%
+  select(c("inc_total", "village", "week_num")) %>%
+  group_by(village,week_num) %>%
+  summarize_at(c("inc_total"), mean, na.rm=TRUE) 
+
 #--------------------------------------------------------------------
 
 # CODE TO DETECT ORIGIN OF LINK AND CHANGE LOGO ACCORDINGLY
@@ -955,6 +980,9 @@ ui <- navbarPage(title = "",
                                        mainPanel(
                                          tabsetPanel(
                                            tabPanel("Plot",plotOutput("inc")),
+                                           tabPanel("Male/Female Income", plotOutput("malefemaleinc")),
+                                           tabPanel("Full Income", plotOutput("fullinc")),
+                                           tabPanel("Total Income(w/o remmitance)", plotOutput("totalinc")),
                                            tabPanel("Table", DT::DTOutput("inc_table"))
                                          )
                                        ),
@@ -1578,6 +1606,46 @@ server <- function(input, output, session) {
       theme(plot.caption = element_text(size = 12))
     
   })
+  
+  filtered_malefemaleinc <- reactive({
+    malefemale_inc  %>% 
+      filter(village %in% input$village_inc)
+  })
+  
+  output$malefemaleinc <- renderPlot({
+    ggplot(filtered_malefemaleinc(), aes(x = week)) + geom_line(aes(y = avg_male_inc, color = village)) + 
+      geom_line(aes(y = avg_female_inc, color = village), linetype = "twodash") +  
+      labs(x = "", y = "Income (INR)", title = "Male and Female Income", color = "Village", caption = "dotted line indicating female avg income") + 
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) 
+  })
+  
+  filtered_fullinc <- reactive({
+    fullinc  %>% 
+      filter(village %in% input$village_inc)
+  })
+  
+  output$fullinc <- renderPlot({
+    ggplot(filtered_fullinc(), aes(x=week_num, y=full_inc, color = village, na.rm=TRUE)) +
+      geom_line() + labs(title ="Full Income by Village") + xlab("Date") + ylab("Full Income (INR)") +
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+  })
+  
+  filtered_totalinc <- reactive({
+    totinc  %>% 
+      filter(village %in% input$village_inc)
+  })
+  
+  output$totalinc <- renderPlot({
+    qplot(x=week_num, y=inc_total, color = village,
+          data=filtered_totalinc(), na.rm=TRUE,
+          main="Total Income by Village",
+          xlab="Date", ylab="Total Income (INR)", geom = "line") +
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+  })
+  
+  
+  
+  
   #Render inc table
   output$inc_table <- DT::renderDT({
     avg_inc_table
@@ -1671,6 +1739,9 @@ server <- function(input, output, session) {
     
     
   })
+  
+  
+  
 }
 
 shinyApp(ui = ui, server = server)
