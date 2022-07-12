@@ -1003,18 +1003,11 @@ ui <- navbarPage(title = "",
                                                            selected = village_vector,
                                                            multiple = T, options = list(`actions-box` = T))),
                                            ),
-                                           tabPanel('Performance',
-                                                    tabsetPanel(
-                                                      tabPanel('Tab1',
-                                                               fluidRow(
-                                                                 column(3,selectInput('village', 'Select Village', c("All",as.character(unique(plot1$village))))), 
-                                                                 column(3,selectInput('Purpose', 'Select Purpose', c("All",as.character(unique(plot1$purpose))))),
-                                                                 column(3,selectInput('mov_type', 'Select Movement Type', c("All",as.character(unique(plot1$Movement_Type))))),
-                                                                 column(12,plotlyOutput("myplot_fwd_f"))
-                                                               )
-                                                      )
-                                                    )),
-                                     )),
+                                           tabPanel("Purpose"
+                                           )
+                                                      
+                                     
+                            ))),
                                      
                               
                             
@@ -1336,81 +1329,9 @@ server <- function(input, output, session) {
   })  
 
   #borrowing purpose ----------------------
-  
-  data1 <- reactive({
-    temp <- plot1
-    if (input$warehouse != "All"){
-      temp <- temp[temp$Warehouse == input$warehouse,]
-    }
-    if (input$region != "All"){
-      temp <- temp[temp$Region == input$region,]
-    }
-    if (input$mov_type != "All"){
-      temp <- temp[temp$Movement_Type == input$mov_type,]
-    }
-    return(temp)
-  })
-  
-  output$myplot_fwd_f <- renderPlotly({
-    
-    data <- data1()
-    p<- ggplot(data, aes(fill=f_TAT, y=Quantity , x=reorder(Week, + Week))) + 
-      geom_bar(position="fill", stat="identity",colour="black") + scale_fill_manual(values=c("#44E62F", "#EC7038")) +
-      labs(x = "Week") +
-      labs(y = "Percentage") +
-      labs(title = "") +
-      scale_y_continuous(labels=scales::percent) +
-      geom_text(data = . %>%
-                  group_by(Warehouse,Region,Movement_Type,Week) %>%
-                  mutate(p = Quantity  / sum(Quantity )) %>%
-                  ungroup(),
-                aes(y = p, label = scales::percent(p)),
-                position = position_stack(vjust = 0.5),
-                show.legend = FALSE) +
-      theme(axis.text.x = element_text(angle = 10))
-    p <- ggplotly(p, tooltip="text")
-    p
-    
-  })  
+
   
   
-  
-  filtered_pur <- reactive({
-    pamr %>%
-      filter(village %in% input$village_purp)
-  })  
-  output$purv <- renderPlot({
-    ggplot(filtered_pur(), aes(x= A, y = B, fill = A)) + geom_col() + 
-      coord_flip()+
-      labs(title = "Purpose of Borrowing in Amrabati") + 
-      xlab("") +
-      ylab("")+
-      theme(legend.position = "none")
-  })  
-  
-  
-  filtered_purp <- reactive({
-    input$purpdrop
-  })
-  
-  output$purpplot <- renderPlot({
-    if (filtered_purp() == "alvi") {
-  ggplot(df, aes(x= A, y = B, fill = A)) + geom_col() + 
-  coord_flip()+
-    labs(title = "Purpose of Borrowing") + 
-    xlab("") +
-    ylab("")+
-    theme(legend.position = "none") 
-    }
-   # else if (filtered_purp() == "ampu") {
-    #  ggplot(pamr, aes(x= A, y = B, fill = A)) + geom_col() + 
-     #   coord_flip()+
-      #  labs(title = "Purpose of Borrowing in Amrabati") + 
-       # xlab("") +
-        #ylab("")+
-        #theme(legend.position = "none") 
-   # }
-  })
   
   
   #sociodemo tabset -----------------------------------------------------
@@ -1670,8 +1591,6 @@ server <- function(input, output, session) {
     avg_inc_table
   })
   
-  
-<<<<<<< HEAD
   output$cs_item <- renderPlot({
     ggplot(filtered_cs_avg_items(), aes(x = week, y = avg_item, color = village))+
       geom_line() +
@@ -1734,9 +1653,6 @@ server <- function(input, output, session) {
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
       theme(plot.caption = element_text(size = 10))
   })
-=======
->>>>>>> 6b47e361036fe47d42109b163332dbb8c8845975
-  
   
   ###Shock plot output  -----------------------------------------------------
   
