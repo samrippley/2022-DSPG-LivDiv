@@ -87,6 +87,14 @@ purposenv <- t(purposenv)
 purposenv <- as.data.frame(purposenv)
 df <- data.frame(A = c("Consumption", "Other Expenses", "Fees Due", "Payback Other Loan", "Asset Purchase", "Agriculture Purchases"),
                  B = c(purposenv$V1))
+pamr <- purpose %>% 
+  filter(village == "Amrabati") 
+pamr <- t(pamr)
+pamr <- as.data.frame(pamr)
+pamr <- pamr %>% slice(-c(1))
+pamr <- data.frame(A = c("Consumption", "Other Expenses", "Fees Due", "Payback Other Loan", "Asset Purchase", "Agriculture Purchases"),
+                   B = c(pamr$V1))
+
 
 # children data
 
@@ -987,6 +995,14 @@ ui <- navbarPage(title = "",
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
+                                           tabPanel("Purpose", 
+                                                    selectInput("purpdrop", "Select Varibiable:", width = "100%", choices = c(
+                                                      "All Villages" = "alvi",
+                                                      "Amrabati" = "ampu"
+                                                    ),
+                                                    ),
+                                                    withSpinner(plotOutput("purpplot", height = "500px")),
+                                           ),
                                            tabPanel("Amount",plotOutput("bor"),
                                            sidebarPanel(
                                              pickerInput("village_bramt", "Select Village:", choices = village_vector, 
@@ -998,9 +1014,13 @@ ui <- navbarPage(title = "",
                                                pickerInput("village_borr", "Select Village:", choices = village_vector, 
                                                            selected = village_vector,
                                                            multiple = T, options = list(`actions-box` = T))),
-
-                                        
                                            ),
+                                           tabPanel("Purpose",plotOutput("purv"),
+                                                    sidebarPanel(
+                                                      pickerInput("village_purp", "Select Village:", choices = village_vector, 
+                                                                  selected = village_vector,
+                                                                  multiple = T, options = list(`actions-box` = T))),
+                                           )
                                            
                                          )
                                      )),
@@ -1324,6 +1344,43 @@ server <- function(input, output, session) {
              theme(legend.position = "none")
   })  
 
+  #borrowing purpose ----------------------
+  filtered_pur <- reactive({
+    pamr %>%
+      filter(village %in% input$village_purp)
+  })  
+  output$purv <- renderPlot({
+    ggplot(filtered_pur(), aes(x= A, y = B, fill = A)) + geom_col() + 
+      coord_flip()+
+      labs(title = "Purpose of Borrowing in Amrabati") + 
+      xlab("") +
+      ylab("")+
+      theme(legend.position = "none")
+  })  
+  
+  
+  filtered_purp <- reactive({
+    input$purpdrop
+  })
+  
+  output$purpplot <- renderPlot({
+    if (filtered_purp() == "alvi") {
+  ggplot(df, aes(x= A, y = B, fill = A)) + geom_col() + 
+  coord_flip()+
+    labs(title = "Purpose of Borrowing") + 
+    xlab("") +
+    ylab("")+
+    theme(legend.position = "none") 
+    }
+   # else if (filtered_purp() == "ampu") {
+    #  ggplot(pamr, aes(x= A, y = B, fill = A)) + geom_col() + 
+     #   coord_flip()+
+      #  labs(title = "Purpose of Borrowing in Amrabati") + 
+       # xlab("") +
+        #ylab("")+
+        #theme(legend.position = "none") 
+   # }
+  })
   
   
   #sociodemo tabset -----------------------------------------------------
