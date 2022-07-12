@@ -981,7 +981,7 @@ ui <- navbarPage(title = "",
                                          tabsetPanel(
                                            tabPanel("Plot",plotOutput("inc")),
                                            tabPanel("Male/Female Income", plotOutput("malefemaleinc")),
-                                           tabPanel("Full Income", plotOutput("fullinc")),
+                                           #tabPanel("Full Income", plotOutput("fullinc")),
                                            tabPanel("Total Income(w/o remmitance)", plotOutput("totalinc")),
                                            tabPanel("Table", DT::DTOutput("inc_table"))
                                          )
@@ -1616,20 +1616,20 @@ server <- function(input, output, session) {
     ggplot(filtered_malefemaleinc(), aes(x = week)) + geom_line(aes(y = avg_male_inc, color = village)) + 
       geom_line(aes(y = avg_female_inc, color = village), linetype = "twodash") +  
       labs(x = "", y = "Income (INR)", title = "Male and Female Income", color = "Village", caption = "dotted line indicating female avg income") + 
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) 
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) + scale_color_viridis_d()
   })
   
-  filtered_fullinc <- reactive({
-    fullinc  %>% 
-      filter(village %in% input$village_inc)
-  })
-  
-  output$fullinc <- renderPlot({
-    ggplot(filtered_fullinc(), aes(x=week_num, y=full_inc, color = village, na.rm=TRUE)) +
-      geom_line() + labs(title ="Full Income by Village") + xlab("Date") + ylab("Full Income (INR)") +
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
-  })
-  
+ # filtered_fullinc <- reactive({
+ #    fullinc  %>% 
+ #      filter(village %in% input$village_inc)
+ #  })
+ #  
+ #  output$fullinc <- renderPlot({
+ #    ggplot(filtered_fullinc(), aes(x=week_num, y=full_inc, color = village, na.rm=TRUE)) +
+ #      geom_line() + labs(title ="Full Income by Village") + xlab("Date") + ylab("Full Income (INR)") +
+ #      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+ #  })
+
   filtered_totalinc <- reactive({
     totinc  %>% 
       filter(village %in% input$village_inc)
@@ -1640,7 +1640,7 @@ server <- function(input, output, session) {
           data=filtered_totalinc(), na.rm=TRUE,
           main="Total Income by Village",
           xlab="Date", ylab="Total Income (INR)", geom = "line") +
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) + scale_color_viridis_d()
   })
   
   
@@ -1721,14 +1721,11 @@ server <- function(input, output, session) {
     
   })
   
-  
-  
   filtered_relocation <- reactive({
     shock_relocation_where %>%
       filter(village %in% input$village_selecter)
     
   })
-  
   
   output$relocation_2009 <- renderPlot({
     
