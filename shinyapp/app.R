@@ -84,6 +84,17 @@ purpose <- purpose[,-1]
 purpose <- t(purpose)
 purpose <- as.data.frame(purpose)
 
+# pls purpose dynamic hist
+names <- c("village", "Consumption", "Other Expenses", "Fees Due", "Payback Other Loan", "Asset Purchase", "Agriculture Purchases")
+pls <- rbind(names, purpose)
+names(pls) <- pls[1,]
+pls <- t(pls)
+pls <- as.data.frame(pls)
+names(pls) <- pls[1,]
+pls <- pls[,-1]
+pls <- t(pls)
+
+
 # children data
 
 avg_children <- baseline %>% group_by(village) %>% summarize(avg_children = sum(nb_children)/n())
@@ -1097,42 +1108,43 @@ ui <- navbarPage(title = "",
                                               h1(strong("Borrowing"), align = "center"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
-                                                     p("Households borrow"),
+                                                     p(""),
                                                      br("")
                                                      
-                                                     
-                                              ) ),
-                                  
-                                       # Show a plot of the generated plot
-                                       mainPanel(
-                                         tabsetPanel(
-                                           tabPanel("Purpose", 
-                                                    selectInput("purpdrop", "Select Varibiable:", width = "100%", choices = c(
-                                                      "All Villages" = "alvi",
-                                                      "Amrabati" = "ampu"
-                                                    ),
-                                                    ),
-                                                    withSpinner(plotOutput("purpplot", height = "500px")),
-                                           ),
-                                           tabPanel("Amount",plotOutput("bor"),
-                                           sidebarPanel(
-                                             pickerInput("village_bramt", "Select Village:", choices = village_vector, 
-                                                         selected = village_vector, 
-                                                         multiple = T, options = list(`actions-box` = T))), 
-                                                ),
-                                           tabPanel("Count",plotOutput("borr"),
-                                             sidebarPanel(
-                                               pickerInput("village_borr", "Select Village:", choices = village_vector, 
-                                                           selected = village_vector,
-                                                           multiple = T, options = list(`actions-box` = T))),
-                                           ),
-                                           tabPanel("Purpose"
-                                           )
-                                                      
-                                     
-                            ))),
-                                     
-                              
+                                              )),
+                                    
+                                    # Show a plot of the generated plot
+                                    mainPanel(
+                                      tabsetPanel(
+                                        tabPanel("Amount",plotOutput("bor"),
+                                                 sidebarPanel(
+                                                   pickerInput("village_bramt", "Select Village:", choices = village_vector, 
+                                                               selected = village_vector, 
+                                                               multiple = T, options = list(`actions-box` = T))), 
+                                        ),
+                                        tabPanel("Count",plotOutput("borr"),
+                                                 sidebarPanel(
+                                                   pickerInput("village_borr", "Select Village:", choices = village_vector, 
+                                                               selected = village_vector,
+                                                               multiple = T, options = list(`actions-box` = T))),
+                                        ),
+                                        tabPanel("Purpose", 
+                                                 selectInput("purpdrop", "Select Varibiable:", width = "100%", choices = c(
+                                                   "All Villages" = "alvi"
+                                                 ),
+                                                 ),
+                                                 withSpinner(plotOutput("purpplot", height = "500px")),
+                                        ),
+                                        tabPanel(
+                                          varSelectInput("variable", "Variable:", mtcars),
+                                          plotOutput("data")
+                                        ),
+                                        )
+                                       
+                                        
+                                        
+                                      ))),
+                            
                             
                             tabPanel("Remittances", value = "",
                                      fluidRow(style = "margin: 6px;",
@@ -1415,9 +1427,9 @@ server <- function(input, output, session) {
   runjs(jscode)
   
   
- #borrowing tab-------------------------
+  #borrowing tab-------------------------
   #borrowing amount
-
+  
   filtered_bramt <- reactive({
     bramt %>%
       filter(village %in% input$village_bramt)
@@ -1434,25 +1446,57 @@ server <- function(input, output, session) {
       theme(legend.position = "none") 
   })  
   
-# borrowing count 
+  # borrowing count 
   filtered_dbr <- reactive({
     dbr %>%
       filter(village %in% input$village_borr)
   })
   # Plot
   output$borr <- renderPlot({
-  ggplot(filtered_dbr(), aes(x=week_num, y=d_br, color = village, na.rm=TRUE)) +
-             geom_line() +
-             labs(title = "Number of Households Borrowing (Cash or in Kind)") + 
-             xlab("Date") +
-             ylab("Number of HH")+
-             scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) +
-             scale_color_viridis_d() +
-             theme(legend.position = "none")
+    ggplot(filtered_dbr(), aes(x=week_num, y=d_br, color = village, na.rm=TRUE)) +
+      geom_line() +
+      labs(title = "Number of Households Borrowing (Cash or in Kind)") + 
+      xlab("Date") +
+      ylab("Number of HH")+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) +
+      scale_color_viridis_d() +
+      theme(legend.position = "none")
   })  
-
+  
   #borrowing purpose ----------------------
-
+  purpVar <- reactive({
+    input$purpdrop
+  })
+  
+  output$purpplot <- renderPlot({
+    if (purpVar() == "alvi") {
+      
+      ggplot(df, aes(x= A, y = B, fill = A)) + geom_col() + 
+        coord_flip()+
+        labs(title = "Purpose of Borrowing") + 
+        xlab("") +
+        ylab("")+
+        theme(legend.position = "none") 
+    }
+  
+  
+  })
+  
+  
+  # Filtered consumption by group
+  
+  filtered_cs_food <- reactive({
+    avg_cs_food %>% 
+      filter(village %in% input$village_cs_food)
+  })
+  
+  # Consumption by food group plots
+  
+  output$food_plot <- renderPlot({
+    ggplot(filtered_cs_food(), aes(x = week, y = !!input$food_group, color = village))+
+      geom_line()
+    
+  })
   
   
   
