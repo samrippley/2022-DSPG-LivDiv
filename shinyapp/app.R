@@ -847,8 +847,9 @@ ui <- navbarPage(title = "",
                                           
                                           p("The Sundarbans is a cluster of low-lying islands in the Bay of Bengal spans across India and Bangladesh. The Sundarbans area hosts the largest mangrove forests in the world, supporting an exceptionally rich diversity of flora and endangered fauna such as the Bengal tiger, Estuarine crocodile, Indian python, and Irawadi dolphins."),
                                           p("The vast delta is formed by the connection of the Ganga, Brahmaputra, and Meghna rivers. It also has a complex network of tidal waterways, creeks, and mudflats. The area's unique boundaries act as a shelter belt from natural disasters such as cyclones, tidal surges, and seawater seepage. Despite this natural protective system and being a World Heritage Site with conservation requirements, the Sundarbans is considered endangered under the ICUN Red List of Ecosystems due to increasing climate, population and agricultural farming."),
-                                          p("The Sundarbans supplies sustainable livelihoods for 4 million people living in small villages near the mangrove forests. Most residents work in various agricultural occupations, including farmers, woodcutters, fishers, and honey gatherers. Farmers, primarily landless laborers, commonly farm a single crop (Aman paddy) in the rainy season and sell food to intermediaries or traders. The woodcutters obtain traditional forest produce like timber, fuelwood, and pulpwood. A large-scale harvest of shrimps, fish, crustaceans, and honey from the forests are also typical. However, with the ongoing climate and population changes, forest conservation efforts have placed a cap on harvesting. For example, in 2022, authorities began issuing three-month honey passes to collect wax from beehives.")
-                                   ),
+                                          p("The Sundarbans supplies sustainable livelihoods for 4 million people living in small villages near the mangrove forests. Most residents work in various agricultural occupations, including farmers, woodcutters, fishers, and honey gatherers. Farmers, primarily landless laborers, commonly farm a single crop (Aman paddy) in the rainy season and sell food to intermediaries or traders. The woodcutters obtain traditional forest produce like timber, fuelwood, and pulpwood. A large-scale harvest of shrimps, fish, crustaceans, and honey from the forests are also typical. However, with the ongoing climate and population changes, forest conservation efforts have placed a cap on harvesting. For example, in 2022, authorities began issuing three-month honey passes to collect wax from beehives."),
+                                            img(src='overviewpic.png', align = "center", width = "100%")
+                                          ),
                                    column(4,
                                           h2(strong("Project Background")),
                                           
@@ -1159,15 +1160,7 @@ ui <- navbarPage(title = "",
                                                                multiple = T, options = list(`actions-box` = T))),
                                         ),
                                         tabPanel("Purpose", 
-                                                 selectInput("purpdrop", "Select Varibiable:", width = "100%", choices = c(
-                                                   "All Villages" = "alvi"
-                                                 ),
-                                                 ),
-                                                 withSpinner(plotOutput("purpplot", height = "500px")),
-                                        ),
-                                        tabPanel("Purpose2", 
-                                          varSelectInput("village", "Variable:", pls),
-                                          plotOutput("datapls")
+                                                 (plotOutput("purpplot", height = "500px"))
                                         ),
                                         
                                        
@@ -1509,18 +1502,13 @@ server <- function(input, output, session) {
   })
   
   output$purpplot <- renderPlot({
-    if (purpVar() == "alvi") {
-      
-      ggplot(df, aes(x= A, y = B, fill = A)) + geom_col() + 
+    ggplot(df, aes(x= A, y = B, fill = A)) + geom_col() + 
         coord_flip()+
         labs(title = "Purpose of Borrowing") + 
         xlab("") +
         ylab("")+
         theme(legend.position = "none") 
-    }
-  
-  
-  })
+    })
   
   
   # Filtered consumption by group
