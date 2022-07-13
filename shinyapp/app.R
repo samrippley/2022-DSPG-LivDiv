@@ -1077,6 +1077,7 @@ ui <- navbarPage(title = "",
                                          pickerInput("village_inc", "Select Village:", choices = village_vector, 
                                                      selected = village_vector,
                                                      multiple = T, options = list(`actions-box` = T)),
+                                         varSelectInput("Gender", "Select Gender:", malefemale_inc[,-(1:2)])
                                          
                                        ),
                                        # Show a plot of the generated plot
@@ -1800,9 +1801,9 @@ server <- function(input, output, session) {
   })
   
   output$malefemaleinc <- renderPlot({
-    ggplot(filtered_malefemaleinc(), aes(x = week)) + geom_line(aes(y = avg_male_inc, color = village)) + 
-      geom_line(aes(y = avg_female_inc, color = village), linetype = "twodash") +  
-      labs(x = "", y = "Income (INR)", title = "Male and Female Income", color = "Village", caption = "dotted line indicating female avg income") + 
+    ggplot(filtered_malefemaleinc(), aes(x = week,y = !!input$Gender, color = village)) + geom_line() + 
+      #geom_line(aes(y = !!input$gender, color = village), linetype = "twodash") +  
+      labs(x = "", y = "Income (INR)", title = "Male and Female Income", color = "Village") + 
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) + scale_color_viridis_d()
   })
   
