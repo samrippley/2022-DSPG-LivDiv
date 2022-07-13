@@ -1497,9 +1497,6 @@ server <- function(input, output, session) {
   })  
   
   #borrowing purpose ----------------------
-  purpVar <- reactive({
-    input$purpdrop
-  })
   
   output$purpplot <- renderPlot({
     ggplot(df, aes(x= A, y = B, fill = A)) + geom_col() + 
