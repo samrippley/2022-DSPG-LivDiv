@@ -737,10 +737,10 @@ cs_item_plot <- ggplot(cs_avg_items, aes(x = week, y = avg_item, color = village
 
 avg_cs_food <- cs %>% 
   group_by(village, week) %>% 
-  summarise("Average Staple Expenditure" = mean(na.omit(cs_ricegrains + cs_wheatflour + cs_veg +
+  summarise("Staple Items" = mean(na.omit(cs_ricegrains + cs_wheatflour + cs_veg +
                                                           cs_fruit +cs_tubers + cs_pulsespice)), 
-            "Average Meat Expenditure" = mean(na.omit(cs_redmeat +cs_fishshrimp + cs_poultry)), 
-            "Average Other Expenditure" = mean(na.omit(cs_eggs + cs_dairy +cs_packaged + cs_sinful)))
+            "Meats" = mean(na.omit(cs_redmeat +cs_fishshrimp + cs_poultry)), 
+            "Other" = mean(na.omit(cs_eggs + cs_dairy +cs_packaged + cs_sinful)))
 
 # Staple items plot
 
@@ -775,7 +775,31 @@ cs_other_plot <- ggplot(avg_cs_food, aes(x = week, y = `Average Other Expenditur
   scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
   theme(plot.caption = element_text(size = 10))
 
+# Non food consumption -------------------------
+fin_diary <- livdiv
+non_food_cs <- fin_diary %>% 
+  select(village, week, aggregated_exp_clothes, exp_bookstuition, exp_utility, exp_toiletries,
+         exp_health, exp_homerepairs, exp_transport, exp_livestock, exp_aginputs, exp_labor,exp_nonfoodother ) %>% 
+  group_by(week, village) %>%
+  #summarise(avg_inc_clothes = mean(aggregated_exp_clothes, na.rm = TRUE), avg_bookstuition = mean(exp_bookstuition, na.rm = TRUE),
+            #avg_utility = mean(exp_utility, na.rm = TRUE), avg_toilet = mean(exp_toiletries, na.rm = TRUE),
+            #avg_health = mean(exp_health, na.rm = TRUE), avg_homerepairs = mean(exp_homerepairs, na.rm = TRUE), 
+            #avg_transport = mean(exp_transport, na.rm = TRUE), avg_livestock = mean(exp_livestock, na.rm = TRUE),
+            #avg_aginputs = mean(exp_aginputs, na.rm = TRUE), avg_labor = mean(exp_labor, na.rm = TRUE),
+            #avg_nonfoodother = mean(exp_nonfoodother, na.rm = TRUE))
+  summarise("Clothes" = mean(aggregated_exp_clothes, na.rm = TRUE), "Books/Tuition" = mean(exp_bookstuition, na.rm = TRUE),
+            "Utilities" = mean(exp_utility, na.rm = TRUE), "Toiletries" = mean(exp_toiletries, na.rm = TRUE),
+            "Health" = mean(exp_health, na.rm = TRUE), "Home Repairs" = mean(exp_homerepairs, na.rm = TRUE), 
+            "Transportation" = mean(exp_transport, na.rm = TRUE), "Livestock" = mean(exp_livestock, na.rm = TRUE),
+            "Agriculture" = mean(exp_aginputs, na.rm = TRUE), "Labor" = mean(exp_labor, na.rm = TRUE),
+            "Other" = mean(exp_nonfoodother, na.rm = TRUE))
+#names(non_food_cs) <- c("village", "week", "Clothes", "Books/Tuition", "Utilities", "Toilitries", "Health", "Home Repairs",
+                        #"Transport", "Livestock", "Agriculure", "Labor", "Other")
 
+filtered_non_food_cs <- reactive({
+  non_food_cs %>% 
+    filter(village %in% input$village_cs_nonfood)
+})
 
 #--------------------------------------------------------------------
 
@@ -1015,7 +1039,7 @@ ui <- navbarPage(title = "",
                                               column(12,h4(strong("Overview")),
                                                      p("We present average weekly expenditure from Nov 2018 - Oct 2019 to examine the spending behaviors of households in the region. 
                                                        This will provide information on the changing nature of spending in the Sundarbans region due to events such as festivals, 
-                                                       harvest seasons, and weather-related shocks.  "),
+                                                       harvest seasons, and weather-related shocks."),
                                                      p("Expenditure is defined as total weekly consumption (e.g., food) and non-consumption (e.g., rent) items. 
                                                        It appears that the largest expense for households during this period include house repairs and festival-related costs. 
                                                        The most common expenditures are food purchases."),
@@ -1041,7 +1065,7 @@ ui <- navbarPage(title = "",
                                          )
                                        ),
                                        
-                                     )
+                                     ),
                                      
                                      
                             ), 
@@ -1085,7 +1109,41 @@ ui <- navbarPage(title = "",
                                               h1(strong("Consumption"), align = "center"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
-                                                     p(""),
+                                                     p("We present the average weekly expenditure on consumption items from November 2018 - October 2019. By visualizing consumption
+                                                       expenditures, we can gain information about household spending behavior, identifying changes in spending, as well as which items
+                                                       are bought most frequently."),
+                                                     p("We start by plotting avergae consumption expenditure aggregated by all items, then seperated by food and non-food items. "),
+                                                     br("")
+                                                     
+                                              )),
+                                     # Sidebar with a select input for village
+                                     sidebarLayout(
+                                       sidebarPanel(
+                                         pickerInput("village_cs", "Select Village:", choices = village_vector, 
+                                                     selected = village_vector,
+                                                     multiple = T, options = list(`actions-box` = T)),
+                                         
+                                       ),
+                                       # Show a plot of the generated plot
+                                       mainPanel(
+                                         tabsetPanel(
+                                           tabPanel("Consumption Expenditure",plotOutput("cs_exp")),
+                                           tabPanel("No. of Items", plotOutput("cs_item")),
+                                         )
+                                       ),
+                                       
+                                       
+                                     ),
+                                     fluidRow(style = "margin: 6px;",
+                                              h4(strong("Consumption on Food Items"), align = "center"),
+                                              p("", style = "padding-top:10px;"),
+                                              column(12,h4(strong("Overview")),
+                                                     p("Additionally, we present a time series of expenditures on staple, meat, and other consumable items."),
+                                                     p("- Staple Items: Rice/Grains, Flour, Vegetables, Fruits, Tubers, Beans and Spices"),
+                                                     p("- Meats: Red Meat, Fish, and Poultry"),
+                                                     p("- Other: Eggs, Dairy, Packaged Foods, Tea, and Sinful Items"),
+                                                     p("We identified that most of consumption expenditure is being used for staple food items. We observed
+                                                       a siginficant spike in 'Other' items in Shibpur in late April due to a large increase in expenditure on sinful items."),
                                                      br("")
                                                      
                                               )),
@@ -1095,29 +1153,48 @@ ui <- navbarPage(title = "",
                                          pickerInput("village_cs_food", "Select Village:", choices = village_vector, 
                                                      selected = village_vector,
                                                      multiple = T, options = list(`actions-box` = T)),
-                                         varSelectInput("food_group", "Select Food Group:", avg_cs_food[,-(1:2)])
+                                         varSelectInput("food_group", "Select Consumption Group:", avg_cs_food[,-(1:2)])
                                          
                                        ),
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Plot", plotOutput("food_plot")),
-                                           tabPanel("Staple Items",plotOutput("cs_staple")),
-                                           tabPanel("Meat", plotOutput("cs_meat")),
-                                           tabPanel("Other", plotOutput("cs_other")),
-                                         )
+                                           tabPanel("Plot", plotOutput("food_plot"))                                         
+                                           )
                                        ),
                                        
                                        
                                      ),
                                      fluidRow(style = "margin: 6px;",
-                                              h4(strong("Non-food consumption"), align = "center"),
+                                              h4(strong("Non-Food Consumption"), align = "center"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
-                                                     p("Expedniture on non food consumption items"),
+                                                     p("Furthermore, we examined consumption expenditure on non-food items, inluding: clothes, 
+                                                       books and tuition, utilities, toiletries, health, home repairs, transportation, livestock,
+                                                       agriculture, labor, and other non-food items."),
                                                      br("")
                                                      
                                               )),
+                                     # Sidebar with a select input for village
+                                     sidebarLayout(
+                                       sidebarPanel(
+                                         pickerInput("village_cs_nonfood", "Select Village:", choices = village_vector, 
+                                                     selected = village_vector,
+                                                     multiple = T, options = list(`actions-box` = T)),
+                                         varSelectInput("nonfood_group", "Select Consumption Group:", non_food_cs[,-(1:2)])
+                                         
+                                       ),
+                                       # Show a plot of the generated plot
+                                       mainPanel(
+                                         tabsetPanel(
+                                           tabPanel("Plot", plotOutput("nonfood_plot"))                                         
+                                         )
+                                       ),
+                                       
+                                       
+                                     ),
+                                     
+                                     
                                     
                             ),
                             
@@ -1786,7 +1863,38 @@ server <- function(input, output, session) {
 
  # Consumption ----------------------- 
 
-
+  # Filtered cs expenditure plot
+  filtered_cs_avg <- reactive({
+    cs_avg %>% 
+      filter(village %in% input$village_cs)
+  })
+  # consumption exp plot
+  
+  output$cs_exp <- renderPlot({
+    ggplot(filtered_cs_avg(), aes(x = week, y = avg_cs , color = village)) +
+      geom_line() +
+      theme_classic()+
+      ggtitle("Average Weekly Consumption Expenditure by Village")+
+      labs(x = "", y = "Average Consumption Expenditure (INR)", caption = "Mean: 766.13  Median: 731.68", color = "Villages")+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
+      theme(plot.caption = element_text(size = 10))+
+      geom_vline(xintercept = c(4,19,22, 29, 44, 48), linetype = "longdash")+
+      geom_text(aes(x=4, label="Kharif Crop Harvest", y=1500), colour="black", angle = 90, vjust = -1, size = 3)+
+      geom_text(aes(x=19, label="Rabi Crop Harvest", y=1500), colour="black", angle = 90, vjust = -1, size = 3)+
+      geom_text(aes(x=22, label="Fani", y=1500), colour="black", angle = 90, vjust = -1, size = 3)+
+      geom_text(aes(x=29, label="Vayu", y=1500), colour="black", angle = 90, vjust = -1, size = 3)+
+      geom_text(aes(x=44, label="Hikaa", y=1500), colour="black", angle = 90, vjust = -1, size = 3)+
+      geom_text(aes(x=48, label="Bulbul & Matmo", y=1500),colour = "black", angle = 90, vjust = -1, size = 3)
+  })
+  
+  # Filtered cs items
+  filtered_cs_avg_items <- reactive({
+    cs_avg_items %>% 
+      filter(village %in% input$village_cs)
+  })
+  
+  # cs items plot
+  
   output$cs_item <- renderPlot({
     ggplot(filtered_cs_avg_items(), aes(x = week, y = avg_item, color = village))+
       geom_line() +
@@ -1807,50 +1915,26 @@ server <- function(input, output, session) {
   
   output$food_plot <- renderPlot({
     ggplot(filtered_cs_food(), aes(x = week, y = !!input$food_group, color = village))+
-      geom_line()
-  
-  })
-  
-  # Staple items plot
-  
-  output$cs_staple <- renderPlot({
-    ggplot(filtered_cs_food(), aes(x = week, y = `Average Staple Expenditure`, color = village)) +
       geom_line()+
       theme_classic()+
-      ggtitle("Average Weekly Expenditure on Staple Items ")+
-      labs(x = "", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: 463.87  Median: 431.20",
-           subtitle = "(Rice/Grains, Flour, Vegetables, Fruits, Tubers, Beans and Spices)")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
-      theme(plot.caption = element_text(size = 10))
+      labs(x = "", y = "Average Weekly Expenditure", color = "Villages")+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+      
   })
   
-  # Meat plot
-  
-  output$cs_meat <- renderPlot({
-    ggplot(filtered_cs_food(), aes(x = week, y = `Average Meat Expenditure`, color = village))+
-      geom_line()+
-      theme_classic()+
-      ggtitle("Average Weekly Expenditure on Meat")+
-      labs(x = "", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: 158.97  Median: 431.20",
-           subtitle = "(Red Meat, Fish, and Poultry)")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
-      theme(plot.caption = element_text(size = 10))
-  })
-  
-  # Other cs plot
-  
-  output$cs_other <- renderPlot({
-    ggplot(filtered_cs_food(), aes(x = week, y = `Average Other Expenditure`, color = village))+
-      geom_line() +
-      theme_classic()+
-      ggtitle("Average Weekly Expenditure on 'Other' Items")+
-      labs(x = "", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: 113.75  Median: 111.94",
-           subtitle = "(Eggs, Dairy, Packaged Foods, Tea, and Other Food Items)")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
-      theme(plot.caption = element_text(size = 10))
+  filtered_non_food_cs <- reactive({
+    non_food_cs %>% 
+      filter(village %in% input$village_cs_nonfood)
   })
 
-  
+  output$nonfood_plot <- renderPlot({
+    ggplot(filtered_non_food_cs(), aes(x = week, y = !!input$nonfood_group, color = village)) +
+      geom_line()+
+      theme_classic()+
+      labs(x = "", y = "Average Weekly Expenditure", color = "Villages")+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+      
+  })
   ###Shock plot output  -----------------------------------------------------
   
   #shock_all plot output
