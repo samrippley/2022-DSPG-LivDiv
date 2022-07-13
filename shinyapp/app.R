@@ -32,7 +32,6 @@ library(lubridate)
 library(shinyWidgets)
 library(viridis)
 library(RColorBrewer)
-library(slickR)
 
 prettyblue <- "#232D4B"
 navBarBlue <- '#427EDC'
@@ -1134,7 +1133,7 @@ ui <- navbarPage(title = "",
                                                      p("We present average weekly expenditure from Nov 2018 - Oct 2019 to examine the spending behaviors of households in the region. 
                                                        This will provide information on the changing nature of spending in the Sundarbans region due to events such as festivals, 
                                                        harvest seasons, and weather-related shocks."),
-                                                     p("Expenditure is defined as total weekly consumption (e.g., food) and non-consumption (e.g., rent) items. 
+                                                     p("Expenditure is defined as spending on consumption (e.g., food) and non-consumption (e.g., rent) items. 
                                                        It appears that the largest expense for households during this period include house repairs and festival-related costs. 
                                                        The most common expenditures are food purchases."),
                                                      br("")
@@ -1204,10 +1203,11 @@ ui <- navbarPage(title = "",
                                               h1(strong("Consumption"), align = "center"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
-                                                     p("We present the average weekly expenditure on consumption items from November 2018 - October 2019. By visualizing consumption
-                                                       expenditures, we can gain information about household spending behavior, identifying changes in spending, as well as which items
-                                                       are bought most frequently."),
-                                                     p("We start by plotting avergae consumption expenditure aggregated by all items, then seperated by food and non-food items. "),
+                                                     p("We present the average weekly expenditure on consumption items from November 2018 - October 2019. Consumption expenditure includes purchases by 
+                                                     households on goods and services, excluding housing. By visualizing consumption expenditures over time, we can gain information about household spending behavior, 
+                                                     identifying changes in spending, as well as which consumption items are bought most frequently. Within the data period, the Sundrabans region spent
+                                                       an average of 766.13 Rupees per week on consumption items; they also had bought an average of seven consumption items per week."),
+                                                     p("We start by plotting average consumption by expenditure and quantity of items, then seperated by food and non-food items."),
                                                      br("")
                                                      
                                               )),
@@ -1239,8 +1239,10 @@ ui <- navbarPage(title = "",
                                                      p("- Staple Items: Rice/Grains, Flour, Vegetables, Fruits, Tubers, Beans and Spices"),
                                                      p("- Meats: Red Meat, Fish, and Poultry"),
                                                      p("- Other: Eggs, Dairy, Packaged Foods, Tea, and Sinful Items"),
-                                                     p("We identified that most of consumption expenditure is being used for staple food items. We observed
-                                                       a siginficant spike in 'Other' items in Shibpur in late April due to a large increase in expenditure on sinful items."),
+                                                     p("We identified that most of consumption expenditure is being used for staple food items, followed by meats. We observed
+                                                       a siginficant spike in 'Other' items, in Shibpur, in late April due to a large increase in expenditure on sinful items (tea,
+                                                       cigarettes, betel leaves, bidil, etc.). These items are often deemed to be harmful to society, but provide certain satisfaction to
+                                                       consumers. Therefore, this increase in consumption could suggest a communal need to celebrate or cope from a certain event."),
                                                      br("")
                                                      
                                               )),
@@ -1268,7 +1270,10 @@ ui <- navbarPage(title = "",
                                               column(12,h4(strong("Overview")),
                                                      p("Furthermore, we examined consumption expenditure on non-food items, inluding: clothes, 
                                                        books and tuition, utilities, toiletries, health, home repairs, transportation, livestock,
-                                                       agriculture, labor, and other non-food items."),
+                                                       agriculture, labor, and other non-food items. Consumption expenditure on health, home repairs, and books/tuition
+                                                       made up the largest but least frequent expenses, with utilities, toilitries, and transportation making up the most frequent
+                                                       purchases. Considering farmers make up the largest proportion of occupation in the Sundarbans, it is predictable to also see 
+                                                       frequent consumption expenditures on agriculture, livestock, and labor."),
                                                      br("")
                                                      
                                               )),
@@ -2016,7 +2021,7 @@ server <- function(input, output, session) {
       labs(x = "", y = "Average Consumption Expenditure (INR)", caption = "Mean: 766.13  Median: 731.68", color = "Villages")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
       theme(plot.caption = element_text(size = 10))+
-      geom_rect(data = filtered_event(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf), fill ='blue',alpha=0.15)
+      geom_rect(data = filtered_event(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = events), alpha=0.15)
   })
   
   # Filtered cs items
