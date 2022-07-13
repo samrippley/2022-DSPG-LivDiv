@@ -84,6 +84,18 @@ purpose <- purpose[,-1]
 purpose <- t(purpose)
 purpose <- as.data.frame(purpose)
 
+# pls purpose dynamic hist
+names <- c("village", "Consumption", "Other Expenses", "Fees Due", "Payback Other Loan", "Asset Purchase", "Agriculture Purchases")
+pls <- rbind(names, purpose)
+names(pls) <- pls[1,]
+pls <- t(pls)
+pls <- as.data.frame(pls)
+names(pls) <- pls[1,]
+pls <- pls[-1,]
+#pls <- t(pls)
+pls <- as.data.frame(pls)
+
+
 # children data
 
 avg_children <- baseline %>% group_by(village) %>% summarize(avg_children = sum(nb_children)/n())
@@ -859,8 +871,9 @@ ui <- navbarPage(title = "",
                                           
                                           p("The Sundarbans is a cluster of low-lying islands in the Bay of Bengal spans across India and Bangladesh. The Sundarbans area hosts the largest mangrove forests in the world, supporting an exceptionally rich diversity of flora and endangered fauna such as the Bengal tiger, Estuarine crocodile, Indian python, and Irawadi dolphins."),
                                           p("The vast delta is formed by the connection of the Ganga, Brahmaputra, and Meghna rivers. It also has a complex network of tidal waterways, creeks, and mudflats. The area's unique boundaries act as a shelter belt from natural disasters such as cyclones, tidal surges, and seawater seepage. Despite this natural protective system and being a World Heritage Site with conservation requirements, the Sundarbans is considered endangered under the ICUN Red List of Ecosystems due to increasing climate, population and agricultural farming."),
-                                          p("The Sundarbans supplies sustainable livelihoods for 4 million people living in small villages near the mangrove forests. Most residents work in various agricultural occupations, including farmers, woodcutters, fishers, and honey gatherers. Farmers, primarily landless laborers, commonly farm a single crop (Aman paddy) in the rainy season and sell food to intermediaries or traders. The woodcutters obtain traditional forest produce like timber, fuelwood, and pulpwood. A large-scale harvest of shrimps, fish, crustaceans, and honey from the forests are also typical. However, with the ongoing climate and population changes, forest conservation efforts have placed a cap on harvesting. For example, in 2022, authorities began issuing three-month honey passes to collect wax from beehives.")
-                                   ),
+                                          p("The Sundarbans supplies sustainable livelihoods for 4 million people living in small villages near the mangrove forests. Most residents work in various agricultural occupations, including farmers, woodcutters, fishers, and honey gatherers. Farmers, primarily landless laborers, commonly farm a single crop (Aman paddy) in the rainy season and sell food to intermediaries or traders. The woodcutters obtain traditional forest produce like timber, fuelwood, and pulpwood. A large-scale harvest of shrimps, fish, crustaceans, and honey from the forests are also typical. However, with the ongoing climate and population changes, forest conservation efforts have placed a cap on harvesting. For example, in 2022, authorities began issuing three-month honey passes to collect wax from beehives."),
+                                            img(src='overviewpic.png', align = "center", width = "100%")
+                                          ),
                                    column(4,
                                           h2(strong("Project Background")),
                                           
@@ -1089,6 +1102,7 @@ ui <- navbarPage(title = "",
                                          pickerInput("village_inc", "Select Village:", choices = village_vector, 
                                                      selected = village_vector,
                                                      multiple = T, options = list(`actions-box` = T)),
+                                         varSelectInput("Gender", "Select Gender:", malefemale_inc[,-(1:2)])
                                          
                                        ),
                                        # Show a plot of the generated plot
@@ -1203,42 +1217,35 @@ ui <- navbarPage(title = "",
                                               h1(strong("Borrowing"), align = "center"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
-                                                     p("Households borrow"),
+                                                     p(""),
                                                      br("")
                                                      
-                                                     
-                                              ) ),
-                                  
-                                       # Show a plot of the generated plot
-                                       mainPanel(
-                                         tabsetPanel(
-                                           tabPanel("Purpose", 
-                                                    selectInput("purpdrop", "Select Varibiable:", width = "100%", choices = c(
-                                                      "All Villages" = "alvi",
-                                                      "Amrabati" = "ampu"
-                                                    ),
-                                                    ),
-                                                    withSpinner(plotOutput("purpplot", height = "500px")),
-                                           ),
-                                           tabPanel("Amount",plotOutput("bor"),
-                                           sidebarPanel(
-                                             pickerInput("village_bramt", "Select Village:", choices = village_vector, 
-                                                         selected = village_vector, 
-                                                         multiple = T, options = list(`actions-box` = T))), 
-                                                ),
-                                           tabPanel("Count",plotOutput("borr"),
-                                             sidebarPanel(
-                                               pickerInput("village_borr", "Select Village:", choices = village_vector, 
-                                                           selected = village_vector,
-                                                           multiple = T, options = list(`actions-box` = T))),
-                                           ),
-                                           tabPanel("Purpose"
-                                           )
-                                                      
-                                     
-                            ))),
-                                     
-                              
+                                              )),
+                                    
+                                    # Show a plot of the generated plot
+                                    mainPanel(
+                                      tabsetPanel(
+                                        tabPanel("Amount",plotOutput("bor"),
+                                                 sidebarPanel(
+                                                   pickerInput("village_bramt", "Select Village:", choices = village_vector, 
+                                                               selected = village_vector, 
+                                                               multiple = T, options = list(`actions-box` = T))), 
+                                        ),
+                                        tabPanel("Count",plotOutput("borr"),
+                                                 sidebarPanel(
+                                                   pickerInput("village_borr", "Select Village:", choices = village_vector, 
+                                                               selected = village_vector,
+                                                               multiple = T, options = list(`actions-box` = T))),
+                                        ),
+                                        tabPanel("Purpose", 
+                                                 (plotOutput("purpplot", height = "500px"))
+                                        ),
+                                        
+                                       
+                                        
+                                        
+                                      ))),
+                            
                             
                             tabPanel("Remittances", value = "",
                                      fluidRow(style = "margin: 6px;",
@@ -1521,9 +1528,19 @@ server <- function(input, output, session) {
   runjs(jscode)
   
   
- #borrowing tab-------------------------
+  #borrowing tab-------------------------
+  
+  output$datapls <- renderTable({
+    pls %>% dplyr::select(!!!input$villages)
+  }, rownames = TRUE)
+  
+  output$datapls <- renderPlot({
+    ggplot(pls, aes(x =!!input$village, y = village)) + geom_bar(stat= "identity")
+  })
+  
+  
   #borrowing amount
-
+  
   filtered_bramt <- reactive({
     bramt %>%
       filter(village %in% input$village_bramt)
@@ -1540,25 +1557,49 @@ server <- function(input, output, session) {
       theme(legend.position = "none") 
   })  
   
-# borrowing count 
+  # borrowing count 
   filtered_dbr <- reactive({
     dbr %>%
       filter(village %in% input$village_borr)
   })
   # Plot
   output$borr <- renderPlot({
-  ggplot(filtered_dbr(), aes(x=week_num, y=d_br, color = village, na.rm=TRUE)) +
-             geom_line() +
-             labs(title = "Number of Households Borrowing (Cash or in Kind)") + 
-             xlab("Date") +
-             ylab("Number of HH")+
-             scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) +
-             scale_color_viridis_d() +
-             theme(legend.position = "none")
+    ggplot(filtered_dbr(), aes(x=week_num, y=d_br, color = village, na.rm=TRUE)) +
+      geom_line() +
+      labs(title = "Number of Households Borrowing (Cash or in Kind)") + 
+      xlab("Date") +
+      ylab("Number of HH")+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) +
+      scale_color_viridis_d() +
+      theme(legend.position = "none")
   })  
-
+  
   #borrowing purpose ----------------------
-
+  
+  output$purpplot <- renderPlot({
+    ggplot(df, aes(x= A, y = B, fill = A)) + geom_col() + 
+        coord_flip()+
+        labs(title = "Purpose of Borrowing") + 
+        xlab("") +
+        ylab("")+
+        theme(legend.position = "none") 
+    })
+  
+  
+  # Filtered consumption by group
+  
+  filtered_cs_food <- reactive({
+    avg_cs_food %>% 
+      filter(village %in% input$village_cs_food)
+  })
+  
+  # Consumption by food group plots
+  
+  output$food_plot <- renderPlot({
+    ggplot(filtered_cs_food(), aes(x = week, y = !!input$food_group, color = village))+
+      geom_line()
+    
+  })
   
   
   
@@ -1822,9 +1863,9 @@ server <- function(input, output, session) {
   })
   
   output$malefemaleinc <- renderPlot({
-    ggplot(filtered_malefemaleinc(), aes(x = week)) + geom_line(aes(y = avg_male_inc, color = village)) + 
-      geom_line(aes(y = avg_female_inc, color = village), linetype = "twodash") +  
-      labs(x = "", y = "Income (INR)", title = "Male and Female Income", color = "Village", caption = "dotted line indicating female avg income") + 
+    ggplot(filtered_malefemaleinc(), aes(x = week,y = !!input$Gender, color = village)) + geom_line() + 
+      #geom_line(aes(y = !!input$gender, color = village), linetype = "twodash") +  
+      labs(x = "", y = "Income (INR)", title = "Male and Female Income", color = "Village") + 
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) + scale_color_viridis_d()
   })
   
