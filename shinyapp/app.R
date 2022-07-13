@@ -91,8 +91,9 @@ names(pls) <- pls[1,]
 pls <- t(pls)
 pls <- as.data.frame(pls)
 names(pls) <- pls[1,]
-pls <- pls[,-1]
-pls <- t(pls)
+pls <- pls[-1,]
+#pls <- t(pls)
+pls <- as.data.frame(pls)
 
 
 # children data
@@ -1164,11 +1165,11 @@ ui <- navbarPage(title = "",
                                                  ),
                                                  withSpinner(plotOutput("purpplot", height = "500px")),
                                         ),
-                                        tabPanel(
-                                          varSelectInput("variable", "Variable:", mtcars),
-                                          plotOutput("data")
+                                        tabPanel("Purpose2", 
+                                          varSelectInput("village", "Variable:", pls),
+                                          plotOutput("datapls")
                                         ),
-                                        )
+                                        
                                        
                                         
                                         
@@ -1457,6 +1458,16 @@ server <- function(input, output, session) {
   
   
   #borrowing tab-------------------------
+  
+  output$datapls <- renderTable({
+    pls %>% dplyr::select(!!!input$villages)
+  }, rownames = TRUE)
+  
+  output$datapls <- renderPlot({
+    ggplot(pls, aes(x =!!input$village, y = village)) + geom_bar(stat= "identity")
+  })
+  
+  
   #borrowing amount
   
   filtered_bramt <- reactive({
