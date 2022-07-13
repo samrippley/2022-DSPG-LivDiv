@@ -32,6 +32,7 @@ library(lubridate)
 library(shinyWidgets)
 library(viridis)
 library(RColorBrewer)
+library(slickR)
 
 prettyblue <- "#232D4B"
 navBarBlue <- '#427EDC'
@@ -48,6 +49,8 @@ load("data/livdivdata.RData")
 baseline <- livdiv %>%
   slice(1:306,)
 
+#overview images
+imgs <- list.files("www/photos/", pattern=".png", full.names = TRUE)
 
 #borrowing data 
 fd <- livdiv 
@@ -69,21 +72,24 @@ dbr <- borrow %>%
   group_by(village,week_num) %>%
   summarize_at(c("d_br", "d_br_cash", "d_br_inkind"), sum, na.rm=TRUE) 
 
-purp <- fd %>%
-  select(c("date", "br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag", "village","hhid", "week_num"))
 purpose <- purp %>%
   select(c("br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag", "village", "week_num")) %>%
   group_by(village) %>%
   summarize_at(c("br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag"), sum, na.rm=TRUE) 
-names <- c("village", "Consumption", "Other Expenses", "Fees Due", "Payback Other Loan", "Asset Purchase", "Agriculture Purchases")
-
-purpose <- rbind(names, purpose)
-names(purpose) <- purpose[1,]
-purpose <- t(purpose)
-purpose <- purpose[,-1]
-purpose <- t(purpose)
-purpose <- as.data.frame(purpose)
-
+pamr <- purpose %>% 
+  filter(village == "Amrabati") 
+pamr <- t(pamr)
+pamr <- as.data.frame(pamr)
+pamr <- pamr %>% slice(-c(1))
+pamr <- data.frame(A = c("Consumption", "Other Expenses", "Fees Due", "Payback Other Loan", "Asset Purchase", "Agriculture Purchases"),
+                   B = c(pamr$V1))
+purposenv <- purp %>%
+  select(c("br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag", "village", "week_num")) %>%
+  summarize_at(c("br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag"), sum, na.rm=TRUE) 
+purposenv <- t(purposenv)
+purposenv <- as.data.frame(purposenv)
+df <- data.frame(A = c("Consumption", "Other Expenses", "Fees Due", "Payback Other Loan", "Asset Purchase", "Agriculture Purchases"),
+                 B = c(purposenv$V1))
 # pls purpose dynamic hist
 names <- c("village", "Consumption", "Other Expenses", "Fees Due", "Payback Other Loan", "Asset Purchase", "Agriculture Purchases")
 pls <- rbind(names, purpose)
@@ -856,6 +862,7 @@ ui <- navbarPage(title = "",
                  
                  # main tab -----------------------------------------------------------
                  tabPanel("Project Overview", value = "overview",
+                 
                           fluidRow(style = "margin: 2px;",
                                    align = "center",
                                    # br("", style = "padding-top:2px;"),
@@ -873,11 +880,11 @@ ui <- navbarPage(title = "",
                           fluidRow(style = "margin: 6px;", align = "justify",
                                    column(4,
                                           h2(strong("The Setting")),
-                                          
                                           p("The Sundarbans is a cluster of low-lying islands in the Bay of Bengal spans across India and Bangladesh. The Sundarbans area hosts the largest mangrove forests in the world, supporting an exceptionally rich diversity of flora and endangered fauna such as the Bengal tiger, Estuarine crocodile, Indian python, and Irawadi dolphins."),
                                           p("The vast delta is formed by the connection of the Ganga, Brahmaputra, and Meghna rivers. It also has a complex network of tidal waterways, creeks, and mudflats. The area's unique boundaries act as a shelter belt from natural disasters such as cyclones, tidal surges, and seawater seepage. Despite this natural protective system and being a World Heritage Site with conservation requirements, the Sundarbans is considered endangered under the ICUN Red List of Ecosystems due to increasing climate, population and agricultural farming."),
                                           p("The Sundarbans supplies sustainable livelihoods for 4 million people living in small villages near the mangrove forests. Most residents work in various agricultural occupations, including farmers, woodcutters, fishers, and honey gatherers. Farmers, primarily landless laborers, commonly farm a single crop (Aman paddy) in the rainy season and sell food to intermediaries or traders. The woodcutters obtain traditional forest produce like timber, fuelwood, and pulpwood. A large-scale harvest of shrimps, fish, crustaceans, and honey from the forests are also typical. However, with the ongoing climate and population changes, forest conservation efforts have placed a cap on harvesting. For example, in 2022, authorities began issuing three-month honey passes to collect wax from beehives."),
-                                            img(src='overviewpic.png', align = "center", width = "100%")
+
+                                            
                                           ),
                                    column(4,
                                           h2(strong("Project Background")),
@@ -893,9 +900,23 @@ ui <- navbarPage(title = "",
                                           p("The overall goal of this project is to evaluate livelihood-diversification strategies using weekly financial data for approximately 300 households from 10 representative villages in the region. The team aims to create a public-facing dashboard to describe and visualize households' livelihood diversification strategies, including changes in income, expenditure, and consumption patterns. The insights from this dashboard are important for designing effective and targeted poverty-reducing strategies and aiding those affected by shocks such as natural disasters and climate change.")
                                    )
                           ),
+                          fluidRow(style = "margin: 6px;", align = "justify",
+                                   column(12,
+                                          h2(strong("Images"))
+                                        
+                                          
+                                   ),   
+                                   mainPanel(
+                                            actionButton("previous", "Previous"),
+                                            actionButton("next", "Next"),
+                                            imageOutput("image")
+
+                                      )),
                           #fluidRow(align = "center",
                           # p(tags$small(em('Last updated: August 2021'))))
-                 ),
+
+                                  ),
+                 
                  
                  ## Tab Date Intro--------------------------------------------
                  tabPanel("Data", value = "overview",
@@ -963,7 +984,35 @@ ui <- navbarPage(title = "",
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
                                                      h4(strong("Description")),
-                                                     p("")
+                                                     p("Age: By breaking down the average household head age by the different villages in the region, 
+                                                       we are able to see that Purba Dwarokapur has the youngest household heads on average and the 
+                                                       village of Pargumti has the oldest household heads on average.  In addition, the median age is 
+                                                       around 49 years old and the mean is similar at about 49.75 indicating that the household heads are older."
+                                                       ),
+                                                     p("Education: After breaking down the household head education by village, we are able to conclude that the 
+                                                       village of Birajnagar has the lowest education level at 3.14 years and Pargumti has the highest education 
+                                                       level at 6.81 years. Since the infrastructure for education is very low, many children often quit school 
+                                                       early to provide for the family. On average, among all of the villages, the average education for the head 
+                                                       of households is around 5 years, which is comparable to completing elementary school. This low level of 
+                                                       education also contributes to the poverty levels in the region."
+                                                       ),
+                                                     p("Poverty: Although the poverty rate for all of the villages is around 20-30% households below the poverty 
+                                                       line, some villages like Haridsakti Samsernagar have higher poverty rates at around 53% and other villages 
+                                                       like Purba Dwarokapur have a lower poverty rate at around 18%. "
+                                                       ),
+                                                     p("Marital Status: Out of all 306 households, the vast majority are married households. One of the interesting 
+                                                       finds that we came across is that males are most likely to be the heads of married households and that females 
+                                                       have a higher proportion of being heads of unmarried households. "
+                                                       ),
+                                                     p("Household Size: For the most part among all villages, the average household size is around 4-5 with the median 
+                                                       among all villages being 4.2. This higher household size can be seen as necessary for households that primarily 
+                                                       participate in agriculture."
+                                                       ),
+                                                     p("Number of Children: On average, each household has around 2.3 children throughout all the villages. Some 
+                                                       villages, like Sargar, Shibpur, Beguakhali, and Purba Dwarokapur have over 3 children on average. This 
+                                                       can be because some families that have family businesses often have more children so that they can provide 
+                                                       for the family as well.")
+                                                     
                                               ) ,
                                               column(8, 
                                                      h4(strong("Head of Household Demographics")),
@@ -991,11 +1040,21 @@ ui <- navbarPage(title = "",
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
                                                      h4(strong("Description")),
-                                                     p("")
+                                                     p("Livelihood behavior is a particularly interesting variable, regarding our project goals. Due to the increasing threats in the Sundarbans region, most of the population depends on multiple sources of income. It is common to have a diversified livelihood- in other words, a large proportion of our population of interest have numerous sources of income"),
+                                                     p("We began our evaluation of livelihood behavior by looking at the head of households primary occupation. At first glance, the primary occupation graph shows us that the most common occupation in the region is Farming as well as Casual labor, but the graph shows that different villages have a higher proportion of workers in certain occupations. For example, the village of Amrabati has the highest proportion of workers in jobs related to fishing. This can tell us more about life in a specific village."),
+                                                     p("Next we evaluated secondary occupation of the head of households. We can see that while farming is the largest primary occupation it is also the largest secondary occupation which tells us the impact of farming and casual labor in the region and the need for some households to work more than one job."),
+                                                     p("Job Duration"),
+                                                     p("Since farming was one of the most common occupations, we wanted to take a closer look at at the proportion of households involved in agricultural farming, broken down by village. The variable we used was a yes/no answer to the question “Did your household cultivate any agriculture crops in the last 12 months?” On average, across all the villages, 63.9% of the households participate in farming. When broken down by village, Amrabati had the lowest percentage of households that had cultivated crops in the given year, at 7%. Haridaskati Samsernaga had the highest percentage of households that had cultivated crops in the given year, at 86%. This was closely followed by Pargumti at 85%. Given that on average, across all the villages, 63.9% of the households participate in farming it is evident that a very shows that a large proportion of our households participated in some sort of crop cultivation."),
+                                                     p("Land holding"),
+                                                     p("Crops"),
+                                                     p("Household Assets"),
+                                                     p("Land Fallow")
+
+
                                               ) ,
                                               column(8, 
                                                      h4(strong("Livelihood - October 2018")),
-                                                     selectInput("ocudrop", "Select Varibiable:", width = "100%", choices = c(
+                                                     selectInput("ocudrop", "Select Variable:", width = "100%", choices = c(
                                                        "Primary Occupation" = "pocu",
                                                        "Secondary Occupation" ="socu", 
                                                        "Job Duration" = "jodu",
@@ -1020,8 +1079,25 @@ ui <- navbarPage(title = "",
                                               h1(strong("Financial Practices"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
-                                                     h4(strong("Analysis")),
-                                                     p("")
+                                                     h4(strong("Description")),
+                                                     p("Households business: Owning a business in the Sundarbans is often too expensive and financially 
+                                                       unfeasible. A majority of 88% of households do not own a business and only 12% do own a business, 
+                                                       making it very uncommon. "
+                                                       ),
+                                                     p("Salary: On average, per month, The data shows that the monthly salaries for the households range 
+                                                       anywhere between 2500 INR to 4600 INR per month. On average, Amrabati receives the highest income. 
+                                                       This can indicate that the fishing industry in Amrabati is more lucrative than other jobs in other villages. 
+                                                       On the other hand, the village of Sagar has the lowest monthly salary on average."
+                                                       ),
+                                                     p("Income/Remmitance: For the villages that are plotted on the middle/top right of the graph, 
+                                                       remittances are highly impactful on the household's income. Remittances are essentially any income a 
+                                                       household receives from someone working away from the household. By taking a look at the remittances we 
+                                                       were able to see the impact it had on the total household income."
+                                                       ),
+                                                     p("Savings: On average, many households are not able to save, but sometimes some households are able to 
+                                                       save once or twice during the 12-month span. It is unlikely to see many households save more than 20 times 
+                                                       like some did. It is expected to see low amounts of saving because of the high poverty level in the region."
+                                                       )
                                               ) ,
                                               column(8, 
                                                      h4(strong("Financial - October 2018")),
@@ -1245,7 +1321,7 @@ ui <- navbarPage(title = "",
                                                                multiple = T, options = list(`actions-box` = T))),
                                         ),
                                         tabPanel("Purpose", 
-                                                 (plotOutput("purpplot", height = "500px"))
+                                                 plotOutput("purpplot", height = "500px")
                                         ),
                                         
                                        
@@ -1534,6 +1610,20 @@ server <- function(input, output, session) {
   # Run JavaScript Code
   runjs(jscode)
   
+#overview photos 
+  index <- reactiveVal(1)
+  
+  observeEvent(input[["previous"]], {
+    index(max(index()-1, 1))
+  })
+  observeEvent(input[["next"]], {
+    index(min(index()+1, length(imgs)))
+  })
+  
+  output$image <- renderImage({
+    x <- imgs[index()] 
+    list(src = x, alt = "alternate text", width = "100%", align = "right")
+  }, deleteFile = FALSE)
   
   #borrowing tab-------------------------
   
