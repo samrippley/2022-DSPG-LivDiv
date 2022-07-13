@@ -715,15 +715,7 @@ cs_avg_plot <- ggplot(cs_avg, aes(x = week, y = avg_cs , color = village)) +
   ggtitle("Average Weekly Consumption Expenditure by Village")+
   labs(x = "", y = "Average Consumption Expenditure (INR)", caption = "Mean: 766.13  Median: 731.68", color = "Villages")+
   scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
-  theme(plot.caption = element_text(size = 10))+
-  geom_vline(xintercept = c(4,19,22, 29, 44, 48), linetype = "longdash")+
-  geom_text(aes(x=4, label="Kharif Crop Harvest", y=1500), colour="black", angle = 90, vjust = -1, size = 3)+
-  geom_text(aes(x=19, label="Rabi Crop Harvest", y=1500), colour="black", angle = 90, vjust = -1, size = 3)+
-  geom_text(aes(x=22, label="Fani", y=1500), colour="black", angle = 90, vjust = -1, size = 3)+
-  geom_text(aes(x=29, label="Vayu", y=1500), colour="black", angle = 90, vjust = -1, size = 3)+
-  geom_text(aes(x=44, label="Hikaa", y=1500), colour="black", angle = 90, vjust = -1, size = 3)+
-  geom_text(aes(x=48, label="Bulbul & Matmo", y=1500),colour = "black", angle = 90, vjust = -1, size = 3)
-
+  theme(plot.caption = element_text(size = 10))
 # Average consumption items bought
 
 cs_avg_items <- cs %>% 
@@ -811,6 +803,19 @@ non_food_cs <- fin_diary %>%
 filtered_non_food_cs <- reactive({
   non_food_cs %>% 
     filter(village %in% input$village_cs_nonfood)
+})
+
+# Events data -------------------------------------
+events <- c("Kharif Crop Harvest", "Rabi Crop Harvest","Honey Harvest", "Fani", "Bulbul and Matmo", "Vayu", "Hikaa",
+            "Republic Day", "Rama Navami", "Eid Al-Fitr", "Indian Independence Day", "Dussehra", "Diwali"," ")
+start_week <- c(2, 0, 19, 22, 48, 30, 43, 10, 20, 28, 38, 46, 49,0)
+end_week <- c(12, 14, 32, 24, 49, 31, 44, 10.2, 20.2, 28.2, 38.2, 46.2, 49.2,0)
+event_periods <- data.frame(events, start_week, end_week)
+events_vector <- events
+
+filtered_event <- reactive({
+  event_periods %>% 
+    filter(events %in% input$event_choose)
 })
 
 #--------------------------------------------------------------------
@@ -1133,8 +1138,10 @@ ui <- navbarPage(title = "",
                                      # Sidebar with a select input for village
                                      sidebarLayout(
                                        sidebarPanel(
-                                         pickerInput("village_cs", "Select Village:", choices = village_vector, 
+                                         pickerInput("village_cs", "Select Village:", choices = village_vector,
                                                      selected = village_vector,
+                                                     multiple = T, options = list(`actions-box` = T)),
+                                         pickerInput("event_choose", "Select Event:", choices = events_vector, selected = " ", 
                                                      multiple = T, options = list(`actions-box` = T)),
                                          
                                        ),
@@ -1919,13 +1926,7 @@ server <- function(input, output, session) {
       labs(x = "", y = "Average Consumption Expenditure (INR)", caption = "Mean: 766.13  Median: 731.68", color = "Villages")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
       theme(plot.caption = element_text(size = 10))+
-      geom_vline(xintercept = c(4,19,22, 29, 44, 48), linetype = "longdash")+
-      geom_text(aes(x=4, label="Kharif Crop Harvest", y=1500), colour="black", angle = 90, vjust = -1, size = 3)+
-      geom_text(aes(x=19, label="Rabi Crop Harvest", y=1500), colour="black", angle = 90, vjust = -1, size = 3)+
-      geom_text(aes(x=22, label="Fani", y=1500), colour="black", angle = 90, vjust = -1, size = 3)+
-      geom_text(aes(x=29, label="Vayu", y=1500), colour="black", angle = 90, vjust = -1, size = 3)+
-      geom_text(aes(x=44, label="Hikaa", y=1500), colour="black", angle = 90, vjust = -1, size = 3)+
-      geom_text(aes(x=48, label="Bulbul & Matmo", y=1500),colour = "black", angle = 90, vjust = -1, size = 3)
+      geom_rect(data = filtered_event(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf), fill ='blue',alpha=0.15)
   })
   
   # Filtered cs items
@@ -1976,6 +1977,14 @@ server <- function(input, output, session) {
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
       
   })
+  
+  #Event Filtered
+  
+  filtered_event <- reactive({
+    event_periods %>% 
+      filter(events %in% input$event_choose)
+  })
+  
   ###Shock plot output  -----------------------------------------------------
   
   #shock_all plot output
