@@ -1007,11 +1007,21 @@ ui <- navbarPage(title = "",
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
                                                      h4(strong("Description")),
-                                                     p("")
+                                                     p("Livelihood behavior is a particularly interesting variable, regarding our project goals. Due to the increasing threats in the Sundarbans region, most of the population depends on multiple sources of income. It is common to have a diversified livelihood- in other words, a large proportion of our population of interest have numerous sources of income"),
+                                                     p("We began our evaluation of livelihood behavior by looking at the head of households primary occupation. At first glance, the primary occupation graph shows us that the most common occupation in the region is Farming as well as Casual labor, but the graph shows that different villages have a higher proportion of workers in certain occupations. For example, the village of Amrabati has the highest proportion of workers in jobs related to fishing. This can tell us more about life in a specific village."),
+                                                     p("Next we evaluated secondary occupation of the head of households. We can see that while farming is the largest primary occupation it is also the largest secondary occupation which tells us the impact of farming and casual labor in the region and the need for some households to work more than one job."),
+                                                     p("Job Duration"),
+                                                     p("Since farming was one of the most common occupations, we wanted to take a closer look at at the proportion of households involved in agricultural farming, broken down by village. The variable we used was a yes/no answer to the question “Did your household cultivate any agriculture crops in the last 12 months?” On average, across all the villages, 63.9% of the households participate in farming. When broken down by village, Amrabati had the lowest percentage of households that had cultivated crops in the given year, at 7%. Haridaskati Samsernaga had the highest percentage of households that had cultivated crops in the given year, at 86%. This was closely followed by Pargumti at 85%. Given that on average, across all the villages, 63.9% of the households participate in farming it is evident that a very shows that a large proportion of our households participated in some sort of crop cultivation."),
+                                                     p("Land holding"),
+                                                     p("Crops"),
+                                                     p("Household Assets"),
+                                                     p("Land Fallow")
+
+
                                               ) ,
                                               column(8, 
                                                      h4(strong("Livelihood - October 2018")),
-                                                     selectInput("ocudrop", "Select Varibiable:", width = "100%", choices = c(
+                                                     selectInput("ocudrop", "Select Variable:", width = "100%", choices = c(
                                                        "Primary Occupation" = "pocu",
                                                        "Secondary Occupation" ="socu", 
                                                        "Job Duration" = "jodu",
