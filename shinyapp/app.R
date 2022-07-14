@@ -1634,7 +1634,7 @@ server <- function(input, output, session) {
         facet_wrap(~village, ncol = 5) +
         geom_text(aes(label = sub), position = position_stack(vjust=1.1)) +
         labs(title = "Mean Years of Education for Head of Households", x = NULL, y = "Years of Education") +
-        theme(legend.position="none") + scale_fill_viridis_d()
+        theme(legend.position="none", strip.text.x = element_text(size = 12)) + scale_fill_viridis_d()
       splot
     }
     else if (ageVar() == "pov") {
