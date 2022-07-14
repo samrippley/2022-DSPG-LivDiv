@@ -893,7 +893,7 @@ ui <- navbarPage(title = "",
                  ## Tab Demographics --------------------------------------------
                  navbarMenu("Demographics" , 
                             tabPanel("Socioeconomic", 
-                                     fluidRow(style = "margin: 6px;",
+                                     fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Socioeconomic Characteristics"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
@@ -949,16 +949,17 @@ ui <- navbarPage(title = "",
                                               #  p("", style = "padding-top:10px;")) 
                                      )), 
                             tabPanel("Livelihood", 
-                                     fluidRow(style = "margin: 6px;",
+                                     fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Livelihood Behavior"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
                                                      h4(strong("Occupation")),
-                                                     p("Due to the increasing threats in the Sundarbans region, most of the population depends on multiple sources of income. It is common to diversify livelihood. This is a common practice for climate vulnerable regions, to limit risk associated with having one form of livelihood."),
-                                                     p("We began our evaluation of livelihood behavior by looking at the head of households’ primary occupation, primary occupation duration, and secondary occupation. The most common primary and secondary occupations are Farming followed by Casual labor. These graphs show that there are differences in occupation by village. For example, the village of Amrabati has the highest proportion of workers in jobs related to fishing. The head of households’ occupations are distributed relatively similarly from primary to secondary. However, the total number of household heads in each occupation is lower in secondary occupation. The total number of household heads with a primary occupation is 252 while 149 has a secondary occupation. This means that 103 of the 252 household heads did not report having a secondary occupation."),
+                                                     p("A household with only one means of support has nothing to fall back on if that livelihood is destroyed by a disaster. Due to the increasing threats in the Sundarbans region, most of the population depends on multiple sources of income. This is a common practice for climate vulnerable regions, to manage and reduce risks."),
+                                                     p("We began our evaluation of livelihood behavior by looking at the head of households’ primary occupation, primary occupation duration, and secondary occupation. The most common primary and secondary occupations are Farming followed by Casual labor. These graphs show that there are differences in occupation by village. For example, the village of Amrabati has the highest proportion of workers in jobs related to fishing. The head of households’ occupations are distributed relatively similarly from primary to secondary. However, the total number of household heads in each occupation is lower in secondary occupation. The total number of household heads with a primary occupation is 252 while 149 has a secondary occupation."),
+                                                     p("The average job duration by village for head of households is 6 to 8 months. This implies that on average, they work in their primary occupation for ½ to ¾ of the year. This is evidence that the population is relying on different, multiple activities within a year."),
                                                      h4(strong("Agriculture")),
-                                                     p("Our data set contained and agricultural crop variable where participants gave a yes/no answer to the question “Did your household cultivate any agriculture crops in the last 12 months?” On average, across all the villages, 63.9% of the households participate in farming. When broken down by village, Amrabati had the lowest percentage of households that had cultivated crops in the given year, at 7%. Haridaskati Samsernaga had the highest percentage of households that had cultivated crops in the given year, at 86%. This was closely followed by Pargumti at 85%. Given that on average, across all the villages, 63.9% of the households participate in farming it is evident that a very shows that a large proportion of our households participated in some sort of crop cultivation."), 
-                                                     p("We next evaluated Land Holding and Land Fallow by village.")
+                                                     p("Our data set contained an agricultural crop variable where participants gave a yes/no answer to the question “Did your household cultivate any agriculture crops in the last 12 months?” On average, across all the villages, 63.9% of the households participate in farming. When broken down by village, Amrabati had the lowest percentage of households that had cultivated crops in the given year, at 7%. Haridaskati Samsernaga had the highest percentage of households that had cultivated crops in the given year, at 86%. This was closely followed by Pargumti at 85%. Given that on average, across all the villages, 63.9% of the households participate in farming it is evident that a very shows that a large proportion of our households participated in some sort of crop cultivation."), 
+                                                     p("We next evaluated Land Holding and Land Fallow by village. Land holding is the amount of land owned in Kathas. A Katha is unit of area mostly used for land measure in India and Bangladesh. One unit of katha is equivalent to 720 square feet. Pargumti and Bijoynagar have the highest average amount of land owned, with households owning over 60 kathas of land. Amrabati and Sagar have the lowest amount of land owned. Land fallow is agriculture land that needs to be left to rest and regenerate. This land is typically not in good enough condition to sustain crops. The two villages that had the lowest amount of land owned, have no land fallow. This is evidence that these villages that these villages are less involved in agriculture. ")
                                                      
                                                      
                                               ) ,
@@ -986,7 +987,7 @@ ui <- navbarPage(title = "",
                                      )), 
                             
                             tabPanel("Financial", 
-                                     fluidRow(style = "margin: 6px;",
+                                     fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Financial Practices"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
@@ -1038,7 +1039,7 @@ ui <- navbarPage(title = "",
                  
                  navbarMenu("High Frequency Data" ,
                             tabPanel("Expenditure",
-                                     fluidRow(style = "margin: 6px;",
+                                     fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Expenditure"), align = "center"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
@@ -1076,7 +1077,7 @@ ui <- navbarPage(title = "",
                             ), 
                             
                             tabPanel("Income",
-                                     fluidRow(style = "margin: 6px;",
+                                     fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Income"), align = "center"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
@@ -1111,7 +1112,7 @@ ui <- navbarPage(title = "",
                             ),
                             
                             tabPanel("Consumption",
-                                     fluidRow(style = "margin: 6px;",
+                                     fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Consumption"), align = "center"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
@@ -1143,7 +1144,7 @@ ui <- navbarPage(title = "",
                                        
                                        
                                      ),
-                                     fluidRow(style = "margin: 6px;",
+                                     fluidRow(style = "margin: 6px;", align = "justify",
                                               h4(strong("Consumption on Food Items"), align = "center"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
@@ -1176,7 +1177,7 @@ ui <- navbarPage(title = "",
                                        
                                        
                                      ),
-                                     fluidRow(style = "margin: 6px;",
+                                     fluidRow(style = "margin: 6px;", align = "justify",
                                               h4(strong("Non-Food Consumption"), align = "center"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
@@ -1214,12 +1215,15 @@ ui <- navbarPage(title = "",
                             ),
                             
                             tabPanel("Borrowing",
-                                     fluidRow(style = "margin: 6px;",
-                                              h1(strong("Borrowing"), align = "center"),
+                                     fluidRow(style = "margin: 6px;", align = "justify",
+                                              h1(strong("Borrowing"), align = "justify"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
-                                                     p(""),
-                                                     br("")
+                                                     p("The first tab depicts amount borrowed by village throughout the year. There is a spike of amount borrowed between April and July. Purba Dwarokapur, Shibpur and Sagar show major spikes in the amount borrowed during this time. With the amount reaching about 40000 INR."),
+                                                     p("The “Count” tab depicts the number of Households borrowing. This data is relatively consistent throughout the year other than an early spike in Bijoynagar, with over 30 households borrowing before January of 2019.  If you deselect Bijoynagar, all other villages range from 17 to 0 households borrowing each week. The lowest number of households borrowing is between January and July, with no more than 10 households borrowing each week during these months.  A couple villages increase to above 10 households borrowing after July."),
+                                                     p("The purpose of borrowing is mostly consumption. This is followed by “Other Expenses” and “Payback of Other Loans.")
+                                                     
+                                                     
                                                      
                                               )),
                                     
@@ -1249,7 +1253,7 @@ ui <- navbarPage(title = "",
                             
                             
                             tabPanel("Remittances", value = "",
-                                     fluidRow(style = "margin: 6px;",
+                                     fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Remittances"), align = "center"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
@@ -1285,7 +1289,7 @@ ui <- navbarPage(title = "",
                                        
                                        
                                      ),
-                                     fluidRow(style = "margin: 6px;",
+                                     fluidRow(style = "margin: 6px;", align = "justify",
                                               p("", style = "padding-top:10px;"),
                                               column(12, align = "center", h4(strong("Remittances Sources")),
                                                      p("We also examine how households received remittances. We find that households primarily collected remittances 
@@ -1299,7 +1303,7 @@ ui <- navbarPage(title = "",
                                               )),
                                      #plotOutput("rmt_method", width = "65%"),
                                      
-                                     fluidRow(style = "margin: 6px;",
+                                     fluidRow(style = "margin: 6px;", align = "justify",
                                               p("", style = "padding-top:10px;"),
                                               column(12, align = "center", h4(strong("Usage of Remmittances")),
                                                      p("Remittances is primarily being used for food and utility purchases, which are 
