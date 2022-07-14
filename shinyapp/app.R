@@ -323,20 +323,20 @@ scountv <- scountv %>%
   filter(job != 0)
 
 # Business counts
-villages_2 <- c(rep("Amrabati", 2), rep("Beguakhali", 2), rep("Bijoynagar", 2), rep("Birajnagar", 2), rep("Haridaskati Samsernagar", 2), rep("Lakshmi Janardanpur",2), rep("Pargumti",2),rep("Purba Dwarokapur", 2), rep("Sagar", 2), rep("Shibpur",2))
-Key <- rep(c("No", "Yes"), 2)
-values_bus <-c(26,2,27,3,48,2,24,2,27,3,25,3,24,4,21,7,21,7,25,3)
-
-#prop_bus_values <- c(0.93,0.07, 0.9,0.1,0.96,0.04,0.86,0.14,0.9,0.1,0.9,0.1,0.86,0.14,0.75,0.25,0.75,0.25,0.9,0.1)
-prop_bus_values <- c("93%","7%","90%","10%","96%","4%","86%","14%","90%","10%","90%","10%","86%","14%","75%","25%","75%","25%","90%","10%")
-dat_bus <-  data.frame(villages_2, Key, values_bus, prop_bus_values)
-dat_bus
+Village <- c(rep("Amrabati", 2), rep("Beguakhali", 2), rep("Bijoynagar", 2), rep("Birajnagar", 2), rep("Haridaskati Samsernagar", 2), rep("Lakshmi Janardanpur",2), rep("Pargumti",2),rep("Purba Dwarokapur", 2), rep("Sagar", 2), rep("Shibpur",2))
+Village <- forcats::fct_rev(Village)
+key <- rep(c("No", "Yes"), 2)
+`households` <-c(26,2,27,3,48,2,24,2,27,3,25,3,24,4,21,7,21,7,25,3)
+`percentage` <- c("93","7","90","10","96","4","86","14","90","10","90","10","86","14","75","25","75","25","90","10")
+dat_bus <-  data.frame(Village, key, `households`,`percentage`)
 
 # Poverty line counts
-values_pl <- c(17,11,20,10,32,18,19,9,14,16,17,11,18,10,23,5,21,6,21,7)
-prop_pl_values <- c("60%", "40%", "67%", "33%", "64%","36%","68%","32%","53%","                47%","60%","40%","64%","36%","82%","18%","77%","23%","75%","25%" )
-dat_pl <- data.frame(villages_2, Key, values_pl, prop_pl_values)
-dat_pl
+`Key` <- rep(c("Live Above ₹240", "Live Below ₹240"), 2)
+`Households` <- c(17,11,20,10,32,18,19,9,14,16,17,11,18,10,23,5,21,6,21,7)
+Percentage<- c("60", "40", "67", "33", "64","36","68","32","53",
+               "47","60","40","64","36","82","18","77","23","75","25" )
+Village <- forcats::fct_rev(Village)
+dat_pl <- data.frame(Village, `Key`, `Households`, Percentage)
 
 # marital status
 countmar <- baseline %>%
@@ -952,7 +952,7 @@ ui <- navbarPage(title = "",
                                                        
                                                      ),
                                                      ), 
-                                                     withSpinner(plotOutput("ocuplot", height = "500px")),
+                                                     withSpinner(plotlyOutput("ocuplot", height = "500px")),
                                                      
                                               ),
                                               # column(12, 
@@ -994,7 +994,7 @@ ui <- navbarPage(title = "",
                                                        "Savings" = "sav"
                                                      ),
                                                      ), 
-                                                     withSpinner(plotOutput("finplot", height = "500px")),
+                                                     withSpinner(plotlyOutput("finplot", height = "500px")),
                                                      
                                               ),
                                               # column(12, 
@@ -1638,14 +1638,11 @@ server <- function(input, output, session) {
       splot
     }
     else if (ageVar() == "pov") {
-      village_pl_count_plot <- ggplot(dat_pl, aes(x= villages_2, y = values_pl, fill = Key)) + 
-        geom_col(position = 'stack') + 
-        labs( x= "", y = "Total Number of Households") + 
+      village_pl_count_plot <- ggplot(dat_pl, aes(x= Village, y = `Households`, fill = `Key`)) + 
+        geom_col(position = 'stack', hoverinfo = "text", aes(text = paste("Percentage:",Percentage,"%\n"))) + 
+        labs( x= "", y = "Total Households", fill = "") + 
         theme_classic() + 
-        ggtitle("Households That Live Below the Poverty Line") +
-        coord_flip()+
-        geom_text(aes(label = prop_pl_values), size = 2.5, nudge_y = -1) + scale_fill_viridis_d()
-      village_pl_count_plot
+        coord_flip()
     }
     else if (ageVar() == "mar") {
       marplot <- ggplot(countmar, aes(x = head_married, y = n, fill = Gender)) +
@@ -1743,16 +1740,14 @@ server <- function(input, output, session) {
     input$findrop
   })
   
-  output$finplot <- renderPlot({
+  output$finplot <- renderPlotly({
     if (finVar() == "hobu") {
-      village_bus_count_plot <- ggplot(dat_bus, aes(x= villages_2, y = values_bus, fill = Key)) + 
-        geom_col(position = 'stack') + 
-        labs( x= "", y = "Total Number of Households") + 
+      village_bus_count_plot <- ggplot(dat_bus, aes(x= Village, y = `households`, fill = key)) + 
+        geom_col(position = 'stack', hoverinfo = "text", aes(text = paste("Percentage:",`percentage`,"%\n"))) + 
+        labs( x= "", y = "Total Households", fill = "") + 
         theme_classic() + 
         ggtitle("Households That Own a Business") +
-        coord_flip()+
-        geom_text(aes(label = prop_bus_values), size = 2.5, nudge_y = -1) + scale_fill_viridis_d()
-      village_bus_count_plot
+        coord_flip()
     }
     else if (finVar() == "inc") {
       figure_inc_spending <- ggplot(baseline.summary, aes(rmt_total, full_inc, color= village))+geom_point(data=baseline.summary, shape=17, size=3) +labs(x="Total mean weekly remittances", y="Total mean weekly income", color="Villages") + ggtitle("Average total income vs average total remittances in Baseline week") + scale_color_viridis_d()
