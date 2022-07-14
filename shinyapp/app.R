@@ -1253,10 +1253,9 @@ ui <- navbarPage(title = "",
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
                                                      p("In recent years, households have become more reliant on remittances as a significant source of income. 
-                                                       As such, we examine temporal changes in remittances between October 2018 and November 2019. There is a substantial increase 
-                                                       In late March (what year). This increase continues to occur frequently throughout the data period. Notably, 
-                                                       the Sundarbans region was affected by three severe cyclones during this period: Fani, Category 4 (April – May 2019), 
-                                                       and Category 1, Bulbul and Matmo (October – November 2019). The Sundarbans also could have been negatively impacted by two 
+                                                       As such, we examine temporal changes in remittances between October 2018 and November 2019. The villages in the Sundarbans
+                                                       recieve consistent inputs of remittances throughout the data period. Notably, the Sundarbans region was affected by three severe cyclones during this period: 
+                                                       Fani, Category 4 (April – May 2019), and Category 1, Bulbul and Matmo (October – November 2019). The Sundarbans also could have been negatively impacted by two 
                                                        cyclones that hit the Arabian Sea during this period: Vayu (Category 1, June 8-18) and Hikaa (Category 1, September 20-26). 
                                                        It is possible households are using remittances to cope with these cyclones and weather-related shocks."),
                                                      br("")
