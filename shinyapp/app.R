@@ -1717,13 +1717,11 @@ server <- function(input, output, session) {
       assetplot
     }
     else if (ocuVar() == "lafa") {
-      land_fallow_plot <- ggplot(land_fallow, aes(x = village, y = sum, fill = village)) +
+      land_fallow_plot <- ggplot(land_fallow, aes(x = forcats::fct_rev(village), y = sum, fill = village)) +
         geom_col(fill = plasma(10, alpha = 1, begin = 0, end = 1, direction = 1))+
         theme_classic() +
-        labs(x = "", y = "Total Land fallowed")+
-        ggtitle("Total Land Followed by Village") +
-        coord_flip() + scale_fill_viridis_d()
-      land_fallow_plot
+        labs(x = "", y = "Total Land Fallowed", caption = "*Note: For missing bars, villages did not have any land fallowed")+
+        coord_flip()
     }
     else if (ocuVar() == "jodu") {
       job_duration_plot <- ggplot(job_duration_summary, aes(x = villages, y = job_duration_avg, fill = villages)) +
