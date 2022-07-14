@@ -32,6 +32,7 @@ library(lubridate)
 library(shinyWidgets)
 library(viridis)
 library(RColorBrewer)
+library(plotly)
 
 prettyblue <- "#232D4B"
 navBarBlue <- '#427EDC'
@@ -921,13 +922,13 @@ ui <- navbarPage(title = "",
                                               ) ,
                                               column(8, 
                                                      h4(strong("Head of Household Demographics")),
-                                                     selectInput("agedrop", "Select Varibiable:", width = "100%", choices = c(
+                                                     selectInput("agedrop", "Select Characteristic:", width = "100%", choices = c(
                                                        "Age" = "age",
                                                        "Education" = "edu", 
                                                        "Poverty" = "pov", 
                                                        "Marital Status" = "mar",
                                                        "Household Size" = "hosi", 
-                                                       "Number of Children in Household" = "chho"
+                                                       "Children per Household" = "chho"
                                                      ),
                                                      
                                                      ), 
@@ -956,7 +957,7 @@ ui <- navbarPage(title = "",
                                               ) ,
                                               column(8, 
                                                      h4(strong("Livelihood - October 2018")),
-                                                     selectInput("ocudrop", "Select Variable:", width = "100%", choices = c(
+                                                     selectInput("ocudrop", "Select Characteristic:", width = "100%", choices = c(
                                                        "Primary Occupation" = "pocu",
                                                        "Secondary Occupation" ="socu", 
                                                        "Job Duration" = "jodu",
@@ -1004,7 +1005,7 @@ ui <- navbarPage(title = "",
                                               ) ,
                                               column(8, 
                                                      h4(strong("Financial - October 2018")),
-                                                     selectInput("findrop", "Select Varibiable:", width = "100%", choices = c(
+                                                     selectInput("findrop", "Select Characteristic:", width = "100%", choices = c(
                                                        "Household Business" = "hobu",
                                                        "Salary" = "sal",
                                                        "Income/Remmitances" = "inc",
@@ -1640,11 +1641,9 @@ server <- function(input, output, session) {
         geom_col(width = "5") +
         ylab("Age") + 
         xlab("")+
-        ggtitle("Household Heads Average Age") +
-        labs(subtitle = "by Village") +
-        theme(axis.line = element_line(size = 3, colour = "grey80")) +
+        ggtitle("Mean age for Head of Households ")  +
         theme(legend.position = "none") +
-        rotate_x_text(angle = 33, size = rel(1)) + scale_fill_viridis_d()
+        rotate_x_text(angle = 33, size = rel(1.5)) + scale_fill_viridis_d()
       fplot
     }
     else if (ageVar() == "edu") {
@@ -1669,8 +1668,8 @@ server <- function(input, output, session) {
     else if (ageVar() == "mar") {
       marplot <- ggplot(countmar, aes(x = head_married, y = n, fill = Gender)) +
         geom_col() +
-        labs(title = "Household Heads' Marital Status", x = "Not Married                       Married", y = "Number of Household Heads") +
-        scale_x_discrete() + theme_classic() + scale_fill_viridis_d()
+        labs(title = "Household Heads' Marital Status", x = "Not Married                            Married", y = "Total Household Head ") +
+        scale_x_discrete() + theme(legend.title=element_blank()) 
       marplot
     }
     else if (ageVar() == "hosi") {
@@ -1679,12 +1678,11 @@ server <- function(input, output, session) {
         labs( x = "", y = "Median Household Size")+
         coord_flip()+
         ggtitle("Household Size by Village") +
-        theme(legend.position="none") +
-        theme_classic() + scale_fill_viridis_d()
+        theme(legend.position="none") + scale_fill_viridis_d()
       hh_size_plot
     }
     else if (ageVar() == "chho") {
-      chhoplot <- ggplot(avg_children, aes(village, avg_children, fill = village)) + geom_col() + labs(x = "", y = "Number of Children" ,title = "Number of Children per Household", fill = "Village") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d()
+      chhoplot <- ggplot(avg_children, aes(village, avg_children, fill = village)) + geom_col() + labs(x = "", y = "Average number of children" ,title = "Total Children per Household", fill = "Village") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d()
       chhoplot
     }
   })
