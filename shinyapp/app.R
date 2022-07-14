@@ -32,6 +32,7 @@ library(lubridate)
 library(shinyWidgets)
 library(viridis)
 library(RColorBrewer)
+library(plotly)
 
 prettyblue <- "#232D4B"
 navBarBlue <- '#427EDC'
@@ -90,15 +91,6 @@ purposenv <- as.data.frame(purposenv)
 df <- data.frame(A = c("Consumption", "Other Expenses", "Fees Due", "Payback Other Loan", "Asset Purchase", "Agriculture Purchases"),
                  B = c(purposenv$V1))
 # pls purpose dynamic hist
-names <- c("village", "Consumption", "Other Expenses", "Fees Due", "Payback Other Loan", "Asset Purchase", "Agriculture Purchases")
-pls <- rbind(names, purpose)
-names(pls) <- pls[1,]
-pls <- t(pls)
-pls <- as.data.frame(pls)
-names(pls) <- pls[1,]
-pls <- pls[-1,]
-#pls <- t(pls)
-pls <- as.data.frame(pls)
 
 
 # children data
@@ -661,7 +653,7 @@ cs_item_plot <- ggplot(cs_avg_items, aes(x = week, y = avg_item, color = village
 avg_cs_food <- cs %>% 
   group_by(village, week) %>% 
   summarise("Staple Items" = mean(na.omit(cs_ricegrains + cs_wheatflour + cs_veg +
-                                                          cs_fruit +cs_tubers + cs_pulsespice)), 
+                                            cs_fruit +cs_tubers + cs_pulsespice)), 
             "Meats" = mean(na.omit(cs_redmeat +cs_fishshrimp + cs_poultry)), 
             "Other" = mean(na.omit(cs_eggs + cs_dairy +cs_packaged + cs_sinful)))
 
@@ -705,11 +697,11 @@ non_food_cs <- fin_diary %>%
          exp_health, exp_homerepairs, exp_transport, exp_livestock, exp_aginputs, exp_labor,exp_nonfoodother ) %>% 
   group_by(week, village) %>%
   #summarise(avg_inc_clothes = mean(aggregated_exp_clothes, na.rm = TRUE), avg_bookstuition = mean(exp_bookstuition, na.rm = TRUE),
-            #avg_utility = mean(exp_utility, na.rm = TRUE), avg_toilet = mean(exp_toiletries, na.rm = TRUE),
-            #avg_health = mean(exp_health, na.rm = TRUE), avg_homerepairs = mean(exp_homerepairs, na.rm = TRUE), 
-            #avg_transport = mean(exp_transport, na.rm = TRUE), avg_livestock = mean(exp_livestock, na.rm = TRUE),
-            #avg_aginputs = mean(exp_aginputs, na.rm = TRUE), avg_labor = mean(exp_labor, na.rm = TRUE),
-            #avg_nonfoodother = mean(exp_nonfoodother, na.rm = TRUE))
+  #avg_utility = mean(exp_utility, na.rm = TRUE), avg_toilet = mean(exp_toiletries, na.rm = TRUE),
+  #avg_health = mean(exp_health, na.rm = TRUE), avg_homerepairs = mean(exp_homerepairs, na.rm = TRUE), 
+  #avg_transport = mean(exp_transport, na.rm = TRUE), avg_livestock = mean(exp_livestock, na.rm = TRUE),
+  #avg_aginputs = mean(exp_aginputs, na.rm = TRUE), avg_labor = mean(exp_labor, na.rm = TRUE),
+  #avg_nonfoodother = mean(exp_nonfoodother, na.rm = TRUE))
   summarise("Clothes" = mean(aggregated_exp_clothes, na.rm = TRUE), "Books/Tuition" = mean(exp_bookstuition, na.rm = TRUE),
             "Utilities" = mean(exp_utility, na.rm = TRUE), "Toiletries" = mean(exp_toiletries, na.rm = TRUE),
             "Health" = mean(exp_health, na.rm = TRUE), "Home Repairs" = mean(exp_homerepairs, na.rm = TRUE), 
@@ -717,7 +709,7 @@ non_food_cs <- fin_diary %>%
             "Agriculture" = mean(exp_aginputs, na.rm = TRUE), "Labor" = mean(exp_labor, na.rm = TRUE),
             "Other" = mean(exp_nonfoodother, na.rm = TRUE))
 #names(non_food_cs) <- c("village", "week", "Clothes", "Books/Tuition", "Utilities", "Toilitries", "Health", "Home Repairs",
-                        #"Transport", "Livestock", "Agriculure", "Labor", "Other")
+#"Transport", "Livestock", "Agriculure", "Labor", "Other")
 
 filtered_non_food_cs <- reactive({
   non_food_cs %>% 
@@ -775,15 +767,15 @@ ui <- navbarPage(title = "",
                  
                  # main tab -----------------------------------------------------------
                  tabPanel("Project Overview", value = "overview",
-                 
+                          
                           fluidRow(style = "margin: 2px;",
                                    align = "center",
                                    # br("", style = "padding-top:2px;"),
                                    # img(src = "uva-dspg-logo.jpg", class = "topimage", width = "20%", style = "display: block; margin-left: auto; margin-right: auto;"),
                                    br(""),
-                                   h1(strong("Livelihood Diversification Using High-Frequency Data"),
-                                      h2(strong("Sundarbans")),
-                                      br(""),
+                                   h1(strong("Assessing Livelihood Diversification in Sundarbans, India using High Frequency Data "),
+                                      #h2(strong("Sundarbans")),
+                                     # br(""),
                                       h4("Data Science for the Public Good Program"),
                                       h4("Virginia Polytechnic Institute and State University"),
                                       #h4("[updat this]"),
@@ -793,42 +785,33 @@ ui <- navbarPage(title = "",
                           fluidRow(style = "margin: 6px;", align = "justify",
                                    column(4,
                                           h2(strong("The Setting")),
-                                          p("The Sundarbans is a cluster of low-lying islands in the Bay of Bengal spans across India and Bangladesh. The Sundarbans area hosts the largest mangrove forests in the world, supporting an exceptionally rich diversity of flora and endangered fauna such as the Bengal tiger, Estuarine crocodile, Indian python, and Irawadi dolphins."),
+                                          p("The Sundarbans is a cluster of low-lying islands in the Bay of Bengal that spans across India and Bangladesh. The Sundarbans area hosts the largest mangrove forests in the world, supporting an exceptionally rich diversity of flora and endangered fauna such as the Bengal tiger, Estuarine crocodile, Indian python, and Irrawaddy dolphin."),
                                           p("The vast delta is formed by the connection of the Ganga, Brahmaputra, and Meghna rivers. It also has a complex network of tidal waterways, creeks, and mudflats. The area's unique boundaries act as a shelter belt from natural disasters such as cyclones, tidal surges, and seawater seepage. Despite this natural protective system and being a World Heritage Site with conservation requirements, the Sundarbans is considered endangered under the ICUN Red List of Ecosystems due to increasing climate, population and agricultural farming."),
                                           p("The Sundarbans supplies sustainable livelihoods for 4 million people living in small villages near the mangrove forests. Most residents work in various agricultural occupations, including farmers, woodcutters, fishers, and honey gatherers. Farmers, primarily landless laborers, commonly farm a single crop (Aman paddy) in the rainy season and sell food to intermediaries or traders. The woodcutters obtain traditional forest produce like timber, fuelwood, and pulpwood. A large-scale harvest of shrimps, fish, crustaceans, and honey from the forests are also typical. However, with the ongoing climate and population changes, forest conservation efforts have placed a cap on harvesting. For example, in 2022, authorities began issuing three-month honey passes to collect wax from beehives."),
-
-                                            
-                                          ),
+                                          img(src='sunphoto1.png', align = "center", width = "95%")
+                                          
+                                   ),
                                    column(4,
                                           h2(strong("Project Background")),
                                           
                                           p("The Sundarbans faces an increasing threat to its ecological system due to several manmade and natural causes. First, cyclones, common to this area, are getting more frequent and more serve. From 1961 to 2022, 15 cyclones hit this area, with at least one occurring yearly in the past four years. This has led to the forest incurring severe damages, gradually causing the area to shrink. Second, there is an increase in deforestation due to increasing population and commercial uses. There is also a decrease in aquatic animals due to increased fishing. Additionally, the biological makeup of the forest, such as salinity, soil pH, and reduced freshwater, are being altered due to climate change leading to more fallow land."),
-                                          p("Agricultural-dependent families bear the brunt of these increasing threats to the Sundarbans. This is evident by the growing out-migration of the working population to cities and towns as a coping mechanism. Remittance income from this domestic migration has become one of the significant sources of income to protect residents' livelihood.")
-                                   ),
+                                          p("Agricultural-dependent families bear the brunt of these increasing threats to the Sundarbans. This is evident by the growing out-migration of the working population to cities and towns as a coping mechanism. Remittance income from this domestic migration has become one of the significant sources of income to protect residents' livelihood."),
+                                         img(src='sunphoto.png', align = "center", width = "95%")
+                                          ),
                                    
                                    column(4,
                                           h2(strong("Project Goals")),
                                           p("Climate change is a global issue; however, its impact is not felt equally across all regions. Developing countries, especially areas with widespread poverty and poor infrastructure, are more ill-equipped to cope with these environmental threats. The worsening of extreme weather patterns such as high temperatures, droughts, floods, and rising sea levels are especially problematic for countries with large coastal areas and populations that primarily depend on agriculture for their livelihood."),
                                           p("We examine the Sundarbans in West Bengal, India, which has faced increasing climate changes in recent years for this project. The Sundarbans region has experienced a disproportionate number of climate disasters such as flooding and cyclones over the past decade. Residents who primarily engage in small-scale agriculture are forced to diversify their likelihood strategies using out-migration and reduced farming to cope with the increasing environmental changes."),
-                                          p("The overall goal of this project is to evaluate livelihood-diversification strategies using weekly financial data for approximately 300 households from 10 representative villages in the region. The team aims to create a public-facing dashboard to describe and visualize households' livelihood diversification strategies, including changes in income, expenditure, and consumption patterns. The insights from this dashboard are important for designing effective and targeted poverty-reducing strategies and aiding those affected by shocks such as natural disasters and climate change.")
-                                   )
+                                          p("The overall goal of this project is to evaluate livelihood-diversification strategies using weekly financial data for approximately 300 households from 10 representative villages in the region. The team aims to create a public-facing dashboard to describe and visualize households' livelihood diversification strategies, including changes in income, expenditure, and consumption patterns. The insights from this dashboard are important for designing effective and targeted poverty-reducing strategies and aiding those affected by shocks such as natural disasters and climate change."),
+                                         img(src='sunphoto2.png', align = "center", width = "95%")
+                                          )
                           ),
-                          fluidRow(style = "margin: 6px;", align = "justify",
-                                   column(12,
-                                          h2(strong("Images"))
-                                        
-                                          
-                                   ),   
-                                   mainPanel(
-                                            actionButton("previous", "Previous"),
-                                            actionButton("next", "Next"),
-                                            imageOutput("image")
-
-                                      )),
+                          
                           #fluidRow(align = "center",
                           # p(tags$small(em('Last updated: August 2021'))))
-
-                                  ),
+                          
+                 ),
                  
                  
                  ## Tab Date Intro--------------------------------------------
@@ -836,12 +819,11 @@ ui <- navbarPage(title = "",
                           fluidRow(style = "margin: 6px;", align = "justify",
                                    column(4, 
                                           h2(strong("Data")),
-                                          p("We acquire weekly household financial and consumption data for this project from Gupta et.al (2021).  Data was collected from about 300 households in 10 representative village in the Sundarbans region from November 2018 to October 2019. ")
+                                          p("We acquire weekly household financial and consumption data from Gupta et al. (2021). Gupta et al. (2021) originally collected household-level data from a representative sample of rural households in the Sundarbans region in West Bengal, India. They collected information from approximately 300 households in 10 villages from November 2018 to October 2019.")
                                    ),
-                                   
                                    column(4,
                                           h2(strong("Initial/Baseline")),
-                                          p("The initial or baseline survey was conducted in November 2018. This data is the foundation of our data, allowing the team to understand this region's demographic and socio-economic characteristics. The baseline survey collected information on household demographics, economic activities, assets and landholding, shock history, migration, and agricultural behaviors.")
+                                          p("The initial or baseline survey was conducted in November 2018. This data allows the team to visualize and provide insights into the region's demographic and socio-economic characteristics. The baseline survey collected information on household demographics, economic activities, assets and landholding, shock history, migration, and agricultural behaviors.")
                                           
                                           
                                    ),
@@ -855,29 +837,32 @@ ui <- navbarPage(title = "",
                                    #fluidRow(align = "center",
                                    #    p(tags$small(em('Last updated: August 2021'))))
                           ),
-                          mainPanel(
-                            img(src='Picture1.png', align = "right", width = "75%"),
+                          fluidRow(align = "center",
+                            img(src='Picture2.png', width = "75%"),
                           )), 
                  ## Sundarbans Region--------------------------------------------
                  navbarMenu("Sundarbans Region" ,
-                            tabPanel("Sundarbans Villages", 
-                                     fluidRow(style = "margin: 6px;",
-                                              h1(strong(""), align = "center"),
-                                              p("", style = "padding-top:10px;")),
-                                     fluidRow(style = "margin: 6px;",
-                                              p("", style = "padding-top:10px;"),
-                                              column(12, align = "center",h4(strong("Sundarbans Villages")),
-                                                     p(""),
-                                                     br("")
+                          tabPanel("Villages", 
+                                   
+                                   fluidRow(style = "margin: 2px;",
+                                            align = "center",
+                                            h1(strong("Representative Villages in the Sundarbans"),
+                                             
+                                            )),
+                                   
+                                     fluidRow(style = "margin: 6px;", align = "justify",
+                                              column(4, 
+                                                     h4(strong("Which villages were included in our data set?")),
+                                                     p("The Sundarbans are a cluster of islands located in the Bay of Bengal that spans across India and Bangladesh. Gupta et al. (2021) collected household-level data from a representative sample of rural households in the Sundarbans region. Our villages are located on the Indian in West Bengal, India. Our sample does not include any villages in "),
+                                                     
+                                                     p("They collected information from approximately 300 households in 10 villages from November 2018 to October 2019."),
+                                              ),
+                                              column(8, leafletOutput("map_leaflet", width = "100%"),
                                                      
                                                      
-                                              )),
-                                     fluidPage(
-                                       leafletOutput("map_leaflet", width = "100%"),
-                                       #p(),
-                                       #actionButton("recalc", "New Points")
-                                     ),
-                            ),
+                                              )
+                                     
+                            )),
                             tabPanel("Timelapse", 
                                      fluidRow(style = "margin: 6px;",
                                               p("", style = "padding-top:10px;"),
@@ -887,8 +872,21 @@ ui <- navbarPage(title = "",
                                               ), 
                                      )
                                      
-                            )
                             ),
+                            tabPanel("Gallery",
+                            fluidRow(style = "margin: 6px;", 
+                                     column(12,
+                                            h2(strong("Images"))
+                                            
+                                            
+                                     ),   
+                                     mainPanel( 
+                                       actionButton("previous", "Previous"),
+                                       actionButton("next", "Next"),
+                                       imageOutput("image")
+                                       
+                                     ))),
+                 ),
                  
                  ## Tab Demographics --------------------------------------------
                  navbarMenu("Demographics" , 
@@ -897,50 +895,28 @@ ui <- navbarPage(title = "",
                                               h1(strong("Socioeconomic Characteristics"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
-                                                     h4(strong("Description")),
-                                                     p("Age: By breaking down the average household head age by the different villages in the region, 
-                                                       we are able to see that Purba Dwarokapur has the youngest household heads on average and the 
-                                                       village of Pargumti has the oldest household heads on average.  In addition, the median age is 
-                                                       around 49 years old and the mean is similar at about 49.75 indicating that the household heads are older."
-                                                       ),
-                                                     p("Education: After breaking down the household head education by village, we are able to conclude that the 
-                                                       village of Birajnagar has the lowest education level at 3.14 years and Pargumti has the highest education 
-                                                       level at 6.81 years. Since the infrastructure for education is very low, many children often quit school 
-                                                       early to provide for the family. On average, among all of the villages, the average education for the head 
-                                                       of households is around 5 years, which is comparable to completing elementary school. This low level of 
-                                                       education also contributes to the poverty levels in the region."
-                                                       ),
-                                                     p("Poverty: Although the poverty rate for all of the villages is around 20-30% households below the poverty 
-                                                       line, some villages like Haridsakti Samsernagar have higher poverty rates at around 53% and other villages 
-                                                       like Purba Dwarokapur have a lower poverty rate at around 18%. "
-                                                       ),
-                                                     p("Marital Status: Out of all 306 households, the vast majority are married households. One of the interesting 
-                                                       finds that we came across is that males are most likely to be the heads of married households and that females 
-                                                       have a higher proportion of being heads of unmarried households. "
-                                                       ),
-                                                     p("Household Size: For the most part among all villages, the average household size is around 4-5 with the median 
-                                                       among all villages being 4.2. This higher household size can be seen as necessary for households that primarily 
-                                                       participate in agriculture."
-                                                       ),
-                                                     p("Number of Children: On average, each household has around 2.3 children throughout all the villages. Some 
-                                                       villages, like Sargar, Shibpur, Beguakhali, and Purba Dwarokapur have over 3 children on average. This 
-                                                       can be because some families that have family businesses often have more children so that they can provide 
-                                                       for the family as well.")
+                                                     h4(strong("Who lives in the Sundarbans Region?")),
+                                                     p("We examine data from the baseline survey collected in November 2018 to understand better the socio-demographic and economic characteristics of the Sundarbans population in West Bengal, India.  "
+                                                     ),
+                                                     p("Household heads in the Sundarbans area tend to be middle-aged adults, with the mean being around age 49. These individuals also have low levels of education as the average education across villages is approximately five years, comparable to completing elementary school. This low level of education may contribute to the varying poverty level in the region. More than half of families in Haridaskati Samsernagar live with less than ₹240 per week per person (Indian poverty line). However, other villages like Purba Dwarokapur have a lower proportion of households (18%) below the poverty line."
+                                                     ),
+                                                     p("Most households are headed by married parents. Interestingly, males are more likely to be heads of married households, while females tend to be heads of unmarried households. The number of children is consistent across villages as families living in Sagar, Shibpur, Beguakhali, and Pirba Dwarokapur have about three children per household, slightly higher than average across all villages - i.e., two children per household."
+                                                     )
                                                      
                                               ) ,
                                               column(8, 
                                                      h4(strong("Head of Household Demographics")),
-                                                     selectInput("agedrop", "Select Varibiable:", width = "100%", choices = c(
+                                                     selectInput("agedrop", "Select Characteristic:", width = "100%", choices = c(
                                                        "Age" = "age",
                                                        "Education" = "edu", 
                                                        "Poverty" = "pov", 
                                                        "Marital Status" = "mar",
                                                        "Household Size" = "hosi", 
-                                                       "Number of Children in Household" = "chho"
+                                                       "Children per Household" = "chho"
                                                      ),
                                                      
                                                      ), 
-                                                     withSpinner(plotOutput("ageplot", height = "500px", width = "100%")),
+                                                     withSpinner(plotlyOutput("ageplot", height = "500px", width = "100%")),
                                                      
                                               ),
                                               # column(12, 
@@ -964,8 +940,7 @@ ui <- navbarPage(title = "",
                                                      
                                               ) ,
                                               column(8, 
-                                                     h4(strong("Livelihood - October 2018")),
-                                                     selectInput("ocudrop", "Select Variable:", width = "100%", choices = c(
+
                                                        "Primary Occupation" = "pocu",
                                                        "Secondary Occupation" ="socu", 
                                                        "Job Duration" = "jodu",
@@ -979,12 +954,12 @@ ui <- navbarPage(title = "",
                                                      ), 
                                                      withSpinner(plotOutput("ocuplot", height = "500px")),
                                                      
-                                              )
+                                              ),
                                               # column(12, 
                                               #       h4("References: "), 
                                               #       p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
                                               #      p("", style = "padding-top:10px;")) 
-                                     )), 
+                                     
                             
                             tabPanel("Financial", 
                                      fluidRow(style = "margin: 6px;", align = "justify",
@@ -995,25 +970,24 @@ ui <- navbarPage(title = "",
                                                      p("Households business: Owning a business in the Sundarbans is often too expensive and financially 
                                                        unfeasible. A majority of 88% of households do not own a business and only 12% do own a business, 
                                                        making it very uncommon. "
-                                                       ),
+                                                     ),
                                                      p("Salary: On average, per month, The data shows that the monthly salaries for the households range 
                                                        anywhere between 2500 INR to 4600 INR per month. On average, Amrabati receives the highest income. 
                                                        This can indicate that the fishing industry in Amrabati is more lucrative than other jobs in other villages. 
                                                        On the other hand, the village of Sagar has the lowest monthly salary on average."
-                                                       ),
+                                                     ),
                                                      p("Income/Remmitance: For the villages that are plotted on the middle/top right of the graph, 
                                                        remittances are highly impactful on the household's income. Remittances are essentially any income a 
                                                        household receives from someone working away from the household. By taking a look at the remittances we 
                                                        were able to see the impact it had on the total household income."
-                                                       ),
+                                                     ),
                                                      p("Savings: On average, many households are not able to save, but sometimes some households are able to 
                                                        save once or twice during the 12-month span. It is unlikely to see many households save more than 20 times 
                                                        like some did. It is expected to see low amounts of saving because of the high poverty level in the region."
-                                                       )
+                                                     )
                                               ) ,
                                               column(8, 
-                                                     h4(strong("Financial - October 2018")),
-                                                     selectInput("findrop", "Select Varibiable:", width = "100%", choices = c(
+
                                                        "Household Business" = "hobu",
                                                        "Salary" = "sal",
                                                        "Income/Remmitances" = "inc",
@@ -1027,7 +1001,7 @@ ui <- navbarPage(title = "",
                                               #   h4("References: "), 
                                               #  p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
                                               #  p("", style = "padding-top:10px;")) 
-                                     )), 
+                                      
                             
                             
                  ), 
@@ -1085,7 +1059,19 @@ ui <- navbarPage(title = "",
                                                        There is a significant increase in households’ income across most villages in late March. This increase coincides 
                                                        with the largest harvest for farmers in the region. We will investigate the different variations (spikes and dips) 
                                                        to determine the correlation between environmental shocks or unexpected household incidents."),
-                                                     br("")
+                                                     p("Income: Over the twelve month period that the data was collected in, our team was able to track 
+                                                       weekly household income and we were able to visualize it by breaking the income by each village.  
+                                                       On average, the weekly income per household is 1395.61 INR and the median is 1341.82. Throughout 
+                                                       the year there are many spikes which can be caused by different harvest seasons, influx in remittance, 
+                                                       or other external factors. In early April we can see a bigger spike as this time period marks one of 
+                                                       the biggest harvest seasons seen by the local people. "),
+                                                     p("Male and Female Income: Although we know that males in the region attain more income than females, 
+                                                       we wanted to see if there are certain households in any villages where …"),
+                                                     p("The importance of remittance income can be seen in this graph as all of the villages have similar 
+                                                       weekly income before adding remittance. The village of Sagar has a weekly average income around 1954 
+                                                       INR which is one of the higher weekly incomes in the region. Since many of these households work for 
+                                                       wage either as an agriculture worker or casual laborer, the per week income is relatively same throughout 
+                                                       the region. This can indicate why the weekly income is ranging consistently in-between 1000 INR and 2000 INR.")
                                                      
                                               )),
                                      # Sidebar with a select input for village
@@ -1095,8 +1081,7 @@ ui <- navbarPage(title = "",
                                          pickerInput("village_inc", "Select Village:", choices = village_vector, 
                                                      selected = village_vector,
                                                      multiple = T, options = list(`actions-box` = T)),
-                                         varSelectInput("Gender", "Select Gender:", malefemale_inc[,-(1:2)])
-                                         
+                                         varSelectInput("Gender", "Select Gender:", malefemale_inc[,-(1:2)]),
                                        ),
                                        # Show a plot of the generated plot
                                        mainPanel(
@@ -1172,7 +1157,7 @@ ui <- navbarPage(title = "",
                                        mainPanel(
                                          tabsetPanel(
                                            tabPanel("Plot", plotOutput("food_plot"))                                         
-                                           )
+                                         )
                                        ),
                                        
                                        
@@ -1211,7 +1196,7 @@ ui <- navbarPage(title = "",
                                      ),
                                      
                                      
-                                    
+                                     
                             ),
                             
                             tabPanel("Borrowing",
@@ -1226,30 +1211,30 @@ ui <- navbarPage(title = "",
                                                      
                                                      
                                               )),
-                                    
-                                    # Show a plot of the generated plot
-                                    mainPanel(
-                                      tabsetPanel(
-                                        tabPanel("Amount",plotOutput("bor"),
-                                                 sidebarPanel(
-                                                   pickerInput("village_bramt", "Select Village:", choices = village_vector, 
-                                                               selected = village_vector, 
-                                                               multiple = T, options = list(`actions-box` = T))), 
-                                        ),
-                                        tabPanel("Count",plotOutput("borr"),
-                                                 sidebarPanel(
-                                                   pickerInput("village_borr", "Select Village:", choices = village_vector, 
-                                                               selected = village_vector,
-                                                               multiple = T, options = list(`actions-box` = T))),
-                                        ),
-                                        tabPanel("Purpose", 
-                                                 plotOutput("purpplot", height = "500px")
-                                        ),
-                                        
-                                       
-                                        
-                                        
-                                      ))),
+                                     
+                                     # Show a plot of the generated plot
+                                     mainPanel(
+                                       tabsetPanel(
+                                         tabPanel("Amount",plotOutput("bor"),
+                                                  sidebarPanel(
+                                                    pickerInput("village_bramt", "Select Village:", choices = village_vector, 
+                                                                selected = village_vector, 
+                                                                multiple = T, options = list(`actions-box` = T))), 
+                                         ),
+                                         tabPanel("Count",plotOutput("borr"),
+                                                  sidebarPanel(
+                                                    pickerInput("village_borr", "Select Village:", choices = village_vector, 
+                                                                selected = village_vector,
+                                                                multiple = T, options = list(`actions-box` = T))),
+                                         ),
+                                         tabPanel("Purpose", 
+                                                  plotOutput("purpplot", height = "500px")
+                                         ),
+                                         
+                                         
+                                         
+                                         
+                                       ))),
                             
                             
                             tabPanel("Remittances", value = "",
@@ -1263,7 +1248,11 @@ ui <- navbarPage(title = "",
                                                        Fani, Category 4 (April – May 2019), and Category 1, Bulbul and Matmo (October – November 2019). The Sundarbans also could have been negatively impacted by two 
                                                        cyclones that hit the Arabian Sea during this period: Vayu (Category 1, June 8-18) and Hikaa (Category 1, September 20-26). 
                                                        It is possible households are using remittances to cope with these cyclones and weather-related shocks."),
-                                                     br("")
+                                                     p("Remittance impact on the livelihood of the Sundarban population can be seen as the data collected shows that the median 
+                                                       weekly remittance income is 205.61 INR which is on average almost 800 INR. This significant portion of a households monthly 
+                                                       income show that importance this income has on the families ability to function. The graph also does a good job at showing 
+                                                       spikes in remittance income which can be either because of festivals, other celebrations, money sent because of health 
+                                                       concerns, or other shocks.")
                                                      
                                                      
                                               ) ),
@@ -1531,7 +1520,7 @@ server <- function(input, output, session) {
   # Run JavaScript Code
   runjs(jscode)
   
-#overview photos 
+  #overview photos 
   index <- reactiveVal(1)
   
   observeEvent(input[["previous"]], {
@@ -1596,12 +1585,12 @@ server <- function(input, output, session) {
   
   output$purpplot <- renderPlot({
     ggplot(df, aes(x= A, y = B, fill = A)) + geom_col() + 
-        coord_flip()+
-        labs(title = "Purpose of Borrowing") + 
-        xlab("") +
-        ylab("")+
-        theme(legend.position = "none") 
-    })
+      coord_flip()+
+      labs(title = "Purpose of Borrowing") + 
+      xlab("") +
+      ylab("")+
+      theme(legend.position = "none") 
+  })
   
   
   # Filtered consumption by group
@@ -1627,19 +1616,17 @@ server <- function(input, output, session) {
     input$agedrop
   })
   
-  output$ageplot <- renderPlot({
+  output$ageplot <- renderPlotly({
     if (ageVar() == "age") {
       
       fplot <-  ggplot(by_villagemore, aes(x = village, y = head_age, fill = village, width=0.5, srt = 45)) +
         geom_col(width = "5") +
         ylab("Age") + 
         xlab("")+
-        ggtitle("Household Heads Average Age") +
-        labs(subtitle = "by Village") +
-        theme(axis.line = element_line(size = 3, colour = "grey80")) +
+        ggtitle("Mean age for Head of Households ")  +
         theme(legend.position = "none") +
-        rotate_x_text(angle = 33, size = rel(1)) + scale_fill_viridis_d()
-      fplot
+        rotate_x_text(angle = 33, size = rel(1.5)) + scale_fill_viridis_d()
+      ggplotly(fplot)
     }
     else if (ageVar() == "edu") {
       splot <- ggplot(by_villagemore, aes(x = "", y= head_edu, fill = village)) +
@@ -1647,7 +1634,7 @@ server <- function(input, output, session) {
         facet_wrap(~village, ncol = 5) +
         geom_text(aes(label = sub), position = position_stack(vjust=1.1)) +
         labs(title = "Mean Years of Education for Head of Households", x = NULL, y = "Years of Education") +
-        theme(legend.position="none") + scale_fill_viridis_d()
+        theme(legend.position="none", strip.text.x = element_text(size = 9)) + scale_fill_viridis_d()
       splot
     }
     else if (ageVar() == "pov") {
@@ -1663,8 +1650,8 @@ server <- function(input, output, session) {
     else if (ageVar() == "mar") {
       marplot <- ggplot(countmar, aes(x = head_married, y = n, fill = Gender)) +
         geom_col() +
-        labs(title = "Household Heads' Marital Status", x = "Not Married                       Married", y = "Number of Household Heads") +
-        scale_x_discrete() + theme_classic() + scale_fill_viridis_d()
+        labs(title = "Household Heads' Marital Status", x = "Not Married                            Married", y = "Total Household Head ") +
+        scale_x_discrete() + theme(legend.title=element_blank()) 
       marplot
     }
     else if (ageVar() == "hosi") {
@@ -1673,12 +1660,11 @@ server <- function(input, output, session) {
         labs( x = "", y = "Median Household Size")+
         coord_flip()+
         ggtitle("Household Size by Village") +
-        theme(legend.position="none") +
-        theme_classic() + scale_fill_viridis_d()
+        theme(legend.position="none") + scale_fill_viridis_d()
       hh_size_plot
     }
     else if (ageVar() == "chho") {
-      chhoplot <- ggplot(avg_children, aes(village, avg_children, fill = village)) + geom_col() + labs(x = "", y = "Number of Children" ,title = "Number of Children per Household", fill = "Village") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d()
+      chhoplot <- ggplot(avg_children, aes(village, avg_children, fill = village)) + geom_col() + labs(x = "", y = "Average number of children" ,title = "Total Children per Household", fill = "Village") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d()
       chhoplot
     }
   })
@@ -1887,17 +1873,17 @@ server <- function(input, output, session) {
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + scale_color_viridis_d()
   })
   
- # filtered_fullinc <- reactive({
- #    fullinc  %>% 
- #      filter(village %in% input$village_inc)
- #  })
- #  
- #  output$fullinc <- renderPlot({
- #    ggplot(filtered_fullinc(), aes(x=week_num, y=full_inc, color = village, na.rm=TRUE)) +
- #      geom_line() + labs(title ="Full Income by Village") + xlab("Date") + ylab("Full Income (INR)") +
- #      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
- #  })
-
+  # filtered_fullinc <- reactive({
+  #    fullinc  %>% 
+  #      filter(village %in% input$village_inc)
+  #  })
+  #  
+  #  output$fullinc <- renderPlot({
+  #    ggplot(filtered_fullinc(), aes(x=week_num, y=full_inc, color = village, na.rm=TRUE)) +
+  #      geom_line() + labs(title ="Full Income by Village") + xlab("Date") + ylab("Full Income (INR)") +
+  #      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+  #  })
+  
   filtered_totalinc <- reactive({
     totinc  %>% 
       filter(village %in% input$village_inc)
@@ -1919,9 +1905,9 @@ server <- function(input, output, session) {
     avg_inc_table
   })
   
-
- # Consumption ----------------------- 
-
+  
+  # Consumption ----------------------- 
+  
   # Filtered cs expenditure plot
   filtered_cs_avg <- reactive({
     cs_avg %>% 
@@ -1973,14 +1959,14 @@ server <- function(input, output, session) {
       labs(x = "", y = "Average Weekly Expenditure", color = "Villages")+
       ggtitle("Average Consumption Expenditure on Food Items")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019", caption = "Mean: 721.41  Median: 686.96"), limits = c(10:40))
-      
+    
   })
   
   filtered_non_food_cs <- reactive({
     non_food_cs %>% 
       filter(village %in% input$village_cs_nonfood)
   })
-
+  
   output$nonfood_plot <- renderPlot({
     ggplot(filtered_non_food_cs(), aes(x = week, y = !!input$nonfood_group, color = village)) +
       geom_line()+
@@ -1988,7 +1974,7 @@ server <- function(input, output, session) {
       labs(x = "", y = "Average Weekly Expenditure", color = "Villages")+
       ggtitle("Average Consumption Expenditure on Non-Food Items")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019", caption = "Mean: 882.22  Median: 769.75"), limits = c(10:40))
-      
+    
   })
   
   #Event Filtered
@@ -2084,6 +2070,7 @@ server <- function(input, output, session) {
   
   
 }
+
 
 shinyApp(ui = ui, server = server)
 
