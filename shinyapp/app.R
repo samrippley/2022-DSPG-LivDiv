@@ -1844,7 +1844,7 @@ server <- function(input, output, session) {
       labs(title="Average Weekly Household Expenditure by Village",
            
            x="Date", y="Average Weekly Expenditure (INR)", caption = "Mean: 1982.77   Median: 1832.1") +
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) + 
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + 
       scale_color_viridis_d()+
       theme_classic()+
       theme(plot.caption = element_text(size = 12))
@@ -1884,7 +1884,7 @@ server <- function(input, output, session) {
     ggplot(filtered_malefemaleinc(), aes(x = week,y = !!input$Gender, color = village)) + geom_line() + 
       #geom_line(aes(y = !!input$gender, color = village), linetype = "twodash") +  
       labs(x = "", y = "Income (INR)", title = "Male and Female Income", color = "Village") + 
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) + scale_color_viridis_d()
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + scale_color_viridis_d()
   })
   
  # filtered_fullinc <- reactive({
@@ -1908,7 +1908,7 @@ server <- function(input, output, session) {
           data=filtered_totalinc(), na.rm=TRUE,
           main="Total Income by Village",
           xlab="Date", ylab="Total Income (INR)", geom = "line") +
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) + scale_color_viridis_d()
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + scale_color_viridis_d()
   })
   
   
@@ -1935,7 +1935,7 @@ server <- function(input, output, session) {
       theme_classic()+
       ggtitle("Average Weekly Consumption Expenditure by Village")+
       labs(x = "", y = "Average Consumption Expenditure (INR)", caption = "Mean: 766.13  Median: 731.68", color = "Villages")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       theme(plot.caption = element_text(size = 10))+
       geom_rect(data = filtered_event(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = events), alpha=0.15)
   })
@@ -1954,7 +1954,7 @@ server <- function(input, output, session) {
       theme_classic()+
       ggtitle("Average Consumption Items Bought a Week")+
       labs(x = "", y = "No. of Consumption Items Bought", color = "Villages")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))
   })
   
   # Filtered consumption by group
@@ -1972,7 +1972,7 @@ server <- function(input, output, session) {
       theme_classic()+
       labs(x = "", y = "Average Weekly Expenditure", color = "Villages")+
       ggtitle("Average Consumption Expenditure on Food Items")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019", caption = "Mean: 721.41  Median: 686.96"), limits = 10:40)
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019", caption = "Mean: 721.41  Median: 686.96"), limits = c(10:40))
       
   })
   
@@ -1987,7 +1987,7 @@ server <- function(input, output, session) {
       theme_classic()+
       labs(x = "", y = "Average Weekly Expenditure", color = "Villages")+
       ggtitle("Average Consumption Expenditure on Non-Food Items")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019", caption = "Mean: 882.22  Median: 769.75"), limits = 10:40)
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019", caption = "Mean: 882.22  Median: 769.75"), limits = c(10:40))
       
   })
   
@@ -2046,7 +2046,7 @@ server <- function(input, output, session) {
     ggplot(filtered_cope(), aes(shk_2009_cope, fill = village)) + geom_histogram() + 
       labs(x = "", y = "" ,title = "Type of cope after 2009 shocks", fill = "Village") + scale_fill_viridis_d() + 
       theme(axis.text = element_text(size = 5)) +
-      scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), labels = str_wrap(cope_labels, width = 30), limits = 0:20) + 
+      scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), labels = str_wrap(cope_labels, width = 30), limits = c(0:20)) + 
       coord_flip() 
   })
   
@@ -2060,7 +2060,7 @@ server <- function(input, output, session) {
   output$relocation_2009_yn <- renderPlot({
     ggplot(filtered_relocation_yn(), aes(shk_2009_reloc_yn, fill = village)) + geom_bar() + 
       labs(x = "", y = "No. of Households" ,title = "Relocation Status after Shock", fill = "Village") + 
-      scale_x_discrete(breaks = c(0,1,2), labels = str_wrap(relocation_labels, width = 30), limits = 0:2) + 
+      scale_x_discrete(breaks = c(0,1,2), labels = str_wrap(relocation_labels, width = 30), limits = c(0:2)) + 
       scale_fill_viridis_d()
     
   })
@@ -2075,7 +2075,7 @@ server <- function(input, output, session) {
     
     ggplot(filtered_relocation(), aes(shk_2009_reloc1, fill = village)) + 
       geom_bar() + labs(x = "", y = "No. of Households" ,title = "Relocation Areas", fill = "Village") + 
-      scale_x_discrete(breaks = c(1,2,3,4,5,6), labels = str_wrap(relocation_where_labels, width = 20), limits = 1:6) + 
+      scale_x_discrete(breaks = c(1,2,3,4,5,6), labels = str_wrap(relocation_where_labels, width = 20), limits = c(1:6)) + 
       scale_fill_viridis_d() + coord_flip() +  theme(axis.text = element_text(size = 8))
     
     
