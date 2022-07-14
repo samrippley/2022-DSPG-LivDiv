@@ -916,7 +916,7 @@ ui <- navbarPage(title = "",
                                                      ),
                                                      
                                                      ), 
-                                                     withSpinner(plotOutput("ageplot", height = "500px", width = "100%")),
+                                                     withSpinner(plotlyOutput("ageplot", height = "500px", width = "100%")),
                                                      
                                               ),
                                               # column(12, 
@@ -1616,7 +1616,7 @@ server <- function(input, output, session) {
     input$agedrop
   })
   
-  output$ageplot <- renderPlot({
+  output$ageplot <- renderPlotly({
     if (ageVar() == "age") {
       
       fplot <-  ggplot(by_villagemore, aes(x = village, y = head_age, fill = village, width=0.5, srt = 45)) +
@@ -1626,7 +1626,7 @@ server <- function(input, output, session) {
         ggtitle("Mean age for Head of Households ")  +
         theme(legend.position = "none") +
         rotate_x_text(angle = 33, size = rel(1.5)) + scale_fill_viridis_d()
-      fplot
+      ggplotly(fplot)
     }
     else if (ageVar() == "edu") {
       splot <- ggplot(by_villagemore, aes(x = "", y= head_edu, fill = village)) +
@@ -1634,7 +1634,7 @@ server <- function(input, output, session) {
         facet_wrap(~village, ncol = 5) +
         geom_text(aes(label = sub), position = position_stack(vjust=1.1)) +
         labs(title = "Mean Years of Education for Head of Households", x = NULL, y = "Years of Education") +
-        theme(legend.position="none", strip.text.x = element_text(size = 12)) + scale_fill_viridis_d()
+        theme(legend.position="none", strip.text.x = element_text(size = 9)) + scale_fill_viridis_d()
       splot
     }
     else if (ageVar() == "pov") {
