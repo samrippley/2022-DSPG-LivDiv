@@ -720,15 +720,7 @@ cs_avg_plot <- ggplot(cs_avg, aes(x = week, y = avg_cs , color = village)) +
   ggtitle("Average Weekly Consumption Expenditure by Village")+
   labs(x = "", y = "Average Consumption Expenditure (INR)", caption = "Mean: 766.13  Median: 731.68", color = "Villages")+
   scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
-  theme(plot.caption = element_text(size = 10))+
-  geom_vline(xintercept = c(4,19,22, 29, 44, 48), linetype = "longdash")+
-  geom_text(aes(x=4, label="Kharif Crop Harvest", y=1500), colour="black", angle = 90, vjust = -1, size = 3)+
-  geom_text(aes(x=19, label="Rabi Crop Harvest", y=1500), colour="black", angle = 90, vjust = -1, size = 3)+
-  geom_text(aes(x=22, label="Fani", y=1500), colour="black", angle = 90, vjust = -1, size = 3)+
-  geom_text(aes(x=29, label="Vayu", y=1500), colour="black", angle = 90, vjust = -1, size = 3)+
-  geom_text(aes(x=44, label="Hikaa", y=1500), colour="black", angle = 90, vjust = -1, size = 3)+
-  geom_text(aes(x=48, label="Bulbul & Matmo", y=1500),colour = "black", angle = 90, vjust = -1, size = 3)
-
+  theme(plot.caption = element_text(size = 10))
 # Average consumption items bought
 
 cs_avg_items <- cs %>% 
@@ -816,6 +808,19 @@ non_food_cs <- fin_diary %>%
 filtered_non_food_cs <- reactive({
   non_food_cs %>% 
     filter(village %in% input$village_cs_nonfood)
+})
+
+# Events data -------------------------------------
+events <- c("Kharif Crop Harvest", "Rabi Crop Harvest","Honey Harvest", "Fani", "Bulbul and Matmo", "Vayu", "Hikaa",
+            "Republic Day", "Rama Navami", "Eid Al-Fitr", "Indian Independence Day", "Dussehra", "Diwali"," ")
+start_week <- c(2, 0, 19, 22, 48, 30, 43, 10, 20, 28, 38, 46, 49,0)
+end_week <- c(12, 14, 32, 24, 49, 31, 44, 10.2, 20.2, 28.2, 38.2, 46.2, 49.2,0)
+event_periods <- data.frame(events, start_week, end_week)
+events_vector <- events
+
+filtered_event <- reactive({
+  event_periods %>% 
+    filter(events %in% input$event_choose)
 })
 
 #--------------------------------------------------------------------
@@ -1033,18 +1038,14 @@ ui <- navbarPage(title = "",
                                               h1(strong("Livelihood Behavior"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
-                                                     h4(strong("Description")),
-                                                     p("Livelihood behavior is a particularly interesting variable, regarding our project goals. Due to the increasing threats in the Sundarbans region, most of the population depends on multiple sources of income. It is common to have a diversified livelihood- in other words, a large proportion of our population of interest have numerous sources of income"),
-                                                     p("We began our evaluation of livelihood behavior by looking at the head of households primary occupation. At first glance, the primary occupation graph shows us that the most common occupation in the region is Farming as well as Casual labor, but the graph shows that different villages have a higher proportion of workers in certain occupations. For example, the village of Amrabati has the highest proportion of workers in jobs related to fishing. This can tell us more about life in a specific village."),
-                                                     p("Next we evaluated secondary occupation of the head of households. We can see that while farming is the largest primary occupation it is also the largest secondary occupation which tells us the impact of farming and casual labor in the region and the need for some households to work more than one job."),
-                                                     p("Job Duration"),
-                                                     p("Since farming was one of the most common occupations, we wanted to take a closer look at at the proportion of households involved in agricultural farming, broken down by village. The variable we used was a yes/no answer to the question “Did your household cultivate any agriculture crops in the last 12 months?” On average, across all the villages, 63.9% of the households participate in farming. When broken down by village, Amrabati had the lowest percentage of households that had cultivated crops in the given year, at 7%. Haridaskati Samsernaga had the highest percentage of households that had cultivated crops in the given year, at 86%. This was closely followed by Pargumti at 85%. Given that on average, across all the villages, 63.9% of the households participate in farming it is evident that a very shows that a large proportion of our households participated in some sort of crop cultivation."),
-                                                     p("Land holding"),
-                                                     p("Crops"),
-                                                     p("Household Assets"),
-                                                     p("Land Fallow")
-
-
+                                                     h4(strong("Occupation")),
+                                                     p("Due to the increasing threats in the Sundarbans region, most of the population depends on multiple sources of income. It is common to diversify livelihood. This is a common practice for climate vulnerable regions, to limit risk associated with having one form of livelihood."),
+                                                     p("We began our evaluation of livelihood behavior by looking at the head of households’ primary occupation, primary occupation duration, and secondary occupation. The most common primary and secondary occupations are Farming followed by Casual labor. These graphs show that there are differences in occupation by village. For example, the village of Amrabati has the highest proportion of workers in jobs related to fishing. The head of households’ occupations are distributed relatively similarly from primary to secondary. However, the total number of household heads in each occupation is lower in secondary occupation. The total number of household heads with a primary occupation is 252 while 149 has a secondary occupation. This means that 103 of the 252 household heads did not report having a secondary occupation."),
+                                                     h4(strong("Agriculture")),
+                                                     p("Our data set contained and agricultural crop variable where participants gave a yes/no answer to the question “Did your household cultivate any agriculture crops in the last 12 months?” On average, across all the villages, 63.9% of the households participate in farming. When broken down by village, Amrabati had the lowest percentage of households that had cultivated crops in the given year, at 7%. Haridaskati Samsernaga had the highest percentage of households that had cultivated crops in the given year, at 86%. This was closely followed by Pargumti at 85%. Given that on average, across all the villages, 63.9% of the households participate in farming it is evident that a very shows that a large proportion of our households participated in some sort of crop cultivation."), 
+                                                     p("We next evaluated Land Holding and Land Fallow by village.")
+                                                     
+                                                     
                                               ) ,
                                               column(8, 
                                                      h4(strong("Livelihood - October 2018")),
@@ -1052,11 +1053,12 @@ ui <- navbarPage(title = "",
                                                        "Primary Occupation" = "pocu",
                                                        "Secondary Occupation" ="socu", 
                                                        "Job Duration" = "jodu",
+                                                       #"Crops" = "cro",
                                                        "Agriculture Farming" = "agfa",
                                                        "Land Holding" = "laho",
-                                                       "Crops" = "cro",
-                                                       "Household Assets" = "hoas",
-                                                       "Land Fallow" = "lafa"
+                                                       "Land Fallow" = "lafa",
+                                                       "Household Assets" = "hoas"
+                                                       
                                                      ),
                                                      ), 
                                                      withSpinner(plotOutput("ocuplot", height = "500px")),
@@ -1128,7 +1130,7 @@ ui <- navbarPage(title = "",
                                                      p("We present average weekly expenditure from Nov 2018 - Oct 2019 to examine the spending behaviors of households in the region. 
                                                        This will provide information on the changing nature of spending in the Sundarbans region due to events such as festivals, 
                                                        harvest seasons, and weather-related shocks."),
-                                                     p("Expenditure is defined as total weekly consumption (e.g., food) and non-consumption (e.g., rent) items. 
+                                                     p("Expenditure is defined as spending on consumption (e.g., food) and non-consumption (e.g., rent) items. 
                                                        It appears that the largest expense for households during this period include house repairs and festival-related costs. 
                                                        The most common expenditures are food purchases."),
                                                      br("")
@@ -1198,18 +1200,21 @@ ui <- navbarPage(title = "",
                                               h1(strong("Consumption"), align = "center"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
-                                                     p("We present the average weekly expenditure on consumption items from November 2018 - October 2019. By visualizing consumption
-                                                       expenditures, we can gain information about household spending behavior, identifying changes in spending, as well as which items
-                                                       are bought most frequently."),
-                                                     p("We start by plotting avergae consumption expenditure aggregated by all items, then seperated by food and non-food items. "),
+                                                     p("We present the average weekly expenditure on consumption items from November 2018 - October 2019. Consumption expenditure includes purchases by 
+                                                     households on goods and services, excluding housing. By visualizing consumption expenditures over time, we can gain information about household spending behavior, 
+                                                     identifying changes in spending, as well as which consumption items are bought most frequently. Within the data period, the Sundrabans region spent
+                                                       an average of 766.13 Rupees per week on consumption items; they also had bought an average of seven consumption items per week."),
+                                                     p("We start by plotting average consumption by expenditure and quantity of items, then seperated by food and non-food items."),
                                                      br("")
                                                      
                                               )),
                                      # Sidebar with a select input for village
                                      sidebarLayout(
                                        sidebarPanel(
-                                         pickerInput("village_cs", "Select Village:", choices = village_vector, 
+                                         pickerInput("village_cs", "Select Village:", choices = village_vector,
                                                      selected = village_vector,
+                                                     multiple = T, options = list(`actions-box` = T)),
+                                         pickerInput("event_choose", "Select Event:", choices = events_vector, selected = " ", 
                                                      multiple = T, options = list(`actions-box` = T)),
                                          
                                        ),
@@ -1231,8 +1236,10 @@ ui <- navbarPage(title = "",
                                                      p("- Staple Items: Rice/Grains, Flour, Vegetables, Fruits, Tubers, Beans and Spices"),
                                                      p("- Meats: Red Meat, Fish, and Poultry"),
                                                      p("- Other: Eggs, Dairy, Packaged Foods, Tea, and Sinful Items"),
-                                                     p("We identified that most of consumption expenditure is being used for staple food items. We observed
-                                                       a siginficant spike in 'Other' items in Shibpur in late April due to a large increase in expenditure on sinful items."),
+                                                     p("We identified that most of consumption expenditure is being used for staple food items, followed by meats. We observed
+                                                       a siginficant spike in 'Other' items, in Shibpur, in late April due to a large increase in expenditure on sinful items (tea,
+                                                       cigarettes, betel leaves, bidil, etc.). These items are often deemed to be harmful to society, but provide certain satisfaction to
+                                                       consumers. Therefore, this increase in consumption could suggest a communal need to celebrate or cope from a certain event."),
                                                      br("")
                                                      
                                               )),
@@ -1260,7 +1267,10 @@ ui <- navbarPage(title = "",
                                               column(12,h4(strong("Overview")),
                                                      p("Furthermore, we examined consumption expenditure on non-food items, inluding: clothes, 
                                                        books and tuition, utilities, toiletries, health, home repairs, transportation, livestock,
-                                                       agriculture, labor, and other non-food items."),
+                                                       agriculture, labor, and other non-food items. Consumption expenditure on health, home repairs, and books/tuition
+                                                       made up the largest but least frequent expenses, with utilities, toilitries, and transportation making up the most frequent
+                                                       purchases. Considering farmers make up the largest proportion of occupation in the Sundarbans, it is predictable to also see 
+                                                       frequent consumption expenditures on agriculture, livestock, and labor."),
                                                      br("")
                                                      
                                               )),
@@ -2008,13 +2018,7 @@ server <- function(input, output, session) {
       labs(x = "", y = "Average Consumption Expenditure (INR)", caption = "Mean: 766.13  Median: 731.68", color = "Villages")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
       theme(plot.caption = element_text(size = 10))+
-      geom_vline(xintercept = c(4,19,22, 29, 44, 48), linetype = "longdash")+
-      geom_text(aes(x=4, label="Kharif Crop Harvest", y=1500), colour="black", angle = 90, vjust = -1, size = 3)+
-      geom_text(aes(x=19, label="Rabi Crop Harvest", y=1500), colour="black", angle = 90, vjust = -1, size = 3)+
-      geom_text(aes(x=22, label="Fani", y=1500), colour="black", angle = 90, vjust = -1, size = 3)+
-      geom_text(aes(x=29, label="Vayu", y=1500), colour="black", angle = 90, vjust = -1, size = 3)+
-      geom_text(aes(x=44, label="Hikaa", y=1500), colour="black", angle = 90, vjust = -1, size = 3)+
-      geom_text(aes(x=48, label="Bulbul & Matmo", y=1500),colour = "black", angle = 90, vjust = -1, size = 3)
+      geom_rect(data = filtered_event(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = events), alpha=0.15)
   })
   
   # Filtered cs items
@@ -2065,6 +2069,14 @@ server <- function(input, output, session) {
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
       
   })
+  
+  #Event Filtered
+  
+  filtered_event <- reactive({
+    event_periods %>% 
+      filter(events %in% input$event_choose)
+  })
+  
   ###Shock plot output  -----------------------------------------------------
   
   #shock_all plot output
