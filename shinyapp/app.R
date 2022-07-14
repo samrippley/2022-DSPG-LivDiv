@@ -726,9 +726,9 @@ filtered_non_food_cs <- reactive({
 
 # Events data -------------------------------------
 events <- c("Kharif Crop Harvest", "Rabi Crop Harvest","Honey Harvest", "Fani", "Bulbul and Matmo", "Vayu", "Hikaa",
-            "Republic Day", "Rama Navami", "Eid Al-Fitr", "Indian Independence Day", "Dussehra", "Diwali"," ")
-start_week <- c(2, 0, 19, 22, 48, 30, 43, 10, 20, 28, 38, 46, 49,0)
-end_week <- c(12, 14, 32, 24, 49, 31, 44, 10.2, 20.2, 28.2, 38.2, 46.2, 49.2,0)
+            "Republic Day", "Rama Navami", "Eid Al-Fitr", "Indian Independence Day", "Dussehra", "Diwali")
+start_week <- c(2, 0, 19, 22, 48, 30, 43, 10, 20, 28, 38, 46, 49)
+end_week <- c(12, 14, 32, 24, 49, 31, 44, 10.2, 20.2, 28.2, 38.2, 46.2, 49.2)
 event_periods <- data.frame(events, start_week, end_week)
 events_vector <- events
 
@@ -1129,7 +1129,7 @@ ui <- navbarPage(title = "",
                                          pickerInput("village_cs", "Select Village:", choices = village_vector,
                                                      selected = village_vector,
                                                      multiple = T, options = list(`actions-box` = T)),
-                                         pickerInput("event_choose", "Select Event:", choices = events_vector, selected = " ", 
+                                         pickerInput("event_choose", "Select Event:", choices = events_vector, selected = "Kharif Crop Harvest", 
                                                      multiple = T, options = list(`actions-box` = T)),
                                          
                                        ),
@@ -1182,8 +1182,9 @@ ui <- navbarPage(title = "",
                                               column(12,h4(strong("Overview")),
                                                      p("Furthermore, we examined consumption expenditure on non-food items, inluding: clothes, 
                                                        books and tuition, utilities, toiletries, health, home repairs, transportation, livestock,
-                                                       agriculture, labor, and other non-food items. Consumption expenditure on health, home repairs, and books/tuition
-                                                       made up the largest but least frequent expenses, with utilities, toilitries, and transportation making up the most frequent
+                                                       agriculture, labor, and other non-food items."), 
+                                                     p("Consumption expenditure on health, home repairs, and books/tuition
+                                                       made up the largest but least frequent expenses, while utilities, toilitries, and transportation made up the most frequent
                                                        purchases. Considering farmers make up the largest proportion of occupation in the Sundarbans, it is predictable to also see 
                                                        frequent consumption expenditures on agriculture, livestock, and labor."),
                                                      br("")
@@ -1966,7 +1967,8 @@ server <- function(input, output, session) {
       geom_line()+
       theme_classic()+
       labs(x = "", y = "Average Weekly Expenditure", color = "Villages")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+      ggtitle("Average Consumption Expenditure on Food Items")+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019", caption = "Mean: 721.41  Median: 686.96"), limits = 10:40)
       
   })
   
@@ -1980,7 +1982,8 @@ server <- function(input, output, session) {
       geom_line()+
       theme_classic()+
       labs(x = "", y = "Average Weekly Expenditure", color = "Villages")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+      ggtitle("Average Consumption Expenditure on Non-Food Items")+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019", caption = "Mean: 882.22  Median: 769.75"), limits = 10:40)
       
   })
   
