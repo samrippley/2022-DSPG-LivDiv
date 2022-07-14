@@ -837,8 +837,8 @@ ui <- navbarPage(title = "",
                                    #fluidRow(align = "center",
                                    #    p(tags$small(em('Last updated: August 2021'))))
                           ),
-                          mainPanel(
-                            img(src='Picture1.png', align = "right", width = "75%"),
+                          fluidRow(align = "center",
+                            img(src='Picture2.png', width = "75%"),
                           )), 
                  ## Sundarbans Region--------------------------------------------
                  navbarMenu("Sundarbans Region" ,
@@ -871,13 +871,13 @@ ui <- navbarPage(title = "",
                                      
                             ),
                             tabPanel("Gallery",
-                            fluidRow(style = "margin: 6px;", align = "justify",
+                            fluidRow(style = "margin: 6px;", 
                                      column(12,
                                             h2(strong("Images"))
                                             
                                             
                                      ),   
-                                     mainPanel(
+                                     mainPanel( 
                                        actionButton("previous", "Previous"),
                                        actionButton("next", "Next"),
                                        imageOutput("image")
