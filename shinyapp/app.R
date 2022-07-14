@@ -940,12 +940,11 @@ ui <- navbarPage(title = "",
                                                      
                                                      
                                               ) ,
-                                              column(8, 
-
+                                              column(8, h4(strong("Head of Household Demographics")),
+                                                     selectInput("ocudrop", "Select Characteristic:", width = "100%", choices = c(    
                                                        "Primary Occupation" = "pocu",
                                                        "Secondary Occupation" ="socu", 
                                                        "Job Duration" = "jodu",
-                                                       #"Crops" = "cro",
                                                        "Agriculture Farming" = "agfa",
                                                        "Land Holding" = "laho",
                                                        "Land Fallow" = "lafa",
@@ -956,6 +955,7 @@ ui <- navbarPage(title = "",
                                                      withSpinner(plotlyOutput("ocuplot", height = "500px")),
                                                      
                                               ),
+                                     )),
                                               # column(12, 
                                               #       h4("References: "), 
                                               #       p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
@@ -987,7 +987,8 @@ ui <- navbarPage(title = "",
                                                        like some did. It is expected to see low amounts of saving because of the high poverty level in the region."
                                                      )
                                               ) ,
-                                              column(8, 
+                                              column(8, h4(strong("Head of Household Demographics")),
+                                                     selectInput("findrop", "Select Characteristic:", width = "100%", choices = c( 
 
                                                        "Household Business" = "hobu",
                                                        "Salary" = "sal",
@@ -1003,7 +1004,7 @@ ui <- navbarPage(title = "",
                                               #  p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
                                               #  p("", style = "padding-top:10px;")) 
                                       
-                            
+                                     )),
                             
                  ), 
                  
@@ -1673,7 +1674,7 @@ server <- function(input, output, session) {
     input$ocudrop
   })
   
-  output$ocuplot <- renderPlot({
+  output$ocuplot <- renderPlotly({
     if (ocuVar() == "pocu") {
       pocuplot <- ggplot(countv, aes(x = job, y = n, fill = village)) +
         geom_col() +
