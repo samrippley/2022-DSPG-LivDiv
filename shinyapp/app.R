@@ -1622,13 +1622,13 @@ server <- function(input, output, session) {
     if (ageVar() == "age") {
       
       fplot <-  ggplot(by_villagemore, aes(x = village, y = head_age, fill = village, width=0.5, srt = 45)) +
-        geom_col(width = "5") +
+        geom_col(hoverinfo = "text", aes(text = paste("Age: ", head_age)), width = "5") +
         ylab("Age") + 
         xlab("")+
         #ggtitle("Mean age for Head of Households ")  +
         theme(legend.position = "none") +
-        rotate_x_text(angle = 33, size = rel(1.5)) + scale_fill_viridis_d()
-      ggplotly(fplot)
+        rotate_x_text(angle = 33, size = rel(1)) + scale_fill_viridis_d()
+      ggplotly(fplot, tooltip = c("text"))
     }
     else if (ageVar() == "edu") {
       splot <- ggplot(by_villagemore, aes(x = "", y= head_edu, fill = village)) +
