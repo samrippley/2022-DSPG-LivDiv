@@ -32,7 +32,6 @@ library(lubridate)
 library(shinyWidgets)
 library(viridis)
 library(RColorBrewer)
-library(slickR)
 
 prettyblue <- "#232D4B"
 navBarBlue <- '#427EDC'
