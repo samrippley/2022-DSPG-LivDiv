@@ -954,12 +954,12 @@ ui <- navbarPage(title = "",
                                                      ), 
                                                      withSpinner(plotOutput("ocuplot", height = "500px")),
                                                      
-                                              )
+                                              ),
                                               # column(12, 
                                               #       h4("References: "), 
                                               #       p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
                                               #      p("", style = "padding-top:10px;")) 
-                                     )), 
+                                     
                             
                             tabPanel("Financial", 
                                      fluidRow(style = "margin: 6px;", align = "justify",
@@ -1001,7 +1001,7 @@ ui <- navbarPage(title = "",
                                               #   h4("References: "), 
                                               #  p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
                                               #  p("", style = "padding-top:10px;")) 
-                                     )), 
+                                      
                             
                             
                  ), 
