@@ -774,7 +774,7 @@ ui <- navbarPage(title = "",
                                    br(""),
                                    h1(strong("Assessing Livelihood Diversification in Sundarbans, India using High Frequency Data "),
                                       #h2(strong("Sundarbans")),
-                                      br(""),
+                                     # br(""),
                                       h4("Data Science for the Public Good Program"),
                                       h4("Virginia Polytechnic Institute and State University"),
                                       #h4("[updat this]"),
@@ -820,7 +820,6 @@ ui <- navbarPage(title = "",
                                           h2(strong("Data")),
                                           p("We acquire weekly household financial and consumption data from Gupta et al. (2021). Gupta et al. (2021) originally collected household-level data from a representative sample of rural households in the Sundarbans region in West Bengal, India. They collected information from approximately 300 households in 10 villages from November 2018 to October 2019.")
                                    ),
-                                   
                                    column(4,
                                           h2(strong("Initial/Baseline")),
                                           p("The initial or baseline survey was conducted in November 2018. This data allows the team to visualize and provide insights into the region's demographic and socio-economic characteristics. The baseline survey collected information on household demographics, economic activities, assets and landholding, shock history, migration, and agricultural behaviors.")
@@ -842,24 +841,27 @@ ui <- navbarPage(title = "",
                           )), 
                  ## Sundarbans Region--------------------------------------------
                  navbarMenu("Sundarbans Region" ,
-                            tabPanel("Sundarbans Villages", 
-                                     fluidRow(style = "margin: 6px;",
-                                              h1(strong(""), align = "center"),
-                                              p("", style = "padding-top:10px;")),
-                                     fluidRow(style = "margin: 6px;",
-                                              p("", style = "padding-top:10px;"),
-                                              column(12, align = "center",h4(strong("Sundarbans Villages")),
-                                                     p(""),
-                                                     br("")
+                          tabPanel("Villages", 
+                                   
+                                   fluidRow(style = "margin: 2px;",
+                                            align = "center",
+                                            h1(strong("Representative Villages in the Sundarbans"),
+                                             
+                                            )),
+                                   
+                                     fluidRow(style = "margin: 6px;", align = "justify",
+                                              column(4, 
+                                                     h4(strong("Which villages were included in our data set?")),
+                                                     p("The Sundarbans are a cluster of islands located in the Bay of Bengal that spans across India and Bangladesh. Gupta et al. (2021) collected household-level data from a representative sample of rural households in the Sundarbans region. Our villages are located on the Indian in West Bengal, India. Our sample does not include any villages in "),
+                                                     
+                                                     p("They collected information from approximately 300 households in 10 villages from November 2018 to October 2019."),
+                                              ),
+                                              column(8, leafletOutput("map_leaflet", width = "100%"),
                                                      
                                                      
-                                              )),
-                                     fluidPage(
-                                       leafletOutput("map_leaflet", width = "100%"),
-                                       #p(),
-                                       #actionButton("recalc", "New Points")
-                                     ),
-                            ),
+                                              )
+                                     
+                            )),
                             tabPanel("Timelapse", 
                                      fluidRow(style = "margin: 6px;",
                                               p("", style = "padding-top:10px;"),
