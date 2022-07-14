@@ -90,15 +90,6 @@ purposenv <- as.data.frame(purposenv)
 df <- data.frame(A = c("Consumption", "Other Expenses", "Fees Due", "Payback Other Loan", "Asset Purchase", "Agriculture Purchases"),
                  B = c(purposenv$V1))
 # pls purpose dynamic hist
-names <- c("village", "Consumption", "Other Expenses", "Fees Due", "Payback Other Loan", "Asset Purchase", "Agriculture Purchases")
-pls <- rbind(names, purpose)
-names(pls) <- pls[1,]
-pls <- t(pls)
-pls <- as.data.frame(pls)
-names(pls) <- pls[1,]
-pls <- pls[-1,]
-#pls <- t(pls)
-pls <- as.data.frame(pls)
 
 
 # children data
@@ -1084,7 +1075,19 @@ ui <- navbarPage(title = "",
                                                        There is a significant increase in households’ income across most villages in late March. This increase coincides 
                                                        with the largest harvest for farmers in the region. We will investigate the different variations (spikes and dips) 
                                                        to determine the correlation between environmental shocks or unexpected household incidents."),
-                                                     br("")
+                                                     p("Income: Over the twelve month period that the data was collected in, our team was able to track 
+                                                       weekly household income and we were able to visualize it by breaking the income by each village.  
+                                                       On average, the weekly income per household is 1395.61 INR and the median is 1341.82. Throughout 
+                                                       the year there are many spikes which can be caused by different harvest seasons, influx in remittance, 
+                                                       or other external factors. In early April we can see a bigger spike as this time period marks one of 
+                                                       the biggest harvest seasons seen by the local people. "),
+                                                     p("Male and Female Income: Although we know that males in the region attain more income than females, 
+                                                       we wanted to see if there are certain households in any villages where …"),
+                                                     p("The importance of remittance income can be seen in this graph as all of the villages have similar 
+                                                       weekly income before adding remittance. The village of Sagar has a weekly average income around 1954 
+                                                       INR which is one of the higher weekly incomes in the region. Since many of these households work for 
+                                                       wage either as an agriculture worker or casual laborer, the per week income is relatively same throughout 
+                                                       the region. This can indicate why the weekly income is ranging consistently in-between 1000 INR and 2000 INR.")
                                                      
                                               )),
                                      # Sidebar with a select input for village
@@ -1094,8 +1097,7 @@ ui <- navbarPage(title = "",
                                          pickerInput("village_inc", "Select Village:", choices = village_vector, 
                                                      selected = village_vector,
                                                      multiple = T, options = list(`actions-box` = T)),
-                                         varSelectInput("Gender", "Select Gender:", malefemale_inc[,-(1:2)])
-                                         
+                                         varSelectInput("Gender", "Select Gender:", malefemale_inc[,-(1:2)]),
                                        ),
                                        # Show a plot of the generated plot
                                        mainPanel(
@@ -1258,7 +1260,11 @@ ui <- navbarPage(title = "",
                                                        Fani, Category 4 (April – May 2019), and Category 1, Bulbul and Matmo (October – November 2019). The Sundarbans also could have been negatively impacted by two 
                                                        cyclones that hit the Arabian Sea during this period: Vayu (Category 1, June 8-18) and Hikaa (Category 1, September 20-26). 
                                                        It is possible households are using remittances to cope with these cyclones and weather-related shocks."),
-                                                     br("")
+                                                     p("Remittance impact on the livelihood of the Sundarban population can be seen as the data collected shows that the median 
+                                                       weekly remittance income is 205.61 INR which is on average almost 800 INR. This significant portion of a households monthly 
+                                                       income show that importance this income has on the families ability to function. The graph also does a good job at showing 
+                                                       spikes in remittance income which can be either because of festivals, other celebrations, money sent because of health 
+                                                       concerns, or other shocks.")
                                                      
                                                      
                                               ) ),
