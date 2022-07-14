@@ -1558,7 +1558,7 @@ server <- function(input, output, session) {
   output$bor <- renderPlot({
     ggplot(filtered_bramt(), aes(x=week_num, y=br_amt, color = village, na.rm=TRUE)) +
       geom_line() +
-      labs(title ="Amount Borrowed by Village") + 
+      #labs(title ="Amount Borrowed by Village") + 
       xlab("Date") +
       ylab("Amount Borrowed (INR)")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) +
@@ -1575,7 +1575,7 @@ server <- function(input, output, session) {
   output$borr <- renderPlot({
     ggplot(filtered_dbr(), aes(x=week_num, y=d_br, color = village, na.rm=TRUE)) +
       geom_line() +
-      labs(title = "Number of Households Borrowing (Cash or in Kind)") + 
+      #labs(title = "Number of Households Borrowing (Cash or in Kind)") + 
       xlab("Date") +
       ylab("Number of HH")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) +
@@ -1588,7 +1588,7 @@ server <- function(input, output, session) {
   output$purpplot <- renderPlot({
     ggplot(df, aes(x= A, y = B, fill = A)) + geom_col() + 
       coord_flip()+
-      labs(title = "Purpose of Borrowing") + 
+      #labs(title = "Purpose of Borrowing") + 
       xlab("") +
       ylab("")+
       theme(legend.position = "none") 
@@ -1625,7 +1625,7 @@ server <- function(input, output, session) {
         geom_col(width = "5") +
         ylab("Age") + 
         xlab("")+
-        ggtitle("Mean age for Head of Households ")  +
+        #ggtitle("Mean age for Head of Households ")  +
         theme(legend.position = "none") +
         rotate_x_text(angle = 33, size = rel(1.5)) + scale_fill_viridis_d()
       ggplotly(fplot)
@@ -1635,21 +1635,21 @@ server <- function(input, output, session) {
         geom_bar(width = 1, stat = "identity") +
         facet_wrap(~village, ncol = 5) +
         geom_text(aes(label = sub), position = position_stack(vjust=1.1)) +
-        labs(title = "Mean Years of Education for Head of Households", x = NULL, y = "Years of Education") +
+        labs(x = NULL, y = "Years of Education") +
         theme(legend.position="none", strip.text.x = element_text(size = 9)) + scale_fill_viridis_d()
       splot
     }
     else if (ageVar() == "pov") {
       village_pl_count_plot <- ggplot(dat_pl, aes(x= Village, y = `Households`, fill = `Key`)) + 
         geom_col(position = 'stack', hoverinfo = "text", aes(text = paste("Percentage:",Percentage,"%\n"))) + 
-        labs( x= "", y = "Total Households", fill = "") + 
+        labs(x= "", y = "Total Households", fill = "") + 
         theme_classic() + 
         coord_flip()
     }
     else if (ageVar() == "mar") {
       marplot <- ggplot(countmar, aes(x = head_married, y = n, fill = Gender)) +
         geom_col() +
-        labs(title = "Household Heads' Marital Status", x = "Not Married                            Married", y = "Total Household Head ") +
+        labs(x = "Not Married                            Married", y = "Total Household Head ") +
         scale_x_discrete() + theme(legend.title=element_blank()) 
       marplot
     }
@@ -1658,7 +1658,7 @@ server <- function(input, output, session) {
         geom_col() +
         labs( x = "", y = "Median Household Size")+
         coord_flip()+
-        ggtitle("Household Size by Village") +
+        #ggtitle("Household Size by Village") +
         theme(legend.position="none") + scale_fill_viridis_d()
       hh_size_plot
     }
@@ -1681,7 +1681,7 @@ server <- function(input, output, session) {
         scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
         coord_flip() +
         theme_minimal () +
-        labs(title = "Primary Occupation of Household Heads", x = "", y = "") + scale_fill_viridis_d()
+        labs(x = "", y = "") + scale_fill_viridis_d()
       pocuplot
     } 
     else if (ocuVar() == "socu") {
@@ -1690,18 +1690,18 @@ server <- function(input, output, session) {
         scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
         coord_flip() +
         theme_minimal () +
-        labs(title = "Secondary Occupation of Household Heads", x = "", y = "") + scale_fill_viridis_d()
+        labs(x = "", y = "") + scale_fill_viridis_d()
       socplot
     }
     else if (ocuVar() == "agfa") {
-      agfaplot <- ggplot(grouped, aes(village,prop_farm)) + geom_col(fill = "navy blue") + labs(x = "", y = "Proportion", title = "Proportion of Households Involved in Agricultural Farming") + coord_flip() + theme_classic()
+      agfaplot <- ggplot(grouped, aes(village,prop_farm)) + geom_col(fill = "navy blue") + labs(x = "", y = "Proportion") + coord_flip() + theme_classic()
       agfaplot
     }
     else if (ocuVar() == "laho") {
       mean_land_plot <- ggplot(land_stats, aes(x = villages, y = mean_land_value, fill = villages)) +
         geom_col(fill = plasma(10, alpha = 1, begin = 0, end = 1, direction = 1)) +
         coord_flip() +
-        ggtitle("Average Amount of Land Owned in Each Village") +
+        #ggtitle("Average Amount of Land Owned in Each Village") +
         labs(x = "", y = "Land Owned [Kathas]") + scale_fill_viridis_d()
       mean_land_plot
     }
@@ -1711,7 +1711,7 @@ server <- function(input, output, session) {
     }
     else if (ocuVar() == "hoas") {
       assetplot <- ggplot(assets_long, aes(property, measurement, fill = property)) + geom_col() + 
-        labs(x = "", y = "Proportion" ,title = "Proportion of Households Owning Assets", fill  = "Asset") + 
+        labs(x = "", y = "Proportion" , fill  = "Asset") + 
         theme(axis.text.y=element_blank(),axis.ticks.y=element_blank()) +
         geom_text(aes(label = measurement), size = 3, nudge_y = .05) + coord_flip() + scale_fill_viridis_d()
       assetplot
@@ -1728,7 +1728,7 @@ server <- function(input, output, session) {
         geom_col( fill = plasma(10, alpha = 1, begin = 0, end = 1, direction = 1)) + 
         coord_flip()+
         labs(x= "", y = "Average Job Duration [Months]")+
-        ggtitle("Average Job Duration for the Head of the Household") +
+        #ggtitle("Average Job Duration for the Head of the Household") +
         theme_classic() + scale_fill_viridis_d()
       job_duration_plot
     }
@@ -1746,7 +1746,7 @@ server <- function(input, output, session) {
         geom_col(position = 'stack', hoverinfo = "text", aes(text = paste("Percentage:",`percentage`,"%\n"))) + 
         labs( x= "", y = "Total Households", fill = "") + 
         theme_classic() + 
-        ggtitle("Households That Own a Business") +
+        #ggtitle("Households That Own a Business") +
         coord_flip()
     }
     else if (finVar() == "inc") {
@@ -1761,8 +1761,7 @@ server <- function(input, output, session) {
     else if (finVar() == "sav") {
       savplot <- ggplot(nbsavcount, aes(x = nb_put_saving, y = n, fill = "red")) +
         geom_col() +
-        labs(title="Number of Times Households Saved Money in a Year",
-             x = "Numer of Times Able to Save", y = "Number of Household Heads") +
+        labs(x = "Numer of Times Able to Save", y = "Number of Household Heads") +
         theme_classic() +
         theme(legend.position="none")
       savplot
@@ -1786,7 +1785,7 @@ server <- function(input, output, session) {
       geom_line() +
       theme_classic() +
       labs(x = "Date", y = "Average Remittance Income (INR)", caption = "Mean: 205.61   Median: 107.14", color = "Villages") +
-      ggtitle("Average Weekly Household Remittance Income by Village")+ #(11/16/18 - 10/31/19)
+      #ggtitle("Average Weekly Household Remittance Income by Village")+ #(11/16/18 - 10/31/19)
       #scale_color_brewer(palette = "Spectral")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) + 
       scale_color_viridis_d()+
@@ -1822,9 +1821,7 @@ server <- function(input, output, session) {
   output$exp <- renderPlot({
     ggplot(filtered_exp(), aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) +
       geom_line() +
-      labs(title="Average Weekly Household Expenditure by Village",
-           
-           x="Date", y="Average Weekly Expenditure (INR)", caption = "Mean: 1982.77   Median: 1832.1") +
+      labs(x="Date", y="Average Weekly Expenditure (INR)", caption = "Mean: 1982.77   Median: 1832.1") +
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + 
       scale_color_viridis_d()+
       theme_classic()+
@@ -1848,7 +1845,7 @@ server <- function(input, output, session) {
   output$inc <- renderPlot({
     ggplot(filtered_inc(), aes(date, avg_inc, color = village)) + 
       geom_line() + 
-      labs(x = "", y = "Income (INR)", title = "Average Weekly Household Income by Village", color = "Village",
+      labs(x = "", y = "Income (INR)", color = "Village",
            caption = "Mean: 1395.61   Median: 1341.82") + 
       scale_color_viridis_d()+
       theme_classic()+
@@ -1864,7 +1861,7 @@ server <- function(input, output, session) {
   output$malefemaleinc <- renderPlot({
     ggplot(filtered_malefemaleinc(), aes(x = week,y = !!input$Gender, color = village)) + geom_line() + 
       #geom_line(aes(y = !!input$gender, color = village), linetype = "twodash") +  
-      labs(x = "", y = "Income (INR)", title = "Male and Female Income", color = "Village") + 
+      labs(x = "", y = "Income (INR)", color = "Village") + 
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + scale_color_viridis_d()
   })
   
@@ -1887,7 +1884,7 @@ server <- function(input, output, session) {
   output$totalinc <- renderPlot({
     qplot(x=week_num, y=inc_total, color = village,
           data=filtered_totalinc(), na.rm=TRUE,
-          main="Total Income by Village",
+          #main="Total Income by Village",
           xlab="Date", ylab="Total Income (INR)", geom = "line") +
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + scale_color_viridis_d()
   })
@@ -1914,7 +1911,7 @@ server <- function(input, output, session) {
     ggplot(filtered_cs_avg(), aes(x = week, y = avg_cs , color = village)) +
       geom_line() +
       theme_classic()+
-      ggtitle("Average Weekly Consumption Expenditure by Village")+
+      #ggtitle("Average Weekly Consumption Expenditure by Village")+
       labs(x = "", y = "Average Consumption Expenditure (INR)", caption = "Mean: 766.13  Median: 731.68", color = "Villages")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       theme(plot.caption = element_text(size = 10))+
@@ -1933,7 +1930,7 @@ server <- function(input, output, session) {
     ggplot(filtered_cs_avg_items(), aes(x = week, y = avg_item, color = village))+
       geom_line() +
       theme_classic()+
-      ggtitle("Average Consumption Items Bought a Week")+
+      #ggtitle("Average Consumption Items Bought a Week")+
       labs(x = "", y = "No. of Consumption Items Bought", color = "Villages")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))
   })
@@ -1952,7 +1949,7 @@ server <- function(input, output, session) {
       geom_line()+
       theme_classic()+
       labs(x = "", y = "Average Weekly Expenditure", color = "Villages")+
-      ggtitle("Average Consumption Expenditure on Food Items")+
+      #ggtitle("Average Consumption Expenditure on Food Items")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019", caption = "Mean: 721.41  Median: 686.96"), limits = c(10:40))
     
   })
@@ -1967,7 +1964,7 @@ server <- function(input, output, session) {
       geom_line()+
       theme_classic()+
       labs(x = "", y = "Average Weekly Expenditure", color = "Villages")+
-      ggtitle("Average Consumption Expenditure on Non-Food Items")+
+      #ggtitle("Average Consumption Expenditure on Non-Food Items")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019", caption = "Mean: 882.22  Median: 769.75"), limits = c(10:40))
     
   })
@@ -2025,7 +2022,7 @@ server <- function(input, output, session) {
   
   output$cope_2009 <- renderPlot({
     ggplot(filtered_cope(), aes(shk_2009_cope, fill = village)) + geom_histogram() + 
-      labs(x = "", y = "" ,title = "Type of cope after 2009 shocks", fill = "Village") + scale_fill_viridis_d() + 
+      labs(x = "", y = "" ,fill = "Village") + scale_fill_viridis_d() + 
       theme(axis.text = element_text(size = 5)) +
       scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), labels = str_wrap(cope_labels, width = 30), limits = c(0:20)) + 
       coord_flip() 
@@ -2040,7 +2037,7 @@ server <- function(input, output, session) {
   
   output$relocation_2009_yn <- renderPlot({
     ggplot(filtered_relocation_yn(), aes(shk_2009_reloc_yn, fill = village)) + geom_bar() + 
-      labs(x = "", y = "No. of Households" ,title = "Relocation Status after Shock", fill = "Village") + 
+      labs(x = "", y = "No. of Households" ,fill = "Village") + 
       scale_x_discrete(breaks = c(0,1,2), labels = str_wrap(relocation_labels, width = 30), limits = c(0:2)) + 
       scale_fill_viridis_d()
     
@@ -2055,7 +2052,7 @@ server <- function(input, output, session) {
   output$relocation_2009 <- renderPlot({
     
     ggplot(filtered_relocation(), aes(shk_2009_reloc1, fill = village)) + 
-      geom_bar() + labs(x = "", y = "No. of Households" ,title = "Relocation Areas", fill = "Village") + 
+      geom_bar() + labs(x = "", y = "No. of Households" ,fill = "Village") + 
       scale_x_discrete(breaks = c(1,2,3,4,5,6), labels = str_wrap(relocation_where_labels, width = 20), limits = c(1:6)) + 
       scale_fill_viridis_d() + coord_flip() +  theme(axis.text = element_text(size = 8))
     
