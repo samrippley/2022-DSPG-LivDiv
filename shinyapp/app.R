@@ -921,7 +921,7 @@ ui <- navbarPage(title = "",
                                                        "Age" = "Mean Age for Head of Households",
                                                        "Education" = "Mean Years of Education for Head of Households", 
                                                        "Poverty" = "Households that Live Below Poverty Line (₹240) per week", 
-                                                       "Marital Status" = "Household Heads' Marital Status",
+                                                       "Marital Status" = "Household Heads Marital Status",
                                                        "Household Size" = "Household Size by Village", 
                                                        "Children per Household" = "Total Children per Household"
                                                      ),
@@ -954,13 +954,13 @@ ui <- navbarPage(title = "",
                                               ) ,
                                               column(8, h4(strong("Head of Household Demographics")),
                                                      selectInput("ocudrop", "Select Characteristic:", width = "100%", choices = c(    
-                                                       "Primary Occupation" = "pocu",
-                                                       "Secondary Occupation" ="socu", 
-                                                       "Job Duration" = "jodu",
-                                                       "Agricultural Farming" = "agfa",
-                                                       "Land Holding" = "laho",
-                                                       "Land Fallow" = "lafa",
-                                                       "Household Assets" = "hoas"
+                                                       "Primary Occupation" = "Primary Occupation for Head of Households",
+                                                       "Secondary Occupation" ="Secondary Occupation for Head of Households", 
+                                                       "Job Duration" = "Average Job Duration for Head of Household",
+                                                       "Agricultural Farming" = "Proportion of Households Involved in Agricultural Farming",
+                                                       "Land Holding" = "Average Amount of Land Owned by Village",
+                                                       "Land Fallow" = "Average Amount of Land Fallowed by Village",
+                                                       "Household Assets" = "Proportion of Households Owning Assets"
                                                        
                                                      ),
                                                      ),
@@ -1676,7 +1676,7 @@ server <- function(input, output, session) {
         theme_classic() + 
         coord_flip()
     }
-    else if (ageVar() == "Household Heads' Marital Status") {
+    else if (ageVar() == "Household Heads Marital Status") {
       marplot <- ggplot(countmar, aes(x = head_married, y = n, fill = Gender)) +
         geom_col() +
         labs(x = "Not Married                                         Married", y = "Total Household Head", fill = "") +
@@ -1700,13 +1700,14 @@ server <- function(input, output, session) {
   })
   
   
+
   #livelihood tabset -----------------------------------------------------
   ocuVar <- reactive({
     input$ocudrop
   })
   
   output$ocuplot <- renderPlotly({
-    if (ocuVar() == "pocu") {
+    if (ocuVar() == "Primary Occupation for Head of Households") {
       pocuplot <- ggplot(countv, aes(x = job, y = n, fill = village)) +
         geom_col() +
         scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
@@ -1715,7 +1716,7 @@ server <- function(input, output, session) {
         labs(x = "", y = "Total Households", fill = "") + scale_fill_viridis_d()
       pocuplot
     } 
-    else if (ocuVar() == "socu") {
+    else if (ocuVar() == "Secondary Occupation for Head of Households") {
       socplot <- ggplot(scountv, aes(x = job, y = n, fill = village)) +
         geom_col() +
         scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
@@ -1724,38 +1725,37 @@ server <- function(input, output, session) {
         labs(x = "", y = "Total Households", fill = "") + scale_fill_viridis_d()
       socplot
     }
-    else if (ocuVar() == "agfa") {
-      agfaplot <- ggplot(grouped, aes(village,prop_farm, fill = village)) + geom_col() + 
-        labs(x = "Average Job Duration (Months) ", y = "Proportion") + coord_flip() + theme_classic() + scale_fill_viridis_d()
+    else if (ocuVar() == "Proportion of Households Involved in Agricultural Farming") {
+      agfaplot <- ggplot(grouped, aes(village,prop_farm)) + geom_col(fill = "navy blue") + labs(x = "", y = "Proportion", title = "") + coord_flip() + theme_classic()
       agfaplot
     }
-    else if (ocuVar() == "laho") {
+    else if (ocuVar() == "Average Amount of Land Owned by Village") {
       mean_land_plot <- ggplot(land_stats, aes(x = villages, y = mean_land_value, fill = villages)) +
         geom_col() +
         coord_flip() +
         #ggtitle("Average Amount of Land Owned in Each Village") +
         labs(x = "", y = "Land Owned (Kathas)") + scale_fill_viridis_d()
       mean_land_plot
+   # }
+    #else if (ocuVar() == "Proportion of Households that Cultivated Crops") {
+     # croplot <- ggplot(grouped, aes(village,prop_farm)) + geom_col(fill = "navy blue") + labs(x = "", y = "Proportion", title = "") + coord_flip() + theme_classic()
+      #croplot
     }
-    else if (ocuVar() == "cro") {
-      croplot <- ggplot(grouped, aes(village,prop_farm)) + geom_col(fill = "navy blue") + labs(x = "", y = "Proportion", title = "Proportion of Households that cultivated crops") + coord_flip() + theme_classic()
-      croplot
-    }
-    else if (ocuVar() == "hoas") {
+    else if (ocuVar() == "Proportion of Households Owning Assets") {
       assetplot <- ggplot(assets_long, aes(property, measurement, fill = property)) + geom_col() + 
         labs(x = "", y = "Proportion" , fill  = "Asset") + 
         theme(axis.text.y=element_blank(),axis.ticks.y=element_blank()) +
         geom_text(aes(label = measurement), size = 3, nudge_y = .05) + coord_flip() + scale_fill_viridis_d()
       assetplot
     }
-    else if (ocuVar() == "lafa") {
+    else if (ocuVar() == "Average Amount of Land Fallowed by Village") {
       land_fallow_plot <- ggplot(land_fallow, aes(x = forcats::fct_rev(village), y = sum, fill = village)) +
         geom_col(fill = plasma(10, alpha = 1, begin = 0, end = 1, direction = 1))+
         theme_classic() +
         labs(x = "", y = "Total Land Fallowed", caption = "*Note: For missing bars, villages did not have any land fallowed")+
         coord_flip()
     }
-    else if (ocuVar() == "jodu") {
+    else if (ocuVar() == "Average Job Duration for Head of Household") {
       job_duration_plot <- ggplot(job_duration_summary, aes(x = forcats::fct_rev(villages), y = job_duration_avg, fill = villages)) +
         geom_col( fill = plasma(10, alpha = 1, begin = 0, end = 1, direction = 1)) + 
         coord_flip()+
