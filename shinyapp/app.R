@@ -1679,7 +1679,7 @@ server <- function(input, output, session) {
     else if (ageVar() == "Household Heads' Marital Status") {
       marplot <- ggplot(countmar, aes(x = head_married, y = n, fill = Gender)) +
         geom_col() +
-        labs(x = "Not Married                            Married", y = "Total Household Head ") +
+        labs(x = "Not Married                                         Married", y = "Total Household Head", fill = "") +
         scale_x_discrete() + theme(legend.title=element_blank()) 
       marplot
     }
