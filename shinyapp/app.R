@@ -244,6 +244,10 @@ mean_land_value <- c(13, 45.44, 60.95, 42.14, 45.44, 50.9, 64, 36.35, 23.7, 41.5
 sum_value <- c(26, 818, 2499, 590, 1136, 1069, 1537, 763.5, 237, 998)
 land_stats <- data.frame(villages, land_owners, max_land_value, min_land_value, mean_land_value, sum_value)
 
+#Migrant woker proportion data 
+
+migrant_prop <- baseline %>% group_by(village) %>% summarize(migrant_proportion = mean(hh_migrant_prop))
+
 # savings data 
 nbsav <- baseline %>% 
   group_by(village) %>% 
@@ -1743,11 +1747,11 @@ server <- function(input, output, session) {
         coord_flip()
     }
     else if (ocuVar() == "jodu") {
-      job_duration_plot <- ggplot(job_duration_summary, aes(x = villages, y = job_duration_avg, fill = villages)) +
+      job_duration_plot <- ggplot(job_duration_summary, aes(x = forcats::fct_rev(villages), y = job_duration_avg, fill = villages)) +
         geom_col( fill = plasma(10, alpha = 1, begin = 0, end = 1, direction = 1)) + 
         coord_flip()+
         labs(x= "", y = "Average Job Duration (Months)")+
-        #ggtitle("Average Job Duration for the Head of the Household") +
+        ggtitle("Average Job Duration for the Head of the Household") +
         theme_classic() + scale_fill_viridis_d()
       job_duration_plot
     }
@@ -1791,11 +1795,10 @@ server <- function(input, output, session) {
     }
     
     else if (finVar() == "mig") {
-      migplot <- ggplot(nbsavcount, aes(x = nb_put_saving, y = n, fill = "red")) +
-        geom_point() +
-        labs(x = "Total Households ", y = " Number of Times Household Saved") +
-        theme_classic() +
-        theme(legend.position="none")
+      migplot <- ggplot(migrant_prop, aes(village, migrant_proportion, fill = village)) + 
+        geom_col() + theme_classic() + 
+        labs(x = "", y = "Proportion", title = "", fill = "") + coord_flip()
+
       migplot
     }
     
