@@ -111,6 +111,8 @@ land_fallow <- land_fallow %>%
 
 grouped <- baseline %>% group_by(village) %>% summarize(prop_farm = sum(farm_yn)/n())
 
+
+
 # household asset data 
 
 villages <- c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur") 
@@ -945,7 +947,7 @@ ui <- navbarPage(title = "",
                                                        "Primary Occupation" = "pocu",
                                                        "Secondary Occupation" ="socu", 
                                                        "Job Duration" = "jodu",
-                                                       "Agriculture Farming" = "agfa",
+                                                       "Agricultural Farming" = "agfa",
                                                        "Land Holding" = "laho",
                                                        "Land Fallow" = "lafa",
                                                        "Household Assets" = "hoas"
@@ -1663,7 +1665,8 @@ server <- function(input, output, session) {
       hh_size_plot
     }
     else if (ageVar() == "chho") {
-      chhoplot <- ggplot(avg_children, aes(village, avg_children, fill = village)) + geom_col() + labs(x = "", y = "Average number of children" ,title = "Total Children per Household", fill = "Village") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d()
+      chhoplot <- ggplot(avg_children, aes(village, avg_children, fill = village)) + 
+        geom_col(hoverinfo = "text", aes(), width = "5") + labs(x = "", y = "Average number of children" ,title = "Total Children per Household", fill = "Village") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d()
       chhoplot
     }
   })
@@ -1681,7 +1684,7 @@ server <- function(input, output, session) {
         scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
         coord_flip() +
         theme_minimal () +
-        labs(x = "", y = "") + scale_fill_viridis_d()
+        labs(x = "", y = "Total Households", fill = "") + scale_fill_viridis_d()
       pocuplot
     } 
     else if (ocuVar() == "socu") {
@@ -1690,19 +1693,20 @@ server <- function(input, output, session) {
         scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
         coord_flip() +
         theme_minimal () +
-        labs(x = "", y = "") + scale_fill_viridis_d()
+        labs(x = "", y = "Total Households", fill = "") + scale_fill_viridis_d()
       socplot
     }
     else if (ocuVar() == "agfa") {
-      agfaplot <- ggplot(grouped, aes(village,prop_farm)) + geom_col(fill = "navy blue") + labs(x = "", y = "Proportion") + coord_flip() + theme_classic()
+      agfaplot <- ggplot(grouped, aes(village,prop_farm, fill = village)) + geom_col() + 
+        labs(x = "Average Job Duration (Months) ", y = "Proportion") + coord_flip() + theme_classic() + scale_fill_viridis_d()
       agfaplot
     }
     else if (ocuVar() == "laho") {
       mean_land_plot <- ggplot(land_stats, aes(x = villages, y = mean_land_value, fill = villages)) +
-        geom_col(fill = plasma(10, alpha = 1, begin = 0, end = 1, direction = 1)) +
+        geom_col() +
         coord_flip() +
         #ggtitle("Average Amount of Land Owned in Each Village") +
-        labs(x = "", y = "Land Owned [Kathas]") + scale_fill_viridis_d()
+        labs(x = "", y = "Land Owned (Kathas)") + scale_fill_viridis_d()
       mean_land_plot
     }
     else if (ocuVar() == "cro") {
