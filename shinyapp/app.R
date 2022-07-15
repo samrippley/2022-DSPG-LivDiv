@@ -1048,7 +1048,7 @@ ui <- navbarPage(title = "",
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Plot",plotOutput("exp")),
+                                           tabPanel("Plot",plotlyOutput("exp")),
                                            tabPanel("Table", DT::DTOutput("exp_table"))
                                          )
                                        ),
@@ -1094,10 +1094,10 @@ ui <- navbarPage(title = "",
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Plot",plotOutput("inc")),
-                                           tabPanel("Male/Female Income", plotOutput("malefemaleinc")),
+                                           tabPanel("Plot",plotlyOutput("inc")),
+                                           tabPanel("Male/Female Income", plotlyOutput("malefemaleinc")),
                                            #tabPanel("Full Income", plotOutput("fullinc")),
-                                           tabPanel("Total Income(w/o remmitance)", plotOutput("totalinc")),
+                                           tabPanel("Total Income(w/o remmitance)", plotlyOutput("totalinc")),
                                            tabPanel("Table", DT::DTOutput("inc_table"))
                                          )
                                        ),
@@ -1164,7 +1164,7 @@ ui <- navbarPage(title = "",
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Plot", plotOutput("food_plot"))                                         
+                                           tabPanel("Plot", plotlyOutput("food_plot"))                                         
                                          )
                                        ),
                                        
@@ -1196,7 +1196,7 @@ ui <- navbarPage(title = "",
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Plot", plotOutput("nonfood_plot"))                                         
+                                           tabPanel("Plot", plotlyOutput("nonfood_plot"))                                         
                                          )
                                        ),
                                        
@@ -1236,7 +1236,7 @@ ui <- navbarPage(title = "",
                                                                 multiple = T, options = list(`actions-box` = T))),
                                          ),
                                          tabPanel("Purpose", 
-                                                  plotOutput("purpplot", height = "500px")
+                                                  plotlyOutput("purpplot", height = "500px")
                                          ),
                                          
                                          
@@ -1277,7 +1277,7 @@ ui <- navbarPage(title = "",
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Plot",plotOutput("rmt")),
+                                           tabPanel("Plot",plotlyOutput("rmt")),
                                            tabPanel("Table",DT:: DTOutput("rmt_table"))#,
                                            #tabPanel("Method", plotOutput("rmt_method")),
                                            #tabPanel("Purpose", plotOutput("rmt_purpose"))
@@ -1294,7 +1294,7 @@ ui <- navbarPage(title = "",
                                                        secure method of sending/receiving money, it requires additional fees, which may make it more expensive for 
                                                        this poverty-stricken area. Moreover, households may be more concerned about receiving the remittance quickly 
                                                        rather than safely. Also, using mobile apps can be difficult in regions where data usage is limited."),
-                                                     br(""), plotOutput("rmt_method", width = "70%")
+                                                     br(""), plotlyOutput("rmt_method", width = "70%")
                                                      
                                                      
                                               )),
@@ -1305,7 +1305,7 @@ ui <- navbarPage(title = "",
                                               column(12, align = "center", h4(strong("Usage of Remmittances")),
                                                      p("Remittances is primarily being used for food and utility purchases, which are 
                                                        often the most essential items for households in underdeveloped regions."),
-                                                     br(""), plotOutput("rmt_purpose", width = "70%")
+                                                     br(""), plotlyOutput("rmt_purpose", width = "70%")
                                                      
                                                      
                                               )),
@@ -1786,7 +1786,7 @@ server <- function(input, output, session) {
       filter(village %in% input$village_rmt)
   })
   # Plot
-  output$rmt <- renderPlot({
+  output$rmt <- renderPlotly({
     ggplot(filtered_rmt(), aes(x = week
                                , y = avg_rmt, color = village)) + 
       geom_line() +
@@ -1805,7 +1805,7 @@ server <- function(input, output, session) {
     avg_rmt
   })
   # Render method plot
-  output$rmt_method <- renderPlot({
+  output$rmt_method <- renderPlotly({
     rmt_method_plot
   })
   # Render map 
@@ -1814,7 +1814,7 @@ server <- function(input, output, session) {
   })
   
   # Render purpose plot
-  output$rmt_purpose <- renderPlot({
+  output$rmt_purpose <- renderPlotly({
     rmt_purpose_plot
   })
   # exp plot ouput
@@ -1825,7 +1825,7 @@ server <- function(input, output, session) {
   })
   
   # Plot
-  output$exp <- renderPlot({
+  output$exp <- renderPlotly({
     ggplot(filtered_exp(), aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) +
       geom_line() +
       labs(x="Date", y="Average Weekly Expenditure (₹)", caption = "Mean: 1982.77   Median: 1832.1") +
@@ -1849,7 +1849,7 @@ server <- function(input, output, session) {
   
   
   # Plot
-  output$inc <- renderPlot({
+  output$inc <- renderPlotly({
     ggplot(filtered_inc(), aes(date, avg_inc, color = village)) + 
       geom_line() + 
       labs(x = "", y = "Income (₹)", color = "Village",
@@ -1865,7 +1865,7 @@ server <- function(input, output, session) {
       filter(village %in% input$village_inc)
   })
   
-  output$malefemaleinc <- renderPlot({
+  output$malefemaleinc <- renderPlotly({
     ggplot(filtered_malefemaleinc(), aes(x = week,y = !!input$Gender, color = village)) + geom_line() + 
       #geom_line(aes(y = !!input$gender, color = village), linetype = "twodash") +  
       labs(x = "", y = "Income (₹)", color = "Village") + 
@@ -1888,7 +1888,7 @@ server <- function(input, output, session) {
       filter(village %in% input$village_inc)
   })
   
-  output$totalinc <- renderPlot({
+  output$totalinc <- renderPlotly({
     qplot(x=week_num, y=inc_total, color = village,
           data=filtered_totalinc(), na.rm=TRUE,
           #main="Total Income by Village",
@@ -1955,7 +1955,7 @@ server <- function(input, output, session) {
   
   # Consumption by food group plots
   
-  output$food_plot <- renderPlot({
+  output$food_plot <- renderPlotly({
     ggplot(filtered_cs_food(), aes(x = week, y = !!input$food_group, color = village))+
       geom_line()+
       theme_classic()+
@@ -1970,7 +1970,7 @@ server <- function(input, output, session) {
       filter(village %in% input$village_cs_nonfood)
   })
   
-  output$nonfood_plot <- renderPlot({
+  output$nonfood_plot <- renderPlotly({
     ggplot(filtered_non_food_cs(), aes(x = week, y = !!input$nonfood_group, color = village)) +
       geom_line()+
       theme_classic()+
