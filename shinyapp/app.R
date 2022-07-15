@@ -734,9 +734,34 @@ end_week <- c(12, 14, 32, 24, 49, 31, 44, 10.2, 20.2, 28.2, 38.2, 46.2, 49.2)
 event_periods <- data.frame(Events, start_week, end_week)
 events_vector <- Events
 
-filtered_event <- reactive({
+filtered_event_cs <- reactive({
   event_periods %>% 
-    filter(Events %in% input$event_choose)
+    filter(Events %in% input$event_choose_cs)
+})
+
+filtered_event_cs_food <- reactive({
+  event_periods %>% 
+    filter(Events %in% input$event_choose_cs_food)
+})
+
+filtered_event_cs_nonfood <- reactive({
+  event_periods %>% 
+    filter(Events %in% input$event_choose_cs_nonfood)
+})
+
+filtered_event_rmt <- reactive({
+  event_periods %>% 
+    filter(Events %in% input$event_choose_rmt)
+})
+
+filtered_event_exp <- reactive({
+  event_periods %>% 
+    filter(Events %in% input$event_choose_exp)
+})
+
+filtered_event_inc <- reactive({
+  event_periods %>% 
+    filter(Events %in% input$event_choose_inc)
 })
 
 #--------------------------------------------------------------------
@@ -1052,6 +1077,8 @@ ui <- navbarPage(title = "",
                                          pickerInput("village_exp", "Select Village:", choices = village_vector, 
                                                      selected = village_vector,
                                                      multiple = T, options = list(`actions-box` = T)),
+                                         pickerInput("event_choose_exp", "Select Event:", choices = events_vector, selected = "Kharif Crop Harvest", 
+                                                     multiple = T, options = list(`actions-box` = T)),
                                          
                                          
                                        ),
@@ -1059,7 +1086,7 @@ ui <- navbarPage(title = "",
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Plot",plotlyOutput("exp")),
+                                           tabPanel("Plot",plotOutput("exp")),
                                            tabPanel("Table", DT::DTOutput("exp_table"))
                                          )
                                        ),
@@ -1101,14 +1128,16 @@ ui <- navbarPage(title = "",
                                                      selected = village_vector,
                                                      multiple = T, options = list(`actions-box` = T)),
                                          varSelectInput("Gender", "Select Gender:", malefemale_inc[,-(1:2)]),
+                                         pickerInput("event_choose_inc", "Select Event:", choices = events_vector, selected = "Kharif Crop Harvest", 
+                                                     multiple = T, options = list(`actions-box` = T)),
                                        ),
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Plot",plotlyOutput("inc")),
-                                           tabPanel("Male/Female Income", plotlyOutput("malefemaleinc")),
+                                           tabPanel("Plot",plotOutput("inc")),
+                                           tabPanel("Male/Female Income", plotOutput("malefemaleinc")),
                                            #tabPanel("Full Income", plotOutput("fullinc")),
-                                           tabPanel("Total Income(w/o remmitance)", plotlyOutput("totalinc")),
+                                           tabPanel("Total Income(w/o remmitance)", plotOutput("totalinc")),
                                            tabPanel("Table", DT::DTOutput("inc_table"))
                                          )
                                        ),
@@ -1134,7 +1163,7 @@ ui <- navbarPage(title = "",
                                          pickerInput("village_cs", "Select Village:", choices = village_vector,
                                                      selected = village_vector,
                                                      multiple = T, options = list(`actions-box` = T)),
-                                         pickerInput("event_choose", "Select Event:", choices = events_vector, selected = "Kharif Crop Harvest", 
+                                         pickerInput("event_choose_cs", "Select Event:", choices = events_vector, selected = "Kharif Crop Harvest", 
                                                      multiple = T, options = list(`actions-box` = T)),
                                          
                                        ),
@@ -1169,13 +1198,15 @@ ui <- navbarPage(title = "",
                                          pickerInput("village_cs_food", "Select Village:", choices = village_vector, 
                                                      selected = village_vector,
                                                      multiple = T, options = list(`actions-box` = T)),
-                                         varSelectInput("food_group", "Select Consumption Group:", avg_cs_food[,-(1:2)])
+                                         varSelectInput("food_group", "Select Consumption Group:", avg_cs_food[,-(1:2)]),
+                                         pickerInput("event_choose_cs_food", "Select Event:", choices = events_vector, selected = "Kharif Crop Harvest", 
+                                                     multiple = T, options = list(`actions-box` = T)),
                                          
                                        ),
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Plot", plotlyOutput("food_plot"))                                         
+                                           tabPanel("Plot", plotOutput("food_plot"))                                         
                                          )
                                        ),
                                        
@@ -1201,13 +1232,15 @@ ui <- navbarPage(title = "",
                                          pickerInput("village_cs_nonfood", "Select Village:", choices = village_vector, 
                                                      selected = village_vector,
                                                      multiple = T, options = list(`actions-box` = T)),
-                                         varSelectInput("nonfood_group", "Select Consumption Group:", non_food_cs[,-(1:2)])
+                                         varSelectInput("nonfood_group", "Select Consumption Group:", non_food_cs[,-(1:2)]),
+                                         pickerInput("event_choose_cs_nonfood", "Select Event:", choices = events_vector, selected = "Kharif Crop Harvest", 
+                                                     multiple = T, options = list(`actions-box` = T)),
                                          
                                        ),
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Plot", plotlyOutput("nonfood_plot"))                                         
+                                           tabPanel("Plot", plotOutput("nonfood_plot"))                                         
                                          )
                                        ),
                                        
@@ -1238,12 +1271,16 @@ ui <- navbarPage(title = "",
                                                   sidebarPanel(
                                                     pickerInput("village_bramt", "Select Village:", choices = village_vector, 
                                                                 selected = village_vector, 
-                                                                multiple = T, options = list(`actions-box` = T))), 
+                                                                multiple = T, options = list(`actions-box` = T)),
+                                                    pickerInput("event_choose_borr", "Select Event:", choices = events_vector, selected = "Kharif Crop Harvest", 
+                                                                multiple = T, options = list(`actions-box` = T)),), 
                                          ),
                                          tabPanel("Count",plotOutput("borr"),
                                                   sidebarPanel(
                                                     pickerInput("village_borr", "Select Village:", choices = village_vector, 
                                                                 selected = village_vector,
+                                                                multiple = T, options = list(`actions-box` = T)),
+                                                    pickerInput("event_choose_borr_count", "Select Event:", choices = events_vector, selected = "Kharif Crop Harvest", 
                                                                 multiple = T, options = list(`actions-box` = T))),
                                          ),
                                          tabPanel("Purpose", 
@@ -1282,13 +1319,15 @@ ui <- navbarPage(title = "",
                                          pickerInput("village_rmt", "Select Village:", choices = village_vector, 
                                                      selected = village_vector,
                                                      multiple = T, options = list(`actions-box` = T)),
+                                         pickerInput("event_choose_rmt", "Select Event:", choices = events_vector, selected = "Kharif Crop Harvest", 
+                                                     multiple = T, options = list(`actions-box` = T)),
                                          
                                        ),
                                        
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Plot",plotlyOutput("rmt")),
+                                           tabPanel("Plot",plotOutput("rmt")),
                                            tabPanel("Table",DT:: DTOutput("rmt_table"))#,
                                            #tabPanel("Method", plotOutput("rmt_method")),
                                            #tabPanel("Purpose", plotOutput("rmt_purpose"))
@@ -1305,7 +1344,7 @@ ui <- navbarPage(title = "",
                                                        secure method of sending/receiving money, it requires additional fees, which may make it more expensive for 
                                                        this poverty-stricken area. Moreover, households may be more concerned about receiving the remittance quickly 
                                                        rather than safely. Also, using mobile apps can be difficult in regions where data usage is limited."),
-                                                     br(""), plotlyOutput("rmt_method", width = "70%")
+                                                     br(""), plotOutput("rmt_method", width = "70%")
                                                      
                                                      
                                               )),
@@ -1316,7 +1355,7 @@ ui <- navbarPage(title = "",
                                               column(12, align = "center", h4(strong("Usage of Remmittances")),
                                                      p("Remittances is primarily being used for food and utility purchases, which are 
                                                        often the most essential items for households in underdeveloped regions."),
-                                                     br(""), plotlyOutput("rmt_purpose", width = "70%")
+                                                     br(""), plotOutput("rmt_purpose", width = "70%")
                                                      
                                                      
                                               )),
@@ -1568,6 +1607,48 @@ server <- function(input, output, session) {
     list(src = x, alt = "alternate text", width = "100%", align = "right")
   }, deleteFile = FALSE)
   
+  # Events----------------
+  filtered_event_cs <- reactive({
+    event_periods %>% 
+      filter(Events %in% input$event_choose_cs)
+  })
+  
+  filtered_event_cs_food <- reactive({
+    event_periods %>% 
+      filter(Events %in% input$event_choose_cs_food)
+  })
+  
+  filtered_event_cs_nonfood <- reactive({
+    event_periods %>% 
+      filter(Events %in% input$event_choose_cs_nonfood)
+  })
+  
+  filtered_event_rmt <- reactive({
+    event_periods %>% 
+      filter(Events %in% input$event_choose_rmt)
+  })
+  
+  filtered_event_exp <- reactive({
+    event_periods %>% 
+      filter(Events %in% input$event_choose_exp)
+  })
+  
+  filtered_event_inc <- reactive({
+    event_periods %>% 
+      filter(Events %in% input$event_choose_inc)
+  })
+  
+  filtered_event_borr <- reactive({
+    event_periods %>% 
+      filter(Events %in% input$event_choose_borr)
+  })
+  
+  filtered_event_borr_count <- reactive({
+    event_periods %>% 
+      filter(Events %in% input$event_choose_borr_count)
+  })
+  
+  
   #borrowing tab-------------------------
   
   output$datapls <- renderTable({
@@ -1594,7 +1675,9 @@ server <- function(input, output, session) {
       ylab("Amount Borrowed (INR)")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) +
       scale_color_viridis_d() +
-      theme(legend.position = "none") 
+      theme(legend.position = "none")+
+      geom_rect(data = filtered_event_borr(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
+    
   })  
   
   # borrowing count 
@@ -1611,7 +1694,9 @@ server <- function(input, output, session) {
       ylab("Number of HH")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) +
       scale_color_viridis_d() +
-      theme(legend.position = "none")
+      theme(legend.position = "none")+
+      geom_rect(data = filtered_event_borr_count(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
+    
   })  
   
   #borrowing purpose ----------------------
@@ -1824,7 +1909,7 @@ else if (finVar() == "Average Monthly Salary per Household by Village")  {
       filter(village %in% input$village_rmt)
   })
   # Plot
-  output$rmt <- renderPlotly({
+  output$rmt <- renderPlot({
     ggplot(filtered_rmt(), aes(x = week
                                , y = avg_rmt, color = village)) + 
       geom_line() +
@@ -1834,7 +1919,8 @@ else if (finVar() == "Average Monthly Salary per Household by Village")  {
       #scale_color_brewer(palette = "Spectral")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + 
       scale_color_viridis_d()+
-      theme(plot.caption = element_text(size = 12))
+      theme(plot.caption = element_text(size = 12))+
+      geom_rect(data = filtered_event_rmt(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
     
   })
   
@@ -1843,7 +1929,7 @@ else if (finVar() == "Average Monthly Salary per Household by Village")  {
     avg_rmt
   })
   # Render method plot
-  output$rmt_method <- renderPlotly({
+  output$rmt_method <- renderPlot({
     rmt_method_plot
   })
   # Render map 
@@ -1852,7 +1938,7 @@ else if (finVar() == "Average Monthly Salary per Household by Village")  {
   })
   
   # Render purpose plot
-  output$rmt_purpose <- renderPlotly({
+  output$rmt_purpose <- renderPlot({
     rmt_purpose_plot
   })
   # exp plot ouput
@@ -1863,14 +1949,15 @@ else if (finVar() == "Average Monthly Salary per Household by Village")  {
   })
   
   # Plot
-  output$exp <- renderPlotly({
+  output$exp <- renderPlot({
     ggplot(filtered_exp(), aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) +
       geom_line() +
       labs(x="Date", y="Average Weekly Expenditure (INR)", caption = "Mean: 1982.77   Median: 1832.1") +
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + 
       scale_color_viridis_d()+
       theme_classic()+
-      theme(plot.caption = element_text(size = 12))
+      theme(plot.caption = element_text(size = 12))+
+      geom_rect(data = filtered_event_exp(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
     
     
   })
@@ -1887,14 +1974,15 @@ else if (finVar() == "Average Monthly Salary per Household by Village")  {
   
   
   # Plot
-  output$inc <- renderPlotly({
-    ggplot(filtered_inc(), aes(date, avg_inc, color = village)) + 
+  output$inc <- renderPlot({
+    ggplot(filtered_inc(), aes(week, avg_inc, color = village)) + 
       geom_line() + 
       labs(x = "", y = "Income (INR)", color = "Village",
            caption = "Mean: 1395.61   Median: 1341.82") + 
       scale_color_viridis_d()+
       theme_classic()+
-      theme(plot.caption = element_text(size = 12))
+      theme(plot.caption = element_text(size = 12))+
+      geom_rect(data = filtered_event_inc(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
     
   })
   
@@ -1903,11 +1991,12 @@ else if (finVar() == "Average Monthly Salary per Household by Village")  {
       filter(village %in% input$village_inc)
   })
   
-  output$malefemaleinc <- renderPlotly({
+  output$malefemaleinc <- renderPlot({
     ggplot(filtered_malefemaleinc(), aes(x = week,y = !!input$Gender, color = village)) + geom_line() + 
       #geom_line(aes(y = !!input$gender, color = village), linetype = "twodash") +  
       labs(x = "", y = "Income (INR)", color = "Village") + 
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + scale_color_viridis_d()
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + scale_color_viridis_d()+
+      geom_rect(data = filtered_event_inc(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
   })
   
   # filtered_fullinc <- reactive({
@@ -1926,12 +2015,13 @@ else if (finVar() == "Average Monthly Salary per Household by Village")  {
       filter(village %in% input$village_inc)
   })
   
-  output$totalinc <- renderPlotly({
+  output$totalinc <- renderPlot({
     qplot(x=week_num, y=inc_total, color = village,
           data=filtered_totalinc(), na.rm=TRUE,
           #main="Total Income by Village",
           xlab="Date", ylab="Total Income (INR)", geom = "line") +
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + scale_color_viridis_d()
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + scale_color_viridis_d()+
+      geom_rect(data = filtered_event_inc(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
   })
   
   
@@ -1964,7 +2054,7 @@ else if (finVar() == "Average Monthly Salary per Household by Village")  {
       labs(x = "", y = "Average Consumption Expenditure (INR)", caption = "Mean: 766.13  Median: 731.68", color = "Villages")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       theme(plot.caption = element_text(size = 10))+
-      geom_rect(data = filtered_event(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
+      geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
   })
   
   # Filtered cs items
@@ -1981,7 +2071,8 @@ else if (finVar() == "Average Monthly Salary per Household by Village")  {
       theme_classic()+
       #ggtitle("Average Consumption Items Bought a Week")+
       labs(x = "", y = "No. of Consumption Items Bought", color = "Villages")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
+      geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
   })
   
   # Filtered consumption by group
@@ -1993,13 +2084,14 @@ else if (finVar() == "Average Monthly Salary per Household by Village")  {
   
   # Consumption by food group plots
   
-  output$food_plot <- renderPlotly({
+  output$food_plot <- renderPlot({
     ggplot(filtered_cs_food(), aes(x = week, y = !!input$food_group, color = village))+
       geom_line()+
       theme_classic()+
       labs(x = "", y = "Average Weekly Expenditure", color = "Villages", caption = "Mean: 721.41  Median: 686.96")+
       #ggtitle("Average Consumption Expenditure on Food Items")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
+      geom_rect(data = filtered_event_cs_food(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
     
   })
   
@@ -2008,13 +2100,14 @@ else if (finVar() == "Average Monthly Salary per Household by Village")  {
       filter(village %in% input$village_cs_nonfood)
   })
   
-  output$nonfood_plot <- renderPlotly({
+  output$nonfood_plot <- renderPlot({
     ggplot(filtered_non_food_cs(), aes(x = week, y = !!input$nonfood_group, color = village)) +
       geom_line()+
       theme_classic()+
       labs(x = "", y = "Average Weekly Expenditure", color = "Villages", caption = "Mean: 882.22  Median: 769.75")+
       #ggtitle("Average Consumption Expenditure on Non-Food Items")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
+      geom_rect(data = filtered_event_cs_nonfood(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
     
   })
   
