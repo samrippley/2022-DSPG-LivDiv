@@ -890,7 +890,7 @@ ui <- navbarPage(title = "",
                                                      h4(strong("Sampled Villages")),
                                                      p("The Sundarbans are a cluster of islands located in the Bay of Bengal that spans across India and Bangladesh. Gupta et al. (2021) collected household-level data from a representative sample of rural households in the Sundarbans region. Our villages are located on the Indian side of the Sundarbans in West Bengal, India across the South 24 Parganas and North 24 Parganas districts."),
                                                      p("Gupta et al. (2021) randomly chose a set of ten representative villages from five administrative blocks in the Sundarbans. While looking at the map, it is clear to see how the villages could be separated into five blocks based on location. One village is within 15 km of one other village. The representative villages are paired of as follows: Pargumti and Haridaskati Samsernagar, Bijoynagar and Birajnagar, Purba Dwarokapur and Lakshmi Janardanpur,  Amrabati  and Shibpur, and  Beguakhali and Sagar."),
-                                                     p("They collected information from approximately 300 households in the 10 villages from November 2018 to October 2019. During this period, the region was struck by four different cylones. The Bengal Bay was hit by a category 4 cyclone named Fani in April as well as a category 1 cyclone named Bulbul and Matmo in October. The Arabian Sea also was hit by two category 1 cyclones during while the data was being collected.  Vayu in June and Hikaa in September."),
+                                                     p("They collected information from approximately 300 households in the 10 villages from October 2018 to November 2019. During this period, the region was struck by four different cylones. The Bengal Bay was hit by a category 4 cyclone named Fani in April as well as a category 1 cyclone named Bulbul and Matmo in October. The Arabian Sea also was hit by two category 1 cyclones during while the data was being collected.  Vayu in June and Hikaa in September."),
                                                      p("This sundarbans have different crop seasons due to varying weather patterns trhoughout the year. The Kharif crop season of Winter paddy Aman is sown during monsoon season (June-August) and harvested in winter (December – January). This is a highly water consuming crop. Additionally, the Rabi crop season for paddy is sown in winter (November – February) and harvested from March to June. Fishing occurs year-round and honey is seasonally harvested from April to June. Our representative population also celebrated festivals and holidays throughout the data collection period including- Republic day, Rama Navami, Eid al-Fitr, Indian Independence Day, Dussehra, Diwali, Mawlid and Christmas.")
                                               ),
                                               column(8, leafletOutput("map_leaflet", width = "100%"),
@@ -1007,24 +1007,11 @@ ui <- navbarPage(title = "",
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
                                                      h4(strong("Description")),
-                                                     p("Households business: Owning a business in the Sundarbans is often too expensive and financially 
-                                                       unfeasible. A majority of 88% of households do not own a business and only 12% do own a business, 
-                                                       making it very uncommon. "
-                                                     ),
-                                                     p("Salary: On average, per month, The data shows that the monthly salaries for the households range 
-                                                       anywhere between 2500 INR to 4600 INR per month. On average, Amrabati receives the highest income. 
-                                                       This can indicate that the fishing industry in Amrabati is more lucrative than other jobs in other villages. 
-                                                       On the other hand, the village of Sagar has the lowest monthly salary on average."
-                                                     ),
-                                                     p("Income/Remmitance: For the villages that are plotted on the middle/top right of the graph, 
-                                                       remittances are highly impactful on the household's income. Remittances are essentially any income a 
-                                                       household receives from someone working away from the household. By taking a look at the remittances we 
-                                                       were able to see the impact it had on the total household income."
-                                                     ),
-                                                     p("Savings: On average, many households are not able to save, but sometimes some households are able to 
-                                                       save once or twice during the 12-month span. It is unlikely to see many households save more than 20 times 
-                                                       like some did. It is expected to see low amounts of saving because of the high poverty level in the region."
-                                                     )
+                                                     p("We examine data from the baseline survey to establish a foundational understanding of the financial behavior of the Sundarbans population. The financial diaries provide an extensive amount of information on the fiscal practices of our representative population. The baseline information provides us with a strong starting point in our economic analysis of the data. "),
+                                                     p("On average, the monthly salaries for the households range from 2500 INR to 4600. On average, Amrabati reported the highest salary and Sagar has the lowest on average."),
+                                                     
+                                                     p("In our sample population, a large proportion of the household incomes come from remittances. Remittances are any income a household receives from someone working away from the household. In most villages, higher remittances correlate with higher income. While our analysis showed that remittances are a common source of income, only 12% of households own a business, making this an uncommon source of income throughout the villages. Not many households are able to save- given that such a high proportion of the population live below the Indian poverty line of less than ₹240 per week per person.")
+                                                     
                                               ) ,
                                               column(8, h4(strong("Head of Household Demographics")),
                                                      selectInput("findrop", "Select Characteristic:", width = "100%", choices = c( 
@@ -1032,8 +1019,8 @@ ui <- navbarPage(title = "",
                                                        "Household Business" = "Number of Households that Own a Business",
                                                        "Salary" = "Average Monthly Salary per Household by Village",
                                                        "Migrant Workers" = "mig",
-                                                       "Income/Remmitances" = "Income vs Remmitances (November 2019 - October 2018)",
-                                                       "Savings" = "Number of Times Households Saved Money in Year Prior to Baseline Survey (November 2018 - November 2019)"
+                                                       "Income/Remmitances" = "Income vs Remmitances (October 2018 - November 2019)",
+                                                       "Savings" = "Number of Times Households Saved Money in Year Prior to Baseline Survey (October 2018 - November 2019)"
                                                      )),
                                                      fluidRow(align = "center",
                                                               h4(strong(textOutput("result")))),
@@ -1913,7 +1900,7 @@ server <- function(input, output, session) {
         coord_flip()
     }
 
-  else if (finVar() == "Income vs Remmitances (November 2019 - October 2018)") {
+  else if (finVar() == "Income vs Remmitances (October 2018 - November 2019)") {
       ggplot(baseline.summary, aes(rmt_total, full_inc, color= village))+
         geom_point(data=baseline.summary, shape=17, size=3) +
         labs(x="Average Weekly Remmitances", y="Average Weekly Income", color="Villages") + 
@@ -1926,7 +1913,7 @@ else if (finVar() == "Average Monthly Salary per Household by Village")  {
         theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d()
       salplot
     }
-    else if (finVar() == "Number of Times Households Saved Money in Year Prior to Baseline Survey (November 2018 - November 2019)") {
+    else if (finVar() == "Number of Times Households Saved Money in Year Prior to Baseline Survey (October 2018 - November 2019)") {
       savplot <- ggplot(nbsavcount, aes(x = nb_put_saving, y = n, fill = "red")) +
         geom_point() +
         labs(x = "Total Households ", y = " Number of Times Household Saved") +
