@@ -914,15 +914,17 @@ ui <- navbarPage(title = "",
                                               column(8, 
                                                      h4(strong("Head of Household Demographics")),
                                                      selectInput("agedrop", "Select Characteristic:", width = "100%", choices = c(
-                                                       "Age" = "age",
-                                                       "Education" = "edu", 
-                                                       "Poverty" = "pov", 
-                                                       "Marital Status" = "mar",
-                                                       "Household Size" = "hosi", 
-                                                       "Children per Household" = "chho"
+                                                       "Age" = "Mean Age for Head of Households",
+                                                       "Education" = "Mean Years of Education for Head of Households", 
+                                                       "Poverty" = "Households that Live Below Poverty Line (₹240) per week", 
+                                                       "Marital Status" = "Household Heads' Marital Status",
+                                                       "Household Size" = "Household Size by Village", 
+                                                       "Children per Household" = "Total Children per Household"
                                                      ),
                                                      
-                                                     ), 
+                                                     ),
+                                                     fluidRow(align = "center",
+                                                              h4(strong(textOutput("result2")))),
                                                      withSpinner(plotlyOutput("ageplot", height = "500px", width = "100%")),
                                                      
                                               ),
@@ -954,11 +956,12 @@ ui <- navbarPage(title = "",
                                                        "Agricultural Farming" = "agfa",
                                                        "Land Holding" = "laho",
                                                        "Land Fallow" = "lafa",
-                                                       "Household Assets" = "hoas",
-                                                       textOutput(outputId = "myText")
+                                                       "Household Assets" = "hoas"
                                                        
                                                      ),
-                                                     ), 
+                                                     ),
+                                                     fluidRow(align = "center",
+                                                              h4(strong(textOutput("result1")))),
                                                      withSpinner(plotlyOutput("ocuplot", height = "500px")),
                                                      
                                               ),
@@ -997,12 +1000,13 @@ ui <- navbarPage(title = "",
                                               column(8, h4(strong("Head of Household Demographics")),
                                                      selectInput("findrop", "Select Characteristic:", width = "100%", choices = c( 
 
-                                                       "Household Business" = "hobu",
-                                                       "Salary" = "sal",
-                                                       "Income/Remmitances" = "inc",
-                                                       "Savings" = "sav"
-                                                     ),
-                                                     ), 
+                                                       "Household Business" = "Number of Households that Own a Business",
+                                                       "Salary" = "Average Monthly Salary per Household by Village",
+                                                       "Income/Remmitances" = "Income vs Remmitances (November 2019 - October 2018)",
+                                                       "Savings" = "Number of Times Households Saved Money in Year Prior to Baseline Survey (November 2018 - November 2019)"
+                                                     )),
+                                                     fluidRow(align = "center",
+                                                              h4(strong(textOutput("result")))),
                                                      withSpinner(plotlyOutput("finplot", height = "500px")),
                                                      
                                               ),
@@ -1529,14 +1533,19 @@ server <- function(input, output, session) {
   # Run JavaScript Code
   runjs(jscode)
   
-  function(input, output) {
-    output$myText <- 
-      renderText(
-        paste("The average of", 
-              input$ocuVar, 
-              "is")
-      )  
-  }
+  #titles 
+  output$result2 <- renderText({
+    paste(input$agedrop)
+  })  
+  
+  output$result1 <- renderText({
+    paste(input$ocudrop)
+  })  
+   
+  output$result <- renderText({
+    paste(input$findrop)
+  })  
+  
   
   #overview photos 
   index <- reactiveVal(1)
@@ -1628,14 +1637,13 @@ server <- function(input, output, session) {
   
   
   
-  
   #sociodemo tabset -----------------------------------------------------
   ageVar <- reactive({
     input$agedrop
   })
   
   output$ageplot <- renderPlotly({
-    if (ageVar() == "age") {
+    if (ageVar() == "Mean Age for Head of Households") {
       
       fplot <-  ggplot(by_villagemore, aes(x = village, y = head_age, fill = village, width=0.5, srt = 45)) +
         geom_col(hoverinfo = "text", aes(text = paste("Age: ", head_age)), width = "5") +
@@ -1646,7 +1654,7 @@ server <- function(input, output, session) {
         rotate_x_text(angle = 33, size = rel(1)) + scale_fill_viridis_d()
       ggplotly(fplot, tooltip = c("text"))
     }
-    else if (ageVar() == "edu") {
+    else if (ageVar() == "Mean Years of Education for Head of Households") {
       splot <- ggplot(by_villagemore, aes(x = "", y= head_edu, fill = village)) +
         geom_bar(width = 1, stat = "identity") +
         facet_wrap(~village, ncol = 5) +
@@ -1655,21 +1663,21 @@ server <- function(input, output, session) {
         theme(legend.position="none", strip.text.x = element_text(size = 9)) + scale_fill_viridis_d()
       splot
     }
-    else if (ageVar() == "pov") {
+    else if (ageVar() == "Households that Live Below Poverty Line (₹240) per week") {
       village_pl_count_plot <- ggplot(dat_pl, aes(x= `Village`, y = `Households`, fill = `Key`)) + 
         geom_col(position = 'stack', hoverinfo = "text", aes(text = paste("Percentage:",Percentage,"%\n"))) + 
         labs(x= "", y = "Total Households", fill = "") + 
         theme_classic() + 
         coord_flip()
     }
-    else if (ageVar() == "mar") {
+    else if (ageVar() == "Household Heads' Marital Status") {
       marplot <- ggplot(countmar, aes(x = head_married, y = n, fill = Gender)) +
         geom_col() +
         labs(x = "Not Married                            Married", y = "Total Household Head ") +
         scale_x_discrete() + theme(legend.title=element_blank()) 
       marplot
     }
-    else if (ageVar() == "hosi") {
+    else if (ageVar() == "Household Size by Village") {
       hh_size_plot <- ggplot(median_hhsize, aes(x = village, y = median, fill = village)) +
         geom_col() +
         labs( x = "", y = "Median Household Size")+
@@ -1678,9 +1686,9 @@ server <- function(input, output, session) {
         theme(legend.position="none") + scale_fill_viridis_d()
       hh_size_plot
     }
-    else if (ageVar() == "chho") {
+    else if (ageVar() == "Total Children per Household") {
       chhoplot <- ggplot(avg_children, aes(village, avg_children, fill = village)) + 
-        geom_col(hoverinfo = "text", aes(), width = "5") + labs(x = "", y = "Average number of children" , fill = "Village") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d()
+        geom_col(hoverinfo = "text", aes(), width = "5") + labs(x = "", y = "Average number of children" ,title = "Total Children per Household", fill = "Village") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d()
       chhoplot
     }
   })
@@ -1724,7 +1732,7 @@ server <- function(input, output, session) {
       mean_land_plot
     }
     else if (ocuVar() == "cro") {
-      croplot <- ggplot(grouped, aes(village,prop_farm)) + geom_col(fill = "navy blue") + labs(x = "", y = "Proportion") + coord_flip() + theme_classic()
+      croplot <- ggplot(grouped, aes(village,prop_farm)) + geom_col(fill = "navy blue") + labs(x = "", y = "Proportion", title = "Proportion of Households that cultivated crops") + coord_flip() + theme_classic()
       croplot
     }
     else if (ocuVar() == "hoas") {
@@ -1745,7 +1753,7 @@ server <- function(input, output, session) {
       job_duration_plot <- ggplot(job_duration_summary, aes(x = villages, y = job_duration_avg, fill = villages)) +
         geom_col( fill = plasma(10, alpha = 1, begin = 0, end = 1, direction = 1)) + 
         coord_flip()+
-        labs(x= "", y = "Average Job Duration (Months)")+
+        labs(x= "", y = "Average Job Duration [Months]")+
         #ggtitle("Average Job Duration for the Head of the Household") +
         theme_classic() + scale_fill_viridis_d()
       job_duration_plot
@@ -1759,7 +1767,7 @@ server <- function(input, output, session) {
   })
   
   output$finplot <- renderPlotly({
-    if (finVar() == "hobu") {
+    if (finVar() == "Number of Households that Own a Business") {
       village_bus_count_plot <- ggplot(dat_bus, aes(x= Village, y = `households`, fill = key)) + 
         geom_col(position = 'stack', hoverinfo = "text", aes(text = paste("Percentage:",`percentage`,"%\n"))) + 
         labs( x= "", y = "Total Households", fill = "") + 
@@ -1767,19 +1775,14 @@ server <- function(input, output, session) {
         #ggtitle("Households That Own a Business") +
         coord_flip()
     }
-    else if (finVar() == "inc") {
-<<<<<<< HEAD
-      ggplot(baseline.summary, aes(rmt_total, full_inc, color= village))+geom_point(data=baseline.summary, shape=17, size=3) +labs(x="Average Weekly Remmitances", y="Average Weekly Income", color="Villages") + ggtitle("Income v. Remmitances (November 2019 - October 2018)") + scale_color_viridis_d() +coord_flip() 
-=======
-
+    else if (finVar() == "Income vs Remmitances (November 2019 - October 2018)") {
       ggplot(baseline.summary, aes(rmt_total, full_inc, color= village))+geom_point(data=baseline.summary, shape=17, size=3) +labs(x="Average Weekly Remmitances", y="Average Weekly Income", color="Villages") + ggtitle("") + scale_color_viridis_d() +coord_flip() 
->>>>>>> 0a384ebe55281962f6ae361d412eb8bbcf9d3b14
     }
-    else if (finVar() == "sal") {
-      salplot <- ggplot(m_salary, aes(village, avg_salary, fill = village)) + geom_col() + labs(x = "", y = "₹" ,title = "Average Monthly Salary per Household", fill = "Village") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_color_viridis_d()
+    else if (finVar() == "Average Monthly Salary per Household by Village") {
+      salplot <- ggplot(m_salary, aes(village, avg_salary, fill = village)) + geom_col() + labs(x = "", y = "INR" ,title = "", fill = "Village") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_color_viridis_d()
       salplot
     }
-    else if (finVar() == "sav") {
+    else if (finVar() == "Number of Times Households Saved Money in Year Prior to Baseline Survey (November 2018 - November 2019)") {
       savplot <- ggplot(nbsavcount, aes(x = nb_put_saving, y = n, fill = "red")) +
         geom_col() +
         labs(x = "Numer of Times Able to Save", y = "Number of Household Heads") +
@@ -1805,7 +1808,7 @@ server <- function(input, output, session) {
                                , y = avg_rmt, color = village)) + 
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Remittance Income (₹)", caption = "Mean: 205.61   Median: 107.14", color = "Villages") +
+      labs(x = "Date", y = "Average Remittance Income (INR)", caption = "Mean: 205.61   Median: 107.14", color = "Villages") +
       #ggtitle("Average Weekly Household Remittance Income by Village")+ #(11/16/18 - 10/31/19)
       #scale_color_brewer(palette = "Spectral")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) + 
@@ -1842,7 +1845,7 @@ server <- function(input, output, session) {
   output$exp <- renderPlot({
     ggplot(filtered_exp(), aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) +
       geom_line() +
-      labs(x="Date", y="Average Weekly Expenditure (₹)", caption = "Mean: 1982.77   Median: 1832.1") +
+      labs(x="Date", y="Average Weekly Expenditure (INR)", caption = "Mean: 1982.77   Median: 1832.1") +
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + 
       scale_color_viridis_d()+
       theme_classic()+
@@ -1866,7 +1869,7 @@ server <- function(input, output, session) {
   output$inc <- renderPlot({
     ggplot(filtered_inc(), aes(date, avg_inc, color = village)) + 
       geom_line() + 
-      labs(x = "", y = "Income (₹)", color = "Village",
+      labs(x = "", y = "Income (INR)", color = "Village",
            caption = "Mean: 1395.61   Median: 1341.82") + 
       scale_color_viridis_d()+
       theme_classic()+
@@ -1882,7 +1885,7 @@ server <- function(input, output, session) {
   output$malefemaleinc <- renderPlot({
     ggplot(filtered_malefemaleinc(), aes(x = week,y = !!input$Gender, color = village)) + geom_line() + 
       #geom_line(aes(y = !!input$gender, color = village), linetype = "twodash") +  
-      labs(x = "", y = "Income (₹)", color = "Village") + 
+      labs(x = "", y = "Income (INR)", color = "Village") + 
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + scale_color_viridis_d()
   })
   
@@ -1906,7 +1909,7 @@ server <- function(input, output, session) {
     qplot(x=week_num, y=inc_total, color = village,
           data=filtered_totalinc(), na.rm=TRUE,
           #main="Total Income by Village",
-          xlab="Date", ylab="Total Income (₹)", geom = "line") +
+          xlab="Date", ylab="Total Income (INR)", geom = "line") +
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + scale_color_viridis_d()
   })
   
@@ -1937,7 +1940,7 @@ server <- function(input, output, session) {
       geom_line() +
       theme_classic()+
       #ggtitle("Average Weekly Consumption Expenditure by Village")+
-      labs(x = "", y = "Average Consumption Expenditure (₹)", caption = "Mean: 766.13  Median: 731.68", color = "Villages")+
+      labs(x = "", y = "Average Consumption Expenditure (INR)", caption = "Mean: 766.13  Median: 731.68", color = "Villages")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       theme(plot.caption = element_text(size = 10))+
       geom_rect(data = filtered_event(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.15)
