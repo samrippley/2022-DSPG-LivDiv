@@ -1762,13 +1762,15 @@ server <- function(input, output, session) {
       ggplot(baseline.summary, aes(rmt_total, full_inc, color= village))+geom_point(data=baseline.summary, shape=17, size=3) +labs(x="Average Weekly Remmitances", y="Average Weekly Income", color="Villages") + ggtitle("") + scale_color_viridis_d() +coord_flip() 
     }
     else if (finVar() == "sal") {
-      salplot <- ggplot(m_salary, aes(village, avg_salary, fill = village)) + geom_col() + labs(x = "", y = "₹" ,title = "Average Monthly Salary per Household", fill = "Village") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_color_viridis_d()
+      salplot <- ggplot(m_salary, aes(village, avg_salary, fill = village)) + geom_col() + 
+        labs(x = "Villages", y = "Indian Rupees ₹" ,title = "Average Monthly Salary per Household", fill = "") +
+        theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d()
       salplot
     }
     else if (finVar() == "sav") {
       savplot <- ggplot(nbsavcount, aes(x = nb_put_saving, y = n, fill = "red")) +
-        geom_col() +
-        labs(x = "Numer of Times Able to Save", y = "Number of Household Heads") +
+        geom_point() +
+        labs(x = "Total Households ", y = " Number of Times Household Saved") +
         theme_classic() +
         theme(legend.position="none")
       savplot
