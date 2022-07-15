@@ -728,7 +728,7 @@ events_vector <- events
 
 filtered_event <- reactive({
   event_periods %>% 
-    filter(events %in% input$event_choose)
+    filter(Events %in% input$event_choose)
 })
 
 #--------------------------------------------------------------------
