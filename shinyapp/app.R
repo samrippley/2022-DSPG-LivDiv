@@ -322,21 +322,23 @@ scountv <- soccup %>%
 scountv <- scountv %>%
   filter(job != 0)
 
-# Business counts
-Village <- c(rep("Amrabati", 2), rep("Beguakhali", 2), rep("Bijoynagar", 2), rep("Birajnagar", 2), rep("Haridaskati Samsernagar", 2), rep("Lakshmi Janardanpur",2), rep("Pargumti",2),rep("Purba Dwarokapur", 2), rep("Sagar", 2), rep("Shibpur",2))
-Village <- forcats::fct_rev(Village)
-key <- rep(c("No", "Yes"), 2)
-`households` <-c(26,2,27,3,48,2,24,2,27,3,25,3,24,4,21,7,21,7,25,3)
-`percentage` <- c("93","7","90","10","96","4","86","14","90","10","90","10","86","14","75","25","75","25","90","10")
-dat_bus <-  data.frame(Village, key, `households`,`percentage`)
-
 # Poverty line counts
+Village <- c(rep("Amrabati", 2), rep("Beguakhali", 2), rep("Bijoynagar", 2), rep("Birajnagar", 2), rep("Haridaskati Samsernagar", 2), rep("Lakshmi Janardanpur",2), rep("Pargumti",2),rep("Purba Dwarokapur", 2), rep("Sagar", 2), rep("Shibpur",2))
 `Key` <- rep(c("Live Above ₹240", "Live Below ₹240"), 2)
 `Households` <- c(17,11,20,10,32,18,19,9,14,16,17,11,18,10,23,5,21,6,21,7)
 Percentage<- c("60", "40", "67", "33", "64","36","68","32","53",
                "47","60","40","64","36","82","18","77","23","75","25" )
 Village <- forcats::fct_rev(Village)
-dat_pl <- data.frame(Village, `Key`, `Households`, Percentage)
+dat_pl <- data.frame(`Village`, `Key`, `Households`, Percentage)
+# Business counts
+Village <- c(rep("Amrabati", 2), rep("Beguakhali", 2), rep("Bijoynagar", 2), rep("Birajnagar", 2), rep("Haridaskati Samsernagar", 2), rep("Lakshmi Janardanpur",2), rep("Pargumti",2),rep("Purba Dwarokapur", 2), rep("Sagar", 2), rep("Shibpur",2))
+#Village <- forcats::fct_rev(Village)
+`Village` <- forcats::fct_rev(`Village`)
+key <- rep(c("No", "Yes"), 2)
+`households` <-c(26,2,27,3,48,2,24,2,27,3,25,3,24,4,21,7,21,7,25,3)
+`percentage` <- c("93","7","90","10","96","4","86","14","90","10","90","10","86","14","75","25","75","25","90","10")
+dat_bus <-  data.frame(dat_pl$Village, key, `households`,`percentage`)
+
 
 # marital status
 countmar <- baseline %>%
@@ -717,11 +719,11 @@ filtered_non_food_cs <- reactive({
 })
 
 # Events data -------------------------------------
-events <- c("Kharif Crop Harvest", "Rabi Crop Harvest","Honey Harvest", "Fani Cyclone", "Bulbul and Matmo Cyclone", "Vayu Cyclone", "Hikaa Cyclone",
+Events <- c("Kharif Crop Harvest", "Rabi Crop Harvest","Honey Harvest", "Fani Cyclone", "Bulbul and Matmo Cyclone", "Vayu Cyclone", "Hikaa Cyclone",
             "Republic Day", "Rama Navami", "Eid Al-Fitr", "Indian Independence Day", "Dussehra", "Diwali")
 start_week <- c(2, 0, 19, 22, 48, 30, 43, 10, 20, 28, 38, 46, 49)
 end_week <- c(12, 14, 32, 24, 49, 31, 44, 10.2, 20.2, 28.2, 38.2, 46.2, 49.2)
-event_periods <- data.frame(events, start_week, end_week)
+event_periods <- data.frame(Events, start_week, end_week)
 events_vector <- events
 
 filtered_event <- reactive({
@@ -1640,7 +1642,7 @@ server <- function(input, output, session) {
       splot
     }
     else if (ageVar() == "pov") {
-      village_pl_count_plot <- ggplot(dat_pl, aes(x= Village, y = `Households`, fill = `Key`)) + 
+      village_pl_count_plot <- ggplot(dat_pl, aes(x= `Village`, y = `Households`, fill = `Key`)) + 
         geom_col(position = 'stack', hoverinfo = "text", aes(text = paste("Percentage:",Percentage,"%\n"))) + 
         labs(x= "", y = "Total Households", fill = "") + 
         theme_classic() + 
@@ -1948,9 +1950,9 @@ server <- function(input, output, session) {
     ggplot(filtered_cs_food(), aes(x = week, y = !!input$food_group, color = village))+
       geom_line()+
       theme_classic()+
-      labs(x = "", y = "Average Weekly Expenditure", color = "Villages")+
+      labs(x = "", y = "Average Weekly Expenditure", color = "Villages", caption = "Mean: 721.41  Median: 686.96")+
       #ggtitle("Average Consumption Expenditure on Food Items")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019", caption = "Mean: 721.41  Median: 686.96"), limits = c(10:40))
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))
     
   })
   
@@ -1963,9 +1965,9 @@ server <- function(input, output, session) {
     ggplot(filtered_non_food_cs(), aes(x = week, y = !!input$nonfood_group, color = village)) +
       geom_line()+
       theme_classic()+
-      labs(x = "", y = "Average Weekly Expenditure", color = "Villages")+
+      labs(x = "", y = "Average Weekly Expenditure", color = "Villages", caption = "Mean: 882.22  Median: 769.75")+
       #ggtitle("Average Consumption Expenditure on Non-Food Items")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019", caption = "Mean: 882.22  Median: 769.75"), limits = c(10:40))
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))
     
   })
   
