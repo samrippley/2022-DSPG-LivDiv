@@ -244,6 +244,10 @@ mean_land_value <- c(13, 45.44, 60.95, 42.14, 45.44, 50.9, 64, 36.35, 23.7, 41.5
 sum_value <- c(26, 818, 2499, 590, 1136, 1069, 1537, 763.5, 237, 998)
 land_stats <- data.frame(villages, land_owners, max_land_value, min_land_value, mean_land_value, sum_value)
 
+#Migrant woker proportion data 
+
+migrant_prop <- baseline %>% group_by(village) %>% summarize(migrant_proportion = mean(hh_migrant_prop))
+
 # savings data 
 nbsav <- baseline %>% 
   group_by(village) %>% 
@@ -1002,11 +1006,13 @@ ui <- navbarPage(title = "",
 
                                                        "Household Business" = "Number of Households that Own a Business",
                                                        "Salary" = "Average Monthly Salary per Household by Village",
+                                                       "Migrant Workers" = "mig",
                                                        "Income/Remmitances" = "Income vs Remmitances (November 2019 - October 2018)",
                                                        "Savings" = "Number of Times Households Saved Money in Year Prior to Baseline Survey (November 2018 - November 2019)"
                                                      )),
                                                      fluidRow(align = "center",
                                                               h4(strong(textOutput("result")))),
+
                                                      withSpinner(plotlyOutput("finplot", height = "500px")),
                                                      
                                               ),
@@ -1053,7 +1059,7 @@ ui <- navbarPage(title = "",
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Plot",plotOutput("exp")),
+                                           tabPanel("Plot",plotlyOutput("exp")),
                                            tabPanel("Table", DT::DTOutput("exp_table"))
                                          )
                                        ),
@@ -1099,10 +1105,10 @@ ui <- navbarPage(title = "",
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Plot",plotOutput("inc")),
-                                           tabPanel("Male/Female Income", plotOutput("malefemaleinc")),
+                                           tabPanel("Plot",plotlyOutput("inc")),
+                                           tabPanel("Male/Female Income", plotlyOutput("malefemaleinc")),
                                            #tabPanel("Full Income", plotOutput("fullinc")),
-                                           tabPanel("Total Income(w/o remmitance)", plotOutput("totalinc")),
+                                           tabPanel("Total Income(w/o remmitance)", plotlyOutput("totalinc")),
                                            tabPanel("Table", DT::DTOutput("inc_table"))
                                          )
                                        ),
@@ -1169,7 +1175,7 @@ ui <- navbarPage(title = "",
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Plot", plotOutput("food_plot"))                                         
+                                           tabPanel("Plot", plotlyOutput("food_plot"))                                         
                                          )
                                        ),
                                        
@@ -1201,7 +1207,7 @@ ui <- navbarPage(title = "",
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Plot", plotOutput("nonfood_plot"))                                         
+                                           tabPanel("Plot", plotlyOutput("nonfood_plot"))                                         
                                          )
                                        ),
                                        
@@ -1241,7 +1247,7 @@ ui <- navbarPage(title = "",
                                                                 multiple = T, options = list(`actions-box` = T))),
                                          ),
                                          tabPanel("Purpose", 
-                                                  plotOutput("purpplot", height = "500px")
+                                                  plotlyOutput("purpplot", height = "500px")
                                          ),
                                          
                                          
@@ -1282,7 +1288,7 @@ ui <- navbarPage(title = "",
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Plot",plotOutput("rmt")),
+                                           tabPanel("Plot",plotlyOutput("rmt")),
                                            tabPanel("Table",DT:: DTOutput("rmt_table"))#,
                                            #tabPanel("Method", plotOutput("rmt_method")),
                                            #tabPanel("Purpose", plotOutput("rmt_purpose"))
@@ -1299,7 +1305,7 @@ ui <- navbarPage(title = "",
                                                        secure method of sending/receiving money, it requires additional fees, which may make it more expensive for 
                                                        this poverty-stricken area. Moreover, households may be more concerned about receiving the remittance quickly 
                                                        rather than safely. Also, using mobile apps can be difficult in regions where data usage is limited."),
-                                                     br(""), plotOutput("rmt_method", width = "70%")
+                                                     br(""), plotlyOutput("rmt_method", width = "70%")
                                                      
                                                      
                                               )),
@@ -1310,7 +1316,7 @@ ui <- navbarPage(title = "",
                                               column(12, align = "center", h4(strong("Usage of Remmittances")),
                                                      p("Remittances is primarily being used for food and utility purchases, which are 
                                                        often the most essential items for households in underdeveloped regions."),
-                                                     br(""), plotOutput("rmt_purpose", width = "70%")
+                                                     br(""), plotlyOutput("rmt_purpose", width = "70%")
                                                      
                                                      
                                               )),
@@ -1750,11 +1756,11 @@ server <- function(input, output, session) {
         coord_flip()
     }
     else if (ocuVar() == "jodu") {
-      job_duration_plot <- ggplot(job_duration_summary, aes(x = villages, y = job_duration_avg, fill = villages)) +
+      job_duration_plot <- ggplot(job_duration_summary, aes(x = forcats::fct_rev(villages), y = job_duration_avg, fill = villages)) +
         geom_col( fill = plasma(10, alpha = 1, begin = 0, end = 1, direction = 1)) + 
         coord_flip()+
-        labs(x= "", y = "Average Job Duration [Months]")+
-        #ggtitle("Average Job Duration for the Head of the Household") +
+        labs(x= "", y = "Average Job Duration (Months)")+
+        ggtitle("") +
         theme_classic() + scale_fill_viridis_d()
       job_duration_plot
     }
@@ -1775,20 +1781,35 @@ server <- function(input, output, session) {
         #ggtitle("Households That Own a Business") +
         coord_flip()
     }
-    else if (finVar() == "Income vs Remmitances (November 2019 - October 2018)") {
-      ggplot(baseline.summary, aes(rmt_total, full_inc, color= village))+geom_point(data=baseline.summary, shape=17, size=3) +labs(x="Average Weekly Remmitances", y="Average Weekly Income", color="Villages") + ggtitle("") + scale_color_viridis_d() +coord_flip() 
+
+  else if (finVar() == "Income vs Remmitances (November 2019 - October 2018)") {
+      ggplot(baseline.summary, aes(rmt_total, full_inc, color= village))+
+        geom_point(data=baseline.summary, shape=17, size=3) +
+        labs(x="Average Weekly Remmitances", y="Average Weekly Income", color="Villages") + 
+        ggtitle("") + scale_color_viridis_d() +coord_flip() 
+
     }
-    else if (finVar() == "Average Monthly Salary per Household by Village") {
-      salplot <- ggplot(m_salary, aes(village, avg_salary, fill = village)) + geom_col() + labs(x = "", y = "INR" ,title = "", fill = "Village") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_color_viridis_d()
+else if (finVar() == "Average Monthly Salary per Household by Village")  {
+      salplot <- ggplot(m_salary, aes(village, avg_salary, fill = village)) + geom_col() + 
+        labs(x = "Villages", y = "Indian Rupees ₹" ,title = "", fill = "") +
+        theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d()
       salplot
     }
     else if (finVar() == "Number of Times Households Saved Money in Year Prior to Baseline Survey (November 2018 - November 2019)") {
       savplot <- ggplot(nbsavcount, aes(x = nb_put_saving, y = n, fill = "red")) +
-        geom_col() +
-        labs(x = "Numer of Times Able to Save", y = "Number of Household Heads") +
+        geom_point() +
+        labs(x = "Total Households ", y = " Number of Times Household Saved") +
         theme_classic() +
         theme(legend.position="none")
       savplot
+    }
+    
+    else if (finVar() == "mig") {
+      migplot <- ggplot(migrant_prop, aes(village, migrant_proportion, fill = village)) + 
+        geom_col() + theme_classic() + 
+        labs(x = "", y = "Proportion", title = "", fill = "") + coord_flip()
+
+      migplot
     }
     
     
@@ -1803,7 +1824,7 @@ server <- function(input, output, session) {
       filter(village %in% input$village_rmt)
   })
   # Plot
-  output$rmt <- renderPlot({
+  output$rmt <- renderPlotly({
     ggplot(filtered_rmt(), aes(x = week
                                , y = avg_rmt, color = village)) + 
       geom_line() +
@@ -1822,7 +1843,7 @@ server <- function(input, output, session) {
     avg_rmt
   })
   # Render method plot
-  output$rmt_method <- renderPlot({
+  output$rmt_method <- renderPlotly({
     rmt_method_plot
   })
   # Render map 
@@ -1831,7 +1852,7 @@ server <- function(input, output, session) {
   })
   
   # Render purpose plot
-  output$rmt_purpose <- renderPlot({
+  output$rmt_purpose <- renderPlotly({
     rmt_purpose_plot
   })
   # exp plot ouput
@@ -1842,7 +1863,7 @@ server <- function(input, output, session) {
   })
   
   # Plot
-  output$exp <- renderPlot({
+  output$exp <- renderPlotly({
     ggplot(filtered_exp(), aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) +
       geom_line() +
       labs(x="Date", y="Average Weekly Expenditure (INR)", caption = "Mean: 1982.77   Median: 1832.1") +
@@ -1866,7 +1887,7 @@ server <- function(input, output, session) {
   
   
   # Plot
-  output$inc <- renderPlot({
+  output$inc <- renderPlotly({
     ggplot(filtered_inc(), aes(date, avg_inc, color = village)) + 
       geom_line() + 
       labs(x = "", y = "Income (INR)", color = "Village",
@@ -1882,7 +1903,7 @@ server <- function(input, output, session) {
       filter(village %in% input$village_inc)
   })
   
-  output$malefemaleinc <- renderPlot({
+  output$malefemaleinc <- renderPlotly({
     ggplot(filtered_malefemaleinc(), aes(x = week,y = !!input$Gender, color = village)) + geom_line() + 
       #geom_line(aes(y = !!input$gender, color = village), linetype = "twodash") +  
       labs(x = "", y = "Income (INR)", color = "Village") + 
@@ -1905,7 +1926,7 @@ server <- function(input, output, session) {
       filter(village %in% input$village_inc)
   })
   
-  output$totalinc <- renderPlot({
+  output$totalinc <- renderPlotly({
     qplot(x=week_num, y=inc_total, color = village,
           data=filtered_totalinc(), na.rm=TRUE,
           #main="Total Income by Village",
@@ -1972,7 +1993,7 @@ server <- function(input, output, session) {
   
   # Consumption by food group plots
   
-  output$food_plot <- renderPlot({
+  output$food_plot <- renderPlotly({
     ggplot(filtered_cs_food(), aes(x = week, y = !!input$food_group, color = village))+
       geom_line()+
       theme_classic()+
@@ -1987,7 +2008,7 @@ server <- function(input, output, session) {
       filter(village %in% input$village_cs_nonfood)
   })
   
-  output$nonfood_plot <- renderPlot({
+  output$nonfood_plot <- renderPlotly({
     ggplot(filtered_non_food_cs(), aes(x = week, y = !!input$nonfood_group, color = village)) +
       geom_line()+
       theme_classic()+
