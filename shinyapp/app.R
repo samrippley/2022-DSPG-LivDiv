@@ -954,7 +954,8 @@ ui <- navbarPage(title = "",
                                                        "Agricultural Farming" = "agfa",
                                                        "Land Holding" = "laho",
                                                        "Land Fallow" = "lafa",
-                                                       "Household Assets" = "hoas"
+                                                       "Household Assets" = "hoas",
+                                                       textOutput(outputId = "myText")
                                                        
                                                      ),
                                                      ), 
@@ -998,6 +999,7 @@ ui <- navbarPage(title = "",
 
                                                        "Household Business" = "hobu",
                                                        "Salary" = "sal",
+                                                       "Migrant Workers" = "mig",
                                                        "Income/Remmitances" = "inc",
                                                        "Savings" = "sav"
                                                      ),
@@ -1528,6 +1530,15 @@ server <- function(input, output, session) {
   # Run JavaScript Code
   runjs(jscode)
   
+  function(input, output) {
+    output$myText <- 
+      renderText(
+        paste("The average of", 
+              input$ocuVar, 
+              "is")
+      )  
+  }
+  
   #overview photos 
   index <- reactiveVal(1)
   
@@ -1758,20 +1769,34 @@ server <- function(input, output, session) {
         coord_flip()
     }
     else if (finVar() == "inc") {
+      ggplot(baseline.summary, aes(rmt_total, full_inc, color= village))+
+        geom_point(data=baseline.summary, shape=17, size=3) +
+        labs(x="Average Weekly Remmitances", y="Average Weekly Income", color="Villages") + 
+        ggtitle("Income v. Remmitances (November 2019 - October 2018)") + scale_color_viridis_d() +coord_flip() 
 
-      ggplot(baseline.summary, aes(rmt_total, full_inc, color= village))+geom_point(data=baseline.summary, shape=17, size=3) +labs(x="Average Weekly Remmitances", y="Average Weekly Income", color="Villages") + ggtitle("") + scale_color_viridis_d() +coord_flip() 
     }
     else if (finVar() == "sal") {
-      salplot <- ggplot(m_salary, aes(village, avg_salary, fill = village)) + geom_col() + labs(x = "", y = "₹" ,title = "Average Monthly Salary per Household", fill = "Village") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_color_viridis_d()
+      salplot <- ggplot(m_salary, aes(village, avg_salary, fill = village)) + geom_col() + 
+        labs(x = "Villages", y = "Indian Rupees ₹" ,title = "Average Monthly Salary per Household", fill = "") +
+        theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d()
       salplot
     }
     else if (finVar() == "sav") {
       savplot <- ggplot(nbsavcount, aes(x = nb_put_saving, y = n, fill = "red")) +
-        geom_col() +
-        labs(x = "Numer of Times Able to Save", y = "Number of Household Heads") +
+        geom_point() +
+        labs(x = "Total Households ", y = " Number of Times Household Saved") +
         theme_classic() +
         theme(legend.position="none")
       savplot
+    }
+    
+    else if (finVar() == "mig") {
+      migplot <- ggplot(nbsavcount, aes(x = nb_put_saving, y = n, fill = "red")) +
+        geom_point() +
+        labs(x = "Total Households ", y = " Number of Times Household Saved") +
+        theme_classic() +
+        theme(legend.position="none")
+      migplot
     }
     
     
