@@ -1694,7 +1694,9 @@ server <- function(input, output, session) {
     }
     else if (ageVar() == "Total Children per Household") {
       chhoplot <- ggplot(avg_children, aes(village, avg_children, fill = village)) + 
-        geom_col(hoverinfo = "text", aes(), width = "5") + labs(x = "", y = "Average number of children" ,title = "Total Children per Household", fill = "Village") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d()
+        geom_col() + labs(x = "", y = "Average number of children" ,title = "Total Children per Household", fill = "Village") + 
+        theme(legend.position = "none") +
+        rotate_x_text(angle = 33, size = rel(1)) + scale_fill_viridis_d()
       chhoplot
     }
   })
@@ -1726,20 +1728,17 @@ server <- function(input, output, session) {
       socplot
     }
     else if (ocuVar() == "Proportion of Households Involved in Agricultural Farming") {
-      agfaplot <- ggplot(grouped, aes(village,prop_farm)) + geom_col(fill = "navy blue") + labs(x = "", y = "Proportion", title = "") + coord_flip() + theme_classic()
+      agfaplot <- ggplot(grouped, aes(village,prop_farm, fill = village)) + geom_col() + 
+        labs(x = "", y = "Proportion", title = "") + coord_flip() + theme(legend.position = "none") + scale_fill_viridis_d()
       agfaplot
     }
     else if (ocuVar() == "Average Amount of Land Owned by Village") {
       mean_land_plot <- ggplot(land_stats, aes(x = villages, y = mean_land_value, fill = villages)) +
         geom_col() +
-        coord_flip() +
-        #ggtitle("Average Amount of Land Owned in Each Village") +
+        coord_flip() + theme(legend.position = "none") +
         labs(x = "", y = "Land Owned (Kathas)") + scale_fill_viridis_d()
       mean_land_plot
-   # }
-    #else if (ocuVar() == "Proportion of Households that Cultivated Crops") {
-     # croplot <- ggplot(grouped, aes(village,prop_farm)) + geom_col(fill = "navy blue") + labs(x = "", y = "Proportion", title = "") + coord_flip() + theme_classic()
-      #croplot
+
     }
     else if (ocuVar() == "Proportion of Households Owning Assets") {
       assetplot <- ggplot(assets_long, aes(property, measurement, fill = property)) + geom_col() + 
@@ -1750,18 +1749,18 @@ server <- function(input, output, session) {
     }
     else if (ocuVar() == "Average Amount of Land Fallowed by Village") {
       land_fallow_plot <- ggplot(land_fallow, aes(x = forcats::fct_rev(village), y = sum, fill = village)) +
-        geom_col(fill = plasma(10, alpha = 1, begin = 0, end = 1, direction = 1))+
-        theme_classic() +
+        geom_col()+
+        theme(legend.position = "none") +
         labs(x = "", y = "Total Land Fallowed", caption = "*Note: For missing bars, villages did not have any land fallowed")+
-        coord_flip()
+        coord_flip() + scale_fill_viridis_d()
     }
     else if (ocuVar() == "Average Job Duration for Head of Household") {
       job_duration_plot <- ggplot(job_duration_summary, aes(x = forcats::fct_rev(villages), y = job_duration_avg, fill = villages)) +
-        geom_col( fill = plasma(10, alpha = 1, begin = 0, end = 1, direction = 1)) + 
+        geom_col() + 
         coord_flip()+
         labs(x= "", y = "Average Job Duration (Months)")+
         ggtitle("") +
-        theme_classic() + scale_fill_viridis_d()
+        theme(legend.position = "none") + scale_fill_viridis_d()
       job_duration_plot
     }
     
