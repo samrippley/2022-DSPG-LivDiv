@@ -1578,7 +1578,7 @@ server <- function(input, output, session) {
       #labs(title ="Amount Borrowed by Village") + 
       xlab("Date") +
       ylab("Amount Borrowed (INR)")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) +
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) +
       scale_color_viridis_d() +
       theme(legend.position = "none") 
   })  
@@ -1595,7 +1595,7 @@ server <- function(input, output, session) {
       #labs(title = "Number of Households Borrowing (Cash or in Kind)") + 
       xlab("Date") +
       ylab("Number of HH")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) +
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) +
       scale_color_viridis_d() +
       theme(legend.position = "none")
   })  
@@ -1739,7 +1739,7 @@ server <- function(input, output, session) {
       land_fallow_plot <- ggplot(land_fallow, aes(x = forcats::fct_rev(village), y = sum, fill = village)) +
         geom_col(fill = plasma(10, alpha = 1, begin = 0, end = 1, direction = 1))+
         theme_classic() +
-        labs(x = "", y = "Total Land Fallowed", caption = "*Note: For missing bars, villages did not have any land fallowed")+
+        labs(x = "", y = "Total Land Fallowed", caption = "*Note: For missing bars, villages did not have any land fallowed", tags = "*Note: For missing bars, villages did not have any land fallowed" )+
         coord_flip()
     }
     else if (ocuVar() == "jodu") {
@@ -1802,7 +1802,7 @@ server <- function(input, output, session) {
     
   })
   
-  
+ # High Frequency Data Output------------------- 
   
   # rmt plot output
   # Filter by inputt
@@ -1819,7 +1819,7 @@ server <- function(input, output, session) {
       labs(x = "Date", y = "Average Remittance Income (₹)", caption = "Mean: 205.61   Median: 107.14", color = "Villages") +
       #ggtitle("Average Weekly Household Remittance Income by Village")+ #(11/16/18 - 10/31/19)
       #scale_color_brewer(palette = "Spectral")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) + 
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + 
       scale_color_viridis_d()+
       theme(plot.caption = element_text(size = 12))
     
@@ -1951,7 +1951,7 @@ server <- function(input, output, session) {
       labs(x = "", y = "Average Consumption Expenditure (₹)", caption = "Mean: 766.13  Median: 731.68", color = "Villages")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       theme(plot.caption = element_text(size = 10))+
-      geom_rect(data = filtered_event(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.15)
+      geom_rect(data = filtered_event(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
   })
   
   # Filtered cs items
