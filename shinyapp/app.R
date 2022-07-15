@@ -229,7 +229,9 @@ grouped <- baseline %>% group_by(village) %>% summarize(prop_farm = sum(farm_yn)
 
 # remmitences v income data 
 
-baseline.summary <- baseline %>% select(village, exp_total, full_inc, rmt_total) %>% group_by(village) %>%summarise_all(mean) 
+baseline.summary <- livdiv %>% select(village, full_inc, rmt_total) %>% 
+  group_by(village) %>%
+  summarise_all(mean, na.rm = TRUE)
 
 #land owned data 
 villages <- c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur") 
@@ -1750,9 +1752,7 @@ server <- function(input, output, session) {
         coord_flip()
     }
     else if (finVar() == "inc") {
-      figure_inc_spending <- ggplot(baseline.summary, aes(rmt_total, full_inc, color= village))+geom_point(data=baseline.summary, shape=17, size=3) +labs(x="Total mean weekly remittances", y="Total mean weekly income", color="Villages") + ggtitle("Average total income vs average total remittances in Baseline week") + scale_color_viridis_d()
-      p<-figure_inc_spending +coord_flip() #+ scale_x_continuous(trans='log2') 
-      p
+      ggplot(baseline.summary, aes(rmt_total, full_inc, color= village))+geom_point(data=baseline.summary, shape=17, size=3) +labs(x="Average Weekly Remmitances", y="Average Weekly Income", color="Villages") + ggtitle("") + scale_color_viridis_d() +coord_flip() 
     }
     else if (finVar() == "sal") {
       salplot <- ggplot(m_salary, aes(village, avg_salary, fill = village)) + geom_col() + labs(x = "", y = "INR" ,title = "Average Monthly Salary per Household", fill = "Village") + theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_color_viridis_d()
