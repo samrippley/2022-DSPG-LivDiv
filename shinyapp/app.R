@@ -1062,11 +1062,10 @@ ui <- navbarPage(title = "",
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
                                                      p("We present average weekly expenditure from Nov 2018 - Oct 2019 to examine the spending behaviors of households in the region. 
-                                                       This will provide information on the changing nature of spending in the Sundarbans region due to events such as festivals, 
+                                                       This will provide information on the changing nature of spending in the Sundarbans region due to events such as festivals and holidays, 
                                                        harvest seasons, and weather-related shocks."),
                                                      p("Expenditure is defined as spending on consumption (e.g., food) and non-consumption (e.g., rent) items. 
-                                                       It appears that the largest expense for households during this period include house repairs and festival-related costs. 
-                                                       The most common expenditures are food purchases."),
+                                                       It appears that the largest expenses occured during"),
                                                      br("")
                                                      
                                               )),
@@ -1737,7 +1736,7 @@ server <- function(input, output, session) {
     ggplot(filtered_cs_food_staple(), aes(x = week, y = `Staple Items`, color = village)) +
       geom_line()+
       theme_classic()+
-      ggtitle("Average Weekly Expenditure on Staple Items ")+
+      #ggtitle("Average Weekly Expenditure on Staple Items ")+
       labs(x = "", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: 463.87  Median: 431.20",
            subtitle = "(Rice/Grains, Flour, Vegetables, Fruits, Tubers, Beans and Spices)")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
@@ -1750,7 +1749,7 @@ server <- function(input, output, session) {
     ggplot(filtered_cs_meats(), aes(x = week, y = `Meats`, color = village))+
       geom_line()+
       theme_classic()+
-      ggtitle("Average Weekly Expenditure on Meat")+
+      #ggtitle("Average Weekly Expenditure on Meat")+
       labs(x = "", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: 158.97  Median: 431.20",
            subtitle = "(Red Meat, Fish, and Poultry)")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
@@ -1762,7 +1761,7 @@ server <- function(input, output, session) {
     ggplot(filtered_cs_other(), aes(x = week, y = `Other`, color = village))+
       geom_line() +
       theme_classic()+
-      ggtitle("Average Weekly Expenditure on 'Other' Items")+
+      #ggtitle("Average Weekly Expenditure on 'Other' Items")+
       labs(x = "", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: 113.75  Median: 111.94",
            subtitle = "(Eggs, Dairy, Packaged Foods, Tea, and Other Food Items)")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
