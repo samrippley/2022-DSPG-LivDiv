@@ -1485,7 +1485,7 @@ ui <- navbarPage(title = "",
                                             br(), 
                                             a(href = 'https://www.linkedin.com/in/julie-rebstock', 'Nandini Das', target = '_blank'), "(Virgina Tech, PHD in Economics);",
                                             br(), 
-                                            a(href = 'https://www.linkedin.com/in/ryan-jacobs-bb5727174/', 'Taj Cole', target = '_blank'), "(Virginia Tech, Undergraduate in Environmental Economics, Management, and Policy, and Minoring in Industrial Design).",
+                                            a(href = 'https://www.linkedin.com/in/taj-cole-83a738221', 'Taj Cole', target = '_blank'), "(Virginia Tech, Undergraduate in Environmental Economics, Management, and Policy, and Minoring in Data and Decisions).",
                                             br(), 
                                             a(href = 'https://www.linkedin.com/in/john-wright-9a13621a0/', 'Siddarth Ravikanti', target = '_blank'), "(Virginia Tech, Undergraduate in Statistical and Data Science)."),
                                           p("", style = "padding-top:10px;") 
