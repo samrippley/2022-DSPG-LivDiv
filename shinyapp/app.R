@@ -999,6 +999,7 @@ ui <- navbarPage(title = "",
 
                                                        "Household Business" = "hobu",
                                                        "Salary" = "sal",
+                                                       "Migrant Workers" = "mig",
                                                        "Income/Remmitances" = "inc",
                                                        "Savings" = "sav"
                                                      ),
@@ -1768,12 +1769,11 @@ server <- function(input, output, session) {
         coord_flip()
     }
     else if (finVar() == "inc") {
-<<<<<<< HEAD
-      ggplot(baseline.summary, aes(rmt_total, full_inc, color= village))+geom_point(data=baseline.summary, shape=17, size=3) +labs(x="Average Weekly Remmitances", y="Average Weekly Income", color="Villages") + ggtitle("Income v. Remmitances (November 2019 - October 2018)") + scale_color_viridis_d() +coord_flip() 
-=======
+      ggplot(baseline.summary, aes(rmt_total, full_inc, color= village))+
+        geom_point(data=baseline.summary, shape=17, size=3) +
+        labs(x="Average Weekly Remmitances", y="Average Weekly Income", color="Villages") + 
+        ggtitle("Income v. Remmitances (November 2019 - October 2018)") + scale_color_viridis_d() +coord_flip() 
 
-      ggplot(baseline.summary, aes(rmt_total, full_inc, color= village))+geom_point(data=baseline.summary, shape=17, size=3) +labs(x="Average Weekly Remmitances", y="Average Weekly Income", color="Villages") + ggtitle("") + scale_color_viridis_d() +coord_flip() 
->>>>>>> 0a384ebe55281962f6ae361d412eb8bbcf9d3b14
     }
     else if (finVar() == "sal") {
       salplot <- ggplot(m_salary, aes(village, avg_salary, fill = village)) + geom_col() + 
@@ -1788,6 +1788,15 @@ server <- function(input, output, session) {
         theme_classic() +
         theme(legend.position="none")
       savplot
+    }
+    
+    else if (finVar() == "mig") {
+      migplot <- ggplot(nbsavcount, aes(x = nb_put_saving, y = n, fill = "red")) +
+        geom_point() +
+        labs(x = "Total Households ", y = " Number of Times Household Saved") +
+        theme_classic() +
+        theme(legend.position="none")
+      migplot
     }
     
     
