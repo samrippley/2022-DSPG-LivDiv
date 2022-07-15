@@ -724,7 +724,7 @@ Events <- c("Kharif Crop Harvest", "Rabi Crop Harvest","Honey Harvest", "Fani Cy
 start_week <- c(2, 0, 19, 22, 48, 30, 43, 10, 20, 28, 38, 46, 49)
 end_week <- c(12, 14, 32, 24, 49, 31, 44, 10.2, 20.2, 28.2, 38.2, 46.2, 49.2)
 event_periods <- data.frame(Events, start_week, end_week)
-events_vector <- events
+events_vector <- Events
 
 filtered_event <- reactive({
   event_periods %>% 
@@ -1908,6 +1908,10 @@ server <- function(input, output, session) {
       filter(village %in% input$village_cs)
   })
   # consumption exp plot
+  filtered_event <- reactive({
+    event_periods %>% 
+      filter(Events %in% input$event_choose)
+  })
   
   output$cs_exp <- renderPlot({
     ggplot(filtered_cs_avg(), aes(x = week, y = avg_cs , color = village)) +
@@ -1917,7 +1921,7 @@ server <- function(input, output, session) {
       labs(x = "", y = "Average Consumption Expenditure (INR)", caption = "Mean: 766.13  Median: 731.68", color = "Villages")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       theme(plot.caption = element_text(size = 10))+
-      geom_rect(data = filtered_event(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = events), alpha=0.15)
+      geom_rect(data = filtered_event(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.15)
   })
   
   # Filtered cs items
@@ -1975,7 +1979,7 @@ server <- function(input, output, session) {
   
   filtered_event <- reactive({
     event_periods %>% 
-      filter(events %in% input$event_choose)
+      filter(Events %in% input$event_choose)
   })
   
   ###Shock plot output  -----------------------------------------------------
