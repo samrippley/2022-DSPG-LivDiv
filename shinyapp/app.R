@@ -53,14 +53,14 @@ baseline <- livdiv %>%
 imgs <- list.files("www/photos/", pattern=".png", full.names = TRUE)
 
 #borrowing data 
-fd <- livdiv 
-meals <- fd %>%
+fdliv <- livdiv 
+meals <- fdliv %>%
   select(c("hhid", "date", "fs_skipmeals", "fs_reducemeals", "village","hhid", "week_num"))
 meals$date <- as_date(meals$date)
-borrow <- fd %>%
+borrow <- fdliv %>%
   select(c("hhid", "date", "d_br", "d_br_cash","d_br_inkind", "br_amt","br_amtdue", "village","hhid", "week_num"))
 borrow$date <- as_date(borrow$date)
-purp <- fd %>%
+purp <- fdliv %>%
   select(c("date", "br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag", "village","hhid", "week_num"))
 purp$date <- as_date(purp$date)
 bramt <- borrow %>%
@@ -72,24 +72,18 @@ dbr <- borrow %>%
   group_by(village,week_num) %>%
   summarize_at(c("d_br", "d_br_cash", "d_br_inkind"), sum, na.rm=TRUE) 
 
-purpose <- purp %>%
-  select(c("br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag", "village", "week_num")) %>%
-  group_by(village) %>%
-  summarize_at(c("br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag"), sum, na.rm=TRUE) 
-pamr <- purpose %>% 
-  filter(village == "Amrabati") 
-pamr <- t(pamr)
-pamr <- as.data.frame(pamr)
-pamr <- pamr %>% slice(-c(1))
-pamr <- data.frame(A = c("Consumption", "Other Expenses", "Fees Due", "Payback Other Loan", "Asset Purchase", "Agriculture Purchases"),
-                   B = c(pamr$V1))
-purposenv <- purp %>%
-  select(c("br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag", "village", "week_num")) %>%
-  summarize_at(c("br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag"), sum, na.rm=TRUE) 
+borrow <- livdiv %>%  select(c("hhid", "date", "d_br", "d_br_cash","d_br_inkind", "br_amt","br_amtdue", "village","hhid", "week_num"))
+borrow$date <- as_date(borrow$date)
+
+purp <- livdiv %>%  
+  select(c("date", "br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag", "village","hhid", "week_num"))
+
+purposenv <- purp %>%  
+  select(c("br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag", "village", "week_num")) %>% summarize_at(c("br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan","br_purpose_asset", "br_purpose_ag"), sum, na.rm=TRUE) 
+
 purposenv <- t(purposenv)
 purposenv <- as.data.frame(purposenv)
-df <- data.frame(A = c("Consumption", "Other Expenses", "Fees Due", "Payback Other Loan", "Asset Purchase", "Agriculture Purchases"),
-                 B = c(purposenv$V1))
+dfpurp <- data.frame(A = c("Consumption", "Other Expenses", "Fees Due", "Payback Other Loan", "Asset Purchase", "Agriculture Purchases"), B = c(purposenv$V1))
 # pls purpose dynamic hist
 
 
@@ -404,7 +398,7 @@ sundarban <- subset(ind, NAME_2 %in% c('North 24 Parganas','South 24 Parganas'))
 d.sundarban<-st_union(sundarban)
 village_all <- st_read(dsn = paste0(getwd(), "/data"), "Village, GP coordinates", stringsAsFactors = TRUE)
 
-village <- subset(village_all, Village.Na %in% c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Parghumti","Purba Dwarokapur","Gangasagar","Shibpur"))
+village <- subset(village_all, Village.Na %in% c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Parghumti","Purba Dwarokapur","Shibpur"))
 
 icons <- awesomeIcons(
   icon = 'ios-close',
@@ -425,7 +419,13 @@ map_leaflet <- leaflet(data = d.sundarban) %>%
     highlightOptions = highlightOptions(color = "white",
                                         weight = 2,
                                         bringToFront = TRUE)) %>%
-  addAwesomeMarkers(~lon, ~lat, label = ~as.character(Village.Na), icon=icons, data=village)
+  addAwesomeMarkers(
+    lat = 21.6528, lng = 88.0753,
+    label = "Sagar",
+    labelOptions = , icon=icons) %>%
+  addAwesomeMarkers(~lon, ~lat, label = ~as.character(Village.Na), labelOptions =  ,icon=icons, data=village) 
+
+
 
 
 #-------------------------------
@@ -873,27 +873,29 @@ ui <- navbarPage(title = "",
                                    #    p(tags$small(em('Last updated: August 2021'))))
                           ),
                           fluidRow(align = "center",
-                                   img(src='Picture2.png', width = "75%"),
+                                   img(src='Picture2.png', width = "50%"),
                           )), 
                  ## Sundarbans Region--------------------------------------------
                  navbarMenu("Sundarbans Region" ,
                             tabPanel("Villages", 
                                      
                                      fluidRow(style = "margin: 2px;",
-                                              align = "center",
-                                              h1(strong("Representative Villages in the Sundarbans"),
+                                              align = "center"
+                                              #h1(strong("Representative Villages in the Sundarbans"))
                                                  
-                                              )),
+                                              ),
                                      
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               column(4, 
-                                                     h4(strong("Sampled Villages")),
+                                                     h2(strong("Representative Villages in the Sundarbans")),
                                                      p("The Sundarbans are a cluster of islands located in the Bay of Bengal that spans across India and Bangladesh. Gupta et al. (2021) collected household-level data from a representative sample of rural households in the Sundarbans region. Our villages are located on the Indian side of the Sundarbans in West Bengal, India across the South 24 Parganas and North 24 Parganas districts."),
                                                      p("Gupta et al. (2021) randomly chose a set of ten representative villages from five administrative blocks in the Sundarbans. While looking at the map, it is clear to see how the villages could be separated into five blocks based on location. One village is within 15 km of one other village. The representative villages are paired of as follows: Pargumti and Haridaskati Samsernagar, Bijoynagar and Birajnagar, Purba Dwarokapur and Lakshmi Janardanpur,  Amrabati  and Shibpur, and  Beguakhali and Sagar."),
                                                      p("They collected information from approximately 300 households in the 10 villages from October 2018 to November 2019. During this period, the region was struck by four different cylones. The Bengal Bay was hit by a category 4 cyclone named Fani in April as well as a category 1 cyclone named Bulbul and Matmo in October. The Arabian Sea also was hit by two category 1 cyclones during while the data was being collected.  Vayu in June and Hikaa in September."),
                                                      p("This sundarbans have different crop seasons due to varying weather patterns trhoughout the year. The Kharif crop season of Winter paddy Aman is sown during monsoon season (June-August) and harvested in winter (December – January). This is a highly water consuming crop. Additionally, the Rabi crop season for paddy is sown in winter (November – February) and harvested from March to June. Fishing occurs year-round and honey is seasonally harvested from April to June. Our representative population also celebrated festivals and holidays throughout the data collection period including- Republic day, Rama Navami, Eid al-Fitr, Indian Independence Day, Dussehra, Diwali, Mawlid and Christmas.")
                                               ),
-                                              column(8, leafletOutput("map_leaflet", width = "100%"),
+                                              column(8, 
+                                                     #h2(strong("Representative Villages in the Sundarbans")),
+                                                     leafletOutput("map_leaflet", width = "100%", height = 700),
                                                      
                                                      
                                               )
@@ -1255,7 +1257,6 @@ ui <- navbarPage(title = "",
                                            tabPanel("Plot",plotOutput("inc")),
                                            tabPanel("Male/Female Income", plotOutput("malefemaleinc")),
                                            #tabPanel("Full Income", plotOutput("fullinc")),
-                                           tabPanel("Total Income(w/o remmitance)", plotOutput("totalinc")),
                                            tabPanel("Table", DT::DTOutput("inc_table"))
                                          )
                                        ),
@@ -1270,7 +1271,7 @@ ui <- navbarPage(title = "",
                                               column(12,h4(strong("Overview")),
                                                      p("The first tab depicts amount borrowed by village throughout the year. There is a spike of amount borrowed between April and July. Purba Dwarokapur, Shibpur and Sagar show major spikes in the amount borrowed during this time. With the amount reaching about 40000 INR."),
                                                      p("The “Count” tab depicts the number of Households borrowing. This data is relatively consistent throughout the year other than an early spike in Bijoynagar, with over 30 households borrowing before January of 2019.  If you deselect Bijoynagar, all other villages range from 17 to 0 households borrowing each week. The lowest number of households borrowing is between January and July, with no more than 10 households borrowing each week during these months.  A couple villages increase to above 10 households borrowing after July."),
-                                                     p("The purpose of borrowing is mostly consumption. This is followed by “Other Expenses” and “Payback of Other Loans.")
+                                                     p("The main purpose for borrowing is consumption, with over 2000 total occasions of borrowing. The next most common purposes are other expenses and payback of other loans. Borrowing is done both in cash and in kind. 54% are done in kind and 46% are in cash.")
                                                      
                                                      
                                                      
@@ -1296,7 +1297,7 @@ ui <- navbarPage(title = "",
                                                                 multiple = T, options = list(`actions-box` = T))),
                                          ),
                                          tabPanel("Purpose", 
-                                                  plotlyOutput("purpplot", height = "500px")
+                                                  plotOutput("purpplot", height = "500px")
                                          ),
                                          
                                          
@@ -1739,7 +1740,7 @@ server <- function(input, output, session) {
   #borrowing purpose ----------------------
   
   output$purpplot <- renderPlot({
-    ggplot(df, aes(x= A, y = B, fill = A)) + geom_col() + 
+    ggplot(dfpurp, aes(x= A, y = B, fill = A)) + geom_col() + 
       coord_flip()+
       #labs(title = "Purpose of Borrowing") + 
       xlab("") +
