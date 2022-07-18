@@ -110,10 +110,11 @@ grouped <- baseline %>% group_by(village) %>% summarize(prop_farm = sum(farm_yn)
 # household asset data 
 
 villages <- c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur") 
-assets <- baseline %>% select(contains("asset")) %>% select(contains("num"))  %>% summarize(Stove = sum(asset_stove_num)/n(), Bike = sum(asset_bike_num)/n(), Car = sum(asset_car_num)/n(), Waterpump = sum(asset_waterpump_num)/n(), Generator = sum(asset_generator_num)/n(), Solarpanel = sum(asset_solarpanel_num)/n(), Bed = sum(asset_bed_num)/n(), Fridge = sum(asset_fridge_num)/n(), Almirah = sum(asset_almirah_num)/n(), PC = sum(asset_pc_num)/n(), TV = sum(asset_tv_num)/n(), Phone = sum(asset_mobile_num)/n(), Waterfilter = sum(asset_waterfilter_num)/n())
+assets <- baseline %>% select(contains("asset")) %>% select(contains("num"))  %>% summarize(Stove = sum(asset_stove_num)/n(), Bike = sum(asset_bike_num)/n(), Waterpump = sum(asset_waterpump_num)/n(), Solarpanel = sum(asset_solarpanel_num)/n(), Bed = sum(asset_bed_num)/n(), Fridge = sum(asset_fridge_num)/n(), Almirah = sum(asset_almirah_num)/n(), PC = sum(asset_pc_num)/n(), TV = sum(asset_tv_num)/n(), Phone = sum(asset_mobile_num)/n(), Waterfilter = sum(asset_waterfilter_num)/n())
 
-assets_long <- gather(assets, property, measurement, Stove:Waterfilter)
-assets_long["measurement"] <- round(assets_long$measurement, digits = 2)
+assets_long <- gather(assets, property, percentage, Stove:Waterfilter)
+assets_long["percentage"] = assets_long["percentage"]*100
+assets_long["percentage"] <- round(assets_long$percentage, digits = 2)
 
 
 #household size data
@@ -1290,8 +1291,8 @@ ui <- navbarPage(title = "",
                                               h1(strong("Borrowing"), align = "justify"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
-                                                     p("The first tab depicts amount borrowed by village throughout the year. There is a spike of amount borrowed between April and July. Purba Dwarokapur, Shibpur and Sagar show major spikes in the amount borrowed during this time. With the amount reaching about 40000 INR."),
-                                                     p("The “Count” tab depicts the number of Households borrowing. This data is relatively consistent throughout the year other than an early spike in Bijoynagar, with over 30 households borrowing before January of 2019.  If you deselect Bijoynagar, all other villages range from 17 to 0 households borrowing each week. The lowest number of households borrowing is between January and July, with no more than 10 households borrowing each week during these months.  A couple villages increase to above 10 households borrowing after July."),
+                                                     p("The first tab depicts amount borrowed by village throughout the year. There is a spike of amount borrowed between April and July. This is during the dry season, when the honey harvest occurs. This spike also happens at roughly the same time the Fani Cyclone hit this region.  Purba Dwarokapur, Shibpur and Sagar show major spikes in the amount borrowed during this time. With the amount reaching about 40000 INR."),
+                                                     p("The “Count” tab depicts the number of Households borrowing. This data is relatively consistent throughout the year other than an early spike in Bijoynagar, with over 30 households borrowing before January of 2019. This spike occurs at the same time as the Kharif and Rabi crop harvests. If you deselect Bijoynagar, all other villages range from 17 to 0 households borrowing each week. The lowest number of households borrowing is between January and July, with no more than 10 households borrowing each week during these months.  A couple villages increase to above 10 households borrowing after July."),
                                                      p("The main purpose for borrowing is consumption, with over 2000 total occasions of borrowing. The next most common purposes are other expenses and payback of other loans. Borrowing is done both in cash and in kind. 54% are done in kind and 46% are in cash.")
                                                      
                                                      
@@ -1581,7 +1582,7 @@ ui <- navbarPage(title = "",
                                    h4(strong("VT Data Science for the Public Good")),
                                    p("The", a(href = 'https://aaec.vt.edu/academics/undergraduate/beyond-classroom/dspg.html', 'Data Science for the Public Good (DSPG) Young Scholars program', target = "_blank"),
                                      "is a summer immersive program held at the", a(href = 'https://aaec.vt.edu/index.html', 'Virginia Tech Department of Agricultural'), "and", a(href = 'https://ext.vt.edu/','Applied Economics and the Virginia Cooperative Extension Service.'),
-                                     "In its second year, the program engages students from across the country to work together on projects that address state, federal, and local government challenges around critical
+                                     "In its third year, the program engages students from across the country to work together on projects that address state, federal, and local government challenges around critical
                                 social issues relevant in the world today. DSPG young scholars conduct research at the intersection of statistics, computation, and the social sciences to determine how 
                                 information generated within every community can be leveraged to improve quality of life and inform public policy. For more information on program highlights, how to apply,
                                 and our annual symposium, please visit", 
@@ -1591,11 +1592,11 @@ ui <- navbarPage(title = "",
                           fluidRow(style = "margin-left: 100px; margin-right: 100px;",
                                    column(6, align = "center",
                                           h4(strong("DSPG Team Members")),
-                                          img(src = "team-esha.jpg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                          img(src = "team-julie.jpg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                          img(src = "rippley.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                          img(src = "das.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
                                           br(), 
-                                          img(src = "team-ryan.jpg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                          img(src = "team-john.jpg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                          img(src = "Taj.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                          img(src = "Sid.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
                                           p(a(href = 'https://www.linkedin.com/in/samantha-rippley-58846119b/', 'Samantha Rippley', target = '_blank'), "(Virginia Tech, M.S in Agriculture and Applied Economics);",
                                             br(), 
                                             a(href = 'https://www.linkedin.com/in/julie-rebstock', 'Nandini Das', target = '_blank'), "(Virgina Tech, PHD in Economics);",
@@ -1608,7 +1609,7 @@ ui <- navbarPage(title = "",
                                    column(6, align = "center",
                                           h4(strong("VT Faculty Team Members")),
                                           # img(src = "team-posadas.jpg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
-                                          img(src = "team-sarah.jpg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                          img(src = "holmes.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
                                           p(a(href = "https://www.linkedin.com/in/chanita-holmes-385577234/", 'Dr. Chanita Holmes', target = '_blank'), "(Research Assistant Professor Department of Agriculture and Applied Economics Virginia Tech)",
                                             #  br(), 
                                             #  a(href = '', 'Dr. Chanita Holmes', target = '_blank'), "(Associate Professor Department of Biology Virginia State University)."),
@@ -1941,11 +1942,15 @@ server <- function(input, output, session) {
       
     }
     else if (ocuVar() == "Proportion of Households Owning Assets") {
-      assetplot <- ggplot(assets_long, aes(property, measurement, fill = property)) + geom_col() + 
-        labs(x = "", y = "Proportion" , fill  = "Asset") + 
-        theme(axis.text.y=element_blank(),axis.ticks.y=element_blank()) +
-        geom_text(aes(label = measurement), size = 3, nudge_y = .05) + coord_flip() + scale_fill_viridis_d()
-      assetplot
+      assetplot <- ggplot(assets_long, aes(property, percentage, fill = property, text = paste(""))) + 
+        geom_col(hoverinfo = "text", aes(text = paste("Property: ", property,
+                                  "<br>Percentage: ", percentage))) + 
+        labs(x = "Asset", y = "Percentage" ,title = "") + 
+        theme(legend.position = "none") +
+        rotate_x_text(angle = 33, size = rel(1)) +
+        scale_fill_viridis_d()    
+        
+        assetplot
     }
     else if (ocuVar() == "Average Amount of Land Fallowed by Village") {
       land_fallow_plot <- ggplot(land_fallow, aes(x = forcats::fct_rev(village), y = sum, fill = village)) +
