@@ -398,7 +398,8 @@ sundarban <- subset(ind, NAME_2 %in% c('North 24 Parganas','South 24 Parganas'))
 d.sundarban<-st_union(sundarban)
 village_all <- st_read(dsn = paste0(getwd(), "/data"), "Village, GP coordinates", stringsAsFactors = TRUE)
 
-village <- subset(village_all, Village.Na %in% c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Parghumti","Purba Dwarokapur","Shibpur"))
+village <- subset(village_all, Village.Na %in% c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Parghumti","Purba Dwarokapur","Shibpur")) 
+
 
 icons <- awesomeIcons(
   icon = 'ios-close',
@@ -918,7 +919,7 @@ ui <- navbarPage(title = "",
                                               
                                      )),
                             tabPanel("Timelapse", 
-                                     fluidRow(style = "margin: 6px;",
+                                     fluidRow(style = "margin: 6px;", align = "justify",
                                               p("", style = "padding-top:10px;"),
                                               column(12, align = "center", h4(strong("Timelapse Showing Coastal Degradation")),
                                                      p("This video shows the coast line of the Sundarbans from 1984 to 2022. As you can see, their coast has degraded significantly over the years
@@ -1597,11 +1598,11 @@ ui <- navbarPage(title = "",
                                           img(src = "Sid.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
                                           p(a(href = 'https://www.linkedin.com/in/samantha-rippley-58846119b/', 'Samantha Rippley', target = '_blank'), "(Virginia Tech, M.S in Agriculture and Applied Economics);",
                                             br(), 
-                                            a(href = 'https://www.linkedin.com/in/julie-rebstock', 'Nandini Das', target = '_blank'), "(Virgina Tech, PHD in Economics);",
+                                            a(href = 'https://www.linkedin.com/in/nandini-das-390577104/', 'Nandini Das', target = '_blank'), "(Virgina Tech, PHD in Economics);",
                                             br(), 
                                             a(href = 'https://www.linkedin.com/in/taj-cole-83a738221', 'Taj Cole', target = '_blank'), "(Virginia Tech, Undergraduate in Environmental Economics, Management, and Policy, and Minoring in Data and Decisions).",
                                             br(), 
-                                            a(href = 'https://www.linkedin.com/in/john-wright-9a13621a0/', 'Siddarth Ravikanti', target = '_blank'), "(Virginia Tech, Undergraduate in Statistical and Data Science)."),
+                                            a(href = 'https://www.linkedin.com/in/siddarth-ravikanti-63374b207/', 'Siddarth Ravikanti', target = '_blank'), "(Virginia Tech, Undergraduate in Statistical and Data Science)."),
                                           p("", style = "padding-top:10px;") 
                                    ),
                                    column(6, align = "center",
