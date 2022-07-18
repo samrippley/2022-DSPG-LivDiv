@@ -968,12 +968,39 @@ ui <- navbarPage(title = "",
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
                                                      h4(strong("Occupation")),
-                                                     p("A household with only one means of support has nothing to fall back on if that livelihood is destroyed by a disaster. Due to the increasing threats in the Sundarbans region, most of the population depends on multiple sources of income. This is a common practice for climate vulnerable regions, to manage and reduce risks."),
-                                                     p("We began our evaluation of livelihood behavior by looking at the head of households’ primary occupation, primary occupation duration, and secondary occupation. The most common primary and secondary occupations are Farming followed by Casual labor. These graphs show that there are differences in occupation by village. For example, the village of Amrabati has the highest proportion of workers in jobs related to fishing. The head of households’ occupations are distributed relatively similarly from primary to secondary. However, the total number of household heads in each occupation is lower in secondary occupation. The total number of household heads with a primary occupation is 252 while 149 has a secondary occupation."),
-                                                     p("The average job duration by village for head of households is 6 to 8 months. This implies that on average, they work in their primary occupation for ½ to ¾ of the year. This is evidence that the population is relying on different, multiple activities within a year."),
+                                                     p("While combing through the data our team realized that a household with only one means of support has nothing to fall back on if that livelihood is 
+                                                       destroyed by a disaster. Due to the increasing threats in the Sundarbans region, most of the 
+                                                       population depends on multiple sources of income. This is a common practice for climate 
+                                                       vulnerable regions, to manage and reduce risks."),
+                                                     p("We began our evaluation of livelihood behavior by looking at the head of households’ primary 
+                                                       occupation, primary occupation duration, and secondary occupation. The most common primary 
+                                                       and secondary occupations are Farming followed by Casual labor. These graphs show that there 
+                                                       are differences in occupation by village. For example, the village of Amrabati has the highest 
+                                                       proportion of workers in jobs related to fishing. The head of households’ occupations are 
+                                                       distributed relatively similarly from primary to secondary. However, the total number 
+                                                       of household heads in each occupation is lower in secondary occupation. The total number of 
+                                                       household heads with a primary occupation is 252 while 149 has a secondary occupation."),
+                                                     p("The average job duration by village for head of households is 6 to 8 months. This implies that 
+                                                       on average, they work in their primary occupation for ½ to ¾ of the year. This is evidence that 
+                                                       the population is relying on different, multiple activities within a year."),
                                                      h4(strong("Agriculture")),
-                                                     p("Our data set contained an agricultural crop variable where participants gave a yes/no answer to the question “Did your household cultivate any agriculture crops in the last 12 months?” On average, across all the villages, 63.9% of the households participate in farming. When broken down by village, Amrabati had the lowest percentage of households that had cultivated crops in the given year, at 7%. Haridaskati Samsernaga had the highest percentage of households that had cultivated crops in the given year, at 86%. This was closely followed by Pargumti at 85%. Given that on average, across all the villages, 63.9% of the households participate in farming it is evident that a very shows that a large proportion of our households participated in some sort of crop cultivation."), 
-                                                     p("We next evaluated Land Holding and Land Fallow by village. Land holding is the amount of land owned in Kathas. A Katha is unit of area mostly used for land measure in India and Bangladesh. One unit of katha is equivalent to 720 square feet. Pargumti and Bijoynagar have the highest average amount of land owned, with households owning over 60 kathas of land. Amrabati and Sagar have the lowest amount of land owned. Land fallow is agriculture land that needs to be left to rest and regenerate. This land is typically not in good enough condition to sustain crops. The two villages that had the lowest amount of land owned, have no land fallow. This is evidence that these villages that these villages are less involved in agriculture. ")
+                                                     p("Our data set contained an agricultural crop variable where participants gave a yes/no answer to 
+                                                       the question “Did your household cultivate any agriculture crops in the last 12 months?” On 
+                                                       average, across all the villages, 63.9% of the households participate in farming. When broken 
+                                                       down by village, Amrabati had the lowest percentage of households that had cultivated crops in 
+                                                       the given year, at 7%. Haridaskati Samsernagar had the highest percentage of households that had 
+                                                       cultivated crops in the given year, at 86%. This was closely followed by Pargumti at 85%. Given 
+                                                       that on average, across all the villages, 63.9% of the households participate in farming it is 
+                                                       evident that a very shows that a large proportion of our households participated in some sort of 
+                                                       crop cultivation."), 
+                                                     p("We next evaluated Land Holding and Land Fallow by village. Land holding is the amount of land 
+                                                       owned in Kathas. A Katha is unit of area mostly used for land measure in India and Bangladesh. 
+                                                       One unit of katha is equivalent to 720 square feet. Pargumti and Bijoynagar have the highest 
+                                                       average amount of land owned, with households owning over 60 kathas of land. Amrabati and Sagar 
+                                                       have the lowest amount of land owned. Land fallow is agriculture land that needs to be left to 
+                                                       rest and regenerate. This land is typically not in good enough condition to sustain crops. The 
+                                                       two villages that had the lowest amount of land owned, have no land fallow. This is evidence that 
+                                                       these villages that these villages are less involved in agriculture.")
                                                      
                                                      
                                               ) ,
@@ -1048,11 +1075,9 @@ ui <- navbarPage(title = "",
                                               h1(strong("Expenditure"), align = "center"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
-                                                     p("We present average weekly expenditure from Nov 2018 - Oct 2019 to examine the spending behaviors of households in the region. 
-                                                       This will provide information on the changing nature of spending in the Sundarbans region due to events such as festivals, 
+                                                     p("We present average weekly expenditure from Nov 2018 - Oct 2019 to examine the spending behaviors of households in the region. This will provide information on the changing nature of spending in the Sundarbans region due to events such as festivals and holidays, 
                                                        harvest seasons, and weather-related shocks."),
-                                                     p("Expenditure is defined as spending on consumption (e.g., food) and non-consumption (e.g., rent) items. 
-                                                       It appears that the largest expense for households during this period include house repairs and festival-related costs. 
+                                                     p("Expenditure is defined as spending on consumption (e.g., food) and non-consumption (e.g., rent) items. It appears that the largest expense for households during this period include house repairs and festival-related costs. 
                                                        The most common expenditures are food purchases."),
                                                      br("")
                                                      
@@ -1198,14 +1223,14 @@ ui <- navbarPage(title = "",
                                                        or other external factors. In early April we can see a bigger spike as this time period marks one of 
                                                        the biggest harvest seasons seen by the local people. "),
                                                      p("Male and Female Income: Although we know that males in the region attain more income than females, 
-                                                       we wanted to see if there are certain households in any villages where …"),
+                                                       we wanted to see if there are certain households in any villages where the females in the household 
+                                                       made more than the men."),
                                                      p("The importance of remittance income can be seen in this graph as all of the villages have similar 
                                                        weekly income before adding remittance. The village of Sagar has a weekly average income around 1954 
                                                        INR which is one of the higher weekly incomes in the region. Since many of these households work for 
                                                        wage either as an agriculture worker or casual laborer, the per week income is relatively same throughout 
                                                        the region. This can indicate why the weekly income is ranging consistently in-between 1000 INR and 2000 INR.")
-                                                     
-                                              )),
+                                                     )),
                                      # Sidebar with a select input for village
                                      sidebarLayout(
                                        sidebarPanel(
