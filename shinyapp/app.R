@@ -398,7 +398,7 @@ sundarban <- subset(ind, NAME_2 %in% c('North 24 Parganas','South 24 Parganas'))
 d.sundarban<-st_union(sundarban)
 village_all <- st_read(dsn = paste0(getwd(), "/data"), "Village, GP coordinates", stringsAsFactors = TRUE)
 
-village <- subset(village_all, Village.Na %in% c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Parghumti","Purba Dwarokapur","Gangasagar","Shibpur"))
+village <- subset(village_all, Village.Na %in% c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Parghumti","Purba Dwarokapur","Shibpur"))
 
 icons <- awesomeIcons(
   icon = 'ios-close',
@@ -419,7 +419,13 @@ map_leaflet <- leaflet(data = d.sundarban) %>%
     highlightOptions = highlightOptions(color = "white",
                                         weight = 2,
                                         bringToFront = TRUE)) %>%
-  addAwesomeMarkers(~lon, ~lat, label = ~as.character(Village.Na), icon=icons, data=village)
+  addAwesomeMarkers(
+    lat = 21.6528, lng = 88.0753,
+    label = "Sagar",
+    labelOptions = , icon=icons) %>%
+  addAwesomeMarkers(~lon, ~lat, label = ~as.character(Village.Na), labelOptions =  ,icon=icons, data=village) 
+
+
 
 
 #-------------------------------
@@ -867,27 +873,29 @@ ui <- navbarPage(title = "",
                                    #    p(tags$small(em('Last updated: August 2021'))))
                           ),
                           fluidRow(align = "center",
-                                   img(src='Picture2.png', width = "75%"),
+                                   img(src='Picture2.png', width = "50%"),
                           )), 
                  ## Sundarbans Region--------------------------------------------
                  navbarMenu("Sundarbans Region" ,
                             tabPanel("Villages", 
                                      
                                      fluidRow(style = "margin: 2px;",
-                                              align = "center",
-                                              h1(strong("Representative Villages in the Sundarbans"),
+                                              align = "center"
+                                              #h1(strong("Representative Villages in the Sundarbans"))
                                                  
-                                              )),
+                                              ),
                                      
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               column(4, 
-                                                     h4(strong("Sampled Villages")),
+                                                     h2(strong("Representative Villages in the Sundarbans")),
                                                      p("The Sundarbans are a cluster of islands located in the Bay of Bengal that spans across India and Bangladesh. Gupta et al. (2021) collected household-level data from a representative sample of rural households in the Sundarbans region. Our villages are located on the Indian side of the Sundarbans in West Bengal, India across the South 24 Parganas and North 24 Parganas districts."),
                                                      p("Gupta et al. (2021) randomly chose a set of ten representative villages from five administrative blocks in the Sundarbans. While looking at the map, it is clear to see how the villages could be separated into five blocks based on location. One village is within 15 km of one other village. The representative villages are paired of as follows: Pargumti and Haridaskati Samsernagar, Bijoynagar and Birajnagar, Purba Dwarokapur and Lakshmi Janardanpur,  Amrabati  and Shibpur, and  Beguakhali and Sagar."),
                                                      p("They collected information from approximately 300 households in the 10 villages from October 2018 to November 2019. During this period, the region was struck by four different cylones. The Bengal Bay was hit by a category 4 cyclone named Fani in April as well as a category 1 cyclone named Bulbul and Matmo in October. The Arabian Sea also was hit by two category 1 cyclones during while the data was being collected.  Vayu in June and Hikaa in September."),
                                                      p("This sundarbans have different crop seasons due to varying weather patterns trhoughout the year. The Kharif crop season of Winter paddy Aman is sown during monsoon season (June-August) and harvested in winter (December – January). This is a highly water consuming crop. Additionally, the Rabi crop season for paddy is sown in winter (November – February) and harvested from March to June. Fishing occurs year-round and honey is seasonally harvested from April to June. Our representative population also celebrated festivals and holidays throughout the data collection period including- Republic day, Rama Navami, Eid al-Fitr, Indian Independence Day, Dussehra, Diwali, Mawlid and Christmas.")
                                               ),
-                                              column(8, leafletOutput("map_leaflet", width = "100%", height = 650),
+                                              column(8, 
+                                                     #h2(strong("Representative Villages in the Sundarbans")),
+                                                     leafletOutput("map_leaflet", width = "100%", height = 700),
                                                      
                                                      
                                               )
