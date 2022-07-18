@@ -1071,6 +1071,10 @@ ui <- navbarPage(title = "",
                                               column(12,h4(strong("Overview")),
                                                      p("We present average weekly expenditure from Nov 2018 - Oct 2019 to examine the spending behaviors of households in the region. This will provide information on the changing nature of spending in the Sundarbans region due to events such as festivals and holidays, 
                                                        harvest seasons, and weather-related shocks."),
+                                                     p("Expenditure is defined as spending on consumption (e.g., food) and non-consumption (e.g., rent) items.
+                                                     The average weekly expenditure over the data period was 1982.77 rupees, with a median of 1832.1 rupees. 
+                                                       It appears that the largest expenses occured during harvest seasons, partculary in villages with high amounts of land holding
+                                                       and proportions of agricultrue farming (Beguakhali and Shibpur. We also observed increases in expenditure near when cyclones hit."),
                                                      p("Expenditure is defined as spending on consumption (e.g., food) and non-consumption (e.g., rent) items. It appears that the largest expense for households during this period include house repairs and festival-related costs. 
                                                        The most common expenditures are food purchases."),
                                                      br("")
@@ -1103,18 +1107,18 @@ ui <- navbarPage(title = "",
                                               h4(strong("Consumption on Food Items"), align = "center"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
-                                                     p("We present the average weekly expenditure on consumption items from November 2018 - October 2019. Consumption expenditure includes purchases by 
+                                                     p("We present the average weekly expenditure on food consumption items from November 2018 - October 2019. Consumption expenditure includes purchases by 
                                                      households on goods and services, excluding housing. By visualizing consumption expenditures over time, we can gain information about household spending behavior, 
                                                      identifying changes in spending, as well as which consumption items are bought most frequently. Within the data period, the Sundrabans region spent
-                                                       an average of 766.13 Rupees per week on consumption items; they also had bought an average of seven consumption items per week."),
-                                                     p("Additionally, we present a time series of expenditures on staple, meat, and other consumable items."),
+                                                       an average of 766.13 Rupees per week on consumption items; they also had bought an average of seven food items per week."),
+                                                     p("First, we provide time series of average expenditure on all food, and quantity of food items, then staple food items, meats, and other consumable items."),
                                                      p("- Staple Items: Rice/Grains, Flour, Vegetables, Fruits, Tubers, Beans and Spices"),
                                                      p("- Meats: Red Meat, Fish, and Poultry"),
                                                      p("- Other: Eggs, Dairy, Packaged Foods, Tea, and Sinful Items"),
-                                                     p("We identified that most of consumption expenditure is being used for staple food items, followed by meats. We observed
+                                                     p("We identified that most of food consumption is being used for staple food items, followed by meats. We observed
                                                        a siginficant spike in 'Other' items, in Shibpur, in late April due to a large increase in expenditure on sinful items (tea,
                                                        cigarettes, betel leaves, bidil, etc.). These items are often deemed to be harmful to society, but provide certain satisfaction to
-                                                       consumers. Therefore, this increase in consumption could suggest a communal need to celebrate or cope from a certain event."),
+                                                       consumers. Therefore, this increase in consumption could suggest a communal need to cope from the Fani cyclone tat happened at this time."),
                                                      br("")
                                                      
                                               )),
@@ -1172,7 +1176,10 @@ ui <- navbarPage(title = "",
                                                      p("Consumption expenditure on health, home repairs, and books/tuition
                                                        made up the largest but least frequent expenses, while utilities, toilitries, and transportation made up the most frequent
                                                        purchases. Considering farmers make up the largest proportion of occupation in the Sundarbans, it is predictable to also see 
-                                                       frequent consumption expenditures on agriculture, livestock, and labor."),
+                                                       frequent consumption expenditures on agriculture, livestock, and labor. The average weekly expenditure
+                                                       on non-food items was 882.22 rupees. We observed increases in expenditure
+                                                       on non-food items during harvest seasons. The largest expenditure on non-food items occured
+                                                       near the Bulbul, matmo, and Hikaa cyclone, as well as near Diwali and Dusshera"),
                                                      br("")
                                                      
                                               )),
@@ -1307,10 +1314,33 @@ ui <- navbarPage(title = "",
                                                        weekly remittance income is 205.61 INR which is on average almost 800 INR. This significant portion of a households monthly 
                                                        income show that importance this income has on the families ability to function. The graph also does a good job at showing 
                                                        spikes in remittance income which can be either because of festivals, other celebrations, money sent because of health 
-                                                       concerns, or other shocks.")
+                                                       concerns, or other shocks."),
                                                      
                                                      
                                               ) ),
+                                     fluidRow(style = "margin: 6px;", align = "justify",
+                                              p("", style = "padding-top:10px;"),
+                                              column(12, h4(strong("Remittances Sources")),
+                                                     p("We also examine how households received remittances. We find that households primarily collected remittances 
+                                                       in person or through a bank suggesting these methods to be the most convenient. Although a money order is a 
+                                                       secure method of sending/receiving money, it requires additional fees, which may make it more expensive for 
+                                                       this poverty-stricken area. Moreover, households may be more concerned about receiving the remittance quickly 
+                                                       rather than safely. Also, using mobile apps can be difficult in regions where data usage is limited."),
+                                                     br(""), #plotOutput("rmt_method", width = "70%")
+                                                     
+                                                     
+                                              )),
+                                     fluidRow(style = "margin: 6px;", align = "justify",
+                                              p("", style = "padding-top:10px;"),
+                                              column(12, h4(strong("Usage of Remmittances")),
+                                                     p("Remittances is primarily being used for food and utility purchases, which are 
+                                                       often the most essential items for households in underdeveloped regions."),
+                                                     br(""), #plotOutput("rmt_purpose", width = "70%")
+                                                     
+                                                     
+                                              )),
+                                     
+                                     
                                      # Sidebar with a select input for village
                                      sidebarLayout(
                                        sidebarPanel(
@@ -1326,38 +1356,38 @@ ui <- navbarPage(title = "",
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Plot",plotOutput("rmt")),
-                                           tabPanel("Table",DT:: DTOutput("rmt_table"))#,
-                                           #tabPanel("Method", plotOutput("rmt_method")),
-                                           #tabPanel("Purpose", plotOutput("rmt_purpose"))
+                                           tabPanel("Average Weekly Remittances",plotOutput("rmt")),
+                                           tabPanel("Table",DT:: DTOutput("rmt_table")),
+                                           tabPanel("Method", plotOutput("rmt_method")),
+                                           tabPanel("Purpose", plotOutput("rmt_purpose"))
                                          )
                                        ), 
                                        
                                        
                                      ),
-                                     fluidRow(style = "margin: 6px;", align = "justify",
-                                              p("", style = "padding-top:10px;"),
-                                              column(12, align = "center", h4(strong("Remittances Sources")),
-                                                     p("We also examine how households received remittances. We find that households primarily collected remittances 
-                                                       in person or through a bank suggesting these methods to be the most convenient. Although a money order is a 
-                                                       secure method of sending/receiving money, it requires additional fees, which may make it more expensive for 
-                                                       this poverty-stricken area. Moreover, households may be more concerned about receiving the remittance quickly 
-                                                       rather than safely. Also, using mobile apps can be difficult in regions where data usage is limited."),
-                                                     br(""), plotOutput("rmt_method", width = "70%")
+                                     #fluidRow(style = "margin: 6px;", align = "justify",
+                                      #        p("", style = "padding-top:10px;"),
+                                       #       column(12, align = "center", h4(strong("Remittances Sources")),
+                                        #             p("We also examine how households received remittances. We find that households primarily collected remittances 
+                                         #              in person or through a bank suggesting these methods to be the most convenient. Although a money order is a 
+                                          #             secure method of sending/receiving money, it requires additional fees, which may make it more expensive for 
+                                           #            this poverty-stricken area. Moreover, households may be more concerned about receiving the remittance quickly 
+                                            #           rather than safely. Also, using mobile apps can be difficult in regions where data usage is limited."),
+                                             #        br(""), #plotOutput("rmt_method", width = "70%")
                                                      
                                                      
-                                              )),
+                                              #)),
                                      #plotOutput("rmt_method", width = "65%"),
                                      
-                                     fluidRow(style = "margin: 6px;", align = "justify",
-                                              p("", style = "padding-top:10px;"),
-                                              column(12, align = "center", h4(strong("Usage of Remmittances")),
-                                                     p("Remittances is primarily being used for food and utility purchases, which are 
-                                                       often the most essential items for households in underdeveloped regions."),
-                                                     br(""), plotOutput("rmt_purpose", width = "70%")
+                                     #fluidRow(style = "margin: 6px;", align = "justify",
+                                      #        p("", style = "padding-top:10px;"),
+                                       #       column(12, align = "center", h4(strong("Usage of Remmittances")),
+                                        #             p("Remittances is primarily being used for food and utility purchases, which are 
+                                         #              often the most essential items for households in underdeveloped regions."),
+                                          #           br(""), #plotOutput("rmt_purpose", width = "70%")
                                                      
                                                      
-                                              )),
+                                           #   )),
                                      
                                      
                                      
@@ -1966,7 +1996,7 @@ server <- function(input, output, session) {
                                , y = avg_rmt, color = village)) + 
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Remittance Income (INR)", caption = "Mean: 205.61   Median: 107.14", color = "Villages") +
+      labs(x = "Date", y = "Average Weekly Remittance (INR)", caption = "Mean: 205.61   Median: 107.14", color = "Villages") +
       #ggtitle("Average Weekly Household Remittance Income by Village")+ #(11/16/18 - 10/31/19)
       #scale_color_brewer(palette = "Spectral")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + 
