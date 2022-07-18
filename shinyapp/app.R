@@ -110,10 +110,11 @@ grouped <- baseline %>% group_by(village) %>% summarize(prop_farm = sum(farm_yn)
 # household asset data 
 
 villages <- c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur") 
-assets <- baseline %>% select(contains("asset")) %>% select(contains("num"))  %>% summarize(Stove = sum(asset_stove_num)/n(), Bike = sum(asset_bike_num)/n(), Car = sum(asset_car_num)/n(), Waterpump = sum(asset_waterpump_num)/n(), Generator = sum(asset_generator_num)/n(), Solarpanel = sum(asset_solarpanel_num)/n(), Bed = sum(asset_bed_num)/n(), Fridge = sum(asset_fridge_num)/n(), Almirah = sum(asset_almirah_num)/n(), PC = sum(asset_pc_num)/n(), TV = sum(asset_tv_num)/n(), Phone = sum(asset_mobile_num)/n(), Waterfilter = sum(asset_waterfilter_num)/n())
+assets <- baseline %>% select(contains("asset")) %>% select(contains("num"))  %>% summarize(Stove = sum(asset_stove_num)/n(), Bike = sum(asset_bike_num)/n(), Waterpump = sum(asset_waterpump_num)/n(), Solarpanel = sum(asset_solarpanel_num)/n(), Bed = sum(asset_bed_num)/n(), Fridge = sum(asset_fridge_num)/n(), Almirah = sum(asset_almirah_num)/n(), PC = sum(asset_pc_num)/n(), TV = sum(asset_tv_num)/n(), Phone = sum(asset_mobile_num)/n(), Waterfilter = sum(asset_waterfilter_num)/n())
 
-assets_long <- gather(assets, property, measurement, Stove:Waterfilter)
-assets_long["measurement"] <- round(assets_long$measurement, digits = 2)
+assets_long <- gather(assets, property, percentage, Stove:Waterfilter)
+assets_long["percentage"] = assets_long["percentage"]*100
+assets_long["percentage"] <- round(assets_long$percentage, digits = 2)
 
 
 #household size data
@@ -1918,17 +1919,21 @@ server <- function(input, output, session) {
       
     }
     else if (ocuVar() == "Proportion of Households Owning Assets") {
-      assetplot <- ggplot(assets_long, aes(property, measurement, fill = property)) + geom_col() + 
-        labs(x = "", y = "Proportion" , fill  = "Asset") + 
-        theme(axis.text.y=element_blank(),axis.ticks.y=element_blank()) +
-        geom_text(aes(label = measurement), size = 3, nudge_y = .05) + coord_flip() + scale_fill_viridis_d()
-      assetplot
+      assetplot <- ggplot(assets_long, aes(property, percentage, fill = property, text = paste(""))) + 
+        geom_col(hoverinfo = "text", aes(text = paste("Property: ", property,
+                                  "<br>Percentage: ", percentage))) + 
+        labs(x = "Asset", y = "Percentage" ,title = "") + 
+        theme(legend.position = "none") +
+        rotate_x_text(angle = 33, size = rel(1)) +
+        scale_fill_viridis_d()    
+        
+        assetplot
     }
     else if (ocuVar() == "Average Amount of Land Fallowed by Village") {
       land_fallow_plot <- ggplot(land_fallow, aes(x = forcats::fct_rev(village), y = sum, fill = village)) +
         geom_col()+
         theme(legend.position = "none") +
-        labs(x = "", y = "Total Land Fallowed", tags = "*Note: For missing bars, villages did not have any land fallowed")+
+        labs(x = "", y = "Total Land Fallowed", caption = "*Note: For missing bars, villages did not have any land fallowed")+
         coord_flip() + scale_fill_viridis_d()
     }
     else if (ocuVar() == "Average Job Duration for Head of Household") {
