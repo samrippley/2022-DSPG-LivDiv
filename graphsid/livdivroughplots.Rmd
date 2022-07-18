@@ -19,7 +19,7 @@ library(plotly)
 
 load("~/Documents/2022-DSPG-LivDiv-/data/livdivdata.RData")
 baseline <- livdiv %>%
-slice(1:307,)
+slice(1:306,)
 
 ```
 
@@ -133,12 +133,14 @@ This data shows that the biggest reason why a household will not partake in agri
 
 #Household Assets (by type) 
 ```{r}
-assets <- baseline %>% select(contains("asset")) %>% select(contains("num"))  %>% summarize(Stove = sum(asset_stove_num)/n(), Bike = sum(asset_bike_num)/n(), Car = sum(asset_car_num)/n(), Waterpump = sum(asset_waterpump_num)/n(), Generator = sum(asset_generator_num)/n(), Solarpanel = sum(asset_solarpanel_num)/n(), Bed = sum(asset_bed_num)/n(), Fridge = sum(asset_fridge_num)/n(), Almirah = sum(asset_almirah_num)/n(), PC = sum(asset_pc_num)/n(), TV = sum(asset_tv_num)/n(), Phone = sum(asset_mobile_num)/n(), Waterfilter = sum(asset_waterfilter_num)/n())
+assets <- baseline %>% select(contains("asset")) %>% select(contains("num"))  %>% summarize(Stove = sum(asset_stove_num)/n(), Bike = sum(asset_bike_num)/n(), Waterpump = sum(asset_waterpump_num)/n(), Solarpanel = sum(asset_solarpanel_num)/n(), Bed = sum(asset_bed_num)/n(), Fridge = sum(asset_fridge_num)/n(), Almirah = sum(asset_almirah_num)/n(), PC = sum(asset_pc_num)/n(), TV = sum(asset_tv_num)/n(), Phone = sum(asset_mobile_num)/n(), Waterfilter = sum(asset_waterfilter_num)/n())
 
 assets_long <- gather(assets, property, measurement, Stove:Waterfilter)
+assets_long["measurement"] = assets_long["measurement"]*100
 assets_long["measurement"] <- round(assets_long$measurement, digits = 2)
 
-ggplot(assets_long, aes(property, measurement, fill = property)) + geom_col() + labs(x = "", y = "Proportion" ,title = "Proportion of Households Owning Assets", fill  = "Asset") + theme(axis.text.y=element_blank(),axis.ticks.y=element_blank()) + geom_text(aes(label = measurement), size = 3, nudge_y = .05) + coord_flip() + scale_fill_viridis_d()
+ggplot(assets_long, aes(property, measurement, fill = property)) + geom_col() + labs(x = "", y = "Percentage" ,title = "Proportion of Households Owning Assets", fill  = "Asset") + theme(axis.text.y=element_blank(),axis.ticks.y=element_blank(), legend.position = "none") + scale_fill_viridis_d()
+
 
 ```
 #What does the data potentially show?
@@ -192,6 +194,6 @@ colnames(shocks) <- c('shock_nmb')
 shock_labels <- c('None', 'Crop Loss', 'Loss of vegetation', 'Damage(saline water)','Forced to move(Flooding)', 'Loss of agricultural land(river erosion)','Loss of home(river erosion/cyclone)', 'Loss of livestock', 'Loss of business/shop/etc.', 'Death/health issues', 'Other')
 
 
-ggplot(shocks, aes(reorder(-shock_nmb))) + geom_histogram() + labs(x = "", y = "Occurances" ,title = "Frequency") + theme(axis.text = element_text(size = 7)) + scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10),labels = str_wrap(shock_labels, width = 25) ,limits = 0:10) + coord_flip()
+ggplot(shocks, aes(shock_nmb)) + geom_histogram() + labs(x = "", y = "Occurances" ,title = "Frequency") + theme(axis.text = element_text(size = 7)) + scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10),labels = str_wrap(shock_labels, width = 25) ,limits = 0:10) + coord_flip()
 ```
 
