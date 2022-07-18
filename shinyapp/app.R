@@ -1316,6 +1316,12 @@ ui <- navbarPage(title = "",
                                                        Fani, Category 4 (April – May 2019), and Category 1, Bulbul and Matmo (October – November 2019). The Sundarbans also could have been negatively impacted by two 
                                                        cyclones that hit the Arabian Sea during this period: Vayu (Category 1, June 8-18) and Hikaa (Category 1, September 20-26). 
                                                        It is possible households are using remittances to cope with these cyclones and weather-related shocks."),
+                                                     p("With climate change impacting coastal areas disproportionately	 compared to other environments, the Sundarban region is seeing the effects of this in one 
+                                                       way through employment opportunities. Since farming and fishing are one of the biggest employment opportunities in the region, the effects of climate change 
+                                                       on the population of fish or the amount of arable farming land has put a strain on the working population in the region. Due to this reason, many of the younger 
+                                                       population (18-30) are seeking work in cities where the wage is higher and employment is easier to find.  Since this impacts the households in the Sundarbans greatly, 
+                                                       the migrant workers send money back(Remittance Income) to their families.  As threats to climate continue and are only going to get worse, the Sundarban region is going 
+                                                       to see an increase in lack of employment	opportunities which impact the demographics of the region since the younger population is moving away."),
                                                      p("Remittance impact on the livelihood of the Sundarban population can be seen as the data collected shows that the median 
                                                        weekly remittance income is 205.61 INR which is on average almost 800 INR. This significant portion of a households monthly 
                                                        income show that importance this income has on the families ability to function. The graph also does a good job at showing 
@@ -1326,22 +1332,18 @@ ui <- navbarPage(title = "",
                                               ) ),
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               p("", style = "padding-top:10px;"),
-                                              column(12, h4(strong("Remittances Sources")),
-                                                     p("We also examine how households received remittances. We find that households primarily collected remittances 
-                                                       in person or through a bank suggesting these methods to be the most convenient. Although a money order is a 
-                                                       secure method of sending/receiving money, it requires additional fees, which may make it more expensive for 
-                                                       this poverty-stricken area. Moreover, households may be more concerned about receiving the remittance quickly 
-                                                       rather than safely. Also, using mobile apps can be difficult in regions where data usage is limited."),
+                                              column(12, h4(strong("Remittances Sources and Usage")),
+                                                     p("With migrant workers coming from different parts of West Bengal like Kolkata which is one the biggest cities in India, or from 
+                                                       overseas in the Middle East or Southeast Asia, they use different methods to send money back home to the Sundarbans. This region 
+                                                       also has limited access to internet services as well as cellular data making wire transfers, and other electronic banking unfeasible 
+                                                       and also expensive due to high transfer rates. Due to this reason, the most common way money is sent back is in person when migrant 
+                                                       workers come back home. The second most common method used to send money back is bank transfers. Within India, money can be 
+                                                       transferred at the same banks in different locations which is often more convenient. Over the one year of weekly financial data, 
+                                                       remittance is sent as a one time “lump sum” for expenses like tuition fees or needed capital for different shocks or unlikely 
+                                                       circumstances. Remittance is also sent on monthly or bi-monthly instances to help with the consistent expenses. Most frequently 
+                                                       the money sent from migrant workers are used to take care of consumption expenses like food or utility purchases. Least frequently 
+                                                       this money is used to medical expenses, tuition, or big durable purchases. "),
                                                      br(""), #plotOutput("rmt_method", width = "70%")
-                                                     
-                                                     
-                                              )),
-                                     fluidRow(style = "margin: 6px;", align = "justify",
-                                              p("", style = "padding-top:10px;"),
-                                              column(12, h4(strong("Usage of Remmittances")),
-                                                     p("Remittances is primarily being used for food and utility purchases, which are 
-                                                       often the most essential items for households in underdeveloped regions."),
-                                                     br(""), #plotOutput("rmt_purpose", width = "70%")
                                                      
                                                      
                                               )),
@@ -1964,8 +1966,9 @@ server <- function(input, output, session) {
     }
     else if (finVar() == "Average Monthly Salary per Household by Village")  {
       salplot <- ggplot(m_salary, aes(village, avg_salary, fill = village)) + geom_col() + 
-        labs(x = "Villages", y = "Indian Rupees ₹" ,title = "", fill = "") +
-        theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d()
+        labs(x = "", y = "Indian Rupees ₹" ,title = "", fill = "") +
+        theme(legend.position = "none") + scale_fill_viridis_d() +
+        rotate_x_text(angle = 33, size = rel(1))
       salplot
     }
     else if (finVar() == "Number of Times Households Saved Money in Year Prior to Baseline Survey (October 2018 - November 2019)") {
