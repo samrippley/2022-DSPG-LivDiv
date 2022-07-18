@@ -478,7 +478,7 @@ ggplot(exbyvil, aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) 
   geom_line() +
   labs(title="Average Weekly Expenditure by Village",
        x="Date", y="Average Weekly Expenditure (INR)") +
-  scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) + scale_color_viridis_d()
+  scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + scale_color_viridis_d()
 #--------------------------------------------------------------------
 # Expenditure table
 expend_table <- expen %>% 
@@ -508,7 +508,7 @@ shock_labels <- c('None', 'Crop Loss', 'Loss of vegetation', 'Damage(saline wate
 
 shocks_all <- ggplot(shocks, aes(shock_nmb)) + geom_bar(fill = "dark red") + 
   labs(x = "", y = "Occurances" ,title = "Frequency") + theme(axis.text = element_text(size = 7)) + 
-  scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10),labels = str_wrap(shock_labels, width = 25) ,limits = 0:10) + 
+  scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10),labels = str_wrap(shock_labels, width = 25) ,limits = c(0:10)) + 
   coord_flip()
 ## Average Shocks by Village
 shocks2 <- baseline %>% select(village, shk_count) %>% 
@@ -545,7 +545,7 @@ colnames(shocks_2009) <- c('shk')
 
 shocks_plot_2009 <-ggplot(shocks_2009, aes(shk)) + geom_bar(fill = "dark red") + 
   labs(x = "", y = "Occurances" ,title = "Shocks for 2009") + theme(axis.text = element_text(size = 7)) + 
-  scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10),labels = str_wrap(shock_labels_2009, width = 25) ,limits = 0:10) + 
+  scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10),labels = str_wrap(shock_labels_2009, width = 25) ,limits = c(0:10)) + 
   coord_flip()
 ## Type of Cope after 2009 Shock
 
@@ -564,7 +564,7 @@ shocks_cope$shk_2009_cope<-replace(shocks_cope$shk_2009_cope, shocks_cope$shk_20
 cope_2009_plot <- ggplot(shocks_cope, aes(shk_2009_cope, fill = village)) + geom_bar() +
   labs(x = "", y = "" ,title = "Type of Cope after 2009 shocks", fill = "Village") + scale_fill_viridis_d() +
   theme(axis.text = element_text(size = 6)) +
-  scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), labels = str_wrap(cope_labels, width = 30), limits = 0:20) + 
+  scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), labels = str_wrap(cope_labels, width = 30), limits = c(0:20)) + 
   coord_flip() 
 
 ## Relocation Status after 2009 Shock
@@ -575,7 +575,7 @@ relocation_labels <- c("No", "Yes, for under a month", "Yes, for over a month")
 
 shock_relocation_2009_yn <- ggplot(shock_relocation, aes(shk_2009_reloc_yn, fill = village)) + geom_bar() + 
   labs(x = "", y = "No. of Households" ,title = "Relocation Status after Shock", fill = "Village") + 
-  scale_x_discrete(breaks = c(0,1,2), labels = str_wrap(relocation_labels, width = 30), limits = 0:2) + 
+  scale_x_discrete(breaks = c(0,1,2), labels = str_wrap(relocation_labels, width = 30), limits = c(0:2)) + 
   scale_fill_viridis_d()
 
 ## Where they Relocated after 2009 Shock
@@ -588,7 +588,7 @@ relocation_where_labels <- c("Within same village","Other village in Sundarbans"
 
 shock_relocation_2009 <- ggplot(shock_relocation_where, aes(shk_2009_reloc1, fill = village)) + geom_bar() + 
   labs(x = "", y = "No. of Households" ,title = "Relocation Areas", fill = "Village") + 
-  scale_x_discrete(breaks = c(1,2,3,4,5,6), labels = str_wrap(relocation_where_labels, width = 20), limits = 1:6) + 
+  scale_x_discrete(breaks = c(1,2,3,4,5,6), labels = str_wrap(relocation_where_labels, width = 20), limits = c(1:6)) + 
   scale_fill_viridis_d() + coord_flip() +  theme(axis.text = element_text(size = 8))
 
 
@@ -601,7 +601,7 @@ malefemale_inc <- livdiv %>% select(village, week, inc_female, inc_male) %>%
 ggplot(malefemale_inc, aes(x = week)) + geom_line(aes(y = avg_male_inc, color = village)) + 
   geom_line(aes(y = avg_female_inc, color = village)) + 
   labs(x = "", y = "Income (INR)", title = "Male and Female Income", color = "Village") + 
-  scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40) 
+  scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) 
 
 ##Full income
 
@@ -634,9 +634,9 @@ cs_avg <- cs %>%
 cs_avg_plot <- ggplot(cs_avg, aes(x = week, y = avg_cs , color = village)) +
   geom_line() +
   theme_classic()+
-  ggtitle("Average Weekly Consumption Expenditure by Village")+
+  #ggtitle("Average Weekly Consumption Expenditure by Village")+
   labs(x = "", y = "Average Consumption Expenditure (INR)", caption = "Mean: 766.13  Median: 731.68", color = "Villages")+
-  scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
+  scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
   theme(plot.caption = element_text(size = 10))
 # Average consumption items bought
 
@@ -655,9 +655,9 @@ filtered_cs_food <- reactive({
 cs_item_plot <- ggplot(cs_avg_items, aes(x = week, y = avg_item, color = village))+
   geom_line() +
   theme_classic()+
-  ggtitle("Average Consumption Items Bought a Week")+
+  #ggtitle("Average Consumption Items Bought a Week")+
   labs(x = "", y = "No. of Consumption Items Bought", color = "Villages")+
-  scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+  scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))
 
 # Average expenditure by group (staple, meat, other)
 
@@ -673,10 +673,9 @@ avg_cs_food <- cs %>%
 cs_staple_plot <- ggplot(avg_cs_food, aes(x = week, y = `Average Staple Expenditure`, color = village)) +
   geom_line()+
   theme_classic()+
-  ggtitle("Average Weekly Expenditure on Staple Items ")+
   labs(x = "", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: 463.87  Median: 431.20",
        subtitle = "(Rice/Grains, Flour, Vegetables, Fruits, Tubers, Beans and Spices)")+
-  scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
+  scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
   theme(plot.caption = element_text(size = 10))
 
 # Meat plot
@@ -684,10 +683,9 @@ cs_staple_plot <- ggplot(avg_cs_food, aes(x = week, y = `Average Staple Expendit
 cs_meat_plot <- ggplot(avg_cs_food, aes(x = week, y = `Average Meat Expenditure`, color = village))+
   geom_line()+
   theme_classic()+
-  ggtitle("Average Weekly Expenditure on Meat")+
   labs(x = "", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: 158.97  Median: 431.20",
        subtitle = "(Red Meat, Fish, and Poultry)")+
-  scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
+  scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
   theme(plot.caption = element_text(size = 10))
 
 # Other consumption items plot
@@ -695,10 +693,9 @@ cs_meat_plot <- ggplot(avg_cs_food, aes(x = week, y = `Average Meat Expenditure`
 cs_other_plot <- ggplot(avg_cs_food, aes(x = week, y = `Average Other Expenditure`, color = village))+
   geom_line() +
   theme_classic()+
-  ggtitle("Average Weekly Expenditure on 'Other' Items")+
   labs(x = "", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: 113.75  Median: 111.94",
        subtitle = "(Eggs, Dairy, Packaged Foods, Tea, and Other Food Items)")+
-  scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
+  scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
   theme(plot.caption = element_text(size = 10))
 
 # Non food consumption -------------------------
@@ -721,6 +718,25 @@ non_food_cs <- fin_diary %>%
             "Other" = mean(exp_nonfoodother, na.rm = TRUE))
 #names(non_food_cs) <- c("village", "week", "Clothes", "Books/Tuition", "Utilities", "Toilitries", "Health", "Home Repairs",
 #"Transport", "Livestock", "Agriculure", "Labor", "Other")
+
+# food consupmtion table -----------------
+#avg_cs_table <- fin_diary %>% 
+#  select(village, date, week, cs_count, cs_total, cs_ricegrains, cs_wheatflour, cs_veg,
+#         cs_tubers, cs_fishshrimp, cs_poultry, cs_eggs, cs_pulsespice,
+#         cs_redmeat, cs_dairy, cs_packaged, cs_fruit, cs_sinful, cs_other) %>% 
+#  group_by(date, village) %>% 
+#  summarise( "Average Food Expenditure" = mean(na.omit(cs_total)), "Average Food Items Bought" = mean(na.omit(cs_count)),
+#             "Clothes" = mean(aggregated_exp_clothes, na.rm = TRUE), "Books/Tuition" = mean(exp_bookstuition, na.rm = TRUE),
+#             "Utilities" = mean(exp_utility, na.rm = TRUE), "Toiletries" = mean(exp_toiletries, na.rm = TRUE),
+#             "Health" = mean(exp_health, na.rm = TRUE), "Home Repairs" = mean(exp_homerepairs, na.rm = TRUE), 
+#             "Transportation" = mean(exp_transport, na.rm = TRUE), "Livestock" = mean(exp_livestock, na.rm = TRUE),
+#             "Agriculture" = mean(exp_aginputs, na.rm = TRUE), "Labor" = mean(exp_labor, na.rm = TRUE),
+#             "Other" = mean(exp_nonfoodother, na.rm = TRUE))
+
+#nonfood_table <- non_food_cs
+#nonfood_table[,(3:13)] <- format(round(unlist(nonfood_table[,3:13]), digits = 2), nsmall = 2)
+
+
 
 filtered_non_food_cs <- reactive({
   non_food_cs %>% 
@@ -892,7 +908,7 @@ ui <- navbarPage(title = "",
                                                      p("The Sundarbans are a cluster of islands located in the Bay of Bengal that spans across India and Bangladesh. Gupta et al. (2021) collected household-level data from a representative sample of rural households in the Sundarbans region. Our villages are located on the Indian side of the Sundarbans in West Bengal, India across the South 24 Parganas and North 24 Parganas districts."),
                                                      p("Gupta et al. (2021) randomly chose a set of ten representative villages from five administrative blocks in the Sundarbans. While looking at the map, it is clear to see how the villages could be separated into five blocks based on location. One village is within 15 km of one other village. The representative villages are paired of as follows: Pargumti and Haridaskati Samsernagar, Bijoynagar and Birajnagar, Purba Dwarokapur and Lakshmi Janardanpur,  Amrabati  and Shibpur, and  Beguakhali and Sagar."),
                                                      p("They collected information from approximately 300 households in the 10 villages from October 2018 to November 2019. During this period, the region was struck by four different cylones. The Bengal Bay was hit by a category 4 cyclone named Fani in April as well as a category 1 cyclone named Bulbul and Matmo in October. The Arabian Sea also was hit by two category 1 cyclones during while the data was being collected.  Vayu in June and Hikaa in September."),
-                                                     p("This sundarbans have different crop seasons due to varying weather patterns trhoughout the year. The Kharif crop season of Winter paddy Aman is sown during monsoon season (June-August) and harvested in winter (December – January). This is a highly water consuming crop. Additionally, the Rabi crop season for paddy is sown in winter (November – February) and harvested from March to June. Fishing occurs year-round and honey is seasonally harvested from April to June. Our representative population also celebrated festivals and holidays throughout the data collection period including- Republic day, Rama Navami, Eid al-Fitr, Indian Independence Day, Dussehra, Diwali, Mawlid and Christmas.")
+                                                     p("This sundarbans have different crop seasons due to varying weather patterns throughout the year. The Kharif crop season of Winter paddy Aman is sown during monsoon season (June-August) and harvested in winter (December – January). This is a highly water consuming crop. Additionally, the Rabi crop season for paddy is sown in winter (November – February) and harvested from March to June. Fishing occurs year-round and honey is seasonally harvested from April to June. Our representative population also celebrated festivals and holidays throughout the data collection period including- Republic day, Rama Navami, Eid al-Fitr, Indian Independence Day, Dussehra, Diwali, Mawlid and Christmas.")
                                               ),
                                               column(8, 
                                                      #h2(strong("Representative Villages in the Sundarbans")),
@@ -906,8 +922,10 @@ ui <- navbarPage(title = "",
                                      fluidRow(style = "margin: 6px;",
                                               p("", style = "padding-top:10px;"),
                                               column(12, align = "center", h4(strong("Timelapse Showing Coastal Degradation")),
-                                                     p(""),
-                                                     br(""), tags$video(type = "video/mp4",src = "sundarbansv2.mp4", width = "80%", align = "center",controls = "controls")
+                                                     p("This video shows the coast line of the Sundarbans from 1984 to 2022. As you can see, their coast has degraded significantly over the years
+                                                       due to the residuals of climate change and frequent cyclones. The thinning of their coast negatively impacts their agricultural yields, which hosueholds in the region heavily depend on
+                                                       to support their livelihoods."),
+                                                     br(""), tags$video(type = "video/mp4",src = "sundarbansv2.mp4", width = "80%", align = "center",controls = "controls", autoplay = T, loop = T)
                                               ), 
                                      )
                                      
@@ -1080,12 +1098,12 @@ ui <- navbarPage(title = "",
                                               column(12,h4(strong("Overview")),
                                                      p("We present average weekly expenditure from Nov 2018 - Oct 2019 to examine the spending behaviors of households in the region. This will provide information on the changing nature of spending in the Sundarbans region due to events such as festivals and holidays, 
                                                        harvest seasons, and weather-related shocks."),
+
                                                      p("Expenditure is defined as spending on consumption (e.g., food) and non-consumption (e.g., rent) items.
                                                      The average weekly expenditure over the data period was 1982.77 rupees, with a median of 1832.1 rupees. 
                                                        It appears that the largest expenses occured during harvest seasons, partculary in villages with high amounts of land holding
                                                        and proportions of agricultrue farming (Beguakhali and Shibpur. We also observed increases in expenditure near when cyclones hit."),
-                                                     p("Expenditure is defined as spending on consumption (e.g., food) and non-consumption (e.g., rent) items. It appears that the largest expense for households during this period include house repairs and festival-related costs. 
-                                                       The most common expenditures are food purchases."),
+
                                                      br("")
                                                      
                                               )),
@@ -1113,9 +1131,9 @@ ui <- navbarPage(title = "",
                                      ),
                                      
                                      fluidRow(style = "margin: 6px;", align = "justify",
-                                              h4(strong("Consumption on Food Items"), align = "center"),
+                                              h4(strong(""), align = "center"),
                                               p("", style = "padding-top:10px;"),
-                                              column(12,h4(strong("Overview")),
+                                              column(12,h4(strong("Consumption on Food Items")),
                                                      p("We present the average weekly expenditure on food consumption items from November 2018 - October 2019. Consumption expenditure includes purchases by 
                                                      households on goods and services, excluding housing. By visualizing consumption expenditures over time, we can gain information about household spending behavior, 
                                                      identifying changes in spending, as well as which consumption items are bought most frequently. Within the data period, the Sundrabans region spent
@@ -1149,6 +1167,7 @@ ui <- navbarPage(title = "",
                                            tabPanel("Staple Items", plotOutput("cs_staple")),
                                            tabPanel("Meats", plotOutput("cs_meats")),
                                            tabPanel("Other", plotOutput("cs_other")),
+                                           #tabPanel("Table", DT::DTOutput("cs_table"))
                                          )
                                        ),
                                        
@@ -1176,13 +1195,13 @@ ui <- navbarPage(title = "",
                                      
                                      #),
                                      fluidRow(style = "margin: 6px;", align = "justify",
-                                              h4(strong("Non-Food Consumption"), align = "center"),
+                                              h4(strong(""), align = "center"),
                                               p("", style = "padding-top:10px;"),
-                                              column(12,h4(strong("Overview")),
+                                              column(12,h4(strong("Non-Food Consumption")),
                                                      p("Furthermore, we examined consumption expenditure on non-food items, inluding: clothes, 
                                                        books and tuition, utilities, toiletries, health, home repairs, transportation, livestock,
                                                        agriculture, labor, and other non-food items."), 
-                                                     p("Consumption expenditure on health, home repairs, and books/tuition
+                                                     p("Expenditures on health, home repairs, and books/tuition
                                                        made up the largest but least frequent expenses, while utilities, toilitries, and transportation made up the most frequent
                                                        purchases. Considering farmers make up the largest proportion of occupation in the Sundarbans, it is predictable to also see 
                                                        frequent consumption expenditures on agriculture, livestock, and labor. The average weekly expenditure
@@ -1206,7 +1225,8 @@ ui <- navbarPage(title = "",
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Plot", plotOutput("nonfood_plot"))                                         
+                                           tabPanel("Plot", plotOutput("nonfood_plot")),
+                                           #tabPanel("Table", DT::DTOutput("nonfood_table"))
                                          )
                                        ),
                                        
@@ -1270,8 +1290,8 @@ ui <- navbarPage(title = "",
                                               h1(strong("Borrowing"), align = "justify"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
-                                                     p("The first tab depicts amount borrowed by village throughout the year. There is a spike of amount borrowed between April and July. Purba Dwarokapur, Shibpur and Sagar show major spikes in the amount borrowed during this time. With the amount reaching about 40000 INR."),
-                                                     p("The “Count” tab depicts the number of Households borrowing. This data is relatively consistent throughout the year other than an early spike in Bijoynagar, with over 30 households borrowing before January of 2019.  If you deselect Bijoynagar, all other villages range from 17 to 0 households borrowing each week. The lowest number of households borrowing is between January and July, with no more than 10 households borrowing each week during these months.  A couple villages increase to above 10 households borrowing after July."),
+                                                     p("The first tab depicts amount borrowed by village throughout the year. There is a spike of amount borrowed between April and July. This is during the dry season, when the honey harvest occurs. This spike also happens at roughly the same time the Fani Cyclone hit this region.  Purba Dwarokapur, Shibpur and Sagar show major spikes in the amount borrowed during this time. With the amount reaching about 40000 INR."),
+                                                     p("The “Count” tab depicts the number of Households borrowing. This data is relatively consistent throughout the year other than an early spike in Bijoynagar, with over 30 households borrowing before January of 2019. This spike occurs at the same time as the Kharif and Rabi crop harvests. If you deselect Bijoynagar, all other villages range from 17 to 0 households borrowing each week. The lowest number of households borrowing is between January and July, with no more than 10 households borrowing each week during these months.  A couple villages increase to above 10 households borrowing after July."),
                                                      p("The main purpose for borrowing is consumption, with over 2000 total occasions of borrowing. The next most common purposes are other expenses and payback of other loans. Borrowing is done both in cash and in kind. 54% are done in kind and 46% are in cash.")
                                                      
                                                      
@@ -1561,7 +1581,7 @@ ui <- navbarPage(title = "",
                                    h4(strong("VT Data Science for the Public Good")),
                                    p("The", a(href = 'https://aaec.vt.edu/academics/undergraduate/beyond-classroom/dspg.html', 'Data Science for the Public Good (DSPG) Young Scholars program', target = "_blank"),
                                      "is a summer immersive program held at the", a(href = 'https://aaec.vt.edu/index.html', 'Virginia Tech Department of Agricultural'), "and", a(href = 'https://ext.vt.edu/','Applied Economics and the Virginia Cooperative Extension Service.'),
-                                     "In its second year, the program engages students from across the country to work together on projects that address state, federal, and local government challenges around critical
+                                     "In its third year, the program engages students from across the country to work together on projects that address state, federal, and local government challenges around critical
                                 social issues relevant in the world today. DSPG young scholars conduct research at the intersection of statistics, computation, and the social sciences to determine how 
                                 information generated within every community can be leveraged to improve quality of life and inform public policy. For more information on program highlights, how to apply,
                                 and our annual symposium, please visit", 
@@ -1571,11 +1591,11 @@ ui <- navbarPage(title = "",
                           fluidRow(style = "margin-left: 100px; margin-right: 100px;",
                                    column(6, align = "center",
                                           h4(strong("DSPG Team Members")),
-                                          img(src = "team-esha.jpg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                          img(src = "team-julie.jpg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                          img(src = "rippley.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                          img(src = "das.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
                                           br(), 
-                                          img(src = "team-ryan.jpg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                          img(src = "team-john.jpg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                          img(src = "Taj.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                          img(src = "Sid.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
                                           p(a(href = 'https://www.linkedin.com/in/samantha-rippley-58846119b/', 'Samantha Rippley', target = '_blank'), "(Virginia Tech, M.S in Agriculture and Applied Economics);",
                                             br(), 
                                             a(href = 'https://www.linkedin.com/in/julie-rebstock', 'Nandini Das', target = '_blank'), "(Virgina Tech, PHD in Economics);",
@@ -1588,7 +1608,7 @@ ui <- navbarPage(title = "",
                                    column(6, align = "center",
                                           h4(strong("VT Faculty Team Members")),
                                           # img(src = "team-posadas.jpg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
-                                          img(src = "team-sarah.jpg", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                          img(src = "holmes.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
                                           p(a(href = "https://www.linkedin.com/in/chanita-holmes-385577234/", 'Dr. Chanita Holmes', target = '_blank'), "(Research Assistant Professor Department of Agriculture and Applied Economics Virginia Tech)",
                                             #  br(), 
                                             #  a(href = '', 'Dr. Chanita Holmes', target = '_blank'), "(Associate Professor Department of Biology Virginia State University)."),
@@ -1783,12 +1803,13 @@ server <- function(input, output, session) {
     ggplot(filtered_cs_food_staple(), aes(x = week, y = `Staple Items`, color = village)) +
       geom_line()+
       theme_classic()+
-      ggtitle("Average Weekly Expenditure on Staple Items ")+
+      #ggtitle("Average Weekly Expenditure on Staple Items ")+
       labs(x = "", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: 463.87  Median: 431.20",
            subtitle = "(Rice/Grains, Flour, Vegetables, Fruits, Tubers, Beans and Spices)")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       theme(plot.caption = element_text(size = 10))+
-      geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
+      geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
+      scale_color_viridis_d()
     
   })
   
@@ -1796,24 +1817,26 @@ server <- function(input, output, session) {
     ggplot(filtered_cs_meats(), aes(x = week, y = `Meats`, color = village))+
       geom_line()+
       theme_classic()+
-      ggtitle("Average Weekly Expenditure on Meat")+
+      #ggtitle("Average Weekly Expenditure on Meat")+
       labs(x = "", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: 158.97  Median: 431.20",
            subtitle = "(Red Meat, Fish, and Poultry)")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       theme(plot.caption = element_text(size = 10))+
-      geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
+      geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
+      scale_color_viridis_d()
   })
   
   output$cs_other <- renderPlot({
     ggplot(filtered_cs_other(), aes(x = week, y = `Other`, color = village))+
       geom_line() +
       theme_classic()+
-      ggtitle("Average Weekly Expenditure on 'Other' Items")+
+      #ggtitle("Average Weekly Expenditure on 'Other' Items")+
       labs(x = "", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: 113.75  Median: 111.94",
            subtitle = "(Eggs, Dairy, Packaged Foods, Tea, and Other Food Items)")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       theme(plot.caption = element_text(size = 10))+
-      geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
+      geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
+      scale_color_viridis_d()
     
   })
   
@@ -1852,17 +1875,19 @@ server <- function(input, output, session) {
         geom_col(position = 'stack', hoverinfo = "text", aes(text = paste("Percentage:",Percentage,"%\n"))) + 
         labs(x= "", y = "Total Households", fill = "") + 
         theme_classic() + 
-        coord_flip()
+        coord_flip()+
+        scale_fill_viridis_d()
     }
     else if (ageVar() == "Household Heads Marital Status") {
       marplot <- ggplot(countmar, aes(x = head_married, y = n, fill = Gender)) +
         geom_col() +
         labs(x = "Not Married                                         Married", y = "Total Household Head", fill = "") +
-        scale_x_discrete() + theme(legend.title=element_blank()) 
+        scale_x_discrete() + theme(legend.title=element_blank())+
+        scale_fill_viridis_d()
       marplot
     }
     else if (ageVar() == "Household Size by Village") {
-      hh_size_plot <- ggplot(median_hhsize, aes(x = village, y = median, fill = village)) +
+      hh_size_plot <- ggplot(median_hhsize, aes(x = forcats::fct_rev(village), y = median, fill = village)) +
         geom_col() +
         labs( x = "", y = "Median Household Size")+
         coord_flip()+
@@ -1906,12 +1931,12 @@ server <- function(input, output, session) {
       socplot
     }
     else if (ocuVar() == "Proportion of Households Involved in Agricultural Farming") {
-      agfaplot <- ggplot(grouped, aes(village,prop_farm, fill = village)) + geom_col() + 
-        labs(x = "", y = "Proportion", title = "") + coord_flip() + theme(legend.position = "none") + scale_fill_viridis_d()
+      agfaplot <- ggplot(grouped, aes(forcats::fct_rev(village),prop_farm*100, fill = village)) + geom_col() + 
+        labs(x = "", y = "Percentage", title = "") + coord_flip() + theme(legend.position = "none") + scale_fill_viridis_d()
       agfaplot
     }
     else if (ocuVar() == "Average Amount of Land Owned by Village") {
-      mean_land_plot <- ggplot(land_stats, aes(x = villages, y = mean_land_value, fill = villages)) +
+      mean_land_plot <- ggplot(land_stats, aes(x = forcats::fct_rev(villages), y = mean_land_value, fill = villages)) +
         geom_col() +
         coord_flip() + theme(legend.position = "none") +
         labs(x = "", y = "Land Owned (Kathas)") + scale_fill_viridis_d()
@@ -1960,7 +1985,8 @@ server <- function(input, output, session) {
         labs( x= "", y = "Total Households", fill = "") + 
         theme_classic() + 
         #ggtitle("Households That Own a Business") +
-        coord_flip()
+        coord_flip()+
+        scale_fill_viridis_d()
     }
     
     else if (finVar() == "Income vs Remmitances (October 2018 - November 2019)") {
@@ -1987,9 +2013,10 @@ server <- function(input, output, session) {
     }
     
     else if (finVar() == "mig") {
-      migplot <- ggplot(migrant_prop, aes(village, migrant_proportion, fill = village)) + 
+      migplot <- ggplot(migrant_prop, aes(forcats::fct_rev(village), migrant_proportion, fill = village)) + 
         geom_col() + theme_classic() + 
-        labs(x = "", y = "Proportion", title = "", fill = "") + coord_flip()
+        labs(x = "", y = "Proportion", title = "", fill = "") + coord_flip()+
+        scale_fill_viridis_d()
       
       migplot
     }
@@ -2049,7 +2076,7 @@ server <- function(input, output, session) {
   output$exp <- renderPlot({
     ggplot(filtered_exp(), aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) +
       geom_line() +
-      labs(x="Date", y="Average Weekly Expenditure (INR)", caption = "Mean: 1982.77   Median: 1832.1") +
+      labs(x="Date", y="Average Weekly Expenditure (INR)", caption = "Mean: 1982.77   Median: 1832.1", fill = "Villages") +
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + 
       scale_color_viridis_d()+
       theme_classic()+
@@ -2151,7 +2178,8 @@ server <- function(input, output, session) {
       labs(x = "", y = "Average Consumption Expenditure (INR)", caption = "Mean: 766.13  Median: 731.68", color = "Villages")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       theme(plot.caption = element_text(size = 10))+
-      geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
+      geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
+      scale_color_viridis_d()
   })
   
   # Filtered cs items
@@ -2169,7 +2197,8 @@ server <- function(input, output, session) {
       #ggtitle("Average Consumption Items Bought a Week")+
       labs(x = "", y = "No. of Consumption Items Bought", color = "Villages", caption = "Mean: 7.2  Median: 7.2")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
-      geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
+      geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
+      scale_color_viridis_d()
   })
   
   # Filtered consumption by group
@@ -2191,6 +2220,10 @@ server <- function(input, output, session) {
       geom_rect(data = filtered_event_cs_food(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
     
   })
+  # cs table
+#  output$cs_table <- DT::renderDT({
+#    avg_cs_table
+#  })
   
   filtered_non_food_cs <- reactive({
     non_food_cs %>% 
@@ -2204,9 +2237,15 @@ server <- function(input, output, session) {
       labs(x = "", y = "Average Weekly Expenditure", color = "Villages", caption = "Mean: 882.22  Median: 769.75")+
       #ggtitle("Average Consumption Expenditure on Non-Food Items")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
-      geom_rect(data = filtered_event_cs_nonfood(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
+      geom_rect(data = filtered_event_cs_nonfood(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
+      scale_color_viridis_d()
     
   })
+  # Render non food table
+  
+ # output$nonfood_table <- DT::renderDT({
+  #  nonfood_table
+ # })
   
   #Event Filtered
   
