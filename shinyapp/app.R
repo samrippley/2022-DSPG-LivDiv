@@ -53,14 +53,14 @@ baseline <- livdiv %>%
 imgs <- list.files("www/photos/", pattern=".png", full.names = TRUE)
 
 #borrowing data 
-fd <- livdiv 
-meals <- fd %>%
+fdliv <- livdiv 
+meals <- fdliv %>%
   select(c("hhid", "date", "fs_skipmeals", "fs_reducemeals", "village","hhid", "week_num"))
 meals$date <- as_date(meals$date)
-borrow <- fd %>%
+borrow <- fdliv %>%
   select(c("hhid", "date", "d_br", "d_br_cash","d_br_inkind", "br_amt","br_amtdue", "village","hhid", "week_num"))
 borrow$date <- as_date(borrow$date)
-purp <- fd %>%
+purp <- fdliv %>%
   select(c("date", "br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag", "village","hhid", "week_num"))
 purp$date <- as_date(purp$date)
 bramt <- borrow %>%
@@ -72,24 +72,18 @@ dbr <- borrow %>%
   group_by(village,week_num) %>%
   summarize_at(c("d_br", "d_br_cash", "d_br_inkind"), sum, na.rm=TRUE) 
 
-purpose <- purp %>%
-  select(c("br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag", "village", "week_num")) %>%
-  group_by(village) %>%
-  summarize_at(c("br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag"), sum, na.rm=TRUE) 
-pamr <- purpose %>% 
-  filter(village == "Amrabati") 
-pamr <- t(pamr)
-pamr <- as.data.frame(pamr)
-pamr <- pamr %>% slice(-c(1))
-pamr <- data.frame(A = c("Consumption", "Other Expenses", "Fees Due", "Payback Other Loan", "Asset Purchase", "Agriculture Purchases"),
-                   B = c(pamr$V1))
-purposenv <- purp %>%
-  select(c("br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag", "village", "week_num")) %>%
-  summarize_at(c("br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag"), sum, na.rm=TRUE) 
+borrow <- livdiv %>%  select(c("hhid", "date", "d_br", "d_br_cash","d_br_inkind", "br_amt","br_amtdue", "village","hhid", "week_num"))
+borrow$date <- as_date(borrow$date)
+
+purp <- livdiv %>%  
+  select(c("date", "br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag", "village","hhid", "week_num"))
+
+purposenv <- purp %>%  
+  select(c("br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag", "village", "week_num")) %>% summarize_at(c("br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan","br_purpose_asset", "br_purpose_ag"), sum, na.rm=TRUE) 
+
 purposenv <- t(purposenv)
 purposenv <- as.data.frame(purposenv)
-df <- data.frame(A = c("Consumption", "Other Expenses", "Fees Due", "Payback Other Loan", "Asset Purchase", "Agriculture Purchases"),
-                 B = c(purposenv$V1))
+dfpurp <- data.frame(A = c("Consumption", "Other Expenses", "Fees Due", "Payback Other Loan", "Asset Purchase", "Agriculture Purchases"), B = c(purposenv$V1))
 # pls purpose dynamic hist
 
 
@@ -1263,7 +1257,7 @@ ui <- navbarPage(title = "",
                                               column(12,h4(strong("Overview")),
                                                      p("The first tab depicts amount borrowed by village throughout the year. There is a spike of amount borrowed between April and July. Purba Dwarokapur, Shibpur and Sagar show major spikes in the amount borrowed during this time. With the amount reaching about 40000 INR."),
                                                      p("The “Count” tab depicts the number of Households borrowing. This data is relatively consistent throughout the year other than an early spike in Bijoynagar, with over 30 households borrowing before January of 2019.  If you deselect Bijoynagar, all other villages range from 17 to 0 households borrowing each week. The lowest number of households borrowing is between January and July, with no more than 10 households borrowing each week during these months.  A couple villages increase to above 10 households borrowing after July."),
-                                                     p("The purpose of borrowing is mostly consumption. This is followed by “Other Expenses” and “Payback of Other Loans.")
+                                                     p("The main purpose for borrowing is consumption, with over 2000 total occasions of borrowing. The next most common purposes are other expenses and payback of other loans. Borrowing is done both in cash and in kind. 54% are done in kind and 46% are in cash.")
                                                      
                                                      
                                                      
@@ -1289,7 +1283,7 @@ ui <- navbarPage(title = "",
                                                                 multiple = T, options = list(`actions-box` = T))),
                                          ),
                                          tabPanel("Purpose", 
-                                                  plotlyOutput("purpplot", height = "500px")
+                                                  plotOutput("purpplot", height = "500px")
                                          ),
                                          
                                          
@@ -1707,7 +1701,7 @@ server <- function(input, output, session) {
   #borrowing purpose ----------------------
   
   output$purpplot <- renderPlot({
-    ggplot(df, aes(x= A, y = B, fill = A)) + geom_col() + 
+    ggplot(dfpurp, aes(x= A, y = B, fill = A)) + geom_col() + 
       coord_flip()+
       #labs(title = "Purpose of Borrowing") + 
       xlab("") +
