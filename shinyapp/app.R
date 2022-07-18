@@ -1077,15 +1077,12 @@ ui <- navbarPage(title = "",
                                               column(12,h4(strong("Overview")),
                                                      p("We present average weekly expenditure from Nov 2018 - Oct 2019 to examine the spending behaviors of households in the region. This will provide information on the changing nature of spending in the Sundarbans region due to events such as festivals and holidays, 
                                                        harvest seasons, and weather-related shocks."),
-<<<<<<< HEAD
                                                      p("Expenditure is defined as spending on consumption (e.g., food) and non-consumption (e.g., rent) items.
                                                      The average weekly expenditure over the data period was 1982.77 rupees, with a median of 1832.1 rupees. 
                                                        It appears that the largest expenses occured during harvest seasons, partculary in villages with high amounts of land holding
                                                        and proportions of agricultrue farming (Beguakhali and Shibpur. We also observed increases in expenditure near when cyclones hit."),
-=======
                                                      p("Expenditure is defined as spending on consumption (e.g., food) and non-consumption (e.g., rent) items. It appears that the largest expense for households during this period include house repairs and festival-related costs. 
                                                        The most common expenditures are food purchases."),
->>>>>>> 8c1991792e9e80d582ee86a4f18cff2f009ef5be
                                                      br("")
                                                      
                                               )),
