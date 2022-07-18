@@ -1101,7 +1101,8 @@ ui <- navbarPage(title = "",
                                                      p("Expenditure is defined as spending on consumption (e.g., food) and non-consumption (e.g., rent) items.
                                                      The average weekly expenditure over the data period was 1982.77 rupees, with a median of 1832.1 rupees. 
                                                        It appears that the largest expenses occured during harvest seasons, partculary in villages with high amounts of land holding
-                                                       and proportions of agricultrue farming (Beguakhali and Shibpur. We also observed increases in expenditure near when cyclones hit."),
+                                                       and proportions of agricultrue farming, such asBeguakhali and Shibpur. We also observed increases in expenditure near when cyclones hit, when households could be buying ssupplies
+                                                       to prepare for the storms."),
 
                                                      br("")
                                                      
@@ -1122,7 +1123,7 @@ ui <- navbarPage(title = "",
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Plot",plotOutput("exp")),
+                                           tabPanel("Average Weekly Expenditure",plotOutput("exp")),
                                            tabPanel("Table", DT::DTOutput("exp_table"))
                                          )
                                        ),
@@ -1161,7 +1162,7 @@ ui <- navbarPage(title = "",
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Average Food Expenditure",plotOutput("cs_exp")),
+                                           tabPanel("Average Food Consumption",plotOutput("cs_exp")),
                                            tabPanel("No. of Food Items", plotOutput("cs_item")),
                                            tabPanel("Staple Items", plotOutput("cs_staple")),
                                            tabPanel("Meats", plotOutput("cs_meats")),
@@ -1224,7 +1225,7 @@ ui <- navbarPage(title = "",
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Plot", plotOutput("nonfood_plot")),
+                                           tabPanel("Average Non-Food Consumption", plotOutput("nonfood_plot")),
                                            #tabPanel("Table", DT::DTOutput("nonfood_table"))
                                          )
                                        ),
@@ -1274,7 +1275,7 @@ ui <- navbarPage(title = "",
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Plot",plotOutput("inc")),
+                                           tabPanel("Average Weekly Income",plotOutput("inc")),
                                            tabPanel("Male/Female Income", plotOutput("malefemaleinc")),
                                            #tabPanel("Full Income", plotOutput("fullinc")),
                                            tabPanel("Table", DT::DTOutput("inc_table"))
@@ -1803,10 +1804,9 @@ server <- function(input, output, session) {
       geom_line()+
       theme_classic()+
       #ggtitle("Average Weekly Expenditure on Staple Items ")+
-      labs(x = "", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: 463.87  Median: 431.20",
-           subtitle = "(Rice/Grains, Flour, Vegetables, Fruits, Tubers, Beans and Spices)")+
+      labs(x = "", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: 463.87  Median: 431.20")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
-      theme(plot.caption = element_text(size = 10))+
+      theme(plot.caption = element_text(size = 12))+
       geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
       scale_color_viridis_d()
     
@@ -1817,10 +1817,9 @@ server <- function(input, output, session) {
       geom_line()+
       theme_classic()+
       #ggtitle("Average Weekly Expenditure on Meat")+
-      labs(x = "", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: 158.97  Median: 431.20",
-           subtitle = "(Red Meat, Fish, and Poultry)")+
+      labs(x = "", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: 158.97  Median: 431.20")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
-      theme(plot.caption = element_text(size = 10))+
+      theme(plot.caption = element_text(size = 12))+
       geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
       scale_color_viridis_d()
   })
@@ -1830,10 +1829,9 @@ server <- function(input, output, session) {
       geom_line() +
       theme_classic()+
       #ggtitle("Average Weekly Expenditure on 'Other' Items")+
-      labs(x = "", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: 113.75  Median: 111.94",
-           subtitle = "(Eggs, Dairy, Packaged Foods, Tea, and Other Food Items)")+
+      labs(x = "", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: 113.75  Median: 111.94")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
-      theme(plot.caption = element_text(size = 10))+
+      theme(plot.caption = element_text(size = 12))+
       geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
       scale_color_viridis_d()
     
@@ -2071,7 +2069,7 @@ server <- function(input, output, session) {
   output$exp <- renderPlot({
     ggplot(filtered_exp(), aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) +
       geom_line() +
-      labs(x="Date", y="Average Weekly Expenditure (INR)", caption = "Mean: 1982.77   Median: 1832.1", fill = "Villages") +
+      labs(x="Date", y="Average Weekly Expenditure (INR)", caption = "Mean: 1982.77   Median: 1832.1", color = "Villages") +
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + 
       scale_color_viridis_d()+
       theme_classic()+
@@ -2172,7 +2170,7 @@ server <- function(input, output, session) {
       #ggtitle("Average Weekly Consumption Expenditure by Village")+
       labs(x = "", y = "Average Consumption Expenditure (INR)", caption = "Mean: 766.13  Median: 731.68", color = "Villages")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
-      theme(plot.caption = element_text(size = 10))+
+      theme(plot.caption = element_text(size = 12))+
       geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
       scale_color_viridis_d()
   })
@@ -2191,6 +2189,7 @@ server <- function(input, output, session) {
       theme_classic()+
       #ggtitle("Average Consumption Items Bought a Week")+
       labs(x = "", y = "No. of Consumption Items Bought", color = "Villages", caption = "Mean: 7.2  Median: 7.2")+
+      theme(plot.caption = element_text(size = 12))+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
       scale_color_viridis_d()
@@ -2211,6 +2210,7 @@ server <- function(input, output, session) {
       theme_classic()+
       labs(x = "", y = "Average Weekly Expenditure", color = "Villages", caption = "Mean: 721.41  Median: 686.96")+
       #ggtitle("Average Consumption Expenditure on Food Items")+
+      theme(plot.caption = element_text(size = 12))+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       geom_rect(data = filtered_event_cs_food(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
     
@@ -2230,6 +2230,7 @@ server <- function(input, output, session) {
       geom_line()+
       theme_classic()+
       labs(x = "", y = "Average Weekly Expenditure", color = "Villages", caption = "Mean: 882.22  Median: 769.75")+
+      theme(plot.caption = element_text(size = 12))+
       #ggtitle("Average Consumption Expenditure on Non-Food Items")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       geom_rect(data = filtered_event_cs_nonfood(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
