@@ -887,7 +887,7 @@ ui <- navbarPage(title = "",
                                                      p("They collected information from approximately 300 households in the 10 villages from October 2018 to November 2019. During this period, the region was struck by four different cylones. The Bengal Bay was hit by a category 4 cyclone named Fani in April as well as a category 1 cyclone named Bulbul and Matmo in October. The Arabian Sea also was hit by two category 1 cyclones during while the data was being collected.  Vayu in June and Hikaa in September."),
                                                      p("This sundarbans have different crop seasons due to varying weather patterns trhoughout the year. The Kharif crop season of Winter paddy Aman is sown during monsoon season (June-August) and harvested in winter (December – January). This is a highly water consuming crop. Additionally, the Rabi crop season for paddy is sown in winter (November – February) and harvested from March to June. Fishing occurs year-round and honey is seasonally harvested from April to June. Our representative population also celebrated festivals and holidays throughout the data collection period including- Republic day, Rama Navami, Eid al-Fitr, Indian Independence Day, Dussehra, Diwali, Mawlid and Christmas.")
                                               ),
-                                              column(8, leafletOutput("map_leaflet", width = "100%"),
+                                              column(8, leafletOutput("map_leaflet", width = "100%", height = 650),
                                                      
                                                      
                                               )
@@ -1249,7 +1249,6 @@ ui <- navbarPage(title = "",
                                            tabPanel("Plot",plotOutput("inc")),
                                            tabPanel("Male/Female Income", plotOutput("malefemaleinc")),
                                            #tabPanel("Full Income", plotOutput("fullinc")),
-                                           tabPanel("Total Income(w/o remmitance)", plotOutput("totalinc")),
                                            tabPanel("Table", DT::DTOutput("inc_table"))
                                          )
                                        ),
