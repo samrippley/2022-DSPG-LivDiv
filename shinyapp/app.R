@@ -810,7 +810,7 @@ ui <- navbarPage(title = "",
                                    br(""),
                                    h1(strong("Assessing Livelihood Diversification in Sundarbans, India using High Frequency Data "),
                                       #h2(strong("Sundarbans")),
-                                     # br(""),
+                                      # br(""),
                                       h4("Data Science for the Public Good Program"),
                                       h4("Virginia Polytechnic Institute and State University"),
                                       #h4("[updat this]"),
@@ -831,16 +831,16 @@ ui <- navbarPage(title = "",
                                           
                                           p("The Sundarbans faces an increasing threat to its ecological system due to several manmade and natural causes. First, cyclones, common to this area, are getting more frequent and more serve. From 1961 to 2022, 15 cyclones hit this area, with at least one occurring yearly in the past four years. This has led to the forest incurring severe damages, gradually causing the area to shrink. Second, there is an increase in deforestation due to increasing population and commercial uses. There is also a decrease in aquatic animals due to increased fishing. Additionally, the biological makeup of the forest, such as salinity, soil pH, and reduced freshwater, are being altered due to climate change leading to more fallow land."),
                                           p("Agricultural-dependent families bear the brunt of these increasing threats to the Sundarbans. This is evident by the growing out-migration of the working population to cities and towns as a coping mechanism. Remittance income from this domestic migration has become one of the significant sources of income to protect residents' livelihood."),
-                                         img(src='sunphoto.png', align = "center", width = "95%")
-                                          ),
+                                          img(src='sunphoto.png', align = "center", width = "95%")
+                                   ),
                                    
                                    column(4,
                                           h2(strong("Project Goals")),
                                           p("Climate change is a global issue; however, its impact is not felt equally across all regions. Developing countries, especially areas with widespread poverty and poor infrastructure, are more ill-equipped to cope with these environmental threats. The worsening of extreme weather patterns such as high temperatures, droughts, floods, and rising sea levels are especially problematic for countries with large coastal areas and populations that primarily depend on agriculture for their livelihood."),
                                           p("We examine the Sundarbans in West Bengal, India, which has faced increasing climate changes in recent years for this project. The Sundarbans region has experienced a disproportionate number of climate disasters such as flooding and cyclones over the past decade. Residents who primarily engage in small-scale agriculture are forced to diversify their likelihood strategies using out-migration and reduced farming to cope with the increasing environmental changes."),
                                           p("The overall goal of this project is to evaluate livelihood-diversification strategies using weekly financial data for approximately 300 households from 10 representative villages in the region. The team aims to create a public-facing dashboard to describe and visualize households' livelihood diversification strategies, including changes in income, expenditure, and consumption patterns. The insights from this dashboard are important for designing effective and targeted poverty-reducing strategies and aiding those affected by shocks such as natural disasters and climate change."),
-                                         img(src='sunphoto2.png', align = "center", width = "95%")
-                                          )
+                                          img(src='sunphoto2.png', align = "center", width = "95%")
+                                   )
                           ),
                           
                           #fluidRow(align = "center",
@@ -873,32 +873,32 @@ ui <- navbarPage(title = "",
                                    #    p(tags$small(em('Last updated: August 2021'))))
                           ),
                           fluidRow(align = "center",
-                            img(src='Picture2.png', width = "75%"),
+                                   img(src='Picture2.png', width = "75%"),
                           )), 
                  ## Sundarbans Region--------------------------------------------
                  navbarMenu("Sundarbans Region" ,
-                          tabPanel("Villages", 
-                                   
-                                   fluidRow(style = "margin: 2px;",
-                                            align = "center",
-                                            h1(strong("Representative Villages in the Sundarbans"),
-                                             
-                                            )),
-                                   
+                            tabPanel("Villages", 
+                                     
+                                     fluidRow(style = "margin: 2px;",
+                                              align = "center",
+                                              h1(strong("Representative Villages in the Sundarbans"),
+                                                 
+                                              )),
+                                     
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               column(4, 
                                                      h4(strong("Sampled Villages")),
                                                      p("The Sundarbans are a cluster of islands located in the Bay of Bengal that spans across India and Bangladesh. Gupta et al. (2021) collected household-level data from a representative sample of rural households in the Sundarbans region. Our villages are located on the Indian side of the Sundarbans in West Bengal, India across the South 24 Parganas and North 24 Parganas districts."),
                                                      p("Gupta et al. (2021) randomly chose a set of ten representative villages from five administrative blocks in the Sundarbans. While looking at the map, it is clear to see how the villages could be separated into five blocks based on location. One village is within 15 km of one other village. The representative villages are paired of as follows: Pargumti and Haridaskati Samsernagar, Bijoynagar and Birajnagar, Purba Dwarokapur and Lakshmi Janardanpur,  Amrabati  and Shibpur, and  Beguakhali and Sagar."),
-                                                     p("They collected information from approximately 300 households in the 10 villages from November 2018 to October 2019. During this period, the region was struck by four different cylones. The Bengal Bay was hit by a category 4 cyclone named Fani in April as well as a category 1 cyclone named Bulbul and Matmo in October. The Arabian Sea also was hit by two category 1 cyclones during while the data was being collected.  Vayu in June and Hikaa in September."),
+                                                     p("They collected information from approximately 300 households in the 10 villages from October 2018 to November 2019. During this period, the region was struck by four different cylones. The Bengal Bay was hit by a category 4 cyclone named Fani in April as well as a category 1 cyclone named Bulbul and Matmo in October. The Arabian Sea also was hit by two category 1 cyclones during while the data was being collected.  Vayu in June and Hikaa in September."),
                                                      p("This sundarbans have different crop seasons due to varying weather patterns trhoughout the year. The Kharif crop season of Winter paddy Aman is sown during monsoon season (June-August) and harvested in winter (December – January). This is a highly water consuming crop. Additionally, the Rabi crop season for paddy is sown in winter (November – February) and harvested from March to June. Fishing occurs year-round and honey is seasonally harvested from April to June. Our representative population also celebrated festivals and holidays throughout the data collection period including- Republic day, Rama Navami, Eid al-Fitr, Indian Independence Day, Dussehra, Diwali, Mawlid and Christmas.")
                                               ),
                                               column(8, leafletOutput("map_leaflet", width = "100%"),
                                                      
                                                      
                                               )
-                                     
-                            )),
+                                              
+                                     )),
                             tabPanel("Timelapse", 
                                      fluidRow(style = "margin: 6px;",
                                               p("", style = "padding-top:10px;"),
@@ -910,18 +910,18 @@ ui <- navbarPage(title = "",
                                      
                             ),
                             tabPanel("Gallery",
-                            fluidRow(style = "margin: 6px;", 
-                                     column(12,
-                                            h2(strong("Images"))
-                                            
-                                            
-                                     ),   
-                                     mainPanel( 
-                                       actionButton("previous", "Previous"),
-                                       actionButton("next", "Next"),
-                                       imageOutput("image")
-                                       
-                                     ))),
+                                     fluidRow(style = "margin: 6px;", 
+                                              column(12,
+                                                     h2(strong("Images"))
+                                                     
+                                                     
+                                              ),   
+                                              mainPanel( 
+                                                actionButton("previous", "Previous"),
+                                                actionButton("next", "Next"),
+                                                imageOutput("image")
+                                                
+                                              ))),
                  ),
                  
                  ## Tab Demographics --------------------------------------------
@@ -968,12 +968,39 @@ ui <- navbarPage(title = "",
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
                                                      h4(strong("Occupation")),
-                                                     p("A household with only one means of support has nothing to fall back on if that livelihood is destroyed by a disaster. Due to the increasing threats in the Sundarbans region, most of the population depends on multiple sources of income. This is a common practice for climate vulnerable regions, to manage and reduce risks."),
-                                                     p("We began our evaluation of livelihood behavior by looking at the head of households’ primary occupation, primary occupation duration, and secondary occupation. The most common primary and secondary occupations are Farming followed by Casual labor. These graphs show that there are differences in occupation by village. For example, the village of Amrabati has the highest proportion of workers in jobs related to fishing. The head of households’ occupations are distributed relatively similarly from primary to secondary. However, the total number of household heads in each occupation is lower in secondary occupation. The total number of household heads with a primary occupation is 252 while 149 has a secondary occupation."),
-                                                     p("The average job duration by village for head of households is 6 to 8 months. This implies that on average, they work in their primary occupation for ½ to ¾ of the year. This is evidence that the population is relying on different, multiple activities within a year."),
+                                                     p("While combing through the data our team realized that a household with only one means of support has nothing to fall back on if that livelihood is 
+                                                       destroyed by a disaster. Due to the increasing threats in the Sundarbans region, most of the 
+                                                       population depends on multiple sources of income. This is a common practice for climate 
+                                                       vulnerable regions, to manage and reduce risks."),
+                                                     p("We began our evaluation of livelihood behavior by looking at the head of households’ primary 
+                                                       occupation, primary occupation duration, and secondary occupation. The most common primary 
+                                                       and secondary occupations are Farming followed by Casual labor. These graphs show that there 
+                                                       are differences in occupation by village. For example, the village of Amrabati has the highest 
+                                                       proportion of workers in jobs related to fishing. The head of households’ occupations are 
+                                                       distributed relatively similarly from primary to secondary. However, the total number 
+                                                       of household heads in each occupation is lower in secondary occupation. The total number of 
+                                                       household heads with a primary occupation is 252 while 149 has a secondary occupation."),
+                                                     p("The average job duration by village for head of households is 6 to 8 months. This implies that 
+                                                       on average, they work in their primary occupation for ½ to ¾ of the year. This is evidence that 
+                                                       the population is relying on different, multiple activities within a year."),
                                                      h4(strong("Agriculture")),
-                                                     p("Our data set contained an agricultural crop variable where participants gave a yes/no answer to the question “Did your household cultivate any agriculture crops in the last 12 months?” On average, across all the villages, 63.9% of the households participate in farming. When broken down by village, Amrabati had the lowest percentage of households that had cultivated crops in the given year, at 7%. Haridaskati Samsernaga had the highest percentage of households that had cultivated crops in the given year, at 86%. This was closely followed by Pargumti at 85%. Given that on average, across all the villages, 63.9% of the households participate in farming it is evident that a very shows that a large proportion of our households participated in some sort of crop cultivation."), 
-                                                     p("We next evaluated Land Holding and Land Fallow by village. Land holding is the amount of land owned in Kathas. A Katha is unit of area mostly used for land measure in India and Bangladesh. One unit of katha is equivalent to 720 square feet. Pargumti and Bijoynagar have the highest average amount of land owned, with households owning over 60 kathas of land. Amrabati and Sagar have the lowest amount of land owned. Land fallow is agriculture land that needs to be left to rest and regenerate. This land is typically not in good enough condition to sustain crops. The two villages that had the lowest amount of land owned, have no land fallow. This is evidence that these villages that these villages are less involved in agriculture. ")
+                                                     p("Our data set contained an agricultural crop variable where participants gave a yes/no answer to 
+                                                       the question “Did your household cultivate any agriculture crops in the last 12 months?” On 
+                                                       average, across all the villages, 63.9% of the households participate in farming. When broken 
+                                                       down by village, Amrabati had the lowest percentage of households that had cultivated crops in 
+                                                       the given year, at 7%. Haridaskati Samsernagar had the highest percentage of households that had 
+                                                       cultivated crops in the given year, at 86%. This was closely followed by Pargumti at 85%. Given 
+                                                       that on average, across all the villages, 63.9% of the households participate in farming it is 
+                                                       evident that a very shows that a large proportion of our households participated in some sort of 
+                                                       crop cultivation."), 
+                                                     p("We next evaluated Land Holding and Land Fallow by village. Land holding is the amount of land 
+                                                       owned in Kathas. A Katha is unit of area mostly used for land measure in India and Bangladesh. 
+                                                       One unit of katha is equivalent to 720 square feet. Pargumti and Bijoynagar have the highest 
+                                                       average amount of land owned, with households owning over 60 kathas of land. Amrabati and Sagar 
+                                                       have the lowest amount of land owned. Land fallow is agriculture land that needs to be left to 
+                                                       rest and regenerate. This land is typically not in good enough condition to sustain crops. The 
+                                                       two villages that had the lowest amount of land owned, have no land fallow. This is evidence that 
+                                                       these villages that these villages are less involved in agriculture.")
                                                      
                                                      
                                               ) ,
@@ -995,11 +1022,11 @@ ui <- navbarPage(title = "",
                                                      
                                               ),
                                      )),
-                                              # column(12, 
-                                              #       h4("References: "), 
-                                              #       p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
-                                              #      p("", style = "padding-top:10px;")) 
-                                     
+                            # column(12, 
+                            #       h4("References: "), 
+                            #       p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
+                            #      p("", style = "padding-top:10px;")) 
+                            
                             
                             tabPanel("Financial", 
                                      fluidRow(style = "margin: 6px;", align = "justify",
@@ -1007,37 +1034,24 @@ ui <- navbarPage(title = "",
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
                                                      h4(strong("Description")),
-                                                     p("Households business: Owning a business in the Sundarbans is often too expensive and financially 
-                                                       unfeasible. A majority of 88% of households do not own a business and only 12% do own a business, 
-                                                       making it very uncommon. "
-                                                     ),
-                                                     p("Salary: On average, per month, The data shows that the monthly salaries for the households range 
-                                                       anywhere between 2500 INR to 4600 INR per month. On average, Amrabati receives the highest income. 
-                                                       This can indicate that the fishing industry in Amrabati is more lucrative than other jobs in other villages. 
-                                                       On the other hand, the village of Sagar has the lowest monthly salary on average."
-                                                     ),
-                                                     p("Income/Remmitance: For the villages that are plotted on the middle/top right of the graph, 
-                                                       remittances are highly impactful on the household's income. Remittances are essentially any income a 
-                                                       household receives from someone working away from the household. By taking a look at the remittances we 
-                                                       were able to see the impact it had on the total household income."
-                                                     ),
-                                                     p("Savings: On average, many households are not able to save, but sometimes some households are able to 
-                                                       save once or twice during the 12-month span. It is unlikely to see many households save more than 20 times 
-                                                       like some did. It is expected to see low amounts of saving because of the high poverty level in the region."
-                                                     )
+                                                     p("We examine data from the baseline survey to establish a foundational understanding of the financial behavior of the Sundarbans population. The financial diaries provide an extensive amount of information on the fiscal practices of our representative population. The baseline information provides us with a strong starting point in our economic analysis of the data. "),
+                                                     p("On average, the monthly salaries for the households range from 2500 INR to 4600. On average, Amrabati reported the highest salary and Sagar has the lowest on average."),
+                                                     
+                                                     p("In our sample population, a large proportion of the household incomes come from remittances. Remittances are any income a household receives from someone working away from the household. In most villages, higher remittances correlate with higher income. While our analysis showed that remittances are a common source of income, only 12% of households own a business, making this an uncommon source of income throughout the villages. Not many households are able to save- given that such a high proportion of the population live below the Indian poverty line of less than ₹240 per week per person.")
+                                                     
                                               ) ,
                                               column(8, h4(strong("Head of Household Demographics")),
                                                      selectInput("findrop", "Select Characteristic:", width = "100%", choices = c( 
-
+                                                       
                                                        "Household Business" = "Number of Households that Own a Business",
                                                        "Salary" = "Average Monthly Salary per Household by Village",
                                                        "Migrant Workers" = "mig",
-                                                       "Income/Remmitances" = "Income vs Remmitances (November 2019 - October 2018)",
-                                                       "Savings" = "Number of Times Households Saved Money in Year Prior to Baseline Survey (November 2018 - November 2019)"
+                                                       "Income/Remmitances" = "Income vs Remmitances (October 2018 - November 2019)",
+                                                       "Savings" = "Number of Times Households Saved Money in Year Prior to Baseline Survey (October 2018 - November 2019)"
                                                      )),
                                                      fluidRow(align = "center",
                                                               h4(strong(textOutput("result")))),
-
+                                                     
                                                      withSpinner(plotlyOutput("finplot", height = "500px")),
                                                      
                                               ),
@@ -1045,7 +1059,7 @@ ui <- navbarPage(title = "",
                                               #   h4("References: "), 
                                               #  p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
                                               #  p("", style = "padding-top:10px;")) 
-                                      
+                                              
                                      )),
                             
                  ), 
@@ -1061,13 +1075,17 @@ ui <- navbarPage(title = "",
                                               h1(strong("Expenditure"), align = "center"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
-                                                     p("We present average weekly expenditure from Nov 2018 - Oct 2019 to examine the spending behaviors of households in the region. 
-                                                       This will provide information on the changing nature of spending in the Sundarbans region due to events such as festivals and holidays, 
+                                                     p("We present average weekly expenditure from Nov 2018 - Oct 2019 to examine the spending behaviors of households in the region. This will provide information on the changing nature of spending in the Sundarbans region due to events such as festivals and holidays, 
                                                        harvest seasons, and weather-related shocks."),
+<<<<<<< HEAD
                                                      p("Expenditure is defined as spending on consumption (e.g., food) and non-consumption (e.g., rent) items.
                                                      The average weekly expenditure over the data period was 1982.77 rupees, with a median of 1832.1 rupees. 
                                                        It appears that the largest expenses occured during harvest seasons, partculary in villages with high amounts of land holding
                                                        and proportions of agricultrue farming (Beguakhali and Shibpur. We also observed increases in expenditure near when cyclones hit."),
+=======
+                                                     p("Expenditure is defined as spending on consumption (e.g., food) and non-consumption (e.g., rent) items. It appears that the largest expense for households during this period include house repairs and festival-related costs. 
+                                                       The most common expenditures are food purchases."),
+>>>>>>> 8c1991792e9e80d582ee86a4f18cff2f009ef5be
                                                      br("")
                                                      
                                               )),
@@ -1136,26 +1154,26 @@ ui <- navbarPage(title = "",
                                        
                                        
                                      ),
-
+                                     
                                      # Sidebar with a select input for village
                                      #sidebarLayout(
-                                       #sidebarPanel(
-                                         #pickerInput("village_cs_food", "Select Village:", choices = village_vector, 
-                                                     #selected = village_vector,
-                                                     #multiple = T, options = list(`actions-box` = T)),
-                                         #varSelectInput("food_group", "Select Consumption Group:", avg_cs_food[,-(1:2)]),
-                                         #pickerInput("event_choose_cs_food", "Select Event:", choices = events_vector, selected = "Kharif Crop Harvest", 
-                                                     #multiple = T, options = list(`actions-box` = T)),
-                                         
-                                       #),
-                                       # Show a plot of the generated plot
-                                       #mainPanel(
-                                         #tabsetPanel(
-                                           #tabPanel("Plot", plotOutput("food_plot"))                                         
-                                         #)
-                                       #),
-                                       
-                                       
+                                     #sidebarPanel(
+                                     #pickerInput("village_cs_food", "Select Village:", choices = village_vector, 
+                                     #selected = village_vector,
+                                     #multiple = T, options = list(`actions-box` = T)),
+                                     #varSelectInput("food_group", "Select Consumption Group:", avg_cs_food[,-(1:2)]),
+                                     #pickerInput("event_choose_cs_food", "Select Event:", choices = events_vector, selected = "Kharif Crop Harvest", 
+                                     #multiple = T, options = list(`actions-box` = T)),
+                                     
+                                     #),
+                                     # Show a plot of the generated plot
+                                     #mainPanel(
+                                     #tabsetPanel(
+                                     #tabPanel("Plot", plotOutput("food_plot"))                                         
+                                     #)
+                                     #),
+                                     
+                                     
                                      #),
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h4(strong("Non-Food Consumption"), align = "center"),
@@ -1215,14 +1233,14 @@ ui <- navbarPage(title = "",
                                                        or other external factors. In early April we can see a bigger spike as this time period marks one of 
                                                        the biggest harvest seasons seen by the local people. "),
                                                      p("Male and Female Income: Although we know that males in the region attain more income than females, 
-                                                       we wanted to see if there are certain households in any villages where …"),
+                                                       we wanted to see if there are certain households in any villages where the females in the household 
+                                                       made more than the men."),
                                                      p("The importance of remittance income can be seen in this graph as all of the villages have similar 
                                                        weekly income before adding remittance. The village of Sagar has a weekly average income around 1954 
                                                        INR which is one of the higher weekly incomes in the region. Since many of these households work for 
                                                        wage either as an agriculture worker or casual laborer, the per week income is relatively same throughout 
                                                        the region. This can indicate why the weekly income is ranging consistently in-between 1000 INR and 2000 INR.")
-                                                     
-                                              )),
+                                                     )),
                                      # Sidebar with a select input for village
                                      sidebarLayout(
                                        sidebarPanel(
@@ -1247,7 +1265,7 @@ ui <- navbarPage(title = "",
                                      ),
                             ),
                             
-
+                            
                             tabPanel("Borrowing",
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Borrowing"), align = "justify"),
@@ -1606,7 +1624,7 @@ server <- function(input, output, session) {
   output$result1 <- renderText({
     paste(input$ocudrop)
   })  
-   
+  
   output$result <- renderText({
     paste(input$findrop)
   })  
@@ -1756,15 +1774,15 @@ server <- function(input, output, session) {
   # Consumption by food group plots
   
   #output$food_plot <- renderPlot({
-    #ggplot(filtered_cs_food(), aes(x = week, y = !!input$food_group, color = village))+
-      #geom_line()
+  #ggplot(filtered_cs_food(), aes(x = week, y = !!input$food_group, color = village))+
+  #geom_line()
   #})
   
   output$cs_staple <- renderPlot({
     ggplot(filtered_cs_food_staple(), aes(x = week, y = `Staple Items`, color = village)) +
       geom_line()+
       theme_classic()+
-      #ggtitle("Average Weekly Expenditure on Staple Items ")+
+      ggtitle("Average Weekly Expenditure on Staple Items ")+
       labs(x = "", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: 463.87  Median: 431.20",
            subtitle = "(Rice/Grains, Flour, Vegetables, Fruits, Tubers, Beans and Spices)")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
@@ -1777,7 +1795,7 @@ server <- function(input, output, session) {
     ggplot(filtered_cs_meats(), aes(x = week, y = `Meats`, color = village))+
       geom_line()+
       theme_classic()+
-      #ggtitle("Average Weekly Expenditure on Meat")+
+      ggtitle("Average Weekly Expenditure on Meat")+
       labs(x = "", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: 158.97  Median: 431.20",
            subtitle = "(Red Meat, Fish, and Poultry)")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
@@ -1789,15 +1807,15 @@ server <- function(input, output, session) {
     ggplot(filtered_cs_other(), aes(x = week, y = `Other`, color = village))+
       geom_line() +
       theme_classic()+
-      #ggtitle("Average Weekly Expenditure on 'Other' Items")+
+      ggtitle("Average Weekly Expenditure on 'Other' Items")+
       labs(x = "", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: 113.75  Median: 111.94",
            subtitle = "(Eggs, Dairy, Packaged Foods, Tea, and Other Food Items)")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
       theme(plot.caption = element_text(size = 10))+
       geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
-      
+    
   })
-
+  
   
   
   
@@ -1861,7 +1879,7 @@ server <- function(input, output, session) {
   })
   
   
-
+  
   #livelihood tabset -----------------------------------------------------
   ocuVar <- reactive({
     input$ocudrop
@@ -1897,7 +1915,7 @@ server <- function(input, output, session) {
         coord_flip() + theme(legend.position = "none") +
         labs(x = "", y = "Land Owned (Kathas)") + scale_fill_viridis_d()
       mean_land_plot
-
+      
     }
     else if (ocuVar() == "Proportion of Households Owning Assets") {
       assetplot <- ggplot(assets_long, aes(property, measurement, fill = property)) + geom_col() + 
@@ -1939,21 +1957,21 @@ server <- function(input, output, session) {
         #ggtitle("Households That Own a Business") +
         coord_flip()
     }
-
-  else if (finVar() == "Income vs Remmitances (November 2019 - October 2018)") {
+    
+    else if (finVar() == "Income vs Remmitances (October 2018 - November 2019)") {
       ggplot(baseline.summary, aes(rmt_total, full_inc, color= village))+
         geom_point(data=baseline.summary, shape=17, size=3) +
         labs(x="Average Weekly Remmitances", y="Average Weekly Income", color="Villages") + 
         ggtitle("") + scale_color_viridis_d() +coord_flip() 
-
+      
     }
-else if (finVar() == "Average Monthly Salary per Household by Village")  {
+    else if (finVar() == "Average Monthly Salary per Household by Village")  {
       salplot <- ggplot(m_salary, aes(village, avg_salary, fill = village)) + geom_col() + 
         labs(x = "Villages", y = "Indian Rupees ₹" ,title = "", fill = "") +
         theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d()
       salplot
     }
-    else if (finVar() == "Number of Times Households Saved Money in Year Prior to Baseline Survey (November 2018 - November 2019)") {
+    else if (finVar() == "Number of Times Households Saved Money in Year Prior to Baseline Survey (October 2018 - November 2019)") {
       savplot <- ggplot(nbsavcount, aes(x = nb_put_saving, y = n, fill = "red")) +
         geom_point() +
         labs(x = "Total Households ", y = " Number of Times Household Saved") +
@@ -1966,14 +1984,14 @@ else if (finVar() == "Average Monthly Salary per Household by Village")  {
       migplot <- ggplot(migrant_prop, aes(village, migrant_proportion, fill = village)) + 
         geom_col() + theme_classic() + 
         labs(x = "", y = "Proportion", title = "", fill = "") + coord_flip()
-
+      
       migplot
     }
     
     
   })
   
- # High Frequency Data Output------------------- 
+  # High Frequency Data Output------------------- 
   
   # rmt plot output
   # Filter by inputt
@@ -2280,8 +2298,3 @@ else if (finVar() == "Average Monthly Salary per Household by Village")  {
 
 
 shinyApp(ui = ui, server = server)
-
-
-
-
-
