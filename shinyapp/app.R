@@ -110,9 +110,14 @@ grouped <- baseline %>% group_by(village) %>% summarize(prop_farm = sum(farm_yn)
 # household asset data 
 
 villages <- c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur") 
-assets <- baseline %>% select(contains("asset")) %>% select(contains("num"))  %>% summarize(Stove = sum(asset_stove_num)/n(), Bike = sum(asset_bike_num)/n(), Waterpump = sum(asset_waterpump_num)/n(), Solarpanel = sum(asset_solarpanel_num)/n(), Bed = sum(asset_bed_num)/n(), Fridge = sum(asset_fridge_num)/n(), Almirah = sum(asset_almirah_num)/n(), PC = sum(asset_pc_num)/n(), TV = sum(asset_tv_num)/n(), Phone = sum(asset_mobile_num)/n(), Waterfilter = sum(asset_waterfilter_num)/n())
+assets <- baseline %>% select(contains("asset")) %>% select(contains("num"))  %>% 
+  summarize(Stove = sum(asset_stove_num)/n(), Bike = sum(asset_bike_num)/n(), 
+            `Water Pump` = sum(asset_waterpump_num)/n(), `Solar Panel` = sum(asset_solarpanel_num)/n(), 
+            Bed = sum(asset_bed_num)/n(), Fridge = sum(asset_fridge_num)/n(), Almirah = sum(asset_almirah_num)/n(), 
+            PC = sum(asset_pc_num)/n(), TV = sum(asset_tv_num)/n(), Phone = sum(asset_mobile_num)/n(), 
+            `Water Filter` = sum(asset_waterfilter_num)/n())
 
-assets_long <- gather(assets, property, percentage, Stove:Waterfilter)
+assets_long <- gather(assets, property, percentage, Stove:`Water Filter`)
 assets_long["percentage"] = assets_long["percentage"]*100
 assets_long["percentage"] <- round(assets_long$percentage, digits = 2)
 
