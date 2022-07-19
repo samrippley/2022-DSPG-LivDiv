@@ -962,9 +962,10 @@ ui <- navbarPage(title = "",
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               p("", style = "padding-top:10px;"),
                                               column(12, align = "center", h2(strong("Coastal Degradation Timelapse of Sundarbans Area")),
-                                                     p("The video below shows the coastline of the Sundarbans from 1984 to 2022. This timelapse shows that the coastline has degraded significantly over the years. One such factor of this degradation is climate change and frequent cyclones;
-                                                       which causes the sea level to rise, resulting in the erosion of the coast. This coastal erosion reduces the sediment in the area that acts as a natural buffer to flooding, as well as
-                                                       increasing the salinity of groundwater, pushing salt water up stream, ultimately causing a decrease in the drinkable water supply and harming the agriculrual fields."),
+                                                     p("The video below shows the coastline of the Sundarbans from 1984 to 2022. This timelapse shows that the coastline has degraded significantly over the years. One such factor of this degradation are the effects caused by climate change;
+                                                       one of these effects being the rising of the sea level, resulting in an increase of runoff and the erosion of the coast. This coastal erosion reduces the sediment in the area that acts as a natural buffer to flooding, as well as
+                                                       increasing the salinity of groundwater, pushing salt water up stream, ultimately causing a decrease in the supply of drinkable water.
+                                                       The thinning of the Sundarbans coast also negatively impacts households’ agricultural yields, which families heavily depend on to support their livelihoods."),
                                                      br(""), tags$video(type = "video/mp4",src = "Sundarbansv3 ‑ Made with FlexClip.mp4", width = "60%", align = "center",controls = "controls", autoplay = T, loop = T)
                                               ), 
                                      )
