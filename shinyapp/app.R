@@ -927,7 +927,7 @@ ui <- navbarPage(title = "",
                                                      p("This video shows the coast line of the Sundarbans from 1984 to 2022. As you can see, their coast has degraded significantly over the years
                                                        due to the residuals of climate change and frequent cyclones. The thinning of their coast negatively impacts their agricultural yields, which hosueholds in the region heavily depend on
                                                        to support their livelihoods."),
-                                                     br(""), tags$video(type = "video/mp4",src = "sundarbansv2.mp4", width = "80%", align = "center",controls = "controls", autoplay = T, loop = T)
+                                                     br(""), tags$video(type = "video/mp4",src = "Sundarbansv3 ‑ Made with FlexClip.mp4", width = "80%", align = "center",controls = "controls", autoplay = T, loop = T)
                                               ), 
                                      )
                                      
