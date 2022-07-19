@@ -599,7 +599,8 @@ malefemale_inc <- livdiv %>% select(village, week, inc_female, inc_male) %>%
   group_by(week, village) %>% 
   summarize(avg_male_inc = mean(inc_male, na.rm = TRUE), avg_female_inc = mean(inc_female, na.rm = TRUE)) 
 
-ggplot(malefemale_inc, aes(x = week)) + geom_line(aes(y = avg_male_inc, color = village)) + 
+names(malefemale_inc) <- c("week", "village", " Avearge Male Income", "Avearge Female Income")
+ggplot(malefemale_inc, aes(x = week)) + geom_line(aes(y = `Average Male Income`, color = village)) + 
   geom_line(aes(y = avg_female_inc, color = village)) + 
   labs(x = "", y = "Income (INR)", title = "Male and Female Income", color = "Village") + 
   scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) 
