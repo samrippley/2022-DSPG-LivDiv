@@ -431,8 +431,9 @@ addAwesomeMarkers(
   lat = 22.227912, lng = 89.00475,
   label = "Pargumti",
   labelOptions = , icon=icons) %>%
-  addAwesomeMarkers(~lon, ~lat, label = ~as.character(Village.Na), labelOptions =  ,icon=icons, data=village) 
-
+  addAwesomeMarkers(~lon, ~lat, label = ~as.character(Village.Na), labelOptions =  ,icon=icons, data=village) %>%
+addCircles(lat = 21.6528, lng = 88.0753,
+           radius=5000)
 
 
 
@@ -950,7 +951,8 @@ ui <- navbarPage(title = "",
 
                                               column(8, 
                                                      h2(strong("")),
-                                                     leafletOutput("map_leaflet", width = "100%", height = 700),
+                                                     leafletOutput("map_leaflet", width = "100%", height = 700)
+                                              
                                                      
                                                      
                                               )),
@@ -1676,6 +1678,9 @@ ui <- navbarPage(title = "",
 server <- function(input, output, session) {
   # Run JavaScript Code
   runjs(jscode)
+  
+  
+
   
   #titles 
   output$result2 <- renderText({
