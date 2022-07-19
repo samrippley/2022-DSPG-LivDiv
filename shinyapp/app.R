@@ -956,6 +956,10 @@ ui <- navbarPage(title = "",
                                                      
                                                      
                                               )),
+                                     fluidRow(align = "center",
+                                              p(tags$small(em('Source: ')))),
+                                     
+                                     
                                               
                                      ),
                             tabPanel("Timelapse", 
