@@ -399,7 +399,7 @@ sundarban <- subset(ind, NAME_2 %in% c('North 24 Parganas','South 24 Parganas'))
 d.sundarban<-st_union(sundarban)
 village_all <- st_read(dsn = paste0(getwd(), "/data"), "Village, GP coordinates", stringsAsFactors = TRUE)
 
-village <- subset(village_all, Village.Na %in% c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Parghumti","Purba Dwarokapur","Shibpur")) 
+village <- subset(village_all, Village.Na %in% c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Purba Dwarokapur","Shibpur")) 
 
 
 icons <- awesomeIcons(
@@ -411,6 +411,7 @@ icons <- awesomeIcons(
 
 map_leaflet <- leaflet(data = d.sundarban) %>%
   addTiles() %>%
+  setView(lat= 21.9342, lng = 88.5345, zoom = 10) %>%
   addPolygons(
     fillColor = "green",
     stroke=TRUE,
@@ -425,7 +426,15 @@ map_leaflet <- leaflet(data = d.sundarban) %>%
     lat = 21.6528, lng = 88.0753,
     label = "Sagar",
     labelOptions = , icon=icons) %>%
-  addAwesomeMarkers(~lon, ~lat, label = ~as.character(Village.Na), labelOptions =  ,icon=icons, data=village) 
+  addAwesomeMarkers(~lon, ~lat, label = ~as.character(Village.Na), labelOptions =  ,icon=icons, data=village) %>%
+addAwesomeMarkers(
+  lat = 22.227912, lng = 89.00475,
+  label = "Pargumti",
+  labelOptions = , icon=icons) %>%
+  addAwesomeMarkers(~lon, ~lat, label = ~as.character(Village.Na), labelOptions =  ,icon=icons, data=village) %>%
+addCircles(lat = 21.6528, lng = 88.0753,
+           radius=5000)
+
 
 
 
@@ -599,7 +608,8 @@ malefemale_inc <- livdiv %>% select(village, week, inc_female, inc_male) %>%
   group_by(week, village) %>% 
   summarize(avg_male_inc = mean(inc_male, na.rm = TRUE), avg_female_inc = mean(inc_female, na.rm = TRUE)) 
 
-ggplot(malefemale_inc, aes(x = week)) + geom_line(aes(y = avg_male_inc, color = village)) + 
+names(malefemale_inc) <- c("week", "village", " Avearge Male Income", "Avearge Female Income")
+ggplot(malefemale_inc, aes(x = week)) + geom_line(aes(y = `Average Male Income`, color = village)) + 
   geom_line(aes(y = avg_female_inc, color = village)) + 
   labs(x = "", y = "Income (INR)", title = "Male and Female Income", color = "Village") + 
   scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) 
@@ -745,10 +755,10 @@ filtered_non_food_cs <- reactive({
 })
 
 # Events data -------------------------------------
-Events <- c("Kharif Crop Harvest", "Rabi Crop Harvest","Honey Harvest", "Fani Cyclone", "Bulbul and Matmo Cyclone", "Vayu Cyclone", "Hikaa Cyclone",
-            "Republic Day", "Rama Navami", "Eid Al-Fitr", "Indian Independence Day", "Dussehra", "Diwali")
-start_week <- c(2, 0, 19, 22, 48, 30, 43, 10, 20, 28, 38, 46, 49)
-end_week <- c(12, 14, 32, 24, 49, 31, 44, 10.2, 20.2, 28.2, 38.2, 46.2, 49.2)
+Events <- c("Kharif Crop Harvest", "Rabi Crop Harvest","Honey Harvest", "Fani Cyclone", "Bulbul and Matmo Cyclone", "Vayu Cyclone", "Hikaa Cyclone","Kyaar Cyclone","Maha Cyclone",
+            "Republic Day", "Rama Navami", "Eid al-Fitr", "Indian Independence Day", "Dussehra", "Diwali", "Christmas")
+start_week <- c(2, 0, 19, 22, 48, 30, 43, 47, 48, 10, 20, 28, 38, 46, 49, 5)
+end_week <- c(12, 14, 32, 24, 49, 31, 44, 49, 49, 10.2, 20.2, 28.2, 38.2, 46.2, 49.2, 5.2)
 event_periods <- data.frame(Events, start_week, end_week)
 events_vector <- Events
 
@@ -819,7 +829,7 @@ ui <- navbarPage(title = "",
                  useShinyjs(),
                  
                  # main tab -----------------------------------------------------------
-                 tabPanel("Project Overview", value = "overview",
+                 tabPanel("Overview", value = "overview",
                           
                           fluidRow(style = "margin: 2px;",
                                    align = "center",
@@ -860,9 +870,8 @@ ui <- navbarPage(title = "",
                                           img(src='sunphoto2.png', align = "center", width = "95%")
                                    )
                           ),
-                          
-                          #fluidRow(align = "center",
-                          # p(tags$small(em('Last updated: August 2021'))))
+                          fluidRow(align = "center",
+                          p(tags$small(em('Source: Images taken by Sundarbans Field Team'))))
                           
                  ),
                  
@@ -882,68 +891,99 @@ ui <- navbarPage(title = "",
                                    ),
                                    column(4,
                                           h2(strong("Financial Diaries")),
-                                          p("Gupta et al. (2021) use financial diaries to capture high-frequency data on household income, expenditure, and consumption behavior. As such, we have weekly financial and economic activities for approximately 300 households for an entire year (November 2018 to October 2019)."),
-                                          p("Household members were trained and provided instructions to independently record their financial activities in diaries (see image below, insert screenshot of image) before data collection. These diaries include information on weekly income, remittances, borrowing, lending, expenditure on consumption, and non-consumption items.")
+                                          p("Gupta et al. (2021) use financial diaries to capture high-frequency data on household income, expenditure, and consumption behavior. As such, we have weekly financial and economic activities for approximately 300 households for an entire year (November 2018 to October 2019). "),
+                                          p("Household members were trained during the baseline interview to independently record their financial activities in their respective diaries (see image below for an example of a financial diary). Household received two more training sessions in the following two weeks and filled out the first four financial diaries during the training period. Additional support was given to families via phone calls and during the field teams monthly visit to collect completed diaries. These steps were implemented to ensure proper recording of weekly information. These diaries include data on weekly income, remittances, borrowing, lending, expenditure on consumption, and non-consumption items.")
                                           
                                           
                                    ),
-                                   #fluidRow(align = "center",
-                                   #    p(tags$small(em('Last updated: August 2021'))))
+                                  
+                          ),
+                          fluidRow(h4(strong("Example of Financial Diary")),
+                            align = "center",
+                                   img(src='Picture2.png', width = "50%"),
                           ),
                           fluidRow(align = "center",
-                                   img(src='Picture2.png', width = "50%"),
-                          )), 
+                              p(tags$small(em('Source: Gupta et al. (2021)'))))
+                          
+                          ), 
                  ## Sundarbans Region--------------------------------------------
                  navbarMenu("Sundarbans Region" ,
                             tabPanel("Villages", 
                                      
                                      fluidRow(style = "margin: 2px;",
-                                              align = "center"
-                                              #h1(strong("Representative Villages in the Sundarbans"))
+                                              align = "center",
+                                              h1(strong("Representative Villages in the Sundarbans"))
                                                  
                                               ),
                                      
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               column(4, 
-                                                     h2(strong("Representative Villages in the Sundarbans")),
-                                                     p("The Sundarbans are a cluster of islands located in the Bay of Bengal that spans across India and Bangladesh. Gupta et al. (2021) collected household-level data from a representative sample of rural households in the Sundarbans region. Our villages are located on the Indian side of the Sundarbans in West Bengal, India across the South 24 Parganas and North 24 Parganas districts."),
-                                                     p("Gupta et al. (2021) randomly chose a set of ten representative villages from five administrative blocks in the Sundarbans. While looking at the map, it is clear to see how the villages could be separated into five blocks based on location. One village is within 15 km of one other village. The representative villages are paired of as follows: Pargumti and Haridaskati Samsernagar, Bijoynagar and Birajnagar, Purba Dwarokapur and Lakshmi Janardanpur,  Amrabati  and Shibpur, and  Beguakhali and Sagar."),
-                                                     p("They collected information from approximately 300 households in the 10 villages from October 2018 to November 2019. During this period, the region was struck by four different cylones. The Bengal Bay was hit by a category 4 cyclone named Fani in April as well as a category 1 cyclone named Bulbul and Matmo in October. The Arabian Sea also was hit by two category 1 cyclones during while the data was being collected.  Vayu in June and Hikaa in September."),
-                                                     p("This sundarbans have different crop seasons due to varying weather patterns throughout the year. The Kharif crop season of Winter paddy Aman is sown during monsoon season (June-August) and harvested in winter (December – January). This is a highly water consuming crop. Additionally, the Rabi crop season for paddy is sown in winter (November – February) and harvested from March to June. Fishing occurs year-round and honey is seasonally harvested from April to June. Our representative population also celebrated festivals and holidays throughout the data collection period including- Republic day, Rama Navami, Eid al-Fitr, Indian Independence Day, Dussehra, Diwali, Mawlid and Christmas.")
-                                              ),
-                                              column(8, 
-                                                     #h2(strong("Representative Villages in the Sundarbans")),
-                                                     leafletOutput("map_leaflet", width = "100%", height = 700),
+                                                     h2(strong("Sundarbans Area")),
+                                                     p("This project examines households living in the Sundarbans in West Bengal, India – a coastal delta region in the Bay of Bengal.  Gupta et al. (2021) surveyed households in the North 24 – Parganas and South 24 – Parganas districts. Specifically, ten representative villages were randomly chosen from five administrative blocks in the Sundarbans:"),
+                                                     p("• Beguakhali and Sagar - Block 1 "),
+                                                     p("• Amrabati and Shibpur - Block 2 "),
+                                                     p("• Lakshmi Janardanpur and Purba Dwarokapur - Block 3 "),
+                                                     p("• Birajnagar and Bijoynagar - Block 4 "),
+                                                     p("• Haridaskati Samsernagar and Pargumti - Block 5 "),
+                                                     p("As shown on the map, villages within the same block are close in proximity to each other – at most, 15km between the two villages."),
                                                      
-                                                     
-                                              )
+                                                    h4(strong("Weather Related Evets")),
+                                                     p("The Sundarbans proximity to the Bay of Bengal causes it to be frequented by cyclones. These tropical cyclones usually form in May, October, and November. Although tropical cyclones are common to the area, the frequency and severity have increased in the past few years, with climate change as a contributing factor."),
+                                                     p("During the data collection period, November 2018 to October 2019, the Sundarbans area was struck by two significant cyclones: "),
+                                                     p("• Fani (Category 4): 26 April– 4 May 2019  "),
+                                                     p("• Matmo/Bulbul (Category 3): November 2019 "),
+                                                     p("Four cyclones also developed along the Arabian Sea during this period:"),
+                                                     p("• Vayu (Category 1) - June 2019 "),
+                                                     p("• Hikka (Category 1) - September 2019 "),
+                                                     p("• Kyaar (Category 4) - October 2019"),
+                                                     p("• Maha (Category 3) - October 28"),
                                               
-                                     )),
+                                                    h4(strong("Harvest Seasons")),
+                                                    p("Agriculture is the backbone of the Sundarbans economy, with mostly small–scale farmers. The sector largely depends on a single crop, the rain-fed paddy Aman. In this region, however, agriculture is very seasonal as it depends on the monsoons:"),
+                                                    p("• Kharif Season - This season occurs with the onset of monsoon."),
+                                                    p(      "º Preparation and cultivation of Aman paddy usually occurs from June – August."),
+                                                    p(      "º Harvesting occurs between December – February."),
+                                                    p("• Rabi Season - This is the dry season. While some vegetables are grown during this season, there are not many crops as most of the cultivated areas are fallow."),
+                                                    p(      "º Crop Cultivation is between December – February"),
+                                                    p(      "º Harvesting of rabi crops happens during summer, March - June"),
+                                                    p("Fisheries is the next dominant productive activity. This occurs year-round but majority of fish catch occurs during November to January. Some months (April, May, and June) are closed for fishing. Honey collection on the other hand occurs from April to June.")
+                                             ),
+
+                                              column(8, 
+                                                     h2(strong("")),
+                                                     leafletOutput("map_leaflet", width = "100%", height = 700)
+                                              
+                                                     
+                                                     
+                                              )),
+                                              
+                                     ),
                             tabPanel("Timelapse", 
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               p("", style = "padding-top:10px;"),
-                                              column(12, align = "center", h4(strong("Timelapse Showing Coastal Degradation")),
-                                                     p("This video shows the coast line of the Sundarbans from 1984 to 2022. As you can see, their coast has degraded significantly over the years
-                                                       due to the residuals of climate change and frequent cyclones. The thinning of their coast negatively impacts their agricultural yields, which hosueholds in the region heavily depend on
-                                                       to support their livelihoods."),
-                                                     br(""), tags$video(type = "video/mp4",src = "sundarbansv2.mp4", width = "80%", align = "center",controls = "controls", autoplay = T, loop = T)
+                                              column(12, align = "center", h2(strong("Coastal Degradation Timelapse of Sundarbans Area")),
+                                                     p("The video below shows the coastline of the Sundarbans from 1984 to 2022. This timelapse shows that the coastline has degraded significantly over the years. One such factor of this degradation are the effects caused by climate change;
+                                                       one of these effects being the rising of the sea level, resulting in an increase of runoff and the erosion of the coast. This coastal erosion reduces the sediment in the area that acts as a natural buffer to flooding, as well as
+                                                       increasing the salinity of groundwater, pushing salt water up stream, ultimately causing a decrease in the supply of drinkable water.
+                                                       The thinning of the Sundarbans coast also negatively impacts households’ agricultural yields, which families heavily depend on to support their livelihoods."),
+                                                     br(""), tags$video(type = "video/mp4",src = "Sundarbansv3 ‑ Made with FlexClip.mp4", width = "60%", align = "center",controls = "controls", autoplay = T, loop = T)
                                               ), 
                                      )
                                      
                             ),
-                            tabPanel("Gallery",
-                                     fluidRow(style = "margin: 6px;", 
-                                              column(12,
-                                                     h2(strong("Images"))
+                            #tabPanel("Gallery",
+                             #        fluidRow(style = "margin: 6px;", 
+                              #                column(12,
+                               #                      h2(strong("Images"))
                                                      
-                                                     
-                                              ),   
-                                              mainPanel( 
-                                                actionButton("previous", "Previous"),
-                                                actionButton("next", "Next"),
-                                                imageOutput("image")
+                                #                     
+                                 #             ),   
+                                  #            mainPanel( 
+                                   #             actionButton("previous", "Previous"),
+                                    #            actionButton("next", "Next"),
+                                     #           imageOutput("image")
                                                 
-                                              ))),
+                                      #        ))),
                  ),
                  
                  ## Tab Demographics --------------------------------------------
@@ -1141,9 +1181,9 @@ ui <- navbarPage(title = "",
                                                      identifying changes in spending, as well as which consumption items are bought most frequently. Within the data period, the Sundrabans region spent
                                                        an average of 766.13 Rupees per week on consumption items; they also had bought an average of seven food items per week."),
                                                      p("First, we provide time series of average expenditure on all food, and quantity of food items, then staple food items, meats, and other consumable items."),
-                                                     p("- Staple Items: Rice/Grains, Flour, Vegetables, Fruits, Tubers, Beans and Spices"),
-                                                     p("- Meats: Red Meat, Fish, and Poultry"),
-                                                     p("- Other: Eggs, Dairy, Packaged Foods, Tea, and Sinful Items"),
+                                                     p("• Staple Items - Rice/Grains, Flour, Vegetables, Fruits, Tubers, Beans and Spices"),
+                                                     p("• Meats - Red Meat, Fish, and Poultry"),
+                                                     p("• Other - Eggs, Dairy, Packaged Foods, Tea, and Sinful Items"),
                                                      p("We identified that most of food consumption is being used for staple food items, followed by meats. We observed
                                                        a siginficant spike in 'Other' items, in Shibpur, in late April due to a large increase in expenditure on sinful items (tea,
                                                        cigarettes, betel leaves, bidil, etc.). These items are often deemed to be harmful to society, but provide certain satisfaction to
@@ -1639,6 +1679,9 @@ ui <- navbarPage(title = "",
 server <- function(input, output, session) {
   # Run JavaScript Code
   runjs(jscode)
+  
+  
+
   
   #titles 
   output$result2 <- renderText({
