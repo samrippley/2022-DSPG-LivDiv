@@ -399,7 +399,7 @@ sundarban <- subset(ind, NAME_2 %in% c('North 24 Parganas','South 24 Parganas'))
 d.sundarban<-st_union(sundarban)
 village_all <- st_read(dsn = paste0(getwd(), "/data"), "Village, GP coordinates", stringsAsFactors = TRUE)
 
-village <- subset(village_all, Village.Na %in% c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Parghumti","Purba Dwarokapur","Shibpur")) 
+village <- subset(village_all, Village.Na %in% c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Purba Dwarokapur","Shibpur")) 
 
 
 icons <- awesomeIcons(
@@ -411,6 +411,7 @@ icons <- awesomeIcons(
 
 map_leaflet <- leaflet(data = d.sundarban) %>%
   addTiles() %>%
+  setView(lat= 21.9342, lng = 88.5345, zoom = 10) %>%
   addPolygons(
     fillColor = "green",
     stroke=TRUE,
@@ -425,7 +426,14 @@ map_leaflet <- leaflet(data = d.sundarban) %>%
     lat = 21.6528, lng = 88.0753,
     label = "Sagar",
     labelOptions = , icon=icons) %>%
+  addAwesomeMarkers(~lon, ~lat, label = ~as.character(Village.Na), labelOptions =  ,icon=icons, data=village) %>%
+addAwesomeMarkers(
+  lat = 22.227912, lng = 89.00475,
+  label = "Pargumti",
+  labelOptions = , icon=icons) %>%
   addAwesomeMarkers(~lon, ~lat, label = ~as.character(Village.Na), labelOptions =  ,icon=icons, data=village) 
+
+
 
 
 
@@ -820,7 +828,7 @@ ui <- navbarPage(title = "",
                  useShinyjs(),
                  
                  # main tab -----------------------------------------------------------
-                 tabPanel("Project Overview", value = "overview",
+                 tabPanel("Overview", value = "overview",
                           
                           fluidRow(style = "margin: 2px;",
                                    align = "center",
@@ -861,9 +869,8 @@ ui <- navbarPage(title = "",
                                           img(src='sunphoto2.png', align = "center", width = "95%")
                                    )
                           ),
-                          
-                          #fluidRow(align = "center",
-                          # p(tags$small(em('Last updated: August 2021'))))
+                          fluidRow(align = "center",
+                          p(tags$small(em('Source: Images taken by Sundarbans Field Team'))))
                           
                  ),
                  
@@ -883,30 +890,34 @@ ui <- navbarPage(title = "",
                                    ),
                                    column(4,
                                           h2(strong("Financial Diaries")),
-                                          p("Gupta et al. (2021) use financial diaries to capture high-frequency data on household income, expenditure, and consumption behavior. As such, we have weekly financial and economic activities for approximately 300 households for an entire year (November 2018 to October 2019)."),
-                                          p("Household members were trained and provided instructions to independently record their financial activities in diaries (see image below, insert screenshot of image) before data collection. These diaries include information on weekly income, remittances, borrowing, lending, expenditure on consumption, and non-consumption items.")
+                                          p("Gupta et al. (2021) use financial diaries to capture high-frequency data on household income, expenditure, and consumption behavior. As such, we have weekly financial and economic activities for approximately 300 households for an entire year (November 2018 to October 2019). "),
+                                          p("Household members were trained during the baseline interview to independently record their financial activities in their respective diaries (see image below for an example of a financial diary). Household received two more training sessions in the following two weeks and filled out the first four financial diaries during the training period. Additional support was given to families via phone calls and during the field teams monthly visit to collect completed diaries. These steps were implemented to ensure proper recording of weekly information. These diaries include data on weekly income, remittances, borrowing, lending, expenditure on consumption, and non-consumption items.")
                                           
                                           
                                    ),
-                                   #fluidRow(align = "center",
-                                   #    p(tags$small(em('Last updated: August 2021'))))
+                                  
+                          ),
+                          fluidRow(h4(strong("Example of Financial Diary")),
+                            align = "center",
+                                   img(src='Picture2.png', width = "50%"),
                           ),
                           fluidRow(align = "center",
-                                   img(src='Picture2.png', width = "50%"),
-                          )), 
+                              p(tags$small(em('Source: Gupta et al. (2021)'))))
+                          
+                          ), 
                  ## Sundarbans Region--------------------------------------------
                  navbarMenu("Sundarbans Region" ,
                             tabPanel("Villages", 
                                      
                                      fluidRow(style = "margin: 2px;",
-                                              align = "center"
-                                              #h1(strong("Representative Villages in the Sundarbans"))
+                                              align = "center",
+                                              h1(strong("Representative Villages in the Sundarbans"))
                                                  
                                               ),
                                      
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               column(4, 
-                                                     h2(strong("Representative Villages in the Sundarbans")),
+                                                     h2(strong("Sundarbans Area")),
                                                      p("The Sundarbans are a cluster of islands located in the Bay of Bengal that spans across India and Bangladesh. Gupta et al. (2021) collected household-level data from a representative sample of rural households in the Sundarbans region. Our villages are located on the Indian side of the Sundarbans in West Bengal, India across the South 24 Parganas and North 24 Parganas districts."),
                                                      p("Gupta et al. (2021) randomly chose a set of ten representative villages from five administrative blocks in the Sundarbans. While looking at the map, it is clear to see how the villages could be separated into five blocks based on location. One village is within 15 km of one other village. The representative villages are paired of as follows: Pargumti and Haridaskati Samsernagar, Bijoynagar and Birajnagar, Purba Dwarokapur and Lakshmi Janardanpur,  Amrabati  and Shibpur, and  Beguakhali and Sagar."),
                                                      p("They collected information from approximately 300 households in the 10 villages from October 2018 to November 2019. During this period, the region was struck by four different cylones. The Bengal Bay was hit by a category 4 cyclone named Fani in April as well as a category 1 cyclone named Bulbul and Matmo in October. The Arabian Sea also was hit by two category 1 cyclones during while the data was being collected.  Vayu in June and Hikaa in September."),
@@ -914,7 +925,7 @@ ui <- navbarPage(title = "",
                                               ),
                                               column(8, 
                                                      #h2(strong("Representative Villages in the Sundarbans")),
-                                                     leafletOutput("map_leaflet", width = "100%", height = 700),
+                                                     leafletOutput("map_leaflet", width = "100%", height = 700 ),
                                                      
                                                      
                                               )
@@ -932,19 +943,19 @@ ui <- navbarPage(title = "",
                                      )
                                      
                             ),
-                            tabPanel("Gallery",
-                                     fluidRow(style = "margin: 6px;", 
-                                              column(12,
-                                                     h2(strong("Images"))
+                            #tabPanel("Gallery",
+                             #        fluidRow(style = "margin: 6px;", 
+                              #                column(12,
+                               #                      h2(strong("Images"))
                                                      
-                                                     
-                                              ),   
-                                              mainPanel( 
-                                                actionButton("previous", "Previous"),
-                                                actionButton("next", "Next"),
-                                                imageOutput("image")
+                                #                     
+                                 #             ),   
+                                  #            mainPanel( 
+                                   #             actionButton("previous", "Previous"),
+                                    #            actionButton("next", "Next"),
+                                     #           imageOutput("image")
                                                 
-                                              ))),
+                                      #        ))),
                  ),
                  
                  ## Tab Demographics --------------------------------------------
