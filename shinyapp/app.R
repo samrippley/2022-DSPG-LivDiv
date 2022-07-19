@@ -385,7 +385,7 @@ rmt_method_plot <- ggplot(method_dat, aes( x= reorder(Method, method_counts), y 
   labs(x = "", y = "Total") +
   theme_classic() +
   coord_flip()+
-  ggtitle("Method of Receiving Remittances")+
+  #ggtitle("Method of Receiving Remittances")+
   geom_text(aes(label = method_values), size = 3) + scale_fill_viridis_d()
 
 
@@ -442,7 +442,7 @@ rmt_purpose_plot <- ggplot(purpose_dat, aes(x = reorder(Purpose, purpose_count),
   geom_col() +
   labs(x = "", y = "Total") +
   theme_classic() +
-  ggtitle("Purpose for Receiving Remittances")+
+  #ggtitle("Purpose for Receiving Remittances")+
   #rotate_x_text(angle = 22, size = rel(0.8))
   coord_flip()+
   geom_text(aes(label = purpose_values), size = 3) + scale_fill_viridis_d()
@@ -1095,7 +1095,7 @@ ui <- navbarPage(title = "",
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Expenditure"), align = "center"),
                                               p("", style = "padding-top:10px;"),
-                                              column(12,h4(strong("Overview")),
+                                              column(12,h4(strong("Total Spending")),
                                                      p("We present average weekly expenditure from Nov 2018 - Oct 2019 to examine the spending behaviors of households in the region. This will provide information on the changing nature of spending in the Sundarbans region due to events such as festivals and holidays, 
                                                        harvest seasons, and weather-related shocks."),
 
@@ -1134,7 +1134,7 @@ ui <- navbarPage(title = "",
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h4(strong(""), align = "center"),
                                               p("", style = "padding-top:10px;"),
-                                              column(12,h4(strong("Consumption on Food Items")),
+                                              column(12,h4(strong("Food Consumption")),
                                                      p("We present the average weekly expenditure on food consumption items from November 2018 - October 2019. Consumption expenditure includes purchases by 
                                                      households on goods and services, excluding housing. By visualizing consumption expenditures over time, we can gain information about household spending behavior, 
                                                      identifying changes in spending, as well as which consumption items are bought most frequently. Within the data period, the Sundrabans region spent
