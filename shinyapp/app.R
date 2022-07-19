@@ -241,7 +241,7 @@ land_stats <- data.frame(villages, land_owners, max_land_value, min_land_value, 
 
 #Migrant woker proportion data 
 
-migrant_prop <- baseline %>% group_by(village) %>% summarize(migrant_proportion = mean(hh_migrant_prop))
+migrant_prop <- baseline %>% group_by(village) %>% summarize(migrant_proportion = (mean(hh_migrant_prop)*100))
 
 # savings data 
 nbsav <- baseline %>% 
@@ -1067,7 +1067,7 @@ ui <- navbarPage(title = "",
                                                        
                                                        "Household Business" = "Number of Households that Own a Business",
                                                        "Salary" = "Average Monthly Salary per Household by Village",
-                                                       "Migrant Workers" = "mig",
+                                                       "Migrant Workers" = "Percentage of Migrant Workers per Household",
                                                        "Income/Remmitances" = "Income vs Remmitances (October 2018 - November 2019)",
                                                        "Savings" = "Number of Times Households Saved Money in Year Prior to Baseline Survey (October 2018 - November 2019)"
                                                      )),
@@ -1856,51 +1856,48 @@ server <- function(input, output, session) {
         geom_col(hoverinfo = "text", aes(text = paste("Age: ", head_age)), width = "5") +
         ylab("Age") + 
         xlab("")+
-        #ggtitle("Mean age for Head of Households ")  +
         theme(legend.position = "none") +
         rotate_x_text(angle = 33, size = rel(1)) + scale_fill_viridis_d()
       ggplotly(fplot, tooltip = c("text"))
     }
     else if (ageVar() == "Mean Years of Education for Head of Households") {
       splot <- ggplot(by_villagemore, aes(x = "", y= head_edu, fill = village)) +
-        geom_bar(width = 1, stat = "identity") +
+        geom_bar(width = 1, stat = "identity", hoverinfo = "text", aes(text = paste("Education: ", head_edu, "<br>Village: ", village))) +
         facet_wrap(~village, ncol = 5) +
         geom_text(aes(label = sub), position = position_stack(vjust=1.1)) +
         labs(x = NULL, y = "Years of Education") +
         theme(legend.position="none", strip.text.x = element_text(size = 9)) + scale_fill_viridis_d()
-      splot
+      ggplotly(splot, tooltip = c("text"))
     }
     else if (ageVar() == "Households that Live Below Poverty Line (₹240) per week") {
-      village_pl_count_plot <- ggplot(dat_pl, aes(x= `Village`, y = `Households`, fill = `Key`)) + 
-        geom_col(position = 'stack', hoverinfo = "text", aes(text = paste("Percentage:",Percentage,"%\n"))) + 
+      village_pl_count_plot <- ggplot(dat_pl, aes(x= Village, y = Households, fill = Key)) + 
+        geom_col(position = 'stack', hoverinfo = "text", aes(text = paste("Village:", Village,"<br>Key: ", Key, "<br>Percentage:", percentage,"%" , "<br>Total Households: ", Households ))) + 
         labs(x= "", y = "Total Households", fill = "") + 
         theme_classic() + 
-        coord_flip()+
-        scale_fill_viridis_d()
+        coord_flip()
+      ggplotly(village_pl_count_plot, tooltip = c("text"))
     }
     else if (ageVar() == "Household Heads Marital Status") {
       marplot <- ggplot(countmar, aes(x = head_married, y = n, fill = Gender)) +
-        geom_col() +
+        geom_col(hoverinfo = "text", aes(text = paste("Total:", n,"<br>Gender: ", Gender))) +
         labs(x = "Not Married                                         Married", y = "Total Household Head", fill = "") +
-        scale_x_discrete() + theme(legend.title=element_blank())+
-        scale_fill_viridis_d()
-      marplot
+        scale_x_discrete() + theme(legend.title=element_blank())
+      ggplotly(marplot, tooltip = c("text"))
     }
     else if (ageVar() == "Household Size by Village") {
       hh_size_plot <- ggplot(median_hhsize, aes(x = forcats::fct_rev(village), y = median, fill = village)) +
-        geom_col() +
+        geom_col( hoverinfo = "text", aes(text = paste("Village:", village,"<br>Median: ", median))) +
         labs( x = "", y = "Median Household Size")+
         coord_flip()+
-        #ggtitle("Household Size by Village") +
         theme(legend.position="none") + scale_fill_viridis_d()
-      hh_size_plot
+      ggplotly(hh_size_plot, tooltip = c("text"))
     }
     else if (ageVar() == "Total Children per Household") {
       chhoplot <- ggplot(avg_children, aes(village, avg_children, fill = village)) + 
-        geom_col() + labs(x = "", y = "Average number of children" ,title = "Total Children per Household", fill = "Village") + 
+        geom_col(hoverinfo = "text", aes(text = paste("Village:", village,"<br>Average Children: ", avg_children))) + labs(x = "", y = "Average number of children" ,title = "", fill = "Village") + 
         theme(legend.position = "none") +
         rotate_x_text(angle = 33, size = rel(1)) + scale_fill_viridis_d()
-      chhoplot
+      ggplotly(chhoplot, tooltip = c("text"))
     }
   })
   
@@ -1914,33 +1911,34 @@ server <- function(input, output, session) {
   output$ocuplot <- renderPlotly({
     if (ocuVar() == "Primary Occupation for Head of Households") {
       pocuplot <- ggplot(countv, aes(x = job, y = n, fill = village)) +
-        geom_col() +
+        geom_col(hoverinfo = "text", aes(text = paste("Village:", village, "<br>Total: ", n))) +
         scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
         coord_flip() +
         theme_minimal () +
-        labs(x = "", y = "Total Households", fill = "") + scale_fill_viridis_d()
-      pocuplot
+        labs(x = "", y = "Total Households", fill = "Select Village:") + scale_fill_viridis_d()
+      ggplotly(pocuplot, tooltip = c("text"))
     } 
     else if (ocuVar() == "Secondary Occupation for Head of Households") {
       socplot <- ggplot(scountv, aes(x = job, y = n, fill = village)) +
-        geom_col() +
+        geom_col(hoverinfo = "text", aes(text = paste("Village:", village, "<br>Total: ", n))) +
         scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
         coord_flip() +
         theme_minimal () +
-        labs(x = "", y = "Total Households", fill = "") + scale_fill_viridis_d()
-      socplot
+        labs(x = "", y = "Total Households", fill = "Select Village:") + scale_fill_viridis_d()
+      ggplotly(socplot, tooltip = c("text"))
     }
     else if (ocuVar() == "Proportion of Households Involved in Agricultural Farming") {
-      agfaplot <- ggplot(grouped, aes(forcats::fct_rev(village),prop_farm*100, fill = village)) + geom_col() + 
+      agfaplot <- ggplot(grouped, aes(forcats::fct_rev(village),prop_farm*100, fill = village)) + 
+        geom_col(hoverinfo = "text", aes(text = paste("Village:", village,"<br>Percentage: ", prop_farm*100, "%"))) + 
         labs(x = "", y = "Percentage", title = "") + coord_flip() + theme(legend.position = "none") + scale_fill_viridis_d()
-      agfaplot
+      ggplotly(agfaplot,tooltip = c("text"))
     }
     else if (ocuVar() == "Average Amount of Land Owned by Village") {
       mean_land_plot <- ggplot(land_stats, aes(x = forcats::fct_rev(villages), y = mean_land_value, fill = villages)) +
-        geom_col() +
+        geom_col(hoverinfo = "text", aes(text = paste("Village:", villages,"<br>Mean Land Value: ", mean_land_value))) +
         coord_flip() + theme(legend.position = "none") +
         labs(x = "", y = "Land Owned (Kathas)") + scale_fill_viridis_d()
-      mean_land_plot
+      ggplotly(mean_land_plot, tooltip = c("text"))
       
     }
     else if (ocuVar() == "Proportion of Households Owning Assets") {
@@ -1952,23 +1950,24 @@ server <- function(input, output, session) {
         rotate_x_text(angle = 33, size = rel(1)) +
         scale_fill_viridis_d()    
         
-        assetplot
+      ggplotly(assetplot, tooltip = c("text"))
     }
     else if (ocuVar() == "Average Amount of Land Fallowed by Village") {
       land_fallow_plot <- ggplot(land_fallow, aes(x = forcats::fct_rev(village), y = sum, fill = village)) +
-        geom_col()+
+        geom_col(hoverinfo = "text", aes(text = paste("Village:", villages,"<br>Land Fallowed: ", sum)))+
         theme(legend.position = "none") +
         labs(x = "", y = "Total Land Fallowed", caption = "*Note: For missing bars, villages did not have any land fallowed")+
         coord_flip() + scale_fill_viridis_d()
+      ggplotly(land_fallow_plot, tooltip = c("text"))
     }
     else if (ocuVar() == "Average Job Duration for Head of Household") {
       job_duration_plot <- ggplot(job_duration_summary, aes(x = forcats::fct_rev(villages), y = job_duration_avg, fill = villages)) +
-        geom_col() + 
+        geom_col(hoverinfo = "text", aes(text = paste("Village:", villages,"<br>Average Job Duration: ", job_duration_avg, "months"))) + 
         coord_flip()+
         labs(x= "", y = "Average Job Duration (Months)")+
         ggtitle("") +
         theme(legend.position = "none") + scale_fill_viridis_d()
-      job_duration_plot
+      ggplotly(job_duration_plot, tooltip = c("text"))
     }
     
   })
@@ -1980,45 +1979,45 @@ server <- function(input, output, session) {
   
   output$finplot <- renderPlotly({
     if (finVar() == "Number of Households that Own a Business") {
-      village_bus_count_plot <- ggplot(dat_bus, aes(x= Village, y = `households`, fill = key)) + 
-        geom_col(position = 'stack', hoverinfo = "text", aes(text = paste("Percentage:",`percentage`,"%\n"))) + 
+      village_bus_count_plot <- ggplot(dat_bus, aes(x= Village, y = households, fill = key)) + 
+        geom_col(position = 'stack', hoverinfo = "text", aes(text = paste("Households: ", households, "<br>Percentage:",`percentage`,"%\n", "Key:", key))) + 
         labs( x= "", y = "Total Households", fill = "") + 
         theme_classic() + 
         #ggtitle("Households That Own a Business") +
-        coord_flip()+
-        scale_fill_viridis_d()
-    }
+        coord_flip()
+      ggplotly(village_bus_count_plot, tooltip = c("text"))
+      }
     
     else if (finVar() == "Income vs Remmitances (October 2018 - November 2019)") {
-      ggplot(baseline.summary, aes(rmt_total, full_inc, color= village))+
-        geom_point(data=baseline.summary, shape=17, size=3) +
+      rem_inc <- ggplot(baseline.summary, aes(rmt_total, full_inc, color= village)) +
+        geom_point(data=baseline.summary, shape=17, size=3, hoverinfo = "text", aes(text = paste("Village: ", village, "<br>Total Remmitance: ", rmt_total, "<br>Total Income: ", full_inc))) +
         labs(x="Average Weekly Remmitances", y="Average Weekly Income", color="Villages") + 
         ggtitle("") + scale_color_viridis_d() +coord_flip() 
-      
+      ggplotly(rem_inc, tooltip = c("text"))
     }
     else if (finVar() == "Average Monthly Salary per Household by Village")  {
-      salplot <- ggplot(m_salary, aes(village, avg_salary, fill = village)) + geom_col() + 
+      salplot <- ggplot(m_salary, aes(village, round(avg_salary, digits = 2), fill = village)) + 
+        geom_col(hoverinfo = "text", aes(text = paste("Average Salary:", avg_salary, "₹"))) + 
         labs(x = "", y = "Indian Rupees ₹" ,title = "", fill = "") +
         theme(legend.position = "none") + scale_fill_viridis_d() +
         rotate_x_text(angle = 33, size = rel(1))
-      salplot
+      ggplotly(salplot, tooltip = c("text"))
     }
     else if (finVar() == "Number of Times Households Saved Money in Year Prior to Baseline Survey (October 2018 - November 2019)") {
       savplot <- ggplot(nbsavcount, aes(x = nb_put_saving, y = n, fill = "red")) +
-        geom_point() +
+        geom_point(hoverinfo = "text", aes(text = paste("Number of Households: ", n, "<br>Number of Times Household Saved: ", nb_put_saving))) +
         labs(x = "Total Households ", y = " Number of Times Household Saved") +
         theme_classic() +
         theme(legend.position="none")
-      savplot
+      ggplotly(savplot, tooltip = c("text"))
     }
     
-    else if (finVar() == "mig") {
+    else if (finVar() == "Percentage of Migrant Workers per Household") {
       migplot <- ggplot(migrant_prop, aes(forcats::fct_rev(village), migrant_proportion, fill = village)) + 
-        geom_col() + theme_classic() + 
-        labs(x = "", y = "Proportion", title = "", fill = "") + coord_flip()+
+        geom_col(hoverinfo = "text", aes(text = paste("Percentage: ", migrant_proportion))) + theme(legend.position = "none") + 
+        labs(x = "", y = "Percentage", title = "", fill = "") + coord_flip()+
         scale_fill_viridis_d()
-      
-      migplot
+      ggplotly(migplot, tooltip = c("text"))
     }
     
     
