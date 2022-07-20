@@ -1958,8 +1958,7 @@ server <- function(input, output, session) {
         ylab("Age") + 
         xlab("")+
         theme(legend.position = "none") +
-        rotate_x_text(angle = 33, size = rel(1)) 
-      + scale_fill_viridis_d()
+        rotate_x_text(angle = 33, size = rel(1)) + scale_fill_viridis_d()
       ggplotly(fplot, tooltip = c("text"))
     }
     else if (ageVar() == "Mean Years of Education for Head of Households") {
@@ -2012,7 +2011,7 @@ server <- function(input, output, session) {
   output$ocuplot <- renderPlotly({
     if (ocuVar() == "Primary Occupation for Head of Households") {
       pocuplot <- ggplot(countv, aes(x = job, y = n, fill = village)) +
-        geom_col(hoverinfo = "text", aes(text = paste("Village:", village, "<br>Total: ", n))) +
+        geom_col(hoverinfo = "text", aes(text = paste("Village:", village, "<br>Households: ", n))) +
         scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
         coord_flip() +
         theme_minimal () +
@@ -2021,7 +2020,7 @@ server <- function(input, output, session) {
     } 
     else if (ocuVar() == "Secondary Occupation for Head of Households") {
       socplot <- ggplot(scountv, aes(x = job, y = n, fill = village)) +
-        geom_col(hoverinfo = "text", aes(text = paste("Village:", village, "<br>Total: ", n))) +
+        geom_col(hoverinfo = "text", aes(text = paste("Village:", village, "<br>Household: ", n))) +
         scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
         coord_flip() +
         theme_minimal () +
@@ -2030,7 +2029,7 @@ server <- function(input, output, session) {
     }
     else if (ocuVar() == "Proportion of Households Involved in Agricultural Farming") {
       agfaplot <- ggplot(grouped, aes(forcats::fct_rev(village),prop_farm*100, fill = village)) + 
-        geom_col(hoverinfo = "text", aes(text = paste("Village:", village,"<br>Percentage: ", round(prop_farm*100, 3), "%"))) + 
+        geom_col(hoverinfo = "text", aes(text = paste("Village:", village,"<br>Percentage: ", round(prop_farm*100, 2), "%"))) + 
         labs(x = "", y = "Percentage", title = "") + coord_flip() + theme(legend.position = "none") + scale_fill_viridis_d()
       ggplotly(agfaplot,tooltip = c("text"))
     }
