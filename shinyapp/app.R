@@ -1909,7 +1909,7 @@ server <- function(input, output, session) {
     if (ageVar() == "Mean Age for Head of Households") {
       
       fplot <-  ggplot(by_villagemore, aes(x = village, y = head_age, fill = village, width=0.5, srt = 45)) +
-        geom_col(hoverinfo = "text", aes(text = paste("Age: ", head_age)), width = "5") +
+        geom_col(hoverinfo = "text", aes(text = paste("Age: ", round(head_age,2))), width = "5") +
         ylab("Age") + 
         xlab("")+
         theme(legend.position = "none") +
@@ -1918,9 +1918,8 @@ server <- function(input, output, session) {
     }
     else if (ageVar() == "Mean Years of Education for Head of Households") {
       splot <- ggplot(by_villagemore, aes(x = "", y= head_edu, fill = village)) +
-        geom_bar(width = 1, stat = "identity", hoverinfo = "text", aes(text = paste("Education: ", head_edu, "<br>Village: ", village))) +
+        geom_bar(width = 1, stat = "identity", hoverinfo = "text", aes(text = paste("Education: ", round(head_edu, 2), "<br>Village: ", village))) +
         facet_wrap(~village, ncol = 5) +
-        geom_text(aes(label = sub), position = position_stack(vjust=1.1)) +
         labs(x = NULL, y = "Years of Education") +
         theme(legend.position="none", strip.text.x = element_text(size = 9)) + scale_fill_viridis_d()
       ggplotly(splot, tooltip = c("text"))
@@ -1949,8 +1948,8 @@ server <- function(input, output, session) {
       ggplotly(hh_size_plot, tooltip = c("text"))
     }
     else if (ageVar() == "Total Children per Household") {
-      chhoplot <- ggplot(avg_children, aes(village, avg_children, fill = village)) + 
-        geom_col(hoverinfo = "text", aes(text = paste("Village:", village,"<br>Average Children: ", avg_children))) + labs(x = "", y = "Average number of children" ,title = "", fill = "Village") + 
+      chhoplot <- ggplot(avg_children, aes(x = village, y = avg_children, fill = village)) + 
+        geom_col(hoverinfo = "text", aes(text = paste("Village:", village,"<br>Average Children: ", round(avg_children, digit = 2)))) + labs(x = "", y = "Average number of children" ,title = "", fill = "Village") + 
         theme(legend.position = "none") +
         rotate_x_text(angle = 33, size = rel(1)) + scale_fill_viridis_d()
       ggplotly(chhoplot, tooltip = c("text"))
@@ -1985,13 +1984,13 @@ server <- function(input, output, session) {
     }
     else if (ocuVar() == "Proportion of Households Involved in Agricultural Farming") {
       agfaplot <- ggplot(grouped, aes(forcats::fct_rev(village),prop_farm*100, fill = village)) + 
-        geom_col(hoverinfo = "text", aes(text = paste("Village:", village,"<br>Percentage: ", prop_farm*100, "%"))) + 
+        geom_col(hoverinfo = "text", aes(text = paste("Village:", village,"<br>Percentage: ", round(prop_farm*100, 3), "%"))) + 
         labs(x = "", y = "Percentage", title = "") + coord_flip() + theme(legend.position = "none") + scale_fill_viridis_d()
       ggplotly(agfaplot,tooltip = c("text"))
     }
     else if (ocuVar() == "Average Amount of Land Owned by Village") {
       mean_land_plot <- ggplot(land_stats, aes(x = forcats::fct_rev(villages), y = mean_land_value, fill = villages)) +
-        geom_col(hoverinfo = "text", aes(text = paste("Village:", villages,"<br>Mean Land Value: ", mean_land_value))) +
+        geom_col(hoverinfo = "text", aes(text = paste("Village:", villages,"<br>Mean Land Owned: ", round(mean_land_value,3)))) +
         coord_flip() + theme(legend.position = "none") +
         labs(x = "", y = "Land Owned (Kathas)") + scale_fill_viridis_d()
       ggplotly(mean_land_plot, tooltip = c("text"))
@@ -2018,7 +2017,7 @@ server <- function(input, output, session) {
     }
     else if (ocuVar() == "Average Job Duration for Head of Household") {
       job_duration_plot <- ggplot(job_duration_summary, aes(x = forcats::fct_rev(villages), y = job_duration_avg, fill = villages)) +
-        geom_col(hoverinfo = "text", aes(text = paste("Village:", villages,"<br>Average Job Duration: ", job_duration_avg, "months"))) + 
+        geom_col(hoverinfo = "text", aes(text = paste("Village:", villages,"<br>Average Job Duration: ", round(job_duration_avg,2), "months"))) + 
         coord_flip()+
         labs(x= "", y = "Average Job Duration (Months)")+
         ggtitle("") +
@@ -2046,14 +2045,15 @@ server <- function(input, output, session) {
     
     else if (finVar() == "Income vs Remmitances (October 2018 - November 2019)") {
       rem_inc <- ggplot(baseline.summary, aes(rmt_total, full_inc, color= village)) +
-        geom_point(data=baseline.summary, shape=17, size=3, hoverinfo = "text", aes(text = paste("Village: ", village, "<br>Total Remmitance: ", rmt_total, "<br>Total Income: ", full_inc))) +
+        geom_point(data=baseline.summary, shape=17, size=3, hoverinfo = "text", 
+                   aes(text = paste("Village: ", village, "<br>Total Remmitance: ", round(rmt_total,2), "<br>Total Income: ", round(full_inc, 2)))) +
         labs(x="Average Weekly Remmitances", y="Average Weekly Income", color="Villages") + 
         ggtitle("") + scale_color_viridis_d() +coord_flip() 
       ggplotly(rem_inc, tooltip = c("text"))
     }
     else if (finVar() == "Average Monthly Salary per Household by Village")  {
       salplot <- ggplot(m_salary, aes(village, round(avg_salary, digits = 2), fill = village)) + 
-        geom_col(hoverinfo = "text", aes(text = paste("Average Salary:", avg_salary, "₹"))) + 
+        geom_col(hoverinfo = "text", aes(text = paste("Average Salary:", round(avg_salary,2), "₹"))) + 
         labs(x = "", y = "Indian Rupees ₹" ,title = "", fill = "") +
         theme(legend.position = "none") + scale_fill_viridis_d() +
         rotate_x_text(angle = 33, size = rel(1))
@@ -2070,7 +2070,7 @@ server <- function(input, output, session) {
     
     else if (finVar() == "Percentage of Migrant Workers per Household") {
       migplot <- ggplot(migrant_prop, aes(forcats::fct_rev(village), migrant_proportion, fill = village)) + 
-        geom_col(hoverinfo = "text", aes(text = paste("Percentage: ", migrant_proportion))) + theme(legend.position = "none") + 
+        geom_col(hoverinfo = "text", aes(text = paste("Percentage: ", round(migrant_proportion, 2), "%"))) + theme(legend.position = "none") + 
         labs(x = "", y = "Percentage", title = "", fill = "") + coord_flip()+
         scale_fill_viridis_d()
       ggplotly(migplot, tooltip = c("text"))
