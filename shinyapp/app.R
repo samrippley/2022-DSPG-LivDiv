@@ -1054,9 +1054,10 @@ ui <- navbarPage(title = "",
                                                      p("The Bay of Bengal and the Arabian Sea have proven to be hotspots for cyclones. As such, these frequent cyclones that occur in the Sundarbans region are a factor that greatly
                                                        contribute to the degredation of its coastline. On average, the Bay of Bengal is hit by seven cyclones per year, with the Arabian sea experiencing an average of two.
                                                        These cyclones are occuring more often, and their effects are becoming more severe, as the rising sea level increases the base upon which these storm surges are built.
-                                                       The impacts of these cyclones include flooding, extreme winds, erosion, and further raising the sea level, considerably increasing the potential to damage property and threaten human health and safety."), 
+                                                       The impacts of these cyclones include flooding, extreme winds, erosion, and further raising the sea level, significantly increasing the potential to damage property and threaten human health and safety."), 
                                                      align = "justify"),
-                                                     br(""), tags$video(type = "video/mp4",src = "Sundarbansv3 ‑ Made with FlexClip.mp4", width = "70%", align = "right", controls = "controls", autoplay = T, loop = T)
+                                                     br(""), 
+                                              tags$video(type = "video/mp4",src = "Sundarbansv3 ‑ Made with FlexClip.mp4", width = "70%", align = "right", controls = "controls", autoplay = T, loop = T)
                                               ),
                                      br(""),
                                      br(""),
