@@ -438,15 +438,15 @@ addAwesomeMarkers(
   label = "Pargumti",
   labelOptions = , icon=icons) %>%
   addAwesomeMarkers(~lon, ~lat, label = ~as.character(Village.Na), labelOptions =  ,icon=icons, data=village) %>%
-addCircles(lat = 21.687, lng = 88.0591,
+addCircles(lat = 21.657, lng = 88.0591,
            radius=6000, color = 'blue', opacity = 1) %>%
-  addCircles(lat = 22.227912, lng = 89.00475,
+  addCircles(lat = 22.227912, lng = 89.02,
              radius=6000, color = 'red') %>%
  addCircles(lat = 21.8619, lng = 88.43877,
             radius=6000, color = 'purple') %>%
-  addCircles(lat = 22.1396, lng = 88.7814,
+  addCircles(lat = 22.16, lng = 88.789,
             radius=6000, color = 'yellow') %>%
-  addCircles(lat = 21.5856, lng = 88.2653,
+  addCircles(lat = 21.5896, lng = 88.2653,
              radius=6000, color = 'black') %>%
   addLegend(title = "Administrative Blocks:", position = "bottomright", colors = c("blue", "black","purple", "yellow","red"), labels = c("Block 1", "Block 2", "Block 3", "Block 4", "Block 5"))
   
@@ -886,7 +886,21 @@ ui <- navbarPage(title = "",
                                    )
                           ),
                           fluidRow(align = "center",
-                          p(tags$small(em('Source: Images taken by Sundarbans Field Team'))))
+                          p(tags$small(em('Source: Images taken by Sundarbans Field Team')))),
+                          br(""),
+                          br(""), 
+                          fluidRow(align = "left",
+                                   p(tags$small(em('References:')))),
+                          fluidRow(align = "left",
+                                   p(tags$small(em('Saha, (Dr.)Dipankar. (2015). Diversified Agriculture in Sundarbans. 10.13140/RG.2.1.4691.3446. ')))),
+                          fluidRow(align = "left",
+                                   p(tags$small(em('Pramanik, A., Sengupta, S., & Bhattacharyya, M. (2019, January 1). Chapter 5 - Microbial Diversity and Community Analysis of the Sundarbans Mangrove, a World Heritage Site (S. Das & H. R. Dash, Eds.). ScienceDirect; Academic Press. https://www.sciencedirect.com/science/article/pii/B9780128148495000058‌')))),
+                          fluidRow(align = "left",
+                                   p(tags$small(em('Halder, Nirmol & Merchant, Andrew & Misbahuzzaman, Khaled & Wagner, Sven & Mukul, Sharif. (2021). Why some trees are more vulnerable during catastrophic cyclone events in the Sundarbans mangrove forest of Bangladesh?. Forest Ecology and Management. 490. 119117. 10.1016/j.foreco.2021.119117.')))),
+                          fluidRow(align = "left",
+                                   p(tags$small(em('Titumir, R. A. M. (n.d.). Sundarbans under threat. Prothomalo. Retrieved July 20, 2022, from https://en.prothomalo.com/environment/sundarbans-under-threat.')))),
+                          fluidRow(align = "left",
+                                   p(tags$small(em('UNESCO World Heritage Centre. (2018). The Sundarbans. Unesco.org. https://whc.unesco.org/en/list/798/.'))))
                           
                  ),
                  
@@ -907,18 +921,18 @@ ui <- navbarPage(title = "",
                                    column(4,
                                           h2(strong("Financial Diaries")),
                                           p("Gupta et al. (2021) use financial diaries to capture high-frequency data on household income, expenditure, and consumption behavior. As such, we have weekly financial and economic activities for approximately 300 households for an entire year (November 2018 to October 2019). "),
-                                          p("Household members were trained during the baseline interview to independently record their financial activities in their respective diaries (see image below for an example of a financial diary). Household received two more training sessions in the following two weeks and filled out the first four financial diaries during the training period. Additional support was given to families via phone calls and during the field teams monthly visit to collect completed diaries. These steps were implemented to ensure proper recording of weekly information. These diaries include data on weekly income, remittances, borrowing, lending, expenditure on consumption, and non-consumption items.")
-                                          
+                                          p("Household members were trained during the baseline interview to independently record their financial activities in their respective diaries (see image below for an example of a financial diary). Household received two more training sessions in the following two weeks and filled out the first four financial diaries during the training period. Additional support was given to families via phone calls and during the field teams monthly visit to collect completed diaries. These steps were implemented to ensure proper recording of weekly information. These diaries include data on weekly income, remittances, borrowing, lending, expenditure on consumption, and non-consumption items."),
+                                          br(),
+                                          br()
                                           
                                    ),
                                   
                           ),
-                          fluidRow(h4(strong("Example of Financial Diary")),
+                          fluidRow(
+                            h3(strong("Example of Financial Diary")),
                             align = "center",
-                                   img(src='Picture2.png', width = "50%"),
-                          ),
-                          fluidRow(align = "center",
-                              p(tags$small(em('Source: Gupta et al. (2021)'))))
+                                   img(src='Picture2.png', width = "50%"),)
+                          
                           
                           ), 
                  ## Sundarbans Region--------------------------------------------
@@ -932,6 +946,7 @@ ui <- navbarPage(title = "",
                                               ),
                                      
                                      fluidRow(style = "margin: 6px;", #align = "justify",
+                                              p("", style = "padding-top:10px;"),
                                               column(4, 
                                                      h2(strong("Sundarbans Area")),
                                                      p("This project examines households living in the Sundarbans in West Bengal, India – a coastal delta region in the Bay of Bengal.  Gupta et al. (2021) surveyed households in the North 24 – Parganas and South 24 – Parganas districts. Specifically, ten representative villages were randomly chosen from five administrative blocks in the Sundarbans:"),
@@ -1000,6 +1015,8 @@ ui <- navbarPage(title = "",
                                                      
                                                      
                                               )),
+                                     br(""),
+                                     br(""),
                                      fluidRow(align = "left",
                                               p(tags$small(em('References: ')))),
                                      fluidRow(align = "left",
@@ -1007,7 +1024,17 @@ ui <- navbarPage(title = "",
                                      fluidRow(align = "left",
                                               p(tags$small(em('Kumar, Shubham & Lal, Preet & Kumar, Amit. (2020). Turbulence of tropical cyclone ‘Fani’ in the Bay of Bengal and Indian subcontinent. Natural Hazards.')))),
                                      fluidRow(align = "left",
-                                              p(tags$small(em('ReliefWeb. (2020, May 15). Bangladesh: Cyclone Bulbul final report - operation dref N° MDRBD023 - bangladesh. ReliefWeb. Retrieved July 20, 2022, from https://reliefweb.int/report/bangladesh/bangladesh-cyclone-bulbul-final-report-operation-dref-n-mdrbd023 '))))
+                                              p(tags$small(em('ReliefWeb. (2020, May 15). Bangladesh: Cyclone Bulbul final report - operation dref N° MDRBD023 - bangladesh. ReliefWeb. Retrieved July 20, 2022, from https://reliefweb.int/report/bangladesh/bangladesh-cyclone-bulbul-final-report-operation-dref-n-mdrbd023 ')))),
+                                     fluidRow(align = "left",
+                                              p(tags$small(em('Sundarbans - an overview | ScienceDirect Topics. (n.d.). Www.sciencedirect.com. https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/sundarbans.')))),
+                                     fluidRow(align = "left",
+                                              p(tags$small(em('Velmurugan, A., Ambast, S. K., Swarnam, T. P., Burman, D., Mandal, S., & Subramani, T. (2018, January 1). Chapter 21 - Land Shaping Methods for Climate Change Adaptation in Coastal and Island Region (C. Sivaperuman, A. Velmurugan, A. K. Singh, & I. Jaisankar, Eds.). ScienceDirect; Academic Press. https://www.sciencedirect.com/science/article/pii/B9780128130643000211.')))),
+                                     fluidRow(align = "left",
+                                              p(tags$small(em('Chandra, Ganesh & Sagar, R.. (2003). Fisheries in Sundarbans: Problems and Prospects. 10.2139/ssrn.2084014. ')))),
+                                     fluidRow(align = "left",
+                                              p(tags$small(em('Connect. Collaborate. Express | RoundGlass Living. (n.d.). Roundglass.com. Retrieved July 20, 2022, from https://roundglasssustain.com/photo-stories/honey-gatherers-sundarbans.')))),
+                                     fluidRow(align = "left",
+                                              p(tags$small(em('Kabir, Kazi Ahmed & Saha, S B & Phillips, Michael. (2019). Aquaculture and Fisheries in the Sundarbans and Adjacent Areas in Bangladesh: Resources, Productivity, Challenges and Opportunities. 10.1007/978-3-030-00680-8_9.'))))
 
                                               
                                      ),
@@ -1017,7 +1044,8 @@ ui <- navbarPage(title = "",
                                               p("", style = "padding-top:10px;"),
                                               column(12, 
                                                      h2(strong("Coastal Degradation Timelapse of Sundarbans Area"), align = "center"),
-                                                     h1(""),
+                                                     br(""),
+                                                     br(""),
                                                      p("The video below shows the coastline of the Sundarbans from 1984 to 2022. This timelapse shows that the coastline has degraded significantly over the years. The circles indicate where this degredation is most evident; some islands have disappeared completely."), 
                                                      p("One such factor of this degradation are the effects caused by climate change; one of these effects being the rising of the sea level, resulting in an increase of runoff and the accelerated erosion of the coast. This coastal erosion reduces the sediment in the area that acts as a natural buffer to flooding, as well as
                                                        increasing the salinity of groundwater, pushing salt water up stream, ultimately causing a decrease in the supply of drinkable water.
@@ -1026,10 +1054,13 @@ ui <- navbarPage(title = "",
                                                      p("The Bay of Bengal and the Arabian Sea have proven to be hotspots for cyclones. As such, these frequent cyclones that occur in the Sundarbans region are a factor that greatly
                                                        contribute to the degredation of its coastline. On average, the Bay of Bengal is hit by seven cyclones per year, with the Arabian sea experiencing an average of two.
                                                        These cyclones are occuring more often, and their effects are becoming more severe, as the rising sea level increases the base upon which these storm surges are built.
-                                                       The impacts of these cyclones include flooding, extreme winds, erosion, and further raising the sea level, considerably increasing the potential to damage property and threaten human health and safety."), 
+                                                       The impacts of these cyclones include flooding, extreme winds, erosion, and further raising the sea level, significantly increasing the potential to damage property and threaten human health and safety."), 
                                                      align = "justify"),
-                                                     br(""), tags$video(type = "video/mp4",src = "Sundarbansv3 ‑ Made with FlexClip.mp4", width = "70%", align = "right", controls = "controls", autoplay = T, loop = T)
+                                                     br(""), 
+                                              tags$video(type = "video/mp4",src = "Sundarbansv3 ‑ Made with FlexClip.mp4", width = "70%", align = "right", controls = "controls", autoplay = T, loop = T)
                                               ),
+                                     br(""),
+                                     br(""),
                                      fluidRow(align = "left",
                                               p(tags$small(em('References: ')))),
                                      fluidRow(align = "left",
@@ -1068,7 +1099,7 @@ ui <- navbarPage(title = "",
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
                                                      h4(strong("Who lives in the Sundarbans Region?")),
-                                                     p("We examine data from the baseline survey collected in November 2018 to understand better the socio-demographic and economic characteristics of the Sundarbans population in West Bengal, India.  "
+                                                     p("We examine data from the baseline survey collected in November 2018 to understand better the socio-demographic and economic characteristics of the Sundarbans population in West Bengal, India. Graphs are interactive – one can hover over an individual graph to produce a popup that contains specific attributes."
                                                      ),
                                                      p("Household heads in the Sundarbans area tend to be middle-aged adults, with the mean being around age 49. These individuals also have low levels of education as the average education across villages is approximately five years, comparable to completing elementary school. This low level of education may contribute to the varying poverty level in the region. More than half of families in Haridaskati Samsernagar live with less than ₹240 per week per person (Indian poverty line). However, other villages like Purba Dwarokapur have a lower proportion of households (18%) below the poverty line."
                                                      ),
@@ -1077,7 +1108,7 @@ ui <- navbarPage(title = "",
                                                      
                                               ) ,
                                               column(8, 
-                                                     h4(strong("Head of Household Demographics")),
+                                                     h4(strong("Demographics -  November 2018 (Baseline)")),
                                                      selectInput("agedrop", "Select Characteristic:", width = "100%", choices = c(
                                                        "Age" = "Mean Age for Head of Households",
                                                        "Education" = "Mean Years of Education for Head of Households", 
@@ -1103,52 +1134,35 @@ ui <- navbarPage(title = "",
                                               h1(strong("Livelihood Behavior"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
-                                                     h4(strong("Occupation")),
-                                                     p("While combing through the data our team realized that a household with only one means of support has nothing to fall back on if that livelihood is 
-                                                       destroyed by a disaster. Due to the increasing threats in the Sundarbans region, most of the 
-                                                       population depends on multiple sources of income. This is a common practice for climate 
-                                                       vulnerable regions, to manage and reduce risks."),
-                                                     p("We began our evaluation of livelihood behavior by looking at the head of households’ primary 
-                                                       occupation, primary occupation duration, and secondary occupation. The most common primary 
-                                                       and secondary occupations are Farming followed by Casual labor. These graphs show that there 
-                                                       are differences in occupation by village. For example, the village of Amrabati has the highest 
-                                                       proportion of workers in jobs related to fishing. The head of households’ occupations are 
-                                                       distributed relatively similarly from primary to secondary. However, the total number 
-                                                       of household heads in each occupation is lower in secondary occupation. The total number of 
-                                                       household heads with a primary occupation is 252 while 149 has a secondary occupation."),
-                                                     p("The average job duration by village for head of households is 6 to 8 months. This implies that 
-                                                       on average, they work in their primary occupation for ½ to ¾ of the year. This is evidence that 
-                                                       the population is relying on different, multiple activities within a year."),
-                                                     h4(strong("Agriculture")),
-                                                     p("Our data set contained an agricultural crop variable where participants gave a yes/no answer to 
-                                                       the question “Did your household cultivate any agriculture crops in the last 12 months?” On 
-                                                       average, across all the villages, 63.9% of the households participate in farming. When broken 
-                                                       down by village, Amrabati had the lowest percentage of households that had cultivated crops in 
-                                                       the given year, at 7%. Haridaskati Samsernagar had the highest percentage of households that had 
-                                                       cultivated crops in the given year, at 86%. This was closely followed by Pargumti at 85%. Given 
-                                                       that on average, across all the villages, 63.9% of the households participate in farming it is 
-                                                       evident that a very shows that a large proportion of our households participated in some sort of 
-                                                       crop cultivation."), 
-                                                     p("We next evaluated Land Holding and Land Fallow by village. Land holding is the amount of land 
-                                                       owned in Kathas. A Katha is unit of area mostly used for land measure in India and Bangladesh. 
-                                                       One unit of katha is equivalent to 720 square feet. Pargumti and Bijoynagar have the highest 
-                                                       average amount of land owned, with households owning over 60 kathas of land. Amrabati and Sagar 
-                                                       have the lowest amount of land owned. Land fallow is agriculture land that needs to be left to 
-                                                       rest and regenerate. This land is typically not in good enough condition to sustain crops. The 
-                                                       two villages that had the lowest amount of land owned, have no land fallow. This is evidence that 
-                                                       these villages that these villages are less involved in agriculture.")
+                                                     h4(strong("Working in the Sundarbans ")),
+                                                     p("Agriculture is the backbone of the Sundarbans' economy, which residents rely heavily on for their livelihood. 
+                                                       This is supported by our interactive graphs where for most heads of households, their primary job is in the 
+                                                       agricultural sector regardless of village, specifically Farmer, Casual labor, and Agricultural wage worker in 2018. 
+                                                       However, there are some differences across villages. For example, if one selects Amrabati, majority of household 
+                                                       heads are Fishing related (User can select village to see specific attributes). Agricultural-related jobs are seasonal, 
+                                                       which may explain the short average job duration for household heads of approximately 8 months. Due to this agricultural 
+                                                       seasonality, most heads of households (about 60%) have a second job. Interestingly, the distribution of secondary occupations 
+                                                       is similar to the primary, with agricultural jobs dominating the type of occupation."),
+                                                     h4(strong("Agricultural Farming ")),
+                                                     p("Household heads are not the only individuals involved in agriculture. On average, 63.9% of village households cultivated crops in the 
+                                                       last 12 months. There are variations across villages, from as high as 86% in Haridaskati Samsernagar to as low as 7% in Amrabati."), 
+                                                     p("Despite most of the population being involved in agriculture, land holding in the Sundarbans is mostly marginal. Pargumti and Bijoynagar 
+                                                       have the highest average amount of land owned, with households owning over 60 kathas. Kathas is a land measurement commonly used in India. 
+                                                       One unit of katha is equivalent to 720 square feet in West Bengal. This shows that land holding for families is small, which may be related
+                                                       to the increasing population and change in the cultivable land due to erosion or climate change. To help rest and regenerate harvest, farmers 
+                                                       tend to fallow their land. Bijoynagar had the largest average land fallow (about 95 kathas) for the current agricultural season.")
                                                      
                                                      
                                               ) ,
-                                              column(8, h4(strong("Head of Household Demographics")),
+                                              column(8, h4(strong("Demographics -  November 2018 (Baseline)")),
                                                      selectInput("ocudrop", "Select Characteristic:", width = "100%", choices = c(    
                                                        "Primary Occupation" = "Primary Occupation for Head of Households",
                                                        "Secondary Occupation" ="Secondary Occupation for Head of Households", 
                                                        "Job Duration" = "Average Job Duration for Head of Household",
                                                        "Agricultural Farming" = "Proportion of Households Involved in Agricultural Farming",
                                                        "Land Holding" = "Average Amount of Land Owned by Village",
-                                                       "Land Fallow" = "Average Amount of Land Fallowed by Village",
-                                                       "Household Assets" = "Proportion of Households Owning Assets"
+                                                       "Land Fallow" = "Average Amount of Land Fallowed by Village"
+                                                       #"Household Assets" = "Proportion of Households Owning Assets"
                                                        
                                                      ),
                                                      ),
@@ -1169,21 +1183,26 @@ ui <- navbarPage(title = "",
                                               h1(strong("Financial Practices"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
-                                                     h4(strong("Description")),
-                                                     p("We examine data from the baseline survey to establish a foundational understanding of the financial behavior of the Sundarbans population. The financial diaries provide an extensive amount of information on the fiscal practices of our representative population. The baseline information provides us with a strong starting point in our economic analysis of the data. "),
-                                                     p("On average, the monthly salaries for the households range from 2500 INR to 4600. On average, Amrabati reported the highest salary and Sagar has the lowest on average."),
-                                                     
-                                                     p("In our sample population, a large proportion of the household incomes come from remittances. Remittances are any income a household receives from someone working away from the household. In most villages, higher remittances correlate with higher income. While our analysis showed that remittances are a common source of income, only 12% of households own a business, making this an uncommon source of income throughout the villages. Not many households are able to save- given that such a high proportion of the population live below the Indian poverty line of less than ₹240 per week per person.")
+                                                     h4(strong("How do residents earn and spend their money?")),
+                                                     p("We present interactive graphs of the baseline survey to understand the financial behavior of the Sundarbans population. 
+                                                     There are slight differences in average household monthly salary across villages ranging from as high as ₹4600 in Amrabati to as low as ₹2500in Sagar.
+                                                       This salary is more likely coming from working for someone else as the majority of family members do not own a business."),
+                                                     p("Migration appears to be a prominent livelihood strategy – 15% of households had at least one migrant in the last ten years.
+                                                     Job opportunities may play a primary factor in this migration trend, thus explaining the high remittance level for our sample. Remittances are any income household receives 
+                                                     from someone working away from home. We visualize the relationship between average weekly remittances and average weekly income. In most villages, higher remittances correlate with a higher weekly income. 
+                                                     This suggests that remittances are a primary income source for most families Given the poverty level and low 
+                                                       income-earning opportunities it is no surprise that many families are unable to or rarely save any money.")
                                                      
                                               ) ,
-                                              column(8, h4(strong("Head of Household Demographics")),
-                                                     selectInput("findrop", "Select Characteristic:", width = "100%", choices = c( 
+                                              column(8, h4(strong("Demographics -  November 2018 (Baseline)")),
+                                                     selectInput("findrop", "Select Practice:", width = "100%", choices = c( 
                                                        
                                                        "Household Business" = "Number of Households that Own a Business",
+                                                       "Household Assets" = "Proportion of Households Owning Assets",
                                                        "Salary" = "Average Monthly Salary per Household by Village",
-                                                       "Migrant Workers" = "Percentage of Migrant Workers per Household",
+                                                       "Migrant Workers" = "Percentage of Household with Migrant Workers",
                                                        "Income/Remmitances" = "Income vs Remmitances (October 2018 - November 2019)",
-                                                       "Savings" = "Number of Times Households Saved Money in Year Prior to Baseline Survey (October 2018 - November 2019)"
+                                                       "Savings" = "Number of Times Households Saved in Prior Year"
                                                      )),
                                                      fluidRow(align = "center",
                                                               h4(strong(textOutput("result")))),
@@ -1250,11 +1269,11 @@ ui <- navbarPage(title = "",
                                               h4(strong(""), align = "center"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Food Consumption")),
-                                                     p("We present the average weekly expenditure on food consumption items from November 2018 - October 2019. Consumption expenditure includes purchases by 
+                                                     p("Additionally, we show the average weekly expenditure on food consumption items from November 2018 - October 2019. Consumption expenditure includes purchases by 
                                                      households on goods and services, excluding housing. By visualizing consumption expenditures over time, we can gain information about household spending behavior, 
                                                      identifying changes in spending, as well as which consumption items are bought most frequently. Within the data period, the Sundrabans region spent
                                                        an average of 766.13 Rupees per week on consumption items; they also had bought an average of seven food items per week."),
-                                                     p("First, we provide time series of average expenditure on all food, and quantity of food items, then staple food items, meats, and other consumable items."),
+                                                     p("First, we provide a time series of average expenditure on all food items, then seperated by staple food items, meats, and other consumable items."),
                                                      p("• Staple Items - Rice/Grains, Flour, Vegetables, Fruits, Tubers, Beans and Spices"),
                                                      p("• Meats - Red Meat, Fish, and Poultry"),
                                                      p("• Other - Eggs, Dairy, Packaged Foods, Tea, and Sinful Items"),
@@ -1406,12 +1425,10 @@ ui <- navbarPage(title = "",
                                               h1(strong("Borrowing"), align = "justify"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
-                                                     p("The first tab depicts amount borrowed by village throughout the year. There is a spike of amount borrowed between April and July. This is during the dry season, when the honey harvest occurs. This spike also happens at roughly the same time the Fani Cyclone hit this region.  Purba Dwarokapur, Shibpur and Sagar show major spikes in the amount borrowed during this time. With the amount reaching about 40000 INR."),
-                                                     p("The “Count” tab depicts the number of Households borrowing. This data is relatively consistent throughout the year other than an early spike in Bijoynagar, with over 30 households borrowing before January of 2019. This spike occurs at the same time as the Kharif and Rabi crop harvests. If you deselect Bijoynagar, all other villages range from 17 to 0 households borrowing each week. The lowest number of households borrowing is between January and July, with no more than 10 households borrowing each week during these months.  A couple villages increase to above 10 households borrowing after July."),
-                                                     p("The main purpose for borrowing is consumption, with over 2000 total occasions of borrowing. The next most common purposes are other expenses and payback of other loans. Borrowing is done both in cash and in kind. 54% are done in kind and 46% are in cash.")
-                                                     
-                                                     
-                                                     
+                                                     p("Issues in the Sundarbans region, including extreme weather, has constrained livelihood opportunities as the natural resources are dwindling. This has constrained households’ income levels and incentivized a large proportion of the population to migrate from this mangrove delta in hopes of acquiring a better income. Additionally, in the Sundarbans region, households are turning to borrowing when they have a need but cannot afford to make the purchase on their own."),
+                                                     p("Our evaluation shows the main purpose for borrowing is consumption, with over 2000 total borrowing transactions from November 2018 to October 2019. Consumption includes purchasing any food or non-food items (e.g. rent). Borrowing is often used to invest in assets in hopes of producing a better return. In the Sundarbans region, this is not common. There are very few occurrences of households making asset purchases or investing in agricultural purchases. Rather, these households borrow for consumption. This includes borrowing when unexpected costs come up, such as accidents or unexpected repairs. Approximately half of the loans are given in cash, the other half is given in-kind. An in-kind loan is where a debtor can borrow without having to pay in cash. This can be done in multiple forms, such as lending land or labor. This form of loan often leads to larger losses in the event of a default, where the borrowed is unable to pay back the lender."),
+                                                     p("Our evaluations show that both the amount borrowed and number of households borrowing throughout the year is relatively consistent. There was a large spike in amount borrowed between April and July in Purba Dwarokapur, Shibpur and Sagar. This spike occurred during the dry season at roughly the same time the Fani Cyclone hit this region. The number of households borrowing had an early spike in Bijoynagar, with over 30 households borrowing before January of 2019. This spike occurs at the same time as the Kharif and Rabi crop harvests. If you deselect Bijoynagar, there is a maximum of 17 households borrowing each week. During the Rabi, or dry season, there was a dip in the number of households borrowing. During the Rabi Season, while some vegetables are grown, there are not many crops and most of the cultivated areas are fallowed. This dip in number of households borrowing during the Rabi Season coincides with the peak in amount borrowed. This is evidence that the peak comes from outlier households borrowing large sums of money on a few occurrences. This supports our evaluation that borrowing throughout the year is relatively consistent, regardless of different shocks and seasons.")
+                                                   
                                               )),
                                      sidebarLayout(
                                        sidebarPanel(pickerInput("village_bramt", "Select Village:", choices = village_vector, 
@@ -1625,21 +1642,7 @@ ui <- navbarPage(title = "",
                             ),
                           ),
                  
-                 ## FGD tab --------------------------------------------
-                 tabPanel("Focus Group Discussions",
-                          fluidRow(style = "margin: 6px;",
-                                   h1(strong(""), align = "center"),
-                                   p("", style = "padding-top:10px;")),
-                          fluidRow(style = "margin: 6px;",
-                                   p("", style = "padding-top:10px;"),
-                                   column(12, align = "center",h4(strong("FGD")),
-                                          p(""),
-                                          br("")
-                                          
-                                          
-                                   )),
-                          
-                 ),             
+        
                  ## Tab Team --------------------------------------------
                  tabPanel("Team", 
                           fluidRow(style = "margin-left: 100px; margin-right: 100px;",
@@ -1666,10 +1669,10 @@ ui <- navbarPage(title = "",
                                           p(a(href = 'https://www.linkedin.com/in/nandini-das-390577104/', 'Nandini Das', target = '_blank'), "(Virgina Tech, PHD in Economics)"),
                                           br(), 
                                           img(src = "Taj.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                          p(a(href = 'https://www.linkedin.com/in/taj-cole-83a738221', 'Taj Cole', target = '_blank'), "(Virginia Tech, Undergraduate in Environmental Economics, Management, and Policy, and Minoring in Data and Decisions)."),
+                                          p(a(href = 'https://www.linkedin.com/in/taj-cole-83a738221', 'Taj Cole', target = '_blank'), "(Virginia Tech, Undergraduate in Environmental Economics: Management and Policy, and Minoring in Data and Decisions)."),
                                           br(), 
                                           img(src = "Sid.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                          p(a(href = 'https://www.linkedin.com/in/siddarth-ravikanti-63374b207/', 'Siddarth Ravikanti', target = '_blank'), "(Virginia Tech, Undergraduate in Statistical and Data Science)"),
+                                          p(a(href = 'https://www.linkedin.com/in/siddarth-ravikanti-63374b207/', 'Siddarth Ravikanti', target = '_blank'), "(Virginia Tech, Undergraduate in Computational Modeling and Data Analytics, and Political Science)"),
                                          p("", style = "padding-top:10px;") 
                                    ),
                                    column(6, align = "center",
@@ -2012,17 +2015,6 @@ server <- function(input, output, session) {
       ggplotly(mean_land_plot, tooltip = c("text"))
       
     }
-    else if (ocuVar() == "Proportion of Households Owning Assets") {
-      assetplot <- ggplot(assets_long, aes(property, percentage, fill = property, text = paste(""))) + 
-        geom_col(hoverinfo = "text", aes(text = paste("Property: ", property,
-                                  "<br>Percentage: ", percentage))) + 
-        labs(x = "Asset", y = "Percentage" ,title = "") + 
-        theme(legend.position = "none") +
-        rotate_x_text(angle = 33, size = rel(1)) +
-        scale_fill_viridis_d()    
-        
-      ggplotly(assetplot, tooltip = c("text"))
-    }
     else if (ocuVar() == "Average Amount of Land Fallowed by Village") {
       land_fallow_plot <- ggplot(land_fallow, aes(x = forcats::fct_rev(village), y = sum, fill = village)) +
         geom_col(hoverinfo = "text", aes(text = paste("Village:", villages,"<br>Land Fallowed: ", sum)))+
@@ -2057,7 +2049,18 @@ server <- function(input, output, session) {
         #ggtitle("Households That Own a Business") +
         coord_flip()
       ggplotly(village_bus_count_plot, tooltip = c("text"))
-      }
+    }
+    else if (finVar() == "Proportion of Households Owning Assets") {
+      assetplot <- ggplot(assets_long, aes(property, percentage, fill = property, text = paste(""))) + 
+        geom_col(hoverinfo = "text", aes(text = paste("Property: ", property,
+                                                      "<br>Percentage: ", percentage))) + 
+        labs(x = "Asset", y = "Percentage" ,title = "") + 
+        theme(legend.position = "none") +
+        rotate_x_text(angle = 33, size = rel(1)) +
+        scale_fill_viridis_d()    
+      
+      ggplotly(assetplot, tooltip = c("text"))
+    }
     
     else if (finVar() == "Income vs Remmitances (October 2018 - November 2019)") {
       rem_inc <- ggplot(baseline.summary, aes(rmt_total, full_inc, color= village)) +
@@ -2075,7 +2078,7 @@ server <- function(input, output, session) {
         rotate_x_text(angle = 33, size = rel(1))
       ggplotly(salplot, tooltip = c("text"))
     }
-    else if (finVar() == "Number of Times Households Saved Money in Year Prior to Baseline Survey (October 2018 - November 2019)") {
+    else if (finVar() == "Number of Times Households Saved in Prior Year") {
       savplot <- ggplot(nbsavcount, aes(x = nb_put_saving, y = n, fill = "red")) +
         geom_point(hoverinfo = "text", aes(text = paste("Number of Households: ", n, "<br>Number of Times Household Saved: ", nb_put_saving))) +
         labs(x = "Total Households ", y = " Number of Times Household Saved") +
@@ -2084,7 +2087,7 @@ server <- function(input, output, session) {
       ggplotly(savplot, tooltip = c("text"))
     }
     
-    else if (finVar() == "Percentage of Migrant Workers per Household") {
+    else if (finVar() == "Percentage of Household with Migrant Workers") {
       migplot <- ggplot(migrant_prop, aes(forcats::fct_rev(village), migrant_proportion, fill = village)) + 
         geom_col(hoverinfo = "text", aes(text = paste("Percentage: ", round(migrant_proportion, 2), "%"))) + theme(legend.position = "none") + 
         labs(x = "", y = "Percentage", title = "", fill = "") + coord_flip()+
