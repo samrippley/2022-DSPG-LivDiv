@@ -1120,7 +1120,7 @@ ui <- navbarPage(title = "",
                                                      
                                                      ),
                                                      fluidRow(align = "center",
-                                                              h4(strong(textOutput("result2")))),
+                                                              h4(strong(textOutput("result2"))),
                                                      withSpinner(plotlyOutput("ageplot", height = "500px", width = "100%")),
                                                      
                                               ),
@@ -1128,7 +1128,7 @@ ui <- navbarPage(title = "",
                                               #     h4("References: "), 
                                               #   p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
                                               #  p("", style = "padding-top:10px;")) 
-                                     )), 
+                                     ))), 
                             tabPanel("Livelihood", 
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Livelihood Behavior"), align = "center"),
@@ -1162,14 +1162,15 @@ ui <- navbarPage(title = "",
                                                        "Agricultural Farming" = "Proportion of Households Involved in Agricultural Farming",
                                                        "Land Holding" = "Average Amount of Land Owned by Village",
                                                        "Land Fallow" = "Average Amount of Land Fallowed by Village"
-                                                       #"Household Assets" = "Proportion of Households Owning Assets"
+                                                       
                                                        
                                                      ),
                                                      ),
                                                      fluidRow(align = "center",
-                                                              h4(strong(textOutput("result1")))),
+                                                              h4(strong(textOutput("result1"))),
                                                      withSpinner(plotlyOutput("ocuplot", height = "500px")),
-                                                     
+                                                     br(),
+                                                     textOutput("result4")),
                                               ),
                                      )),
                             # column(12, 
@@ -1205,9 +1206,10 @@ ui <- navbarPage(title = "",
                                                        "Savings" = "Number of Times Households Saved in Prior Year"
                                                      )),
                                                      fluidRow(align = "center",
-                                                              h4(strong(textOutput("result")))),
+                                                              h4(strong(textOutput("result"))),
                                                      
                                                      withSpinner(plotlyOutput("finplot", height = "500px")),
+                                                   
                                                      
                                               ),
                                               # column(12, 
@@ -1217,7 +1219,7 @@ ui <- navbarPage(title = "",
                                               
                                      )),
                             
-                 ), 
+                 )), 
                  
                  
                  
@@ -1661,40 +1663,43 @@ ui <- navbarPage(title = "",
                                    column(6, align = "center",
                                           h4(strong("DSPG Team Members")),
                                           img(src = "rippley.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                          p(a(href = 'https://www.linkedin.com/in/samantha-rippley-58846119b/', 'Samantha Rippley', target = '_blank'), "(Virginia Tech, M.S in Agriculture and Applied Economics);"),
+                                          p(a(href = 'https://www.linkedin.com/in/samantha-rippley-58846119b/', 'Samantha Rippley', target = '_blank'), "(M.S in Agriculture and Applied Economics, Virginia Tech);"),
                                           br(), 
                                           img(src = "das.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                          p(a(href = 'https://www.linkedin.com/in/nandini-das-390577104/', 'Nandini Das', target = '_blank'), "(Virgina Tech, PHD in Economics)"),
+                                          p(a(href = 'https://www.linkedin.com/in/nandini-das-390577104/', 'Nandini Das', target = '_blank'), "(Ph.D. in Economics, Virginia Tech)"),
                                           br(), 
                                           img(src = "Taj.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                          p(a(href = 'https://www.linkedin.com/in/taj-cole-83a738221', 'Taj Cole', target = '_blank'), "(Virginia Tech, Undergraduate in Environmental Economics: Management and Policy, and Minoring in Data and Decisions)."),
+                                          p(a(href = 'https://www.linkedin.com/in/taj-cole-83a738221', 'Taj Cole', target = '_blank'), "(B.S. in Environmental Economics: Management and Policy, Minoring in Data and Decisions, Virginia Tech)."),
                                           br(), 
                                           img(src = "Sid.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                          p(a(href = 'https://www.linkedin.com/in/siddarth-ravikanti-63374b207/', 'Siddarth Ravikanti', target = '_blank'), "(Virginia Tech, Undergraduate in Computational Modeling and Data Analytics, and Political Science)"),
+                                          p(a(href = 'https://www.linkedin.com/in/siddarth-ravikanti-63374b207/', 'Siddarth Ravikanti', target = '_blank'), "(B.S. & B.A. Double-Majoring in Computational Modeling & Data Analytics and Political Science, Virginia Tech)"),
                                          p("", style = "padding-top:10px;") 
                                    ),
                                    column(6, align = "center",
                                           h4(strong("VT Faculty Team Members")),
                                           # img(src = "team-posadas.jpg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
                                           img(src = "holmes.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                          p(a(href = "https://www.linkedin.com/in/chanita-holmes-385577234/", 'Dr. Chanita Holmes', target = '_blank'), "(Research Assistant Professor Department of Agriculture and Applied Economics Virginia Tech)"),
+                                          p(a(href = "https://www.linkedin.com/in/chanita-holmes-385577234/", 'Dr. Chanita Holmes', target = '_blank'), "(Assistant Research Professor, Department of Agriculture and Applied Economics, Virginia Tech)"),
+                                          br(),
+                                          br(),
+                                          br(),
                                           
                                    h4(strong("Project Stakeholders")), 
-                                   img(src = "anubhab.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                   p(a(href = 'https://www.linkedin.com/in/samantha-rippley-58846119b/', 'Dr. Anubhab Gupta', target = '_blank'), "(Assistant Professor Department of Agriculture and Applied Economics Virginia Tech);"),
-                                   br(), 
-                                   img(src = "", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                   p(a(href = 'https://www.linkedin.com/in/nandini-das-390577104/', 'Dr. Aleksandr Michuda', target = '_blank'), "(UC Davis)"),
-                                   br(), 
-                                   img(src = "", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                   p(a(href = 'https://www.linkedin.com/in/taj-cole-83a738221', 'Dr.Miki Doan', target = '_blank'), "(Cornell)."),
-                                   br(), 
-                                   img(src = "", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                   p(a(href = 'https://www.linkedin.com/in/siddarth-ravikanti-63374b207/', 'Binoy Majumder', target = '_blank'), "(Sundarbans Field Team Lead)"),
-                                   br(), 
-                                   img(src = "", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                   p(a(href = 'https://www.linkedin.com/in/siddarth-ravikanti-63374b207/', 'Heng Zhu', target = '_blank'), "(World Food Program)"),
-                                    p("", style = "padding-top:10px;") 
+                                   #img(src = "anubhab.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                   p(a(href = 'https://www.linkedin.com/in/samantha-rippley-58846119b/', 'Dr. Anubhab Gupta', target = '_blank'), "(Assistant Professor, Department of Agriculture and Applied Economics, Virginia Tech);"),
+                                  # br(), 
+                                   #img(src = "", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                   p(a(href = 'https://www.linkedin.com/in/aleksandr-michuda/', 'Dr. Aleksandr Michuda', target = '_blank'), "(Assistant Research Professor, Center for Data Science for Enterprise and Society, Cornell University)"),
+                                  # br(), 
+                                 #  img(src = "", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                   p(a(href = 'https://www.linkedin.com/in/mikidoan/', 'Miki Doan', target = '_blank'), "(Ph.D. Candidate in Applied Economics, UC Davis)."),
+                                 #  br(), 
+                                  # img(src = "", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                   p(a(href = 'https://www.linkedin.com/in/binoy-majumder-60703230/', 'Binoy Majumder', target = '_blank'), "(Sundarbans Field Team Lead, Independent Researcher, West Bengal, India)"),
+                                  # br(), 
+                                  # img(src = "", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                   p(a(href = 'https://www.researchgate.net/profile/Heng-Zhu-15', 'Heng Zhu', target = '_blank'), "(United Nations World Food Program, RAM)"),
+                                   # p("", style = "padding-top:10px;") 
                  ))),
                           
                  
@@ -1724,6 +1729,57 @@ server <- function(input, output, session) {
   })  
   
   
+  #note 
+  
+  output$result4 <- renderText({
+    if (finVar() == "Number of Households that Own a Business") {
+      paste("")
+    }
+    else if (finVar() == "Proportion of Households Owning Assets") {
+      paste("")
+    }
+    
+    else if (finVar() == "Income vs Remmitances (October 2018 - November 2019)") {
+      paste("")
+    }
+    else if (finVar() == "Average Monthly Salary per Household by Village")  {
+      paste("")
+    }
+    else if (finVar() == "Number of Times Households Saved in Prior Year") {
+      paste("")
+    }
+    
+    else if (finVar() == "Percentage of Household with Migrant Workers") {
+      paste("")
+    }
+    
+  })  
+  
+  output$result4 <- renderText({ 
+  if (ocuVar() == "Primary Occupation for Head of Households") {
+    paste("")
+  } 
+  else if (ocuVar() == "Secondary Occupation for Head of Households") {
+    paste("")
+  }
+  else if (ocuVar() == "Proportion of Households Involved in Agricultural Farming") {
+    paste("")
+  }
+  else if (ocuVar() == "Average Amount of Land Owned by Village") {
+    paste("")
+    
+  }
+  else if (ocuVar() == "Average Amount of Land Fallowed by Village") {
+    paste("*Note: Data missing for some villages or missing bar means zero land was fallowed for village")
+  }
+  else if (ocuVar() == "Average Job Duration for Head of Household") {
+    paste("")
+  }
+  
+})
+  
+  
+
   #overview photos 
   index <- reactiveVal(1)
   
