@@ -1422,12 +1422,10 @@ ui <- navbarPage(title = "",
                                               h1(strong("Borrowing"), align = "justify"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
-                                                     p("The first tab depicts amount borrowed by village throughout the year. There is a spike of amount borrowed between April and July. This is during the dry season, when the honey harvest occurs. This spike also happens at roughly the same time the Fani Cyclone hit this region.  Purba Dwarokapur, Shibpur and Sagar show major spikes in the amount borrowed during this time. With the amount reaching about 40000 INR."),
-                                                     p("The “Count” tab depicts the number of Households borrowing. This data is relatively consistent throughout the year other than an early spike in Bijoynagar, with over 30 households borrowing before January of 2019. This spike occurs at the same time as the Kharif and Rabi crop harvests. If you deselect Bijoynagar, all other villages range from 17 to 0 households borrowing each week. The lowest number of households borrowing is between January and July, with no more than 10 households borrowing each week during these months.  A couple villages increase to above 10 households borrowing after July."),
-                                                     p("The main purpose for borrowing is consumption, with over 2000 total occasions of borrowing. The next most common purposes are other expenses and payback of other loans. Borrowing is done both in cash and in kind. 54% are done in kind and 46% are in cash.")
-                                                     
-                                                     
-                                                     
+                                                     p("Issues in the Sundarbans region, including extreme weather, has constrained livelihood opportunities as the natural resources are dwindling. This has constrained households’ income levels and incentivized a large proportion of the population to migrate from this mangrove delta in hopes of acquiring a better income. Additionally, in the Sundarbans region, households are turning to borrowing when they have a need but cannot afford to make the purchase on their own."),
+                                                     p("Our evaluation shows the main purpose for borrowing is consumption, with over 2000 total borrowing transactions from November 2018 to October 2019. Consumption includes purchasing any food or non-food items (e.g. rent). Borrowing is often used to invest in assets in hopes of producing a better return. In the Sundarbans region, this is not common. There are very few occurrences of households making asset purchases or investing in agricultural purchases. Rather, these households borrow for consumption. This includes borrowing when unexpected costs come up, such as accidents or unexpected repairs. Approximately half of the loans are given in cash, the other half is given in-kind. An in-kind loan is where a debtor can borrow without having to pay in cash. This can be done in multiple forms, such as lending land or labor. This form of loan often leads to larger losses in the event of a default, where the borrowed is unable to pay back the lender."),
+                                                     p("Our evaluations show that both the amount borrowed and number of households borrowing throughout the year is relatively consistent. There was a large spike in amount borrowed between April and July in Purba Dwarokapur, Shibpur and Sagar. This spike occurred during the dry season at roughly the same time the Fani Cyclone hit this region. The number of households borrowing had an early spike in Bijoynagar, with over 30 households borrowing before January of 2019. This spike occurs at the same time as the Kharif and Rabi crop harvests. If you deselect Bijoynagar, there is a maximum of 17 households borrowing each week. During the Rabi, or dry season, there was a dip in the number of households borrowing. During the Rabi Season, while some vegetables are grown, there are not many crops and most of the cultivated areas are fallowed. This dip in number of households borrowing during the Rabi Season coincides with the peak in amount borrowed. This is evidence that the peak comes from outlier households borrowing large sums of money on a few occurrences. This supports our evaluation that borrowing throughout the year is relatively consistent, regardless of different shocks and seasons.")
+                                                   
                                               )),
                                      sidebarLayout(
                                        sidebarPanel(pickerInput("village_bramt", "Select Village:", choices = village_vector, 
@@ -1707,21 +1705,7 @@ ui <- navbarPage(title = "",
                             ),
                  ),
                  
-                 ## FGD tab --------------------------------------------
-                 tabPanel("Focus Group Discussions",
-                          fluidRow(style = "margin: 6px;",
-                                   h1(strong(""), align = "center"),
-                                   p("", style = "padding-top:10px;")),
-                          fluidRow(style = "margin: 6px;",
-                                   p("", style = "padding-top:10px;"),
-                                   column(12, align = "center",h4(strong("FGD")),
-                                          p(""),
-                                          br("")
-                                          
-                                          
-                                   )),
-                          
-                 ),             
+        
                  ## Tab Team --------------------------------------------
                  tabPanel("Team", 
                           fluidRow(style = "margin-left: 100px; margin-right: 100px;",
