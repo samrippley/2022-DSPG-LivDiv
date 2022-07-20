@@ -1579,9 +1579,8 @@ ui <- navbarPage(title = "",
                  ),
                  ## Shocks Tab --------------------------------------------
                  
-                 navbarMenu( "Shocks",
-                             tabPanel("Yearly Shocks",
-                                       fluidRow(style = "margin: 6px;", h1(strong("Shocks"), align = "justified"), column(4, 
+                tabPanel("Shocks",
+                                       fluidRow(style = "margin: 6px;", h1(strong("Shocks"), align = "center"), column(4, 
                                                 p("As one of the most vulnerable locations in the world in regards to the effects of climate change. 
                                                   Even the proximity of these communities to the ocean as well as the abundant flora and fauna in the 
                                                   region can mean that there are many shocks that can take place. Shocks can be classified as any event,
@@ -1609,8 +1608,7 @@ ui <- navbarPage(title = "",
                                                       )
                                                   ),
                                        ), 
-                                     br(""), br(""), 
-                                      fluidRow(style = "margin: 6px;",column(4, 
+                                      fluidRow(style = "margin: 6px;", h1(strong("Shocks in 2009"), align = "center"), column(4, 
                                               p("After seeing that there is a disproportionate amount of shocks taking place in 2009, we wanted to take a further 
                                                 look at the causes and the effects of it. Cyclone Aila was a devastating force during that year that affected about 
                                                 40 million people; washed away several thousand homes, took 190 lives, wounded more than 7103 people, and caused 
@@ -1629,17 +1627,17 @@ ui <- navbarPage(title = "",
                                                 )
                                                                             ),
                                         column(8,tabsetPanel(
-                                          tabPanel("Shocks in 2009", plotlyOutput("shocks_plot_2009")),
-                                          tabPanel("Copes in 2009", plotlyOutput("cope_2009_plot")),
-                                          tabPanel("Relocations after Shock in 2009", plotlyOutput("shock_relocation_2009_yn")),
-                                          tabPanel("Where Relocation took place", plotlyOutput("shock_relocation_2009"))
+                                          tabPanel("Frequency", plotlyOutput("shocks_plot_2009")),
+                                          tabPanel("Copes", plotlyOutput("cope_2009_plot")),
+                                          tabPanel("Relocation Status", plotlyOutput("shock_relocation_2009_yn")),
+                                          tabPanel("Where the households relocated?", plotlyOutput("shock_relocation_2009"))
                                                             )
                                                
                                                
                                               )
                                             )
 
-                            ),
+                            
                           ),
                  
         
