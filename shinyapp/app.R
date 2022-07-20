@@ -438,15 +438,15 @@ addAwesomeMarkers(
   label = "Pargumti",
   labelOptions = , icon=icons) %>%
   addAwesomeMarkers(~lon, ~lat, label = ~as.character(Village.Na), labelOptions =  ,icon=icons, data=village) %>%
-addCircles(lat = 21.687, lng = 88.0591,
+addCircles(lat = 21.657, lng = 88.0591,
            radius=6000, color = 'blue', opacity = 1) %>%
-  addCircles(lat = 22.227912, lng = 89.00475,
+  addCircles(lat = 22.227912, lng = 89.02,
              radius=6000, color = 'red') %>%
  addCircles(lat = 21.8619, lng = 88.43877,
             radius=6000, color = 'purple') %>%
-  addCircles(lat = 22.1396, lng = 88.7814,
+  addCircles(lat = 22.16, lng = 88.789,
             radius=6000, color = 'yellow') %>%
-  addCircles(lat = 21.5856, lng = 88.2653,
+  addCircles(lat = 21.5896, lng = 88.2653,
              radius=6000, color = 'black') %>%
   addLegend(title = "Administrative Blocks:", position = "bottomright", colors = c("blue", "black","purple", "yellow","red"), labels = c("Block 1", "Block 2", "Block 3", "Block 4", "Block 5"))
   
