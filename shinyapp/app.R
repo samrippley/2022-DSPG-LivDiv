@@ -1170,9 +1170,9 @@ ui <- navbarPage(title = "",
                                                               h4(strong(textOutput("result1"))),
                                                      withSpinner(plotlyOutput("ocuplot", height = "500px")),
                                                      br(),
-                                                     textOutput("result4")),
+                                                     textOutput(("result4"),
                                               ),
-                                     )),
+                                     )))),
                             # column(12, 
                             #       h4("References: "), 
                             #       p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
@@ -1209,6 +1209,7 @@ ui <- navbarPage(title = "",
                                                               h4(strong(textOutput("result"))),
                                                      
                                                      withSpinner(plotlyOutput("finplot", height = "500px")),
+                                                     h4(strong(textOutput("result3")))),
                                                    
                                                      
                                               ),
@@ -1219,7 +1220,7 @@ ui <- navbarPage(title = "",
                                               
                                      )),
                             
-                 )), 
+                 ), 
                  
                  
                  
@@ -1731,12 +1732,12 @@ server <- function(input, output, session) {
   
   #note 
   
-  output$result4 <- renderText({
+  output$result3 <- renderText({
     if (finVar() == "Number of Households that Own a Business") {
       paste("")
     }
     else if (finVar() == "Proportion of Households Owning Assets") {
-      paste("")
+      paste("Asset")
     }
     
     else if (finVar() == "Income vs Remmitances (October 2018 - November 2019)") {
@@ -2109,9 +2110,10 @@ server <- function(input, output, session) {
       assetplot <- ggplot(assets_long, aes(property, percentage, fill = property, text = paste(""))) + 
         geom_col(hoverinfo = "text", aes(text = paste("Property: ", property,
                                                       "<br>Percentage: ", percentage))) + 
-        labs(x = "Asset", y = "Percentage" ,title = "") + 
+        labs(x = "", y = "Percentage" ,title = "") + 
         theme(legend.position = "none") +
-        rotate_x_text(angle = 33, size = rel(1)) +
+        rotate_x_text(angle = 33, size = rel(1.2)) +
+        rotate_y_text(size = rel(1.2)) +
         scale_fill_viridis_d()    
       
       ggplotly(assetplot, tooltip = c("text"))
