@@ -949,7 +949,7 @@ ui <- navbarPage(title = "",
                                                        Its high-speed winds and torrential rain caused extensive flooding, destroying property, assets, agricultural lands, and leading to a significant loss of approximately sixty-four lives across Eastern and Northern Inida.
                                                        The Matmo cyclone formed in the Philippine Sea on October 28th, dissipated as it went West over land (Cambodia), then regained energy and reached peak strength as it went over the Andaman Sea and into the Bengal Bay, making landfall on November 7th, where it was renamed Bulbul (ReliefWeb, 2020).
                                                        This cyclone also caused severe impacts to the property and agricultural lands of the Sundarbans."),
-                                                     p("Four cyclones also developed along the Arabian Sea during this period (Wordldata.info):"),
+                                                     p("Four cyclones also developed along the Arabian Sea during this period (Worlddata.info):"),
                                                      p("• Vayu (Category 1): 8 - 18 June 2019 "),
                                                      p("• Hikka (Category 1): 20 - 26 September 2019"),
                                                      p("• Kyaar (Category 4): 22 October - 3 November 2019"),
@@ -1010,7 +1010,7 @@ ui <- navbarPage(title = "",
                                                      p("The Bay of Bengal and the Arabian Sea have proven to be hotspots for cyclones. As such, these frequent cyclones that occur in the Sundarbans region are a factor that greatly
                                                        contribute to the degredation of its coastline. On average, the Bay of Bengal is hit by seven cyclones per year (Alam, 2003), with the Arabian sea experiencing an average of two (Evan, 2020).
                                                        These cyclones are occuring more often, and their effects are becoming more severe, as the rising sea level increases the base upon which these storm surges are built (NRC, 2010).
-                                                       The impacts of these cyclones include flooding, extreme winds, erosion, and further raising of the sea level, considerably increasing the potential to damage property and threaten human health and safety."), 
+                                                       The impacts of these cyclones include flooding, extreme winds, erosion, and further raising the sea level, considerably increasing the potential to damage property and threaten human health and safety."), 
                                                      align = "justify"),
                                                      br(""), tags$video(type = "video/mp4",src = "Sundarbansv3 ‑ Made with FlexClip.mp4", width = "70%", align = "right", controls = "controls", autoplay = T, loop = T)
                                               ),
@@ -1435,8 +1435,8 @@ ui <- navbarPage(title = "",
                                                      p("In recent years, households have become more reliant on remittances as a significant source of income. 
                                                        As such, we examine temporal changes in remittances between October 2018 and November 2019. The villages in the Sundarbans
                                                        recieve consistent inputs of remittances throughout the data period. Notably, the Sundarbans region was affected by three severe cyclones during this period: 
-                                                       Fani, Category 4 (April – May 2019), and Category 1, Bulbul and Matmo (October – November 2019). The Sundarbans also could have been negatively impacted by two 
-                                                       cyclones that hit the Arabian Sea during this period: Vayu (Category 1, June 8-18) and Hikaa (Category 1, September 20-26). 
+                                                       Fani, Category 4 (April – May 2019), and Category 1, Bulbul and Matmo (October – November 2019). The Sundarbans also could have been negatively impacted by four 
+                                                       cyclones that hit the Arabian Sea during this period: Vayu (Category 1, June 8-18), Hikaa (Category 1, September 20-26), Kyaar (Category 3, October 22 - November 3), and Maha (Category 4, October 28 - November 11). 
                                                        It is possible households are using remittances to cope with these cyclones and weather-related shocks."),
                                                      p("With climate change impacting coastal areas disproportionately	 compared to other environments, the Sundarban region is seeing the effects of this in one 
                                                        way through employment opportunities. Since farming and fishing are one of the biggest employment opportunities in the region, the effects of climate change 
