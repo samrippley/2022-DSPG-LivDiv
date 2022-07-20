@@ -426,7 +426,7 @@ map_leaflet <- leaflet(data = d.sundarban) %>%
     fillOpacity = 0.7,
     highlightOptions = highlightOptions(color = "white",
                                         weight = 2,
-                                        bringToFront = TRUE)) %>%
+                                        bringToFront = FALSE)) %>%
   addAwesomeMarkers(
     lat = 21.6528, lng = 88.0753,
     label = "Sagar",
@@ -437,11 +437,18 @@ addAwesomeMarkers(
   label = "Pargumti",
   labelOptions = , icon=icons) %>%
   addAwesomeMarkers(~lon, ~lat, label = ~as.character(Village.Na), labelOptions =  ,icon=icons, data=village) %>%
-addCircles(lat = 21.6528, lng = 88.0753,
-           radius=5000)
-
-
-
+addCircles(lat = 21.687, lng = 88.0591,
+           radius=6000, color = 'blue', opacity = 1) %>%
+  addCircles(lat = 22.227912, lng = 89.00475,
+             radius=6000, color = 'red') %>%
+ addCircles(lat = 21.8619, lng = 88.43877,
+            radius=6000, color = 'purple') %>%
+  addCircles(lat = 22.1396, lng = 88.7814,
+            radius=6000, color = 'yellow') %>%
+  addCircles(lat = 21.5856, lng = 88.2653,
+             radius=6000, color = 'black') %>%
+  addLegend(title = "Administrative Blocks:", position = "bottomright", colors = c("blue", "black","purple", "yellow","red"), labels = c("Block 1", "Block 2", "Block 3", "Block 4", "Block 5"))
+  
 
 
 #-------------------------------
@@ -714,6 +721,7 @@ cs_other_plot <- ggplot(avg_cs_food, aes(x = week, y = `Average Other Expenditur
   scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
   theme(plot.caption = element_text(size = 10))
 
+
 # Non food consumption -------------------------
 fin_diary <- livdiv
 non_food_cs <- fin_diary %>% 
@@ -760,8 +768,8 @@ filtered_non_food_cs <- reactive({
 })
 
 # Events data -------------------------------------
-Events <- c("Kharif Crop Harvest", "Rabi Crop Harvest","Honey Harvest", "Fani Cyclone", "Bulbul and Matmo Cyclone", "Vayu Cyclone", "Hikaa Cyclone","Kyaar Cyclone","Maha Cyclone",
-            "Republic Day", "Rama Navami", "Eid al-Fitr", "Indian Independence Day", "Dussehra", "Diwali", "Christmas")
+Events <- c("Kharif Crop Harvest", "Rabi Crop Harvest","Honey Harvest", "Fani Cyclone", "Matmo/Bulbul Cyclone", "Vayu Cyclone", "Hikaa Cyclone","Kyaar Cyclone","Maha Cyclone",
+            "Republic Day", "Rama Navami", "Eid al-Fitr", "Indian Independence Day", "Dussehra", "Diwali" ,"Christmas")
 start_week <- c(2, 0, 19, 22, 48, 30, 43, 47, 48, 10, 20, 28, 38, 46, 49, 5)
 end_week <- c(12, 14, 32, 24, 49, 31, 44, 49, 49, 10.2, 20.2, 28.2, 38.2, 46.2, 49.2, 5.2)
 event_periods <- data.frame(Events, start_week, end_week)
@@ -925,23 +933,28 @@ ui <- navbarPage(title = "",
                                               column(4, 
                                                      h2(strong("Sundarbans Area")),
                                                      p("This project examines households living in the Sundarbans in West Bengal, India – a coastal delta region in the Bay of Bengal.  Gupta et al. (2021) surveyed households in the North 24 – Parganas and South 24 – Parganas districts. Specifically, ten representative villages were randomly chosen from five administrative blocks in the Sundarbans:"),
-                                                     p("• Beguakhali and Sagar - Block 1 "),
-                                                     p("• Amrabati and Shibpur - Block 2 "),
-                                                     p("• Lakshmi Janardanpur and Purba Dwarokapur - Block 3 "),
+                                                     p("    • Beguakhali and Sagar - Block 1 "),
+                                                     p("    • Amrabati and Shibpur - Block 2 "),
+                                                     p("    • Lakshmi Janardanpur and Purba Dwarokapur - Block 3 "),
                                                      p("• Birajnagar and Bijoynagar - Block 4 "),
                                                      p("• Haridaskati Samsernagar and Pargumti - Block 5 "),
-                                                     p("As shown on the map, villages within the same block are close in proximity to each other – at most, 15km between the two villages."),
+                                                     p("As shown on the map, villages within the same block are close in proximity to each other – at most the distance is 15km between the two villages."),
                                                      
-                                                    h4(strong("Weather Related Evets")),
+                                                    h4(strong("Weather Related Events")),
                                                      p("The Sundarbans proximity to the Bay of Bengal causes it to be frequented by cyclones. These tropical cyclones usually form in May, October, and November. Although tropical cyclones are common to the area, the frequency and severity have increased in the past few years, with climate change as a contributing factor."),
-                                                     p("During the data collection period, November 2018 to October 2019, the Sundarbans area was struck by two significant cyclones: "),
-                                                     p("• Fani (Category 4): 26 April– 4 May 2019  "),
-                                                     p("• Matmo/Bulbul (Category 3): November 2019 "),
-                                                     p("Four cyclones also developed along the Arabian Sea during this period:"),
-                                                     p("• Vayu (Category 1) - June 2019 "),
-                                                     p("• Hikka (Category 1) - September 2019 "),
-                                                     p("• Kyaar (Category 4) - October 2019"),
-                                                     p("• Maha (Category 3) - October 28"),
+                                                     p("During the data collection period, November 2018 to October 2019, the Sundarbans area was struck by two significant cyclones (Worlddata.info): "),
+                                                     p("• Fani (Category 4): 26 April– 4 May 2019 "),
+                                                     p("• Matmo/Bulbul (Category 2): 28 October - 11 November 2019 "),
+                                                     p("The Fani Cyclone was an extremely severe tropical storm, reported as the strongest in 2019, and the 10th most severe cyclone in the Indian subcontinent within the last 52 years (Kumar et al. 2020). 
+                                                       Its high-speed winds and torrential rain caused extensive flooding, destroying property, assets, agricultural lands, and leading to a significant loss of approximately sixty-four lives across Eastern and Northern Inida.
+                                                       The Matmo cyclone formed in the Philippine Sea on October 28th, dissipated as it went West over land (Cambodia), then regained energy and reached peak strength as it went over the Andaman Sea and into the Bengal Bay, making landfall on November 7th, where it was renamed Bulbul (ReliefWeb, 2020).
+                                                       This cyclone also caused severe impacts to the property and agricultural lands of the Sundarbans."),
+                                                     p("Four cyclones also developed along the Arabian Sea during this period (Wordldata.info):"),
+                                                     p("• Vayu (Category 1): 8 - 18 June 2019 "),
+                                                     p("• Hikka (Category 1): 20 - 26 September 2019"),
+                                                     p("• Kyaar (Category 4): 22 October - 3 November 2019"),
+                                                     p("• Maha (Category 3): 28 October - 11 November 2019"),
+                                                     p("While the Sundarbans was not reported as a region directly affected by these four cyclones, it is very likely that the they still experienced some of the negative effects of these storms due to their proximity to the Arabian Sea."),
                                               
                                                     h4(strong("Harvest Seasons")),
                                                     p("Agriculture is the backbone of the Sundarbans economy, with mostly small–scale farmers. The sector largely depends on a single crop, the rain-fed paddy Aman. In this region, however, agriculture is very seasonal as it depends on the monsoons:"),
@@ -951,7 +964,17 @@ ui <- navbarPage(title = "",
                                                     p("• Rabi Season - This is the dry season. While some vegetables are grown during this season, there are not many crops as most of the cultivated areas are fallow."),
                                                     p(      "º Crop Cultivation is between December – February"),
                                                     p(      "º Harvesting of rabi crops happens during summer, March - June"),
-                                                    p("Fisheries is the next dominant productive activity. This occurs year-round but majority of fish catch occurs during November to January. Some months (April, May, and June) are closed for fishing. Honey collection on the other hand occurs from April to June.")
+                                                    p("Fisheries is the next dominant productive activity. This occurs year-round but majority of fish catch occurs during November to January. Some months (April, May, and June) are closed for fishing. Honey collection on the other hand occurs from April to June."),
+                                                    
+                                                    h4(strong("Festivals/Holidays")),
+                                                    p("Several festivals and holidays that occur during the data collection period are: "),
+                                                    p("• Republic Day: Janurary 26th"),
+                                                    p("• Rama Navami: April 14th"),
+                                                    p("• Eid al-Fitr: June 4-5th"),
+                                                    p("• Independence Day: August 15th"),
+                                                    p("• Dussehra: October 8th"),
+                                                    p("• Diwali: October 27th"),
+                                                    p("• Christmas: December 25th"),
                                              ),
 
                                               column(8, 
@@ -962,9 +985,14 @@ ui <- navbarPage(title = "",
                                                      
                                               )),
                                      fluidRow(align = "center",
-                                              p(tags$small(em('Source: ')))),
-                                     
-                                     
+                                              p(tags$small(em('Sources: ')))),
+                                     fluidRow(align = "center",
+                                              p(tags$small(em('Worlddata.info. (n.d.). Most recent cyclones in India. Worlddata.info. Retrieved July 19, 2022, from https://www.worlddata.info/asia/india/cyclones.php.')))),
+                                     fluidRow(align = "center",
+                                              p(tags$small(em('Kumar, Shubham & Lal, Preet & Kumar, Amit. (2020). Turbulence of tropical cyclone ‘Fani’ in the Bay of Bengal and Indian subcontinent. Natural Hazards.')))),
+                                     fluidRow(align = "center",
+                                              p(tags$small(em('ReliefWeb. (2020, May 15). Bangladesh: Cyclone Bulbul final report - operation dref N° MDRBD023 - bangladesh. ReliefWeb. Retrieved July 20, 2022, from https://reliefweb.int/report/bangladesh/bangladesh-cyclone-bulbul-final-report-operation-dref-n-mdrbd023 '))))
+
                                               
                                      ),
                             tabPanel("Timelapse", 
@@ -973,14 +1001,31 @@ ui <- navbarPage(title = "",
                                               p("", style = "padding-top:10px;"),
                                               column(12, 
                                                      h2(strong("Coastal Degradation Timelapse of Sundarbans Area"), align = "center"),
-                                                     p("The video below shows the coastline of the Sundarbans from 1984 to 2022. This timelapse shows that the coastline has degraded significantly over the years. The circles indicate where this degredation is most evident; some islands have almost completely disappeared. 
-                                                     One such factor of this degradation are the effects caused by climate change;
-                                                       one of these effects being the rising of the sea level, resulting in an increase of runoff and the erosion of the coast. This coastal erosion reduces the sediment in the area that acts as a natural buffer to flooding, as well as
-                                                       increasing the salinity of groundwater, pushing salt water up stream, ultimately causing a decrease in the supply of drinkable water.
+                                                     h1(""),
+                                                     p("The video below shows the coastline of the Sundarbans from 1984 to 2022. This timelapse shows that the coastline has degraded significantly over the years. The circles indicate where this degredation is most evident; some islands have disappeared completely."), 
+                                                     p("One such factor of this degradation are the effects caused by climate change; one of these effects being the rising of the sea level, resulting in an increase of runoff and the accelerated erosion of the coast. This coastal erosion reduces the sediment in the area that acts as a natural buffer to flooding (CCSP, 2008), as well as
+                                                       increasing the salinity of groundwater, pushing salt water up stream, ultimately causing a decrease in the supply of drinkable water (USGRCP, 2014).
                                                        The thinning of the Sundarbans coast also negatively impacts households’ agricultural yields. Families heavily depend on these yields to support their livelihoods, as it serves as an
-                                                       essential source of income and food. Due to this, we've observed fluctuations in income, and frequent occurences of households having to reduce or skip meals.", align = "justify"),
-                                                     br(""), tags$video(type = "video/mp4",src = "Sundarbansv3 ‑ Made with FlexClip.mp4", width = "60%", align = "right", controls = "controls", autoplay = T, loop = T)
-                                              ), 
+                                                       essential source of income and food. Due to this, we've observed fluctuations in income, and frequent occurences of households having to reduce or skip meals."),
+                                                     p("The Bay of Bengal and the Arabian Sea have proven to be hotspots for cyclones. As such, these frequent cyclones that occur in the Sundarbans region are a factor that greatly
+                                                       contribute to the degredation of its coastline. On average, the Bay of Bengal is hit by seven cyclones per year (Alam, 2003), with the Arabian sea experiencing an average of two (Evan, 2020).
+                                                       These cyclones are occuring more often, and their effects are becoming more severe, as the rising sea level increases the base upon which these storm surges are built (NRC, 2010).
+                                                       The impacts of these cyclones include flooding, extreme winds, erosion, and further raising of the sea level, considerably increasing the potential to damage property and threaten human health and safety."), 
+                                                     align = "justify"),
+                                                     br(""), tags$video(type = "video/mp4",src = "Sundarbansv3 ‑ Made with FlexClip.mp4", width = "70%", align = "right", controls = "controls", autoplay = T, loop = T)
+                                              ),
+                                     fluidRow(align = "center",
+                                              p(tags$small(em('Sources: ')))),
+                                     fluidRow(align = "center",
+                                              p(tags$small(em('CCSP (2008). Impacts of Climate Change and Variability on Transportation Systems and Infrastructure: Gulf Coast Study, Phase I. A Report by the U.S. Climate Change Science Program and the Subcommittee on Global Change Research. Savonis, M. J., V.R. Burkett, and J.R. Potter (eds.). Department of Transportation, Washington, DC, USA, 445 pp.')))),
+                                     fluidRow(align = "center",
+                                              p(tags$small(em('USGCRP (2014). Moser, S. C., M. A. Davidson, P. Kirshen, P. Mulvaney, J. F. Murley, J. E. Neumann, L. Petes, and D. Reed, 2014: Ch. 25: Coastal Zone Development and Ecosystems. Climate Change Impacts in the United States: The Third National Climate As­sessment, J. M. Melillo, Terese (T.C.) Richmond, and G. W. Yohe, Eds., U.S. Global Change Research Program, , 579-618.')))),
+                                     fluidRow(align = "center",
+                                              p(tags$small(em('NRC (2010). Adapting to the Impacts of Climate Change. National Research Council. The National Academies Press, Washington, DC, USA.')))),
+                                     fluidRow(align = "center",
+                                              p(tags$small(em('Evan, Amato & Camargo, Suzana. (2011). A Climatology of Arabian Sea Cyclonic Storms. JOURNAL OF CLIMATE.')))),
+                                     fluidRow(align = "center",
+                                              p(tags$small(em('Alam, M. M., Hossain, M. A., &amp; Shafee, S. (2003). Frequency of bay of bengal cyclonic storms and depressions crossing different Coastal Zones. International Journal of Climatology, 23(9), 1119–1125. https://doi.org/10.1002/joc.927 '))))
                                      )
                                      
                             ),
@@ -997,7 +1042,7 @@ ui <- navbarPage(title = "",
                                      #           imageOutput("image")
                                                 
                                       #        ))),
-                 ),
+                 #),
                  
                  ## Tab Demographics --------------------------------------------
                  navbarMenu("Demographics" , 
@@ -1218,10 +1263,10 @@ ui <- navbarPage(title = "",
                                        mainPanel(
                                          tabsetPanel(
                                            tabPanel("Average Food Consumption",plotOutput("cs_exp")),
-                                           tabPanel("No. of Food Items", plotOutput("cs_item")),
                                            tabPanel("Staple Items", plotOutput("cs_staple")),
                                            tabPanel("Meats", plotOutput("cs_meats")),
                                            tabPanel("Other", plotOutput("cs_other")),
+                                           tabPanel("No. of Food Items", plotOutput("cs_item"))
                                            #tabPanel("Table", DT::DTOutput("cs_table"))
                                          )
                                        ),
@@ -1913,7 +1958,8 @@ server <- function(input, output, session) {
         ylab("Age") + 
         xlab("")+
         theme(legend.position = "none") +
-        rotate_x_text(angle = 33, size = rel(1)) + scale_fill_viridis_d()
+        rotate_x_text(angle = 33, size = rel(1)) 
+      + scale_fill_viridis_d()
       ggplotly(fplot, tooltip = c("text"))
     }
     else if (ageVar() == "Mean Years of Education for Head of Households") {
