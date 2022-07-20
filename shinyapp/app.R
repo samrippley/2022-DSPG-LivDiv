@@ -531,7 +531,7 @@ shock_labels <- c('None', 'Crop Loss', 'Loss of vegetation', 'Damage(saline wate
                   'Loss of home(river erosion/cyclone)', 'Loss of livestock', 'Loss of business/shop/etc.', 'Death/health issues', 'Other')
 
 shocks_all <- ggplot(shocks, aes(shock_nmb)) + geom_bar(fill = "dark red") + 
-  labs(x = "", y = "Occurances" ,title = "Frequency") + theme(axis.text = element_text(size = 7)) + 
+  labs(x = "", y = "Occurances" ,title = "") + theme(axis.text = element_text(size = 7)) + 
   scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10),labels = str_wrap(shock_labels, width = 25) ,limits = c(0:10)) + 
   coord_flip()
 ## Average Shocks by Village
@@ -539,7 +539,7 @@ shocks2 <- baseline %>% select(village, shk_count) %>%
   group_by(village) %>% summarize(avg_count = sum(shk_count, na.rm = TRUE)/n())
 
 shocks_village <- ggplot(shocks2, aes(village, avg_count, fill = village)) + geom_col() + 
-  labs(x = "", y = "No. of Shocks" ,title = "Shocks by Village", fill = "Village") + 
+  labs(x = "", y = "No. of Shocks" ,title = "", fill = "Village") + 
   theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d() + coord_polar()
 
 
@@ -554,7 +554,7 @@ shock_year <- baseline %>% select(village, shk_2009_count, shk_2010_count, shk_2
 shocks_year_long <- gather(shock_year, year, count, "2009":"2018")
 
 shocks_by_year <- ggplot(shocks_year_long, aes(year, count, fill = year)) + geom_col() + 
-  labs(x = "", y = "Number of Shocks" ,title = "Total Shocks by Year") + 
+  labs(x = "", y = "Number of Shocks" ,title = "") + 
   theme(axis.ticks.x=element_blank(), legend.position="none") + scale_fill_viridis_d() 
 
 ## Frequency of each shocks in 2009
@@ -568,7 +568,7 @@ shocks_2009 <- data.frame(y=unlist(shocks_2009))
 colnames(shocks_2009) <- c('shk')
 
 shocks_plot_2009 <-ggplot(shocks_2009, aes(shk)) + geom_bar(fill = "dark red") + 
-  labs(x = "", y = "Occurances" ,title = "Shocks for 2009") + theme(axis.text = element_text(size = 7)) + 
+  labs(x = "", y = "Occurances" ,title = "") + theme(axis.text = element_text(size = 7)) + 
   scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10),labels = str_wrap(shock_labels_2009, width = 25) ,limits = c(0:10)) + 
   coord_flip()
 ## Type of Cope after 2009 Shock
@@ -586,7 +586,7 @@ cope_labels <- c("Did not do anything","Unconditional help provided by relatives
 shocks_cope$shk_2009_cope<-replace(shocks_cope$shk_2009_cope, shocks_cope$shk_2009_cope == 997, 16)
 
 cope_2009_plot <- ggplot(shocks_cope, aes(shk_2009_cope, fill = village)) + geom_bar() +
-  labs(x = "", y = "" ,title = "Type of Cope after 2009 shocks", fill = "Village") + scale_fill_viridis_d() +
+  labs(x = "", y = "" ,title = "", fill = "Village") + scale_fill_viridis_d() +
   theme(axis.text = element_text(size = 6)) +
   scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), labels = str_wrap(cope_labels, width = 30), limits = c(0:20)) + 
   coord_flip() 
@@ -598,7 +598,7 @@ shock_relocation <- baseline %>% select(village, shk_2009_reloc_yn)
 relocation_labels <- c("No", "Yes, for under a month", "Yes, for over a month")
 
 shock_relocation_2009_yn <- ggplot(shock_relocation, aes(shk_2009_reloc_yn, fill = village)) + geom_bar() + 
-  labs(x = "", y = "No. of Households" ,title = "Relocation Status after Shock", fill = "Village") + 
+  labs(x = "", y = "No. of Households" ,title = "", fill = "Village") + 
   scale_x_discrete(breaks = c(0,1,2), labels = str_wrap(relocation_labels, width = 30), limits = c(0:2)) + 
   scale_fill_viridis_d()
 
@@ -611,7 +611,7 @@ relocation_where_labels <- c("Within same village","Other village in Sundarbans"
                              "Other Urban area outside Sundarbans, within West Bengal","Urban area outside West Bengal")
 
 shock_relocation_2009 <- ggplot(shock_relocation_where, aes(shk_2009_reloc1, fill = village)) + geom_bar() + 
-  labs(x = "", y = "No. of Households" ,title = "Relocation Areas", fill = "Village") + 
+  labs(x = "", y = "No. of Households" ,title = "", fill = "Village") + 
   scale_x_discrete(breaks = c(1,2,3,4,5,6), labels = str_wrap(relocation_where_labels, width = 20), limits = c(1:6)) + 
   scale_fill_viridis_d() + coord_flip() +  theme(axis.text = element_text(size = 8))
 
@@ -1579,134 +1579,68 @@ ui <- navbarPage(title = "",
                  ),
                  ## Shocks Tab --------------------------------------------
                  
-                 navbarMenu("Shocks" , 
-                            tabPanel("Shocks in the Sundarbans", value = "", align = "center",
-                                     
-                                     fluidRow(style = "margin: 6px;", align = "justify",
-                                              p("", style = "padding-top:10px;"),
-                                              column(12,h4(strong("The Sundarbans region is highly susceptible to climate change and extreme weather events, 
-                                                                  especially in the last decade. These weather changes negatively impact the Sundarbans population 
-                                                                  in terms of their economic activities and livelihoods. ")),
-                                                     br("We present the frequency of different shocks households experience from 2009 to 2018.
-                                                        Most households indicate experiencing home loss due to river erosion and cyclone. The 
-                                                        loss of livestock is also a significant negative shock impacting families in this region. 
-                                                        The least common occurring shock is the loss of business/shop. ")
-                                              )
-                                     ),
-                                     
-                                     # Show a plot of the generated plot
-                                     tabPanel("All The Shocks", plotOutput("shocks_all", width = "65%"),
-                                     ),
-                                     
-                                     fluidRow(style = "margin: 6px", align = "justify",
-                                              p("", style = "padding-top:10px;"),
-                                              column(12,h4(strong("")),
-                                                     br("Given the significance of the different shocks over the nine-year period, we 
-                                                        examine whether there was a disproportionate impact of shocks by villages. On average, households 
-                                                        in each village tend to experience 2 to 3 different shocks each year from 2009 to 2018. We 
-                                                        suspect that this even distribution across villages is due to villages being relatively close. 
-                                                        Thus, many of the natural shocks will impact all households in each village. ")
-                                              )
-                                     ),
-                                     
-                                     tabPanel("Shocks by Village", plotOutput("shocks_village", width = "65%")
-                                     ),
-                                     fluidRow(style = "margin: 6px", align = "justify",
-                                              p("", style = "padding-top:10px;"),
-                                              column(12,h4(strong("")),
-                                                     br("The Sundarbans area typically face tropical events such as cyclones. However, the frequency 
-                                                     and intensity of cyclones have increased in the past decade. Specially, the most devasting cyclones 
-                                                     in the region occurred in 2007, 2009, 2019, 2020, and 2021.  
-                                                  The impact of the cyclone in 2009 (Alia) is still evident as the majority of households reported a shock 
-                                                        in 2009, even though this interview was done in 2018. Moreover, many families reported experiencing 2 
-                                                        to 3 shocks, with some reporting a high of 4 shocks in 2009. This graph highlights that 2009 was a devasting 
-                                                        year for most households. ")
-                                              )
-                                     ),
-                                     
-                                     
-                                     tabPanel("Shocks by the Year", plotOutput("shocks_by_year", width = "65%"),
-                                              fluidRow(style = "margin: 6px;", align = "justify",
-                                                       p("", style = "padding-top:10px;"),
-                                                       column(12,h4(strong("")),
-                                                              br("We further investigate the impact of the 2009 shock on household livelihood. 
-                                                                 During this year, many families lost their homes due to the cyclone. Families also lost livestock, 
-                                                                 vegetation, and crops. They were also forced to move due to flooding, which may be related to the 
-                                                                 aftermath of the cyclone.")
-                                                       )
-                                              )
-                                     ),
-                                     
-                                     tabPanel("Shocks in 2009", plotOutput("shocks_plot_2009", width = "65%"),
-                                              fluidRow(style = "margin: 6px;", align = "justify",
-                                                       p("", style = "padding-top:10px;"),
-                                                       column(12,h4(strong("")),
-                                                              br("After the many shocks in 2009, families in the Sundarbans region coped by taking steps such as 
-                                                                 obtaining credit or pursuing other jobs. Notably, the most common coping method was unconditional 
-                                                                 help from the government, followed by receiving support from friends or relatives. Often, families 
-                                                                 did nothing and tried to “weather the storm” until better times. ")
-                                                       )
-                                              )
-                                     ),
-                                     
-                                     tabPanel("Copes in 2009", plotOutput("cope_2009_plot", width = "65%"),
-                                              fluidRow(style = "margin: 6px;", align = "justify",
-                                                       p("", style = "padding-top:10px;"),
-                                                       column(12,h4(strong("")),
-                                                              br("Relocation is common after shocks occur in the region and often times households are relocated 
-                                                                 for less than a month. Around 80 households don’t relocate after a shock and 75 households relocate 
-                                                                 for more than a month as well. ")
-                                                       )
-                                              )
-                                              
-                                     ),
-                                     
-                                     tabPanel("Relocations after Shock in 2009", plotOutput("shock_relocation_2009_yn", width = "65%"),
-                                              fluidRow(style = "margin: 6px;", align = "justify",
-                                                       p("", style = "padding-top:10px;"),
-                                                       column(12,h4(strong("")),
-                                                              br("With a vast majority of households saying that they relocate for either less or more than a month, 
-                                                                 many of these households relocate to a safer place in the same village. Less frequently do the households 
-                                                                 relocate to Kolkata (the biggest city nearby) or other villages around the Sundarbans. ")
-                                                       )
-                                              )
-                                     ),
-                                     
-                                     tabPanel("Where Relocation took place", plotOutput("shock_relocation_2009", width = "65%")
-                                     ),
-                                     
-                            ),  
-                            #the comma above separates the two sub-tabs in Shocks            
-                            
-                            
-                            tabPanel("Yearly Shocks",
-                                     fluidRow(style = "margin: 6px;", 
-                                              h1(strong("2009 Shocks"), align = "center"),
-                                              p("", style = "padding-top:10px;")
-                                              
-                                     ),
-                                     
-                                     sidebarLayout(
-                                       sidebarPanel(
-                                         #tags$h2("Select/Deselect all"),
-                                         pickerInput("village_selecter", "Select Village:", choices = village_vector, 
-                                                     selected = village_vector,
-                                                     multiple = T, options = list(`actions-box` = T)),
-                                         
-                                       ),
-                                       
+                 navbarMenu( "Shocks",
+                             tabPanel("Yearly Shocks",
+                                       fluidRow(style = "margin: 6px;", h1(strong("Shocks"), align = "justified"), column(4, 
+                                                p("As one of the most vulnerable locations in the world in regards to the effects of climate change. 
+                                                  Even the proximity of these communities to the ocean as well as the abundant flora and fauna in the 
+                                                  region can mean that there are many shocks that can take place. Shocks can be classified as any event,
+                                                  most likely negative that can harm the household livelihood. When looking at “Frequency of Shocks” 
+                                                  it’s evident by a great margin that many of the shocks that are impacting these households are random 
+                                                  environmental impacts or loss of various items.  Although it’s easy to classify natural disasters as 
+                                                  one characteristic, our team is more focused on the effects each shock has on the household. Some of the 
+                                                  most frequent shocks that took place are loss of business, loss of vegetation and loss of livestock. 
+                                                  Our team also wanted to take a look at how each village was impacted by the different shocks taking place. 
+                                                  Since many of the shocks are climate related, and the proximity of all the villages are in the same region, 
+                                                  the amount of shocks taking place per year at every household was the same. Since the households reported 
+                                                  on shocks taking place for the past 11 years from when the data was collected, we wanted to see if there was 
+                                                  disproportionate impacts caused by certain shocks during that time period. The Sundarbans area typically face 
+                                                  tropical events such as cyclones. However, the frequency and intensity of cyclones have increased in the past 
+                                                  decade. Specially, the most devastating cyclones  in the region occurred in 2007, 2009, 2019, 2020, and 2021.
+                                                  The impact of the cyclone in 2009 (Alia) is still evident as the majority of households reported a shock. 
+                                                  in 2009, even though this interview was done in 2018. Moreover, many families reported experiencing to 3 shocks, 
+                                                  with some reporting a high of 4 shocks in 2009. ", style = "padding-top:10px;")),
                                        # Show a plot of the generated plot
-                                       mainPanel(
-                                         tabsetPanel(
-                                           tabPanel("Coping Strategies",plotOutput("cope_2009")),
-                                           tabPanel("Relocation",plotOutput("relocation_2009_yn")),
-                                           tabPanel("Relocation Area",plotOutput("relocation_2009")),
-                                         )
-                                       ),
-                                       
-                                     ),
+                                         column(8,
+                                           tabsetPanel(
+                                             tabPanel("Frequency of Shocks", plotlyOutput("shocks_all")),
+                                             tabPanel("Shocks by Village", plotOutput("shocks_village")),
+                                             tabPanel("Shocks by Year", plotlyOutput("shocks_by_year"))
+                                                      )
+                                                  ),
+                                       ), 
+                                     br(""), br(""), 
+                                      fluidRow(style = "margin: 6px;",column(4, 
+                                              p("After seeing that there is a disproportionate amount of shocks taking place in 2009, we wanted to take a further 
+                                                look at the causes and the effects of it. Cyclone Aila was a devastating force during that year that affected about 
+                                                40 million people; washed away several thousand homes, took 190 lives, wounded more than 7103 people, and caused 
+                                                almost a billion dollars(USD) worth of damage. Since a majority of the shocks taking during the time period this 
+                                                data was collected in 2009, the most common shocks are still loss of business, loss of vegetation and loss of 
+                                                livestock. Actions taken after shocks to accommodate for losses of income or valuables are called copes. After the 
+                                                many shocks in 2009, families in the Sundarbans region coped by taking steps such as obtaining credit or pursuing 
+                                                other jobs. Notably, the most common coping method was unconditional help from the government, followed by receiving 
+                                                support from friends or relatives. Often, families did nothing and tried to “weather the storm” until better times. 
+                                                Since many of the houses in this region are made from wood or are propped by materials that can be easily wiped away 
+                                                from floods or high winds, relocation is common after shocks. Most often relocation is only taken place for less than 
+                                                a month, but in certain instances this can be more permanent or longer. With a vast majority of households saying that 
+                                                they relocate for either less or more than a month, many of these households relocate to a safer place in the same 
+                                                village. Less frequently do the households relocate to Kolkata (the biggest city nearby) or other villages around the 
+                                                Sundarbans.", style = "padding-top:10px;"
+                                                )
+                                                                            ),
+                                        column(8,tabsetPanel(
+                                          tabPanel("Shocks in 2009", plotlyOutput("shocks_plot_2009")),
+                                          tabPanel("Copes in 2009", plotlyOutput("cope_2009_plot")),
+                                          tabPanel("Relocations after Shock in 2009", plotlyOutput("shock_relocation_2009_yn")),
+                                          tabPanel("Where Relocation took place", plotlyOutput("shock_relocation_2009"))
+                                                            )
+                                               
+                                               
+                                              )
+                                            )
+
                             ),
-                 ),
+                          ),
                  
         
                  ## Tab Team --------------------------------------------
@@ -2403,7 +2337,7 @@ server <- function(input, output, session) {
   ###Shock plot output  -----------------------------------------------------
   
   #shock_all plot output
-  output$shocks_all <- renderPlot({
+  output$shocks_all <- renderPlotly({
     shocks_all
   })
   
@@ -2413,76 +2347,29 @@ server <- function(input, output, session) {
   })
   
   #shock_by_year plot output
-  output$shocks_by_year <- renderPlot({
+  output$shocks_by_year <- renderPlotly({
     shocks_by_year
   })
   
   #shock_2009 plot output
-  output$shocks_plot_2009 <- renderPlot({
+  output$shocks_plot_2009 <- renderPlotly({
     shocks_plot_2009
   })
   
   #cope_2009 plot output
-  output$cope_2009_plot <- renderPlot({
+  output$cope_2009_plot <- renderPlotly({
     cope_2009_plot
   })
   
   #shock_relocation_2009_yn plot output
-  output$shock_relocation_2009_yn <- renderPlot({
+  output$shock_relocation_2009_yn <- renderPlotly({
     shock_relocation_2009_yn
   })
   
   #shock_relocation_2009 plot output
-  output$shock_relocation_2009 <- renderPlot({
+  output$shock_relocation_2009 <- renderPlotly({
     shock_relocation_2009
   })
-  
-  #Cope_plot_2009 filter 
-  
-  filtered_cope <- reactive({
-    shocks_cope %>%
-      filter(village %in% input$village_selecter)
-  })
-  
-  output$cope_2009 <- renderPlot({
-    ggplot(filtered_cope(), aes(shk_2009_cope, fill = village)) + geom_histogram() + 
-      labs(x = "", y = "" ,fill = "Village") + scale_fill_viridis_d() + 
-      theme(axis.text = element_text(size = 5)) +
-      scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), labels = str_wrap(cope_labels, width = 30), limits = c(0:20)) + 
-      coord_flip() 
-  })
-  
-  #Cope_plot_2009 filter 
-  
-  filtered_relocation_yn <- reactive({
-    shock_relocation %>%
-      filter(village %in% input$village_selecter)
-  })
-  
-  output$relocation_2009_yn <- renderPlot({
-    ggplot(filtered_relocation_yn(), aes(shk_2009_reloc_yn, fill = village)) + geom_bar() + 
-      labs(x = "", y = "No. of Households" ,fill = "Village") + 
-      scale_x_discrete(breaks = c(0,1,2), labels = str_wrap(relocation_labels, width = 30), limits = c(0:2)) + 
-      scale_fill_viridis_d()
-    
-  })
-  
-  filtered_relocation <- reactive({
-    shock_relocation_where %>%
-      filter(village %in% input$village_selecter)
-    
-  })
-  
-  output$relocation_2009 <- renderPlot({
-    
-    ggplot(filtered_relocation(), aes(shk_2009_reloc1, fill = village)) + 
-      geom_bar() + labs(x = "", y = "No. of Households" ,fill = "Village") + 
-      scale_x_discrete(breaks = c(1,2,3,4,5,6), labels = str_wrap(relocation_where_labels, width = 20), limits = c(1:6)) + 
-      scale_fill_viridis_d() + coord_flip() +  theme(axis.text = element_text(size = 8))
-    
-    
-  })
-  
   
   
 }
