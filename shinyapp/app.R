@@ -426,7 +426,7 @@ map_leaflet <- leaflet(data = d.sundarban) %>%
     fillOpacity = 0.7,
     highlightOptions = highlightOptions(color = "white",
                                         weight = 2,
-                                        bringToFront = TRUE)) %>%
+                                        bringToFront = FALSE)) %>%
   addAwesomeMarkers(
     lat = 21.6528, lng = 88.0753,
     label = "Sagar",
@@ -437,11 +437,18 @@ addAwesomeMarkers(
   label = "Pargumti",
   labelOptions = , icon=icons) %>%
   addAwesomeMarkers(~lon, ~lat, label = ~as.character(Village.Na), labelOptions =  ,icon=icons, data=village) %>%
-addCircles(lat = 21.6528, lng = 88.0753,
-           radius=5000)
-
-
-
+addCircles(lat = 21.687, lng = 88.0591,
+           radius=6000, color = 'blue', opacity = 1) %>%
+  addCircles(lat = 22.227912, lng = 89.00475,
+             radius=6000, color = 'red') %>%
+ addCircles(lat = 21.8619, lng = 88.43877,
+            radius=6000, color = 'purple') %>%
+  addCircles(lat = 22.1396, lng = 88.7814,
+            radius=6000, color = 'yellow') %>%
+  addCircles(lat = 21.5856, lng = 88.2653,
+             radius=6000, color = 'black') %>%
+  addLegend(title = "Administrative Blocks:", position = "bottomright", colors = c("blue", "black","purple", "yellow","red"), labels = c("Block 1", "Block 2", "Block 3", "Block 4", "Block 5"))
+  
 
 
 #-------------------------------
@@ -930,7 +937,7 @@ ui <- navbarPage(title = "",
                                                      p("• Lakshmi Janardanpur and Purba Dwarokapur - Block 3 "),
                                                      p("• Birajnagar and Bijoynagar - Block 4 "),
                                                      p("• Haridaskati Samsernagar and Pargumti - Block 5 "),
-                                                     p("As shown on the map, villages within the same block are close in proximity to each other – at most, 15km between the two villages."),
+                                                     p("As shown on the map, villages within the same block are close in proximity to each other – at most the distance is 15km between the two villages."),
                                                      
                                                     h4(strong("Weather Related Evets")),
                                                      p("The Sundarbans proximity to the Bay of Bengal causes it to be frequented by cyclones. These tropical cyclones usually form in May, October, and November. Although tropical cyclones are common to the area, the frequency and severity have increased in the past few years, with climate change as a contributing factor."),
@@ -962,7 +969,7 @@ ui <- navbarPage(title = "",
                                                      
                                               )),
                                      fluidRow(align = "center",
-                                              p(tags$small(em('Source: ')))),
+                                              p(tags$small(em('Cyclone dates source: https://www.worlddata.info/asia/india/cyclones.php')))),
                                      
                                      
                                               
@@ -1913,7 +1920,8 @@ server <- function(input, output, session) {
         ylab("Age") + 
         xlab("")+
         theme(legend.position = "none") +
-        rotate_x_text(angle = 33, size = rel(1)) + scale_fill_viridis_d()
+        rotate_x_text(angle = 33, size = rel(1)) 
+      + scale_fill_viridis_d()
       ggplotly(fplot, tooltip = c("text"))
     }
     else if (ageVar() == "Mean Years of Education for Head of Households") {
