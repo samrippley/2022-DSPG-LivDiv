@@ -949,7 +949,7 @@ ui <- navbarPage(title = "",
                                                        Its high-speed winds and torrential rain caused extensive flooding, destroying property, assets, agricultural lands, and leading to a significant loss of approximately sixty-four lives across Eastern and Northern Inida.
                                                        The Matmo cyclone formed in the Philippine Sea on October 28th, dissipated as it went West over land (Cambodia), then regained energy and reached peak strength as it went over the Andaman Sea and into the Bengal Bay, making landfall on November 7th, where it was renamed Bulbul (ReliefWeb, 2020).
                                                        This cyclone also caused severe impacts to the property and agricultural lands of the Sundarbans."),
-                                                     p("Four cyclones also developed along the Arabian Sea during this period (Wordldata.info):"),
+                                                     p("Four cyclones also developed along the Arabian Sea during this period (Worlddata.info):"),
                                                      p("• Vayu (Category 1): 8 - 18 June 2019 "),
                                                      p("• Hikka (Category 1): 20 - 26 September 2019"),
                                                      p("• Kyaar (Category 4): 22 October - 3 November 2019"),
