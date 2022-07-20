@@ -2027,11 +2027,12 @@ server <- function(input, output, session) {
       ggplotly(land_fallow_plot, tooltip = c("text"))
     }
     else if (ocuVar() == "Average Job Duration for Head of Household") {
-      job_duration_plot <- ggplot(job_duration_summary, aes(x = forcats::fct_rev(villages), y = job_duration_avg, fill = villages)) +
-        geom_col(hoverinfo = "text", aes(text = paste("Village:", villages,"<br>Average Job Duration: ", round(job_duration_avg,2), "months"))) + 
-        coord_flip()+
+      job_duration_plot <- ggplot(job_duration_summary, aes(x = "", y = job_duration_avg, fill = villages)) +
+        geom_bar(width = 1, stat = "identity", hoverinfo = "text", aes(text = paste("Village:", villages,"<br>Average Job Duration: ", round(job_duration_avg,2), "months"))) + 
+        #coord_flip()+
         labs(x= "", y = "Average Job Duration (Months)")+
         ggtitle("") +
+        facet_wrap(~villages, ncol = 5)+
         theme(legend.position = "none") + scale_fill_viridis_d()
       ggplotly(job_duration_plot, tooltip = c("text"))
     }
