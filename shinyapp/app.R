@@ -390,6 +390,7 @@ rmt_method_plot <- ggplot(method_dat, aes( x= reorder(Method, method_counts), y 
   labs(x = "", y = "Total") +
   theme_classic() +
   coord_flip()+
+  theme(legend.position = "none")+
   #ggtitle("Method of Receiving Remittances")+
   geom_text(aes(label = method_values), size = 3) + scale_fill_viridis_d()
 
@@ -467,6 +468,7 @@ rmt_purpose_plot <- ggplot(purpose_dat, aes(x = reorder(Purpose, purpose_count),
   #ggtitle("Purpose for Receiving Remittances")+
   #rotate_x_text(angle = 22, size = rel(0.8))
   coord_flip()+
+  theme(legend.position = "none")+
   geom_text(aes(label = purpose_values), size = 3) + scale_fill_viridis_d()
 #--------------------------------------------------------------------
 # rmt table
@@ -929,52 +931,66 @@ ui <- navbarPage(title = "",
                                                  
                                               ),
                                      
-                                     fluidRow(style = "margin: 6px;", align = "justify",
+                                     fluidRow(style = "margin: 6px;", #align = "justify",
                                               column(4, 
                                                      h2(strong("Sundarbans Area")),
                                                      p("This project examines households living in the Sundarbans in West Bengal, India – a coastal delta region in the Bay of Bengal.  Gupta et al. (2021) surveyed households in the North 24 – Parganas and South 24 – Parganas districts. Specifically, ten representative villages were randomly chosen from five administrative blocks in the Sundarbans:"),
-                                                     p("    • Beguakhali and Sagar - Block 1 "),
-                                                     p("    • Amrabati and Shibpur - Block 2 "),
-                                                     p("    • Lakshmi Janardanpur and Purba Dwarokapur - Block 3 "),
-                                                     p("• Birajnagar and Bijoynagar - Block 4 "),
-                                                     p("• Haridaskati Samsernagar and Pargumti - Block 5 "),
+                                                     (tags$ul(
+                                                     tags$li(tags$b("Beguakhali and Sagar"), "- Block 1"),
+                                                     tags$li(tags$b("Amrabati and Shibpur"), "- Block 2"),
+                                                     tags$li(tags$b("Lakshmi Janardanpur and Purba Dwarokapur"), "- Block 3"),
+                                                     tags$li(tags$b("Birajnagar and Bijoynagar"), "- Block 4"),
+                                                     tags$li(tags$b("Haridaskati Samsernagar and Pargumti"), "- Block 5"),
+                                                     )),
                                                      p("As shown on the map, villages within the same block are close in proximity to each other – at most the distance is 15km between the two villages."),
                                                      
                                                     h4(strong("Weather Related Events")),
                                                      p("The Sundarbans proximity to the Bay of Bengal causes it to be frequented by cyclones. These tropical cyclones usually form in May, October, and November. Although tropical cyclones are common to the area, the frequency and severity have increased in the past few years, with climate change as a contributing factor."),
-                                                     p("During the data collection period, November 2018 to October 2019, the Sundarbans area was struck by two significant cyclones (Worlddata.info): "),
-                                                     p("• Fani (Category 4): 26 April– 4 May 2019 "),
-                                                     p("• Matmo/Bulbul (Category 2): 28 October - 11 November 2019 "),
-                                                     p("The Fani Cyclone was an extremely severe tropical storm, reported as the strongest in 2019, and the 10th most severe cyclone in the Indian subcontinent within the last 52 years (Kumar et al. 2020). 
+                                                     p("During the data collection period, November 2018 to October 2019, the Sundarbans area was struck by two significant cyclones: "),
+                                                    (tags$ul(
+                                                     tags$li(tags$b("Fani"), "(Category 4): 26 April– 4 May 2019 "),
+                                                     tags$li(tags$b("Matmo/Bulbul"), "(Category 2): 28 October - 11 November 2019 "),
+                                                    )),
+                                                     p("The Fani Cyclone was an extremely severe tropical storm, reported as the strongest in 2019, and the 10th most severe cyclone in the Indian subcontinent within the last 52 years. 
                                                        Its high-speed winds and torrential rain caused extensive flooding, destroying property, assets, agricultural lands, and leading to a significant loss of approximately sixty-four lives across Eastern and Northern Inida.
-                                                       The Matmo cyclone formed in the Philippine Sea on October 28th, dissipated as it went West over land (Cambodia), then regained energy and reached peak strength as it went over the Andaman Sea and into the Bengal Bay, making landfall on November 7th, where it was renamed Bulbul (ReliefWeb, 2020).
+                                                       The Matmo cyclone formed in the Philippine Sea on October 28th, dissipated as it went West over land (Cambodia), then regained energy and reached peak strength as it went over the Andaman Sea and into the Bengal Bay, making landfall on November 7th, where it was renamed Bulbul.
                                                        This cyclone also caused severe impacts to the property and agricultural lands of the Sundarbans."),
-                                                     p("Four cyclones also developed along the Arabian Sea during this period (Wordldata.info):"),
-                                                     p("• Vayu (Category 1): 8 - 18 June 2019 "),
-                                                     p("• Hikka (Category 1): 20 - 26 September 2019"),
-                                                     p("• Kyaar (Category 4): 22 October - 3 November 2019"),
-                                                     p("• Maha (Category 3): 28 October - 11 November 2019"),
+                                                     p("Four cyclones also developed along the Arabian Sea during this period:"),
+                                                    (tags$ul(
+                                                     tags$li(tags$b("Vayu"), "(Category 1): 8 - 18 June 2019 "),
+                                                     tags$li(tags$b("Hikka"), "(Category 1): 20 - 26 September 2019"),
+                                                     tags$li(tags$b("Kyaar"), "(Category 4): 22 October - 3 November 2019"),
+                                                     tags$li(tags$b("Maha"), "(Category 3): 28 October - 11 November 2019"),
+                                                    )),
                                                      p("While the Sundarbans was not reported as a region directly affected by these four cyclones, it is very likely that the they still experienced some of the negative effects of these storms due to their proximity to the Arabian Sea."),
-                                              
+                                                    
                                                     h4(strong("Harvest Seasons")),
                                                     p("Agriculture is the backbone of the Sundarbans economy, with mostly small–scale farmers. The sector largely depends on a single crop, the rain-fed paddy Aman. In this region, however, agriculture is very seasonal as it depends on the monsoons:"),
-                                                    p("• Kharif Season - This season occurs with the onset of monsoon."),
-                                                    p(      "º Preparation and cultivation of Aman paddy usually occurs from June – August."),
-                                                    p(      "º Harvesting occurs between December – February."),
-                                                    p("• Rabi Season - This is the dry season. While some vegetables are grown during this season, there are not many crops as most of the cultivated areas are fallow."),
-                                                    p(      "º Crop Cultivation is between December – February"),
-                                                    p(      "º Harvesting of rabi crops happens during summer, March - June"),
-                                                    p("Fisheries is the next dominant productive activity. This occurs year-round but majority of fish catch occurs during November to January. Some months (April, May, and June) are closed for fishing. Honey collection on the other hand occurs from April to June."),
+                                                    (tags$ul(
+                                                    tags$li(tags$b("Kharif"),"Season - This season occurs with the onset of monsoon."),
+                                                    tags$ul(
+                                                    tags$li("Preparation and cultivation of Aman paddy usually occurs from", tags$b("June – August.")),
+                                                    tags$li("Harvesting occurs between", tags$b("December – February.")),
+                                                    ),
+                                                    tags$li(tags$b("Rabi"),"Season - This is the dry season. While some vegetables are grown during this season, there are not many crops as most of the cultivated areas are fallowed."),
+                                                    tags$ul(
+                                                    tags$li("Crop Cultivation is between", tags$b("December – February")),
+                                                    tags$li("Harvesting of rabi crops happens during summer,", tags$b("March - June")),
+                                                    )
+                                                    )),
+                                                    p("Fisheries is the next dominant productive activity. This occurs year-round but majority of fish catch occurs during", tags$b("November to January"),". Some months", tags$b("(April, May, and June)"), "are closed for fishing. Honey collection on the other hand occurs from", tags$b("April to June.")),
                                                     
                                                     h4(strong("Festivals/Holidays")),
                                                     p("Several festivals and holidays that occur during the data collection period are: "),
-                                                    p("• Republic Day: Janurary 26th"),
-                                                    p("• Rama Navami: April 14th"),
-                                                    p("• Eid al-Fitr: June 4-5th"),
-                                                    p("• Independence Day: August 15th"),
-                                                    p("• Dussehra: October 8th"),
-                                                    p("• Diwali: October 27th"),
-                                                    p("• Christmas: December 25th"),
+                                                    (tags$ul(
+                                                    tags$li(tags$b("Republic Day"),": Janurary 26"),
+                                                    tags$li(tags$b("Rama Navami"),": April 14"),
+                                                    tags$li(tags$b("Eid al-Fitr"),": June 4-5"),
+                                                    tags$li(tags$b("Independence Day"),": August 15"),
+                                                    tags$li(tags$b("Dussehra"),": October 8"),
+                                                    tags$li(tags$b("Diwali"),": October 27"),
+                                                    tags$li(tags$b("Christmas"),": December 25"),
+                                                    )),
                                              ),
 
                                               column(8, 
@@ -984,13 +1000,13 @@ ui <- navbarPage(title = "",
                                                      
                                                      
                                               )),
-                                     fluidRow(align = "center",
-                                              p(tags$small(em('Sources: ')))),
-                                     fluidRow(align = "center",
+                                     fluidRow(align = "left",
+                                              p(tags$small(em('References: ')))),
+                                     fluidRow(align = "left",
                                               p(tags$small(em('Worlddata.info. (n.d.). Most recent cyclones in India. Worlddata.info. Retrieved July 19, 2022, from https://www.worlddata.info/asia/india/cyclones.php.')))),
-                                     fluidRow(align = "center",
+                                     fluidRow(align = "left",
                                               p(tags$small(em('Kumar, Shubham & Lal, Preet & Kumar, Amit. (2020). Turbulence of tropical cyclone ‘Fani’ in the Bay of Bengal and Indian subcontinent. Natural Hazards.')))),
-                                     fluidRow(align = "center",
+                                     fluidRow(align = "left",
                                               p(tags$small(em('ReliefWeb. (2020, May 15). Bangladesh: Cyclone Bulbul final report - operation dref N° MDRBD023 - bangladesh. ReliefWeb. Retrieved July 20, 2022, from https://reliefweb.int/report/bangladesh/bangladesh-cyclone-bulbul-final-report-operation-dref-n-mdrbd023 '))))
 
                                               
@@ -1003,28 +1019,28 @@ ui <- navbarPage(title = "",
                                                      h2(strong("Coastal Degradation Timelapse of Sundarbans Area"), align = "center"),
                                                      h1(""),
                                                      p("The video below shows the coastline of the Sundarbans from 1984 to 2022. This timelapse shows that the coastline has degraded significantly over the years. The circles indicate where this degredation is most evident; some islands have disappeared completely."), 
-                                                     p("One such factor of this degradation are the effects caused by climate change; one of these effects being the rising of the sea level, resulting in an increase of runoff and the accelerated erosion of the coast. This coastal erosion reduces the sediment in the area that acts as a natural buffer to flooding (CCSP, 2008), as well as
-                                                       increasing the salinity of groundwater, pushing salt water up stream, ultimately causing a decrease in the supply of drinkable water (USGRCP, 2014).
+                                                     p("One such factor of this degradation are the effects caused by climate change; one of these effects being the rising of the sea level, resulting in an increase of runoff and the accelerated erosion of the coast. This coastal erosion reduces the sediment in the area that acts as a natural buffer to flooding, as well as
+                                                       increasing the salinity of groundwater, pushing salt water up stream, ultimately causing a decrease in the supply of drinkable water.
                                                        The thinning of the Sundarbans coast also negatively impacts households’ agricultural yields. Families heavily depend on these yields to support their livelihoods, as it serves as an
                                                        essential source of income and food. Due to this, we've observed fluctuations in income, and frequent occurences of households having to reduce or skip meals."),
                                                      p("The Bay of Bengal and the Arabian Sea have proven to be hotspots for cyclones. As such, these frequent cyclones that occur in the Sundarbans region are a factor that greatly
-                                                       contribute to the degredation of its coastline. On average, the Bay of Bengal is hit by seven cyclones per year (Alam, 2003), with the Arabian sea experiencing an average of two (Evan, 2020).
-                                                       These cyclones are occuring more often, and their effects are becoming more severe, as the rising sea level increases the base upon which these storm surges are built (NRC, 2010).
-                                                       The impacts of these cyclones include flooding, extreme winds, erosion, and further raising of the sea level, considerably increasing the potential to damage property and threaten human health and safety."), 
+                                                       contribute to the degredation of its coastline. On average, the Bay of Bengal is hit by seven cyclones per year, with the Arabian sea experiencing an average of two.
+                                                       These cyclones are occuring more often, and their effects are becoming more severe, as the rising sea level increases the base upon which these storm surges are built.
+                                                       The impacts of these cyclones include flooding, extreme winds, erosion, and further raising the sea level, considerably increasing the potential to damage property and threaten human health and safety."), 
                                                      align = "justify"),
                                                      br(""), tags$video(type = "video/mp4",src = "Sundarbansv3 ‑ Made with FlexClip.mp4", width = "70%", align = "right", controls = "controls", autoplay = T, loop = T)
                                               ),
-                                     fluidRow(align = "center",
-                                              p(tags$small(em('Sources: ')))),
-                                     fluidRow(align = "center",
+                                     fluidRow(align = "left",
+                                              p(tags$small(em('References: ')))),
+                                     fluidRow(align = "left",
                                               p(tags$small(em('CCSP (2008). Impacts of Climate Change and Variability on Transportation Systems and Infrastructure: Gulf Coast Study, Phase I. A Report by the U.S. Climate Change Science Program and the Subcommittee on Global Change Research. Savonis, M. J., V.R. Burkett, and J.R. Potter (eds.). Department of Transportation, Washington, DC, USA, 445 pp.')))),
-                                     fluidRow(align = "center",
+                                     fluidRow(align = "left",
                                               p(tags$small(em('USGCRP (2014). Moser, S. C., M. A. Davidson, P. Kirshen, P. Mulvaney, J. F. Murley, J. E. Neumann, L. Petes, and D. Reed, 2014: Ch. 25: Coastal Zone Development and Ecosystems. Climate Change Impacts in the United States: The Third National Climate As­sessment, J. M. Melillo, Terese (T.C.) Richmond, and G. W. Yohe, Eds., U.S. Global Change Research Program, , 579-618.')))),
-                                     fluidRow(align = "center",
+                                     fluidRow(align = "left",
                                               p(tags$small(em('NRC (2010). Adapting to the Impacts of Climate Change. National Research Council. The National Academies Press, Washington, DC, USA.')))),
-                                     fluidRow(align = "center",
+                                     fluidRow(align = "left",
                                               p(tags$small(em('Evan, Amato & Camargo, Suzana. (2011). A Climatology of Arabian Sea Cyclonic Storms. JOURNAL OF CLIMATE.')))),
-                                     fluidRow(align = "center",
+                                     fluidRow(align = "left",
                                               p(tags$small(em('Alam, M. M., Hossain, M. A., &amp; Shafee, S. (2003). Frequency of bay of bengal cyclonic storms and depressions crossing different Coastal Zones. International Journal of Climatology, 23(9), 1119–1125. https://doi.org/10.1002/joc.927 '))))
                                      )
                                      
@@ -1385,34 +1401,52 @@ ui <- navbarPage(title = "",
                                                      
                                                      
                                               )),
-                                     
-                                     # Show a plot of the generated plot
-                                     mainPanel(
-                                       tabsetPanel(
-                                         tabPanel("Amount",plotOutput("bor"),
-                                                  sidebarPanel(
-                                                    pickerInput("village_bramt", "Select Village:", choices = village_vector, 
+                                     sidebarLayout(
+                                       sidebarPanel(pickerInput("village_bramt", "Select Village:", choices = village_vector, 
                                                                 selected = village_vector, 
                                                                 multiple = T, options = list(`actions-box` = T)),
                                                     pickerInput("event_choose_borr", "Select Event:", choices = events_vector, selected = "Kharif Crop Harvest", 
-                                                                multiple = T, options = list(`actions-box` = T)),), 
-                                         ),
-                                         tabPanel("Count",plotOutput("borr"),
-                                                  sidebarPanel(
-                                                    pickerInput("village_borr", "Select Village:", choices = village_vector, 
-                                                                selected = village_vector,
-                                                                multiple = T, options = list(`actions-box` = T)),
-                                                    pickerInput("event_choose_borr_count", "Select Event:", choices = events_vector, selected = "Kharif Crop Harvest", 
-                                                                multiple = T, options = list(`actions-box` = T))),
-                                         ),
-                                         tabPanel("Purpose", 
-                                                  plotOutput("purpplot", height = "500px")
-                                         ),
+                                                                multiple = T, options = list(`actions-box` = T))
+                                       ),
+                                     
+                                     mainPanel(
+                                       tabsetPanel(
+                                         tabPanel("Amount",plotOutput("bor")),
+                                         tabPanel("Count",plotOutput("borr")),
+                                         tabPanel("Purpose", plotOutput("purpplot", height = "500px"))
+                                       
+                                       )
+                                     ),
+                            )
+                            ),
+                                     
+                                     # Show a plot of the generated plot
+                                     #mainPanel(
+                                       #tabsetPanel(
+                                        # tabPanel("Amount",plotOutput("bor"),
+                                         #         sidebarPanel(
+                                          #          pickerInput("village_bramt", "Select Village:", choices = village_vector, 
+                                           #                     selected = village_vector, 
+                                            #                    multiple = T, options = list(`actions-box` = T)),
+                                             #       pickerInput("event_choose_borr", "Select Event:", choices = events_vector, selected = "Kharif Crop Harvest", 
+                                              #                  multiple = T, options = list(`actions-box` = T)),), 
+                                       #  ),
+                                        # tabPanel("Count",plotOutput("borr"),
+                                        #          sidebarPanel(
+                                         #           pickerInput("village_borr", "Select Village:", choices = village_vector, 
+                                          #                      selected = village_vector,
+                                           #                     multiple = T, options = list(`actions-box` = T)),
+                                            #        pickerInput("event_choose_borr_count", "Select Event:", choices = events_vector, selected = "Kharif Crop Harvest", 
+                                        #                        multiple = T, options = list(`actions-box` = T))),
+                                      #   ),
+                                      #   tabPanel("Purpose", 
+                                      #            plotOutput("purpplot", height = "500px")
+                                      #   ),
                                          
                                          
                                          
                                          
-                                       ))),
+                                       #))),
                             
                             
                             tabPanel("Remittances", value = "",
@@ -1423,8 +1457,8 @@ ui <- navbarPage(title = "",
                                                      p("In recent years, households have become more reliant on remittances as a significant source of income. 
                                                        As such, we examine temporal changes in remittances between October 2018 and November 2019. The villages in the Sundarbans
                                                        recieve consistent inputs of remittances throughout the data period. Notably, the Sundarbans region was affected by three severe cyclones during this period: 
-                                                       Fani, Category 4 (April – May 2019), and Category 1, Bulbul and Matmo (October – November 2019). The Sundarbans also could have been negatively impacted by two 
-                                                       cyclones that hit the Arabian Sea during this period: Vayu (Category 1, June 8-18) and Hikaa (Category 1, September 20-26). 
+                                                       Fani, Category 4 (April – May 2019), and Category 1, Bulbul and Matmo (October – November 2019). The Sundarbans also could have been negatively impacted by four 
+                                                       cyclones that hit the Arabian Sea during this period: Vayu (Category 1, June 8-18), Hikaa (Category 1, September 20-26), Kyaar (Category 3, October 22 - November 3), and Maha (Category 4, October 28 - November 11). 
                                                        It is possible households are using remittances to cope with these cyclones and weather-related shocks."),
                                                      p("With climate change impacting coastal areas disproportionately	 compared to other environments, the Sundarban region is seeing the effects of this in one 
                                                        way through employment opportunities. Since farming and fishing are one of the biggest employment opportunities in the region, the effects of climate change 
@@ -1819,14 +1853,15 @@ server <- function(input, output, session) {
   })
   # Plot
   output$bor <- renderPlot({
-    ggplot(filtered_bramt(), aes(x=week_num, y=br_amt, color = village, na.rm=TRUE)) +
+    ggplot(filtered_bramt(), aes(x=week_num, y=br_amt, color = village, na.rm = T)) +
       geom_line() +
+      theme_classic()+
       #labs(title ="Amount Borrowed by Village") + 
       xlab("Date") +
       ylab("Amount Borrowed (INR)")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) +
       scale_color_viridis_d() +
-      theme(legend.position = "none")+
+      #theme(legend.position = "none")+
       geom_rect(data = filtered_event_borr(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
     
   })  
@@ -1834,7 +1869,7 @@ server <- function(input, output, session) {
   # borrowing count 
   filtered_dbr <- reactive({
     dbr %>%
-      filter(village %in% input$village_borr)
+      filter(village %in% input$village_bramt)
   })
   # Plot
   output$borr <- renderPlot({
@@ -1843,22 +1878,24 @@ server <- function(input, output, session) {
       #labs(title = "Number of Households Borrowing (Cash or in Kind)") + 
       xlab("Date") +
       ylab("Number of HH")+
+      theme_classic()+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) +
       scale_color_viridis_d() +
-      theme(legend.position = "none")+
-      geom_rect(data = filtered_event_borr_count(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
+      #theme(legend.position = "none")+
+      geom_rect(data = filtered_event_borr(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
     
   })  
   
   #borrowing purpose ----------------------
   
   output$purpplot <- renderPlot({
-    ggplot(dfpurp, aes(x= A, y = B, fill = A)) + geom_col() + 
+    ggplot(dfpurp, aes(x= reorder(A,B), y = B, fill = A)) + geom_col() + 
       coord_flip()+
       #labs(title = "Purpose of Borrowing") + 
       xlab("") +
       ylab("")+
-      theme(legend.position = "none") 
+      theme(legend.position = "none")+
+      scale_fill_viridis_d()
   })
   
   
@@ -1942,19 +1979,17 @@ server <- function(input, output, session) {
     if (ageVar() == "Mean Age for Head of Households") {
       
       fplot <-  ggplot(by_villagemore, aes(x = village, y = head_age, fill = village, width=0.5, srt = 45)) +
-        geom_col(hoverinfo = "text", aes(text = paste("Age: ", head_age)), width = "5") +
+        geom_col(hoverinfo = "text", aes(text = paste("Age: ", round(head_age,2))), width = "5") +
         ylab("Age") + 
         xlab("")+
         theme(legend.position = "none") +
-        rotate_x_text(angle = 33, size = rel(1)) 
-      + scale_fill_viridis_d()
+        rotate_x_text(angle = 33, size = rel(1)) + scale_fill_viridis_d()
       ggplotly(fplot, tooltip = c("text"))
     }
     else if (ageVar() == "Mean Years of Education for Head of Households") {
       splot <- ggplot(by_villagemore, aes(x = "", y= head_edu, fill = village)) +
-        geom_bar(width = 1, stat = "identity", hoverinfo = "text", aes(text = paste("Education: ", head_edu, "<br>Village: ", village))) +
+        geom_bar(width = 1, stat = "identity", hoverinfo = "text", aes(text = paste("Education: ", round(head_edu, 2), "<br>Village: ", village))) +
         facet_wrap(~village, ncol = 5) +
-        geom_text(aes(label = sub), position = position_stack(vjust=1.1)) +
         labs(x = NULL, y = "Years of Education") +
         theme(legend.position="none", strip.text.x = element_text(size = 9)) + scale_fill_viridis_d()
       ggplotly(splot, tooltip = c("text"))
@@ -1983,8 +2018,8 @@ server <- function(input, output, session) {
       ggplotly(hh_size_plot, tooltip = c("text"))
     }
     else if (ageVar() == "Total Children per Household") {
-      chhoplot <- ggplot(avg_children, aes(village, avg_children, fill = village)) + 
-        geom_col(hoverinfo = "text", aes(text = paste("Village:", village,"<br>Average Children: ", avg_children))) + labs(x = "", y = "Average number of children" ,title = "", fill = "Village") + 
+      chhoplot <- ggplot(avg_children, aes(x = village, y = avg_children, fill = village)) + 
+        geom_col(hoverinfo = "text", aes(text = paste("Village:", village,"<br>Average Children: ", round(avg_children, digit = 2)))) + labs(x = "", y = "Average number of children" ,title = "", fill = "Village") + 
         theme(legend.position = "none") +
         rotate_x_text(angle = 33, size = rel(1)) + scale_fill_viridis_d()
       ggplotly(chhoplot, tooltip = c("text"))
@@ -2001,7 +2036,7 @@ server <- function(input, output, session) {
   output$ocuplot <- renderPlotly({
     if (ocuVar() == "Primary Occupation for Head of Households") {
       pocuplot <- ggplot(countv, aes(x = job, y = n, fill = village)) +
-        geom_col(hoverinfo = "text", aes(text = paste("Village:", village, "<br>Total: ", n))) +
+        geom_col(hoverinfo = "text", aes(text = paste("Village:", village, "<br>Households: ", n))) +
         scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
         coord_flip() +
         theme_minimal () +
@@ -2010,7 +2045,7 @@ server <- function(input, output, session) {
     } 
     else if (ocuVar() == "Secondary Occupation for Head of Households") {
       socplot <- ggplot(scountv, aes(x = job, y = n, fill = village)) +
-        geom_col(hoverinfo = "text", aes(text = paste("Village:", village, "<br>Total: ", n))) +
+        geom_col(hoverinfo = "text", aes(text = paste("Village:", village, "<br>Household: ", n))) +
         scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
         coord_flip() +
         theme_minimal () +
@@ -2019,13 +2054,13 @@ server <- function(input, output, session) {
     }
     else if (ocuVar() == "Proportion of Households Involved in Agricultural Farming") {
       agfaplot <- ggplot(grouped, aes(forcats::fct_rev(village),prop_farm*100, fill = village)) + 
-        geom_col(hoverinfo = "text", aes(text = paste("Village:", village,"<br>Percentage: ", prop_farm*100, "%"))) + 
+        geom_col(hoverinfo = "text", aes(text = paste("Village:", village,"<br>Percentage: ", round(prop_farm*100, 2), "%"))) + 
         labs(x = "", y = "Percentage", title = "") + coord_flip() + theme(legend.position = "none") + scale_fill_viridis_d()
       ggplotly(agfaplot,tooltip = c("text"))
     }
     else if (ocuVar() == "Average Amount of Land Owned by Village") {
       mean_land_plot <- ggplot(land_stats, aes(x = forcats::fct_rev(villages), y = mean_land_value, fill = villages)) +
-        geom_col(hoverinfo = "text", aes(text = paste("Village:", villages,"<br>Mean Land Value: ", mean_land_value))) +
+        geom_col(hoverinfo = "text", aes(text = paste("Village:", villages,"<br>Mean Land Owned: ", round(mean_land_value,3)))) +
         coord_flip() + theme(legend.position = "none") +
         labs(x = "", y = "Land Owned (Kathas)") + scale_fill_viridis_d()
       ggplotly(mean_land_plot, tooltip = c("text"))
@@ -2041,7 +2076,7 @@ server <- function(input, output, session) {
     }
     else if (ocuVar() == "Average Job Duration for Head of Household") {
       job_duration_plot <- ggplot(job_duration_summary, aes(x = forcats::fct_rev(villages), y = job_duration_avg, fill = villages)) +
-        geom_col(hoverinfo = "text", aes(text = paste("Village:", villages,"<br>Average Job Duration: ", job_duration_avg, "months"))) + 
+        geom_col(hoverinfo = "text", aes(text = paste("Village:", villages,"<br>Average Job Duration: ", round(job_duration_avg,2), "months"))) + 
         coord_flip()+
         labs(x= "", y = "Average Job Duration (Months)")+
         ggtitle("") +
@@ -2080,14 +2115,15 @@ server <- function(input, output, session) {
     
     else if (finVar() == "Income vs Remmitances (October 2018 - November 2019)") {
       rem_inc <- ggplot(baseline.summary, aes(rmt_total, full_inc, color= village)) +
-        geom_point(data=baseline.summary, shape=17, size=3, hoverinfo = "text", aes(text = paste("Village: ", village, "<br>Total Remmitance: ", rmt_total, "<br>Total Income: ", full_inc))) +
+        geom_point(data=baseline.summary, shape=17, size=3, hoverinfo = "text", 
+                   aes(text = paste("Village: ", village, "<br>Total Remmitance: ", round(rmt_total,2), "<br>Total Income: ", round(full_inc, 2)))) +
         labs(x="Average Weekly Remmitances", y="Average Weekly Income", color="Villages") + 
         ggtitle("") + scale_color_viridis_d() +coord_flip() 
       ggplotly(rem_inc, tooltip = c("text"))
     }
     else if (finVar() == "Average Monthly Salary per Household by Village")  {
       salplot <- ggplot(m_salary, aes(village, round(avg_salary, digits = 2), fill = village)) + 
-        geom_col(hoverinfo = "text", aes(text = paste("Average Salary:", avg_salary, "₹"))) + 
+        geom_col(hoverinfo = "text", aes(text = paste("Average Salary:", round(avg_salary,2), "₹"))) + 
         labs(x = "", y = "Indian Rupees ₹" ,title = "", fill = "") +
         theme(legend.position = "none") + scale_fill_viridis_d() +
         rotate_x_text(angle = 33, size = rel(1))
@@ -2104,7 +2140,7 @@ server <- function(input, output, session) {
     
     else if (finVar() == "Percentage of Household with Migrant Workers") {
       migplot <- ggplot(migrant_prop, aes(forcats::fct_rev(village), migrant_proportion, fill = village)) + 
-        geom_col(hoverinfo = "text", aes(text = paste("Percentage: ", migrant_proportion))) + theme(legend.position = "none") + 
+        geom_col(hoverinfo = "text", aes(text = paste("Percentage: ", round(migrant_proportion, 2), "%"))) + theme(legend.position = "none") + 
         labs(x = "", y = "Percentage", title = "", fill = "") + coord_flip()+
         scale_fill_viridis_d()
       ggplotly(migplot, tooltip = c("text"))
