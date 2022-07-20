@@ -946,7 +946,7 @@ ui <- navbarPage(title = "",
                                                      p("• Fani (Category 4): 26 April– 4 May 2019 "),
                                                      p("• Matmo/Bulbul (Category 2): 28 October - 11 November 2019 "),
                                                      p("The Fani Cyclone was an extremely severe tropical storm, reported as the strongest in 2019, and the 10th most severe cyclone in the Indian subcontinent within the last 52 years (Kumar et al. 2020). 
-                                                       Its high-speed winds and torrential rain caused extensive flooding, destroying property, assets, agricultural lands, and leading to a significant loss of approximately sixty-four deaths across Eastern and Northern Inida.
+                                                       Its high-speed winds and torrential rain caused extensive flooding, destroying property, assets, agricultural lands, and leading to a significant loss of approximately sixty-four lives across Eastern and Northern Inida.
                                                        The Matmo cyclone formed in the Philippine Sea on October 28th, dissipated as it went West over land (Cambodia), then regained energy and reached peak strength as it went over the Andaman Sea and into the Bengal Bay, making landfall on November 7th, where it was renamed Bulbul (ReliefWeb, 2020).
                                                        This cyclone also caused severe impacts to the property and agricultural lands of the Sundarbans."),
                                                      p("Four cyclones also developed along the Arabian Sea during this period (Wordldata.info):"),
