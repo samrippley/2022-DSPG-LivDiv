@@ -905,18 +905,18 @@ ui <- navbarPage(title = "",
                                    column(4,
                                           h2(strong("Financial Diaries")),
                                           p("Gupta et al. (2021) use financial diaries to capture high-frequency data on household income, expenditure, and consumption behavior. As such, we have weekly financial and economic activities for approximately 300 households for an entire year (November 2018 to October 2019). "),
-                                          p("Household members were trained during the baseline interview to independently record their financial activities in their respective diaries (see image below for an example of a financial diary). Household received two more training sessions in the following two weeks and filled out the first four financial diaries during the training period. Additional support was given to families via phone calls and during the field teams monthly visit to collect completed diaries. These steps were implemented to ensure proper recording of weekly information. These diaries include data on weekly income, remittances, borrowing, lending, expenditure on consumption, and non-consumption items.")
-                                          
+                                          p("Household members were trained during the baseline interview to independently record their financial activities in their respective diaries (see image below for an example of a financial diary). Household received two more training sessions in the following two weeks and filled out the first four financial diaries during the training period. Additional support was given to families via phone calls and during the field teams monthly visit to collect completed diaries. These steps were implemented to ensure proper recording of weekly information. These diaries include data on weekly income, remittances, borrowing, lending, expenditure on consumption, and non-consumption items."),
+                                          br(),
+                                          br()
                                           
                                    ),
                                   
                           ),
-                          fluidRow(h4(strong("Example of Financial Diary")),
+                          fluidRow(
+                            h3(strong("Example of Financial Diary")),
                             align = "center",
-                                   img(src='Picture2.png', width = "50%"),
-                          ),
-                          fluidRow(align = "center",
-                              p(tags$small(em('Source: Gupta et al. (2021)'))))
+                                   img(src='Picture2.png', width = "50%"),)
+                          
                           
                           ), 
                  ## Sundarbans Region--------------------------------------------
@@ -1052,7 +1052,7 @@ ui <- navbarPage(title = "",
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
                                                      h4(strong("Who lives in the Sundarbans Region?")),
-                                                     p("We examine data from the baseline survey collected in November 2018 to understand better the socio-demographic and economic characteristics of the Sundarbans population in West Bengal, India.  "
+                                                     p("We examine data from the baseline survey collected in November 2018 to understand better the socio-demographic and economic characteristics of the Sundarbans population in West Bengal, India. Graphs are interactive – one can hover over an individual graph to produce a popup that contains specific attributes."
                                                      ),
                                                      p("Household heads in the Sundarbans area tend to be middle-aged adults, with the mean being around age 49. These individuals also have low levels of education as the average education across villages is approximately five years, comparable to completing elementary school. This low level of education may contribute to the varying poverty level in the region. More than half of families in Haridaskati Samsernagar live with less than ₹240 per week per person (Indian poverty line). However, other villages like Purba Dwarokapur have a lower proportion of households (18%) below the poverty line."
                                                      ),
@@ -1061,7 +1061,7 @@ ui <- navbarPage(title = "",
                                                      
                                               ) ,
                                               column(8, 
-                                                     h4(strong("Head of Household Demographics")),
+                                                     h4(strong("Demographics -  November 2018 (Baseline)")),
                                                      selectInput("agedrop", "Select Characteristic:", width = "100%", choices = c(
                                                        "Age" = "Mean Age for Head of Households",
                                                        "Education" = "Mean Years of Education for Head of Households", 
@@ -1087,52 +1087,35 @@ ui <- navbarPage(title = "",
                                               h1(strong("Livelihood Behavior"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
-                                                     h4(strong("Occupation")),
-                                                     p("While combing through the data our team realized that a household with only one means of support has nothing to fall back on if that livelihood is 
-                                                       destroyed by a disaster. Due to the increasing threats in the Sundarbans region, most of the 
-                                                       population depends on multiple sources of income. This is a common practice for climate 
-                                                       vulnerable regions, to manage and reduce risks."),
-                                                     p("We began our evaluation of livelihood behavior by looking at the head of households’ primary 
-                                                       occupation, primary occupation duration, and secondary occupation. The most common primary 
-                                                       and secondary occupations are Farming followed by Casual labor. These graphs show that there 
-                                                       are differences in occupation by village. For example, the village of Amrabati has the highest 
-                                                       proportion of workers in jobs related to fishing. The head of households’ occupations are 
-                                                       distributed relatively similarly from primary to secondary. However, the total number 
-                                                       of household heads in each occupation is lower in secondary occupation. The total number of 
-                                                       household heads with a primary occupation is 252 while 149 has a secondary occupation."),
-                                                     p("The average job duration by village for head of households is 6 to 8 months. This implies that 
-                                                       on average, they work in their primary occupation for ½ to ¾ of the year. This is evidence that 
-                                                       the population is relying on different, multiple activities within a year."),
-                                                     h4(strong("Agriculture")),
-                                                     p("Our data set contained an agricultural crop variable where participants gave a yes/no answer to 
-                                                       the question “Did your household cultivate any agriculture crops in the last 12 months?” On 
-                                                       average, across all the villages, 63.9% of the households participate in farming. When broken 
-                                                       down by village, Amrabati had the lowest percentage of households that had cultivated crops in 
-                                                       the given year, at 7%. Haridaskati Samsernagar had the highest percentage of households that had 
-                                                       cultivated crops in the given year, at 86%. This was closely followed by Pargumti at 85%. Given 
-                                                       that on average, across all the villages, 63.9% of the households participate in farming it is 
-                                                       evident that a very shows that a large proportion of our households participated in some sort of 
-                                                       crop cultivation."), 
-                                                     p("We next evaluated Land Holding and Land Fallow by village. Land holding is the amount of land 
-                                                       owned in Kathas. A Katha is unit of area mostly used for land measure in India and Bangladesh. 
-                                                       One unit of katha is equivalent to 720 square feet. Pargumti and Bijoynagar have the highest 
-                                                       average amount of land owned, with households owning over 60 kathas of land. Amrabati and Sagar 
-                                                       have the lowest amount of land owned. Land fallow is agriculture land that needs to be left to 
-                                                       rest and regenerate. This land is typically not in good enough condition to sustain crops. The 
-                                                       two villages that had the lowest amount of land owned, have no land fallow. This is evidence that 
-                                                       these villages that these villages are less involved in agriculture.")
+                                                     h4(strong("Working in the Sundarbans ")),
+                                                     p("Agriculture is the backbone of the Sundarbans' economy, which residents rely heavily on for their livelihood. 
+                                                       This is supported by our interactive graphs where for most heads of households, their primary job is in the 
+                                                       agricultural sector regardless of village, specifically Farmer, Casual labor, and Agricultural wage worker in 2018. 
+                                                       However, there are some differences across villages. For example, if one selects Amrabati, majority of household 
+                                                       heads are Fishing related (User can select village to see specific attributes). Agricultural-related jobs are seasonal, 
+                                                       which may explain the short average job duration for household heads of approximately 8 months. Due to this agricultural 
+                                                       seasonality, most heads of households (about 60%) have a second job. Interestingly, the distribution of secondary occupations 
+                                                       is similar to the primary, with agricultural jobs dominating the type of occupation."),
+                                                     h4(strong("Agricultural Farming ")),
+                                                     p("Household heads are not the only individuals involved in agriculture. On average, 63.9% of village households cultivated crops in the 
+                                                       last 12 months. There are variations across villages, from as high as 86% in Haridaskati Samsernagar to as low as 7% in Amrabati."), 
+                                                     p("Despite most of the population being involved in agriculture, land holding in the Sundarbans is mostly marginal. Pargumti and Bijoynagar 
+                                                       have the highest average amount of land owned, with households owning over 60 kathas. Kathas is a land measurement commonly used in India. 
+                                                       One unit of katha is equivalent to 720 square feet in West Bengal. This shows that land holding for families is small, which may be related
+                                                       to the increasing population and change in the cultivable land due to erosion or climate change. To help rest and regenerate harvest, farmers 
+                                                       tend to fallow their land. Bijoynagar had the largest average land fallow (about 95 kathas) for the current agricultural season.")
                                                      
                                                      
                                               ) ,
-                                              column(8, h4(strong("Head of Household Demographics")),
+                                              column(8, h4(strong("Demographics -  November 2018 (Baseline)")),
                                                      selectInput("ocudrop", "Select Characteristic:", width = "100%", choices = c(    
                                                        "Primary Occupation" = "Primary Occupation for Head of Households",
                                                        "Secondary Occupation" ="Secondary Occupation for Head of Households", 
                                                        "Job Duration" = "Average Job Duration for Head of Household",
                                                        "Agricultural Farming" = "Proportion of Households Involved in Agricultural Farming",
                                                        "Land Holding" = "Average Amount of Land Owned by Village",
-                                                       "Land Fallow" = "Average Amount of Land Fallowed by Village",
-                                                       "Household Assets" = "Proportion of Households Owning Assets"
+                                                       "Land Fallow" = "Average Amount of Land Fallowed by Village"
+                                                       #"Household Assets" = "Proportion of Households Owning Assets"
                                                        
                                                      ),
                                                      ),
@@ -1153,21 +1136,26 @@ ui <- navbarPage(title = "",
                                               h1(strong("Financial Practices"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
-                                                     h4(strong("Description")),
-                                                     p("We examine data from the baseline survey to establish a foundational understanding of the financial behavior of the Sundarbans population. The financial diaries provide an extensive amount of information on the fiscal practices of our representative population. The baseline information provides us with a strong starting point in our economic analysis of the data. "),
-                                                     p("On average, the monthly salaries for the households range from 2500 INR to 4600. On average, Amrabati reported the highest salary and Sagar has the lowest on average."),
-                                                     
-                                                     p("In our sample population, a large proportion of the household incomes come from remittances. Remittances are any income a household receives from someone working away from the household. In most villages, higher remittances correlate with higher income. While our analysis showed that remittances are a common source of income, only 12% of households own a business, making this an uncommon source of income throughout the villages. Not many households are able to save- given that such a high proportion of the population live below the Indian poverty line of less than ₹240 per week per person.")
+                                                     h4(strong("How do residents earn and spend their money?")),
+                                                     p("We present interactive graphs of the baseline survey to understand the financial behavior of the Sundarbans population. 
+                                                     There are slight differences in average household monthly salary across villages ranging from as high as ₹4600 in Amrabati to as low as ₹2500in Sagar.
+                                                       This salary is more likely coming from working for someone else as the majority of family members do not own a business."),
+                                                     p("Migration appears to be a prominent livelihood strategy – 15% of households had at least one migrant in the last ten years.
+                                                     Job opportunities may play a primary factor in this migration trend, thus explaining the high remittance level for our sample. Remittances are any income household receives 
+                                                     from someone working away from home. We visualize the relationship between average weekly remittances and average weekly income. In most villages, higher remittances correlate with a higher weekly income. 
+                                                     This suggests that remittances are a primary income source for most families Given the poverty level and low 
+                                                       income-earning opportunities it is no surprise that many families are unable to or rarely save any money.")
                                                      
                                               ) ,
-                                              column(8, h4(strong("Head of Household Demographics")),
-                                                     selectInput("findrop", "Select Characteristic:", width = "100%", choices = c( 
+                                              column(8, h4(strong("Demographics -  November 2018 (Baseline)")),
+                                                     selectInput("findrop", "Select Practice:", width = "100%", choices = c( 
                                                        
                                                        "Household Business" = "Number of Households that Own a Business",
+                                                       "Household Assets" = "Proportion of Households Owning Assets",
                                                        "Salary" = "Average Monthly Salary per Household by Village",
-                                                       "Migrant Workers" = "Percentage of Migrant Workers per Household",
+                                                       "Migrant Workers" = "Percentage of Household with Migrant Workers",
                                                        "Income/Remmitances" = "Income vs Remmitances (October 2018 - November 2019)",
-                                                       "Savings" = "Number of Times Households Saved Money in Year Prior to Baseline Survey (October 2018 - November 2019)"
+                                                       "Savings" = "Number of Times Households Saved in Prior Year"
                                                      )),
                                                      fluidRow(align = "center",
                                                               h4(strong(textOutput("result")))),
@@ -2043,17 +2031,6 @@ server <- function(input, output, session) {
       ggplotly(mean_land_plot, tooltip = c("text"))
       
     }
-    else if (ocuVar() == "Proportion of Households Owning Assets") {
-      assetplot <- ggplot(assets_long, aes(property, percentage, fill = property, text = paste(""))) + 
-        geom_col(hoverinfo = "text", aes(text = paste("Property: ", property,
-                                  "<br>Percentage: ", percentage))) + 
-        labs(x = "Asset", y = "Percentage" ,title = "") + 
-        theme(legend.position = "none") +
-        rotate_x_text(angle = 33, size = rel(1)) +
-        scale_fill_viridis_d()    
-        
-      ggplotly(assetplot, tooltip = c("text"))
-    }
     else if (ocuVar() == "Average Amount of Land Fallowed by Village") {
       land_fallow_plot <- ggplot(land_fallow, aes(x = forcats::fct_rev(village), y = sum, fill = village)) +
         geom_col(hoverinfo = "text", aes(text = paste("Village:", villages,"<br>Land Fallowed: ", sum)))+
@@ -2088,7 +2065,18 @@ server <- function(input, output, session) {
         #ggtitle("Households That Own a Business") +
         coord_flip()
       ggplotly(village_bus_count_plot, tooltip = c("text"))
-      }
+    }
+    else if (finVar() == "Proportion of Households Owning Assets") {
+      assetplot <- ggplot(assets_long, aes(property, percentage, fill = property, text = paste(""))) + 
+        geom_col(hoverinfo = "text", aes(text = paste("Property: ", property,
+                                                      "<br>Percentage: ", percentage))) + 
+        labs(x = "Asset", y = "Percentage" ,title = "") + 
+        theme(legend.position = "none") +
+        rotate_x_text(angle = 33, size = rel(1)) +
+        scale_fill_viridis_d()    
+      
+      ggplotly(assetplot, tooltip = c("text"))
+    }
     
     else if (finVar() == "Income vs Remmitances (October 2018 - November 2019)") {
       rem_inc <- ggplot(baseline.summary, aes(rmt_total, full_inc, color= village)) +
@@ -2105,7 +2093,7 @@ server <- function(input, output, session) {
         rotate_x_text(angle = 33, size = rel(1))
       ggplotly(salplot, tooltip = c("text"))
     }
-    else if (finVar() == "Number of Times Households Saved Money in Year Prior to Baseline Survey (October 2018 - November 2019)") {
+    else if (finVar() == "Number of Times Households Saved in Prior Year") {
       savplot <- ggplot(nbsavcount, aes(x = nb_put_saving, y = n, fill = "red")) +
         geom_point(hoverinfo = "text", aes(text = paste("Number of Households: ", n, "<br>Number of Times Household Saved: ", nb_put_saving))) +
         labs(x = "Total Households ", y = " Number of Times Household Saved") +
@@ -2114,7 +2102,7 @@ server <- function(input, output, session) {
       ggplotly(savplot, tooltip = c("text"))
     }
     
-    else if (finVar() == "Percentage of Migrant Workers per Household") {
+    else if (finVar() == "Percentage of Household with Migrant Workers") {
       migplot <- ggplot(migrant_prop, aes(forcats::fct_rev(village), migrant_proportion, fill = village)) + 
         geom_col(hoverinfo = "text", aes(text = paste("Percentage: ", migrant_proportion))) + theme(legend.position = "none") + 
         labs(x = "", y = "Percentage", title = "", fill = "") + coord_flip()+
