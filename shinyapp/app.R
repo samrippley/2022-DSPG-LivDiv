@@ -1120,7 +1120,7 @@ ui <- navbarPage(title = "",
                                                      
                                                      ),
                                                      fluidRow(align = "center",
-                                                              h4(strong(textOutput("result2")))),
+                                                              h4(strong(textOutput("result2"))),
                                                      withSpinner(plotlyOutput("ageplot", height = "500px", width = "100%")),
                                                      
                                               ),
@@ -1128,7 +1128,7 @@ ui <- navbarPage(title = "",
                                               #     h4("References: "), 
                                               #   p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
                                               #  p("", style = "padding-top:10px;")) 
-                                     )), 
+                                     ))), 
                             tabPanel("Livelihood", 
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Livelihood Behavior"), align = "center"),
@@ -1162,14 +1162,15 @@ ui <- navbarPage(title = "",
                                                        "Agricultural Farming" = "Proportion of Households Involved in Agricultural Farming",
                                                        "Land Holding" = "Average Amount of Land Owned by Village",
                                                        "Land Fallow" = "Average Amount of Land Fallowed by Village"
-                                                       #"Household Assets" = "Proportion of Households Owning Assets"
+                                                       
                                                        
                                                      ),
                                                      ),
                                                      fluidRow(align = "center",
-                                                              h4(strong(textOutput("result1")))),
+                                                              h4(strong(textOutput("result1"))),
                                                      withSpinner(plotlyOutput("ocuplot", height = "500px")),
-                                                     
+                                                     br(),
+                                                     textOutput("result4")),
                                               ),
                                      )),
                             # column(12, 
@@ -1205,9 +1206,10 @@ ui <- navbarPage(title = "",
                                                        "Savings" = "Number of Times Households Saved in Prior Year"
                                                      )),
                                                      fluidRow(align = "center",
-                                                              h4(strong(textOutput("result")))),
+                                                              h4(strong(textOutput("result"))),
                                                      
                                                      withSpinner(plotlyOutput("finplot", height = "500px")),
+                                                   
                                                      
                                               ),
                                               # column(12, 
@@ -1217,7 +1219,7 @@ ui <- navbarPage(title = "",
                                               
                                      )),
                             
-                 ), 
+                 )), 
                  
                  
                  
@@ -1729,6 +1731,57 @@ server <- function(input, output, session) {
   })  
   
   
+  #note 
+  
+  output$result4 <- renderText({
+    if (finVar() == "Number of Households that Own a Business") {
+      paste("")
+    }
+    else if (finVar() == "Proportion of Households Owning Assets") {
+      paste("")
+    }
+    
+    else if (finVar() == "Income vs Remmitances (October 2018 - November 2019)") {
+      paste("")
+    }
+    else if (finVar() == "Average Monthly Salary per Household by Village")  {
+      paste("")
+    }
+    else if (finVar() == "Number of Times Households Saved in Prior Year") {
+      paste("")
+    }
+    
+    else if (finVar() == "Percentage of Household with Migrant Workers") {
+      paste("")
+    }
+    
+  })  
+  
+  output$result4 <- renderText({ 
+  if (ocuVar() == "Primary Occupation for Head of Households") {
+    paste("")
+  } 
+  else if (ocuVar() == "Secondary Occupation for Head of Households") {
+    paste("")
+  }
+  else if (ocuVar() == "Proportion of Households Involved in Agricultural Farming") {
+    paste("")
+  }
+  else if (ocuVar() == "Average Amount of Land Owned by Village") {
+    paste("")
+    
+  }
+  else if (ocuVar() == "Average Amount of Land Fallowed by Village") {
+    paste("*Note: Data missing for some villages or missing bar means zero land was fallowed for village")
+  }
+  else if (ocuVar() == "Average Job Duration for Head of Household") {
+    paste("")
+  }
+  
+})
+  
+  
+
   #overview photos 
   index <- reactiveVal(1)
   
