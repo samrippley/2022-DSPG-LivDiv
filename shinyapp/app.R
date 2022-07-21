@@ -947,7 +947,7 @@ ui <- navbarPage(title = "",
                                      
                                      fluidRow(style = "margin: 6px;", #align = "justify",
                                               p("", style = "padding-top:10px;"),
-                                              column(4, 
+                                              column(5, 
                                                      h2(strong("Sundarbans Area")),
                                                      p("This project examines households living in the Sundarbans in West Bengal, India – a coastal delta region in the Bay of Bengal.  Gupta et al. (2021) surveyed households in the North 24 – Parganas and South 24 – Parganas districts. Specifically, ten representative villages were randomly chosen from five administrative blocks in the Sundarbans:"),
                                                      (tags$ul(
@@ -1008,9 +1008,9 @@ ui <- navbarPage(title = "",
                                                     )),
                                              ),
 
-                                              column(8, 
+                                              column(7, 
                                                      h2(strong("")),
-                                                     leafletOutput("map_leaflet", width = "100%", height = 700)
+                                                     leafletOutput("map_leaflet", width = "100%", height = 800)
                                               
                                                      
                                                      
