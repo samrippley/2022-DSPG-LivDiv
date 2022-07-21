@@ -395,7 +395,7 @@ rmt_method_plot <- ggplot(method_dat, aes( x= reorder(Method, method_counts), y 
   geom_text(aes(label = method_values), size = 3) + scale_fill_brewer(palette = "Paired")
 
 
-# leaflet data --------------------------------------------------------------------
+# leaflet data for villages tab--------------------------------------------------------------------
 
 require(rgdal)
 
@@ -437,7 +437,6 @@ addAwesomeMarkers(
   lat = 22.227912, lng = 89.00475,
   label = "Pargumti",
   labelOptions = , icon=icons) %>%
-  addAwesomeMarkers(~lon, ~lat, label = ~as.character(Village.Na), labelOptions =  ,icon=icons, data=village) %>%
 addCircles(lat = 21.657, lng = 88.0591,
            radius=6000, color = 'blue', opacity = 1) %>%
   addCircles(lat = 22.227912, lng = 89.02,
@@ -450,6 +449,110 @@ addCircles(lat = 21.657, lng = 88.0591,
              radius=6000, color = 'black') %>%
   addLegend(title = "Administrative Blocks:", position = "bottomright", colors = c("blue", "black","purple", "yellow","red"), labels = c("Block 1", "Block 2", "Block 3", "Block 4", "Block 5"))
   
+# leaflet data for age graph--------------------------------------------------------------------
+
+icons2 <- awesomeIcons(
+  icon = 'ios-close',
+  iconColor = 'black',
+  library = 'ion',
+  markerColor = "lightred"
+)
+
+
+map_leaflet2 <- leaflet(data = d.sundarban) %>%
+  addTiles() %>%
+  #addPolygons(
+  #  fillColor = "black",
+   # stroke=TRUE,
+  #  weight = 1,
+   # smoothFactor = 0.2,
+   # opacity = 1.0,
+  #  fillOpacity = 0.5,
+   # highlightOptions = highlightOptions(color = "white",
+    #                                    weight = 2,
+     #                                   bringToFront = FALSE)) %>%
+  setView(lat= 21.9342, lng = 88.5345, zoom = 9) %>%
+  addAwesomeMarkers(popup = paste0("Amrabati",
+                                   br(),
+                                   "Age: 46.68",
+                                   br(),
+                                   "Median Household Size: 4"),
+                    lat = 21.570553, lng = 88.263257,
+                    label = "Amrabati",
+                    labelOptions = , icon=icons2)%>%
+  addAwesomeMarkers(popup = paste0("Beguakhali",
+                                   br(),
+                                   "Age: 49.47",
+                                   br(),
+                                   "Median Household Size: 5"),
+                    lat = 21.660021, lng = 88.046135,
+                    label = "Beguakhali",
+                    labelOptions = , icon=icons2)%>%
+  addAwesomeMarkers(popup = paste0("Bijoynagar",
+                                   br(),
+                                   "Age: 52.6",
+                                   br(),
+                                   "Median Household Size: 4"),
+                    lat = 22.141427, lng = 88.786918,
+                    label = "Bijoynagar",
+                    labelOptions = , icon=icons2)%>%
+  addAwesomeMarkers(popup = paste0("Birajnagar",
+                                   br(),
+                                   "Age: 48.79",
+                                   br(),
+                                   "Median Household Size: 4.5"),
+                    lat = 22.152742, lng = 88.790464,
+                    label = "Birajnagar",
+                    labelOptions = , icon=icons2)%>%
+  addAwesomeMarkers(popup = paste0("Haridaskati Samsernagar",
+                                   br(),
+                                   "Age: 50.97",
+                                   br(),
+                                   "Median Household Size: 4"),
+                    lat = 22.219522, lng = 89.033886,
+                    label = "Haridaskati Samsernagar",
+                    labelOptions = , icon=icons2)%>%
+  addAwesomeMarkers(popup = paste0("Lakshmi Janardanpur",
+                                   br(),
+                                   "Age: 50.68",
+                                   br(),
+                                   "Median Household Size: 4"),
+                    lat = 21.835391, lng = 88.45752,
+                    label = "Lakshmi Janardanpur",
+                    labelOptions = , icon=icons2)%>%
+  addAwesomeMarkers(popup = paste0("Pargumti",
+                                   br(),
+                                   "Age: 53.78",
+                                   br(),
+                                   "Median Household Size: 4"),
+    lat = 22.227912, lng = 89.00475,
+    label = "Pargumti",
+    labelOptions = , icon=icons2) %>%
+  addAwesomeMarkers(popup = paste0("Purba Dwarokapur",
+                                   br(),
+                                   "Age: 43.64",
+                                   br(),
+                                   "Median Household Size: 4"),
+                    lat = 21.885951, lng = 88.423895,
+                    label = "Purba Dwarokapur",
+                    labelOptions = , icon=icons2)%>%
+  addAwesomeMarkers(popup = paste0("Sagar",
+                                   br(),
+                                   "Age: 47.5",
+                                   br(),
+                                   "Median Household Size: 5"),
+                    lat = 21.6528, lng = 88.0753,
+                    label = "Sagar",
+                    labelOptions = , icon=icons2) %>%
+  addAwesomeMarkers(popup = paste0("Shibpur",
+                                   br(),
+                                   "Age: 51.29",
+                                   br(),
+                                   "Median Household Size: 4"),
+                    lat = 21.616568, lng = 88.253216,
+                    label = "Shibpur",
+                    labelOptions = , icon=icons2)
+
 
 
 #-------------------------------
@@ -1090,8 +1193,8 @@ ui <- navbarPage(title = "",
                  
                  ## Tab Demographics --------------------------------------------
                  navbarMenu("Demographics" , 
-                            tabPanel("Socioeconomic", 
-                                     fluidRow(style = "margin: 6px;", align = "justify",
+                            tabPanel("Socioeconomic",
+                                         fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Socioeconomic Characteristics"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
@@ -1104,7 +1207,9 @@ ui <- navbarPage(title = "",
                                                      )
                                                      
                                               ) ,
-                                              column(8, 
+                                              column(8,
+                                                     tabsetPanel(
+                                                       tabPanel("Demographics",
                                                      h4(strong("Head of Household Demographics -  November 2018 (Baseline)")),
                                                      selectInput("agedrop", "Select Characteristic:", width = "100%", choices = c(
                                                        "Age" = "Mean Age for Head of Households",
@@ -1119,13 +1224,19 @@ ui <- navbarPage(title = "",
                                                      fluidRow(align = "center",
                                                               h4(strong(textOutput("result2"))),
                                                      withSpinner(plotlyOutput("ageplot", height = "500px", width = "100%")),
-                                                     
+                                                     ),
                                               ),
+                                             tabPanel("Head of Household Demographics",
+                                                      h4(strong("Head of Household Demographics -  November 2018 (Baseline)")),
+                                                     withSpinner(leafletOutput("ageplo", height = "500px", width = "80%")),
+                                                    
+                                     
+                                              ))),
                                               # column(12, 
                                               #     h4("References: "), 
                                               #   p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
                                               #  p("", style = "padding-top:10px;")) 
-                                     ))), 
+                                     )), 
                             tabPanel("Livelihood", 
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Livelihood Behavior"), align = "center"),
@@ -1966,14 +2077,18 @@ server <- function(input, output, session) {
     
   })
   
-  
-  
-  
-  
   #sociodemo tabset -----------------------------------------------------
   ageVar <- reactive({
     input$agedrop
   })
+  
+  
+  
+  output$ageplo <- renderLeaflet({
+    if (ageVar() == "Mean Age for Head of Households") {
+      map_leaflet2
+    }
+    })
   
   output$ageplot <- renderPlotly({
     if (ageVar() == "Mean Age for Head of Households") {
@@ -2025,7 +2140,6 @@ server <- function(input, output, session) {
       ggplotly(chhoplot, tooltip = c("text"))
     }
   })
-  
   
   
   #livelihood tabset -----------------------------------------------------
