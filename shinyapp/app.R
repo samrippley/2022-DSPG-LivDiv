@@ -392,7 +392,7 @@ rmt_method_plot <- ggplot(method_dat, aes( x= reorder(Method, method_counts), y 
   coord_flip()+
   theme(legend.position = "none")+
   #ggtitle("Method of Receiving Remittances")+
-  geom_text(aes(label = method_values), size = 3) + scale_fill_viridis_d()
+  geom_text(aes(label = method_values), size = 3) + scale_fill_brewer(palette = "Paired")
 
 
 # leaflet data --------------------------------------------------------------------
@@ -469,7 +469,7 @@ rmt_purpose_plot <- ggplot(purpose_dat, aes(x = reorder(Purpose, purpose_count),
   #rotate_x_text(angle = 22, size = rel(0.8))
   coord_flip()+
   theme(legend.position = "none")+
-  geom_text(aes(label = purpose_values), size = 3) + scale_fill_viridis_d()
+  geom_text(aes(label = purpose_values), size = 3) + scale_fill_brewer(palette = "Paired")
 #--------------------------------------------------------------------
 # rmt table
 fd <- livdiv %>%
@@ -502,7 +502,7 @@ ggplot(exbyvil, aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) 
   geom_line() +
   labs(title="Average Weekly Expenditure by Village",
        x="Date", y="Average Weekly Expenditure (INR)") +
-  scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + scale_color_viridis_d()
+  scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + scale_color_brewer(palette = "Paired")
 #--------------------------------------------------------------------
 # Expenditure table
 expend_table <- expen %>% 
@@ -515,7 +515,7 @@ names(expend_table) <- c("Date", "Village", "Average Expenditure")
 fin_diary <- livdiv %>% select(village, date, week, name, full_inc) %>% arrange(week, village) %>% group_by(week) 
 fin_diary$date <- as_date(fin_diary$date)
 avg_tot_inc <- fin_diary %>% group_by(date, village, week) %>% summarize(avg_inc = mean(full_inc, na.rm = TRUE))
-ggplot(avg_tot_inc, aes(date, avg_inc, color = village)) + geom_line() + labs(x = "", y = "Income (INR)", title = "Average Weekly Household Income by village", color = "Village") + scale_color_viridis_d()
+ggplot(avg_tot_inc, aes(date, avg_inc, color = village)) + geom_line() + labs(x = "", y = "Income (INR)", title = "Average Weekly Household Income by village", color = "Village") + scale_color_brewer(palette = "Paired")
 #--------------------------------------------------------------------
 #Income table 
 avg_inc_table <- fin_diary %>% group_by(date, village) %>% summarize("Average Income" = mean(full_inc, na.rm = TRUE))
@@ -540,7 +540,7 @@ shocks2 <- baseline %>% select(village, shk_count) %>%
 
 shocks_village <- ggplot(shocks2, aes(village, avg_count, fill = village)) + geom_col() + 
   labs(x = "", y = "No. of Shocks" ,title = "", fill = "Village") + 
-  theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_viridis_d() + coord_polar()
+  theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_brewer(palette = "Paired") + coord_polar()
 
 
 ## Total Shocks by Year
@@ -555,7 +555,7 @@ shocks_year_long <- gather(shock_year, year, count, "2009":"2018")
 
 shocks_by_year <- ggplot(shocks_year_long, aes(year, count, fill = year)) + geom_col() + 
   labs(x = "", y = "Number of Shocks" ,title = "") + 
-  theme(axis.ticks.x=element_blank(), legend.position="none") + scale_fill_viridis_d() 
+  theme(axis.ticks.x=element_blank(), legend.position="none") + scale_fill_brewer(palette = "Paired")
 
 ## Frequency of each shocks in 2009
 
@@ -586,7 +586,7 @@ cope_labels <- c("Did not do anything","Unconditional help provided by relatives
 shocks_cope$shk_2009_cope<-replace(shocks_cope$shk_2009_cope, shocks_cope$shk_2009_cope == 997, 16)
 
 cope_2009_plot <- ggplot(shocks_cope, aes(shk_2009_cope, fill = village)) + geom_bar() +
-  labs(x = "", y = "" ,title = "", fill = "Village") + scale_fill_viridis_d() +
+  labs(x = "", y = "" ,title = "", fill = "Village") + scale_fill_brewer(palette = "Paired") +
   theme(axis.text = element_text(size = 6)) +
   scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), labels = str_wrap(cope_labels, width = 30), limits = c(0:20)) + 
   coord_flip() 
@@ -600,7 +600,7 @@ relocation_labels <- c("No", "Yes, for under a month", "Yes, for over a month")
 shock_relocation_2009_yn <- ggplot(shock_relocation, aes(shk_2009_reloc_yn, fill = village)) + geom_bar() + 
   labs(x = "", y = "No. of Households" ,title = "", fill = "Village") + 
   scale_x_discrete(breaks = c(0,1,2), labels = str_wrap(relocation_labels, width = 30), limits = c(0:2)) + 
-  scale_fill_viridis_d()
+  scale_fill_brewer(palette = "Paired")
 
 ## Where they Relocated after 2009 Shock
 
@@ -613,7 +613,7 @@ relocation_where_labels <- c("Within same village","Other village in Sundarbans"
 shock_relocation_2009 <- ggplot(shock_relocation_where, aes(shk_2009_reloc1, fill = village)) + geom_bar() + 
   labs(x = "", y = "No. of Households" ,title = "", fill = "Village") + 
   scale_x_discrete(breaks = c(1,2,3,4,5,6), labels = str_wrap(relocation_where_labels, width = 20), limits = c(1:6)) + 
-  scale_fill_viridis_d() + coord_flip() +  theme(axis.text = element_text(size = 8))
+  scale_fill_brewer(palette = "Paired") + coord_flip() +  theme(axis.text = element_text(size = 8))
 
 
 ##Male and Female Income
@@ -1170,9 +1170,9 @@ ui <- navbarPage(title = "",
                                                               h4(strong(textOutput("result1"))),
                                                      withSpinner(plotlyOutput("ocuplot", height = "500px")),
                                                      br(),
-                                                     textOutput(("result4"),
+                                                     textOutput("result4")),
                                               ),
-                                     )))),
+                                     )),
                             # column(12, 
                             #       h4("References: "), 
                             #       p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
@@ -1209,7 +1209,6 @@ ui <- navbarPage(title = "",
                                                               h4(strong(textOutput("result"))),
                                                      
                                                      withSpinner(plotlyOutput("finplot", height = "500px")),
-                                                     h4(strong(textOutput("result3")))),
                                                    
                                                      
                                               ),
@@ -1220,7 +1219,7 @@ ui <- navbarPage(title = "",
                                               
                                      )),
                             
-                 ), 
+                 )), 
                  
                  
                  
@@ -1732,12 +1731,12 @@ server <- function(input, output, session) {
   
   #note 
   
-  output$result3 <- renderText({
+  output$result4 <- renderText({
     if (finVar() == "Number of Households that Own a Business") {
       paste("")
     }
     else if (finVar() == "Proportion of Households Owning Assets") {
-      paste("Asset")
+      paste("")
     }
     
     else if (finVar() == "Income vs Remmitances (October 2018 - November 2019)") {
@@ -1864,7 +1863,7 @@ server <- function(input, output, session) {
       xlab("Date") +
       ylab("Amount Borrowed (INR)")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) +
-      scale_color_viridis_d() +
+      scale_color_brewer(palette = "Paired") +
       #theme(legend.position = "none")+
       geom_rect(data = filtered_event_borr(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
     
@@ -1884,7 +1883,7 @@ server <- function(input, output, session) {
       ylab("Number of HH")+
       theme_classic()+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) +
-      scale_color_viridis_d() +
+      scale_color_brewer(palette = "Paired") +
       #theme(legend.position = "none")+
       geom_rect(data = filtered_event_borr(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
     
@@ -1899,7 +1898,7 @@ server <- function(input, output, session) {
       xlab("") +
       ylab("")+
       theme(legend.position = "none")+
-      scale_fill_viridis_d()
+      scale_fill_brewer(palette = "Paired")
   })
   
   
@@ -1941,7 +1940,7 @@ server <- function(input, output, session) {
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       theme(plot.caption = element_text(size = 12))+
       geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
-      scale_color_viridis_d()
+      scale_color_brewer(palette = "Paired")
     
   })
   
@@ -1954,7 +1953,7 @@ server <- function(input, output, session) {
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       theme(plot.caption = element_text(size = 12))+
       geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
-      scale_color_viridis_d()
+      scale_color_brewer(palette = "Paired")
   })
   
   output$cs_other <- renderPlot({
@@ -1966,7 +1965,7 @@ server <- function(input, output, session) {
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       theme(plot.caption = element_text(size = 12))+
       geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
-      scale_color_viridis_d()
+      scale_color_brewer(palette = "Paired")
     
   })
   
@@ -1987,7 +1986,7 @@ server <- function(input, output, session) {
         ylab("Age") + 
         xlab("")+
         theme(legend.position = "none") +
-        rotate_x_text(angle = 33, size = rel(1)) + scale_fill_viridis_d()
+        rotate_x_text(angle = 33, size = rel(1)) + scale_fill_brewer(palette = "Paired")
       ggplotly(fplot, tooltip = c("text"))
     }
     else if (ageVar() == "Mean Years of Education for Head of Households") {
@@ -1995,7 +1994,7 @@ server <- function(input, output, session) {
         geom_bar(width = 1, stat = "identity", hoverinfo = "text", aes(text = paste("Education: ", round(head_edu, 2), "<br>Village: ", village))) +
         facet_wrap(~village, ncol = 5) +
         labs(x = NULL, y = "Years of Education") +
-        theme(legend.position="none", strip.text.x = element_text(size = 9)) + scale_fill_viridis_d()
+        theme(legend.position="none", strip.text.x = element_text(size = 9)) + scale_fill_brewer(palette = "Paired")
       ggplotly(splot, tooltip = c("text"))
     }
     else if (ageVar() == "Households that Live Below Poverty Line (₹240) per week") {
@@ -2018,14 +2017,14 @@ server <- function(input, output, session) {
         geom_col( hoverinfo = "text", aes(text = paste("Village:", village,"<br>Median: ", median))) +
         labs( x = "", y = "Median Household Size")+
         coord_flip()+
-        theme(legend.position="none") + scale_fill_viridis_d()
+        theme(legend.position="none") + scale_fill_brewer(palette = "Paired")
       ggplotly(hh_size_plot, tooltip = c("text"))
     }
     else if (ageVar() == "Total Children per Household") {
       chhoplot <- ggplot(avg_children, aes(x = village, y = avg_children, fill = village)) + 
         geom_col(hoverinfo = "text", aes(text = paste("Village:", village,"<br>Average Children: ", round(avg_children, digit = 2)))) + labs(x = "", y = "Average number of children" ,title = "", fill = "Village") + 
         theme(legend.position = "none") +
-        rotate_x_text(angle = 33, size = rel(1)) + scale_fill_viridis_d()
+        rotate_x_text(angle = 33, size = rel(1)) + scale_fill_brewer(palette = "Paired")
       ggplotly(chhoplot, tooltip = c("text"))
     }
   })
@@ -2044,7 +2043,7 @@ server <- function(input, output, session) {
         scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
         coord_flip() +
         theme_minimal () +
-        labs(x = "", y = "Total Households", fill = "Select Village:") + scale_fill_viridis_d()
+        labs(x = "", y = "Total Households", fill = "Select Village:") + scale_fill_brewer(palette = "Paired")
       ggplotly(pocuplot, tooltip = c("text"))
     } 
     else if (ocuVar() == "Secondary Occupation for Head of Households") {
@@ -2053,20 +2052,20 @@ server <- function(input, output, session) {
         scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
         coord_flip() +
         theme_minimal () +
-        labs(x = "", y = "Total Households", fill = "Select Village:") + scale_fill_viridis_d()
+        labs(x = "", y = "Total Households", fill = "Select Village:") + scale_fill_brewer(palette = "Paired")
       ggplotly(socplot, tooltip = c("text"))
     }
     else if (ocuVar() == "Proportion of Households Involved in Agricultural Farming") {
       agfaplot <- ggplot(grouped, aes(forcats::fct_rev(village),prop_farm*100, fill = village)) + 
         geom_col(hoverinfo = "text", aes(text = paste("Village:", village,"<br>Percentage: ", round(prop_farm*100, 2), "%"))) + 
-        labs(x = "", y = "Percentage", title = "") + coord_flip() + theme(legend.position = "none") + scale_fill_viridis_d()
+        labs(x = "", y = "Percentage", title = "") + coord_flip() + theme(legend.position = "none") + scale_fill_brewer(palette = "Paired")
       ggplotly(agfaplot,tooltip = c("text"))
     }
     else if (ocuVar() == "Average Amount of Land Owned by Village") {
       mean_land_plot <- ggplot(land_stats, aes(x = forcats::fct_rev(villages), y = mean_land_value, fill = villages)) +
         geom_col(hoverinfo = "text", aes(text = paste("Village:", villages,"<br>Mean Land Owned: ", round(mean_land_value,3)))) +
         coord_flip() + theme(legend.position = "none") +
-        labs(x = "", y = "Land Owned (Kathas)") + scale_fill_viridis_d()
+        labs(x = "", y = "Land Owned (Kathas)") + scale_fill_brewer(palette = "Paired")
       ggplotly(mean_land_plot, tooltip = c("text"))
       
     }
@@ -2075,17 +2074,16 @@ server <- function(input, output, session) {
         geom_col(hoverinfo = "text", aes(text = paste("Village:", villages,"<br>Land Fallowed: ", sum)))+
         theme(legend.position = "none") +
         labs(x = "", y = "Total Land Fallowed", caption = "*Note: For missing bars, villages did not have any land fallowed")+
-        coord_flip() + scale_fill_viridis_d()
+        coord_flip() + scale_fill_brewer(palette = "Paired")
       ggplotly(land_fallow_plot, tooltip = c("text"))
     }
     else if (ocuVar() == "Average Job Duration for Head of Household") {
-      job_duration_plot <- ggplot(job_duration_summary, aes(x = "", y = job_duration_avg, fill = villages)) +
-        geom_bar(width = 1, stat = "identity", hoverinfo = "text", aes(text = paste("Village:", villages,"<br>Average Job Duration: ", round(job_duration_avg,2), "months"))) + 
-        #coord_flip()+
+      job_duration_plot <- ggplot(job_duration_summary, aes(x = forcats::fct_rev(villages), y = job_duration_avg, fill = villages)) +
+        geom_col(hoverinfo = "text", aes(text = paste("Village:", villages,"<br>Average Job Duration: ", round(job_duration_avg,2), "months"))) + 
+        coord_flip()+
         labs(x= "", y = "Average Job Duration (Months)")+
         ggtitle("") +
-        facet_wrap(~villages, ncol = 5)+
-        theme(legend.position = "none") + scale_fill_viridis_d()
+        theme(legend.position = "none") + scale_fill_brewer(palette = "Paired")
       ggplotly(job_duration_plot, tooltip = c("text"))
     }
     
@@ -2110,11 +2108,10 @@ server <- function(input, output, session) {
       assetplot <- ggplot(assets_long, aes(property, percentage, fill = property, text = paste(""))) + 
         geom_col(hoverinfo = "text", aes(text = paste("Property: ", property,
                                                       "<br>Percentage: ", percentage))) + 
-        labs(x = "", y = "Percentage" ,title = "") + 
+        labs(x = "Asset", y = "Percentage" ,title = "") + 
         theme(legend.position = "none") +
-        rotate_x_text(angle = 33, size = rel(1.2)) +
-        rotate_y_text(size = rel(1.2)) +
-        scale_fill_viridis_d()    
+        rotate_x_text(angle = 33, size = rel(1)) +
+        scale_fill_brewer(palette = "Paired")    
       
       ggplotly(assetplot, tooltip = c("text"))
     }
@@ -2124,14 +2121,14 @@ server <- function(input, output, session) {
         geom_point(data=baseline.summary, shape=17, size=3, hoverinfo = "text", 
                    aes(text = paste("Village: ", village, "<br>Total Remmitance: ", round(rmt_total,2), "<br>Total Income: ", round(full_inc, 2)))) +
         labs(x="Average Weekly Remmitances", y="Average Weekly Income", color="Villages") + 
-        ggtitle("") + scale_color_viridis_d() +coord_flip() 
+        ggtitle("") + scale_color_brewer(palette = "Paired") +coord_flip() 
       ggplotly(rem_inc, tooltip = c("text"))
     }
     else if (finVar() == "Average Monthly Salary per Household by Village")  {
       salplot <- ggplot(m_salary, aes(village, round(avg_salary, digits = 2), fill = village)) + 
         geom_col(hoverinfo = "text", aes(text = paste("Average Salary:", round(avg_salary,2), "₹"))) + 
         labs(x = "", y = "Indian Rupees ₹" ,title = "", fill = "") +
-        theme(legend.position = "none") + scale_fill_viridis_d() +
+        theme(legend.position = "none") + scale_fill_brewer(palette = "Paired") +
         rotate_x_text(angle = 33, size = rel(1))
       ggplotly(salplot, tooltip = c("text"))
     }
@@ -2148,7 +2145,7 @@ server <- function(input, output, session) {
       migplot <- ggplot(migrant_prop, aes(forcats::fct_rev(village), migrant_proportion, fill = village)) + 
         geom_col(hoverinfo = "text", aes(text = paste("Percentage: ", round(migrant_proportion, 2), "%"))) + theme(legend.position = "none") + 
         labs(x = "", y = "Percentage", title = "", fill = "") + coord_flip()+
-        scale_fill_viridis_d()
+        scale_fill_brewer(palette = "Paired")
       ggplotly(migplot, tooltip = c("text"))
     }
     
@@ -2173,7 +2170,7 @@ server <- function(input, output, session) {
       #ggtitle("Average Weekly Household Remittance Income by Village")+ #(11/16/18 - 10/31/19)
       #scale_color_brewer(palette = "Spectral")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + 
-      scale_color_viridis_d()+
+      scale_color_brewer(palette = "Paired")+
       theme(plot.caption = element_text(size = 12))+
       geom_rect(data = filtered_event_rmt(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
     
@@ -2209,7 +2206,7 @@ server <- function(input, output, session) {
       geom_line() +
       labs(x="Date", y="Average Weekly Expenditure (INR)", caption = "Mean: 1982.77   Median: 1832.1", color = "Villages") +
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + 
-      scale_color_viridis_d()+
+      scale_color_brewer(palette = "Paired")+
       theme_classic()+
       theme(plot.caption = element_text(size = 12))+
       geom_rect(data = filtered_event_exp(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
@@ -2234,7 +2231,7 @@ server <- function(input, output, session) {
       geom_line() + 
       labs(x = "", y = "Income (INR)", color = "Village",
            caption = "Mean: 1395.61   Median: 1341.82") + 
-      scale_color_viridis_d()+
+      scale_color_brewer(palette = "Paired")+
       theme_classic()+
       theme(plot.caption = element_text(size = 12))+
       geom_rect(data = filtered_event_inc(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
@@ -2250,7 +2247,7 @@ server <- function(input, output, session) {
     ggplot(filtered_malefemaleinc(), aes(x = week,y = !!input$Gender, color = village)) + geom_line() + 
       #geom_line(aes(y = !!input$gender, color = village), linetype = "twodash") +  
       labs(x = "", y = "Income (INR)", color = "Village") + 
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + scale_color_viridis_d()+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + scale_color_brewer(palette = "Paired")+
       geom_rect(data = filtered_event_inc(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
   })
   
@@ -2275,7 +2272,7 @@ server <- function(input, output, session) {
           data=filtered_totalinc(), na.rm=TRUE,
           #main="Total Income by Village",
           xlab="Date", ylab="Total Income (INR)", geom = "line") +
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + scale_color_viridis_d()+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + scale_color_brewer(palette = "Paired")+
       geom_rect(data = filtered_event_inc(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
   })
   
@@ -2310,7 +2307,7 @@ server <- function(input, output, session) {
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       theme(plot.caption = element_text(size = 12))+
       geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
-      scale_color_viridis_d()
+      scale_color_brewer(palette = "Paired")
   })
   
   # Filtered cs items
@@ -2330,7 +2327,7 @@ server <- function(input, output, session) {
       theme(plot.caption = element_text(size = 12))+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
-      scale_color_viridis_d()
+      scale_color_brewer(palette = "Paired")
   })
   
   # Filtered consumption by group
@@ -2372,7 +2369,7 @@ server <- function(input, output, session) {
       #ggtitle("Average Consumption Expenditure on Non-Food Items")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       geom_rect(data = filtered_event_cs_nonfood(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
-      scale_color_viridis_d()
+      scale_color_brewer(palette = "Paired")
     
   })
   # Render non food table
