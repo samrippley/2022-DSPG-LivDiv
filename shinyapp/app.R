@@ -1039,13 +1039,11 @@ ui <- navbarPage(title = "",
                                               
                                      ),
                             tabPanel("Timelapse", 
-                                     fluidRow(style = "margin: 6px;",
+                                     fluidRow(style = "margin: 2px;",
                                               align = "center",
-                                              p("", style = "padding-top:10px;"),
-                                              column(12, 
-                                                     h2(strong("Coastal Degradation Timelapse of Sundarbans Area"), align = "center"),
-                                                     br(""),
-                                                     br(""),
+                                              h1(strong("Coastal Degradation Timelapse")),
+                                              column(4, 
+                                                     h4(strong("Sundarbans Area"), align = "justify"),
                                                      p("The video below shows the coastline of the Sundarbans from 1984 to 2022. This timelapse shows that the coastline has degraded significantly over the years. The circles indicate where this degredation is most evident; some islands have disappeared completely."), 
                                                      p("One such factor of this degradation are the effects caused by climate change; one of these effects being the rising of the sea level, resulting in an increase of runoff and the accelerated erosion of the coast. This coastal erosion reduces the sediment in the area that acts as a natural buffer to flooding, as well as
                                                        increasing the salinity of groundwater, pushing salt water up stream, ultimately causing a decrease in the supply of drinkable water.
@@ -1056,24 +1054,23 @@ ui <- navbarPage(title = "",
                                                        These cyclones are occuring more often, and their effects are becoming more severe, as the rising sea level increases the base upon which these storm surges are built.
                                                        The impacts of these cyclones include flooding, extreme winds, erosion, and further raising the sea level, significantly increasing the potential to damage property and threaten human health and safety."), 
                                                      align = "justify"),
-                                                     br(""), 
-                                              tags$video(type = "video/mp4",src = "Sundarbansv3 ‑ Made with FlexClip.mp4", width = "70%", align = "right", controls = "controls", autoplay = T, loop = T)
-                                              ),
-                                     br(""),
-                                     br(""),
-                                     fluidRow(align = "left",
-                                              p(tags$small(em('References: ')))),
-                                     fluidRow(align = "left",
-                                              p(tags$small(em('CCSP (2008). Impacts of Climate Change and Variability on Transportation Systems and Infrastructure: Gulf Coast Study, Phase I. A Report by the U.S. Climate Change Science Program and the Subcommittee on Global Change Research. Savonis, M. J., V.R. Burkett, and J.R. Potter (eds.). Department of Transportation, Washington, DC, USA, 445 pp.')))),
-                                     fluidRow(align = "left",
-                                              p(tags$small(em('USGCRP (2014). Moser, S. C., M. A. Davidson, P. Kirshen, P. Mulvaney, J. F. Murley, J. E. Neumann, L. Petes, and D. Reed, 2014: Ch. 25: Coastal Zone Development and Ecosystems. Climate Change Impacts in the United States: The Third National Climate As­sessment, J. M. Melillo, Terese (T.C.) Richmond, and G. W. Yohe, Eds., U.S. Global Change Research Program, , 579-618.')))),
-                                     fluidRow(align = "left",
-                                              p(tags$small(em('NRC (2010). Adapting to the Impacts of Climate Change. National Research Council. The National Academies Press, Washington, DC, USA.')))),
-                                     fluidRow(align = "left",
-                                              p(tags$small(em('Evan, Amato & Camargo, Suzana. (2011). A Climatology of Arabian Sea Cyclonic Storms. JOURNAL OF CLIMATE.')))),
-                                     fluidRow(align = "left",
-                                              p(tags$small(em('Alam, M. M., Hossain, M. A., &amp; Shafee, S. (2003). Frequency of bay of bengal cyclonic storms and depressions crossing different Coastal Zones. International Journal of Climatology, 23(9), 1119–1125. https://doi.org/10.1002/joc.927 '))))
-                                     )
+                                             
+                                      column(8, 
+                                             #h2(strong("Timelapse of the Sundarbans Area"), align = "center"),
+                                             br(),
+                                             br(),
+                                              tags$video(type = "video/mp4",src = "Sundarbansv3 ‑ Made with FlexClip.mp4", width = "100%", controls = "controls", autoplay = T, loop = T)
+                                              )),
+                                    
+                                     fluidRow(
+                                              align = "left",
+                                              p(tags$small(em('References: '))),
+                                              p(tags$small(em('CCSP (2008). Impacts of Climate Change and Variability on Transportation Systems and Infrastructure: Gulf Coast Study, Phase I. A Report by the U.S. Climate Change Science Program and the Subcommittee on Global Change Research. Savonis, M. J., V.R. Burkett, and J.R. Potter (eds.). Department of Transportation, Washington, DC, USA, 445 pp.'))),
+                                      p(tags$small(em('USGCRP (2014). Moser, S. C., M. A. Davidson, P. Kirshen, P. Mulvaney, J. F. Murley, J. E. Neumann, L. Petes, and D. Reed, 2014: Ch. 25: Coastal Zone Development and Ecosystems. Climate Change Impacts in the United States: The Third National Climate As­sessment, J. M. Melillo, Terese (T.C.) Richmond, and G. W. Yohe, Eds., U.S. Global Change Research Program, , 579-618.'))),
+                                     p(tags$small(em('NRC (2010). Adapting to the Impacts of Climate Change. National Research Council. The National Academies Press, Washington, DC, USA.'))),
+                                     p(tags$small(em('Evan, Amato & Camargo, Suzana. (2011). A Climatology of Arabian Sea Cyclonic Storms. JOURNAL OF CLIMATE.'))),
+                                     p(tags$small(em('Alam, M. M., Hossain, M. A., &amp; Shafee, S. (2003). Frequency of bay of bengal cyclonic storms and depressions crossing different Coastal Zones. International Journal of Climatology, 23(9), 1119–1125. https://doi.org/10.1002/joc.927 ')))
+                                     ),
                                      
                             ),
                             #tabPanel("Gallery",
@@ -1089,7 +1086,7 @@ ui <- navbarPage(title = "",
                                      #           imageOutput("image")
                                                 
                                       #        ))),
-                 #),
+                 ),
                  
                  ## Tab Demographics --------------------------------------------
                  navbarMenu("Demographics" , 
@@ -1108,7 +1105,7 @@ ui <- navbarPage(title = "",
                                                      
                                               ) ,
                                               column(8, 
-                                                     h4(strong("Demographics -  November 2018 (Baseline)")),
+                                                     h4(strong("Head of Household Demographics -  November 2018 (Baseline)")),
                                                      selectInput("agedrop", "Select Characteristic:", width = "100%", choices = c(
                                                        "Age" = "Mean Age for Head of Households",
                                                        "Education" = "Mean Years of Education for Head of Households", 
@@ -1154,7 +1151,7 @@ ui <- navbarPage(title = "",
                                                      
                                                      
                                               ) ,
-                                              column(8, h4(strong("Demographics -  November 2018 (Baseline)")),
+                                              column(8, h4(strong("Livelihood – November 2018 (Baseline)")),
                                                      selectInput("ocudrop", "Select Characteristic:", width = "100%", choices = c(    
                                                        "Primary Occupation" = "Primary Occupation for Head of Households",
                                                        "Secondary Occupation" ="Secondary Occupation for Head of Households", 
@@ -1195,7 +1192,7 @@ ui <- navbarPage(title = "",
                                                        income-earning opportunities it is no surprise that many families are unable to or rarely save any money.")
                                                      
                                               ) ,
-                                              column(8, h4(strong("Demographics -  November 2018 (Baseline)")),
+                                              column(8, h4(strong("Financial – November 2018 (Baseline)")),
                                                      selectInput("findrop", "Select Practice:", width = "100%", choices = c( 
                                                        
                                                        "Household Business" = "Number of Households that Own a Business",
