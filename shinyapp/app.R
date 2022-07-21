@@ -2169,10 +2169,9 @@ server <- function(input, output, session) {
       theme_classic() +
       labs(x = "Date", y = "Average Weekly Remittance (INR)", caption = "Mean: 205.61   Median: 107.14", color = "Villages") +
       #ggtitle("Average Weekly Household Remittance Income by Village")+ #(11/16/18 - 10/31/19)
-      #scale_color_brewer(palette = "Spectral")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + 
-      scale_color_viridis_d()+
       theme(plot.caption = element_text(size = 12))+
+      scale_color_viridis_d()+
       geom_rect(data = filtered_event_rmt(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
     
   })
@@ -2206,7 +2205,7 @@ server <- function(input, output, session) {
     ggplot(filtered_exp(), aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) +
       geom_line() +
       labs(x="Date", y="Average Weekly Expenditure (INR)", caption = "Mean: 1982.77   Median: 1832.1", color = "Villages") +
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + 
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) +
       scale_color_viridis_d()+
       theme_classic()+
       theme(plot.caption = element_text(size = 12))+
