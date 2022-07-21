@@ -568,7 +568,7 @@ shocks_2009 <- data.frame(y=unlist(shocks_2009))
 colnames(shocks_2009) <- c('shk')
 
 shocks_plot_2009 <-ggplot(shocks_2009, aes(shk)) + geom_bar(fill = "dark red") + 
-  labs(x = "", y = "Occurances" ,title = "") + theme(axis.text = element_text(size = 7)) + 
+  labs(x = "", y = "Occurances" ,title = "") + theme(axis.text = element_text(size = 8)) + 
   scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10),labels = str_wrap(shock_labels_2009, width = 25) ,limits = c(0:10)) + 
   coord_flip()
 ## Type of Cope after 2009 Shock
@@ -587,7 +587,7 @@ shocks_cope$shk_2009_cope<-replace(shocks_cope$shk_2009_cope, shocks_cope$shk_20
 
 cope_2009_plot <- ggplot(shocks_cope, aes(shk_2009_cope, fill = village)) + geom_bar() +
   labs(x = "", y = "" ,title = "", fill = "Village") + scale_fill_brewer(palette = "Paired") +
-  theme(axis.text = element_text(size = 6)) +
+  theme(axis.text = element_text(size = 8)) +
   scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), labels = str_wrap(cope_labels, width = 30), limits = c(0:20)) + 
   coord_flip() 
 
@@ -1626,8 +1626,8 @@ ui <- navbarPage(title = "",
                                                 )
                                                                             ),
                                         column(8,tabsetPanel(
-                                          tabPanel("Frequency", plotlyOutput("shocks_plot_2009")),
-                                          tabPanel("Copes", plotlyOutput("cope_2009_plot")),
+                                          tabPanel("Frequency", plotlyOutput("shocks_plot_2009", height = "500")),
+                                          tabPanel("Copes", plotlyOutput("cope_2009_plot", height = "600")),
                                           tabPanel("Relocation Status", plotlyOutput("shock_relocation_2009_yn")),
                                           tabPanel("Where the households relocated?", plotlyOutput("shock_relocation_2009"))
                                                             )
