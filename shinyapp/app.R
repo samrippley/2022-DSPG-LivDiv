@@ -654,7 +654,8 @@ shock_labels <- c('None', 'Crop Loss', 'Loss of vegetation', 'Damage(saline wate
                   'Loss of home(river erosion/cyclone)', 'Loss of livestock', 'Loss of business/shop/etc.', 'Death/health issues', 'Other')
 
 shocks_all <- ggplot(shocks, aes(shock_nmb)) + geom_bar(fill = "dark red") + 
-  labs(x = "", y = "Occurances" ,title = "") + theme(axis.text = element_text(size = 7)) + 
+  labs(x = "", y = "Occurances" ,title = "") + theme(axis.text = element_text(size = 7)) +
+  theme_classic()+
   scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10),labels = str_wrap(shock_labels, width = 25) ,limits = c(0:10)) + 
   coord_flip()
 ## Average Shocks by Village
@@ -663,6 +664,7 @@ shocks2 <- baseline %>% select(village, shk_count) %>%
 
 shocks_village <- ggplot(shocks2, aes(village, avg_count, fill = village)) + geom_col() + 
   labs(x = "", y = "No. of Shocks" ,title = "", fill = "Village") + 
+  theme_classic()+
   theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_brewer(palette = "Paired") + coord_polar()
 
 
@@ -678,6 +680,7 @@ shocks_year_long <- gather(shock_year, year, count, "2009":"2018")
 
 shocks_by_year <- ggplot(shocks_year_long, aes(year, count, fill = year)) + geom_col() + 
   labs(x = "", y = "Number of Shocks" ,title = "") + 
+  theme_classic()+
   theme(axis.ticks.x=element_blank(), legend.position="none") + scale_fill_brewer(palette = "Paired")
 
 ## Frequency of each shocks in 2009
@@ -692,7 +695,8 @@ colnames(shocks_2009) <- c('shk')
 
 shocks_plot_2009 <-ggplot(shocks_2009, aes(shk)) + geom_bar(fill = "dark red") + 
   labs(x = "", y = "Occurances" ,title = "") + theme(axis.text = element_text(size = 8)) + 
-  scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10),labels = str_wrap(shock_labels_2009, width = 25) ,limits = c(0:10)) + 
+  scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10),labels = str_wrap(shock_labels_2009, width = 25) ,limits = c(0:10)) +
+  theme_classic()+
   coord_flip()
 ## Type of Cope after 2009 Shock
 
@@ -711,6 +715,7 @@ shocks_cope$shk_2009_cope<-replace(shocks_cope$shk_2009_cope, shocks_cope$shk_20
 cope_2009_plot <- ggplot(shocks_cope, aes(shk_2009_cope, fill = village)) + geom_bar() +
   labs(x = "", y = "" ,title = "", fill = "Village") + scale_fill_brewer(palette = "Paired") +
   theme(axis.text = element_text(size = 8)) +
+  theme_classic()+
   scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), labels = str_wrap(cope_labels, width = 30), limits = c(0:20)) + 
   coord_flip() 
 
@@ -722,6 +727,7 @@ relocation_labels <- c("No", "Yes, for under a month", "Yes, for over a month")
 
 shock_relocation_2009_yn <- ggplot(shock_relocation, aes(shk_2009_reloc_yn, fill = village)) + geom_bar() + 
   labs(x = "", y = "No. of Households" ,title = "", fill = "Village") + 
+  theme_classic()+
   scale_x_discrete(breaks = c(0,1,2), labels = str_wrap(relocation_labels, width = 30), limits = c(0:2)) + 
   scale_fill_brewer(palette = "Paired")
 
@@ -735,7 +741,8 @@ relocation_where_labels <- c("Within same village","Other village in Sundarbans"
 
 shock_relocation_2009 <- ggplot(shock_relocation_where, aes(shk_2009_reloc1, fill = village)) + geom_bar() + 
   labs(x = "", y = "No. of Households" ,title = "", fill = "Village") + 
-  scale_x_discrete(breaks = c(1,2,3,4,5,6), labels = str_wrap(relocation_where_labels, width = 20), limits = c(1:6)) + 
+  scale_x_discrete(breaks = c(1,2,3,4,5,6), labels = str_wrap(relocation_where_labels, width = 20), limits = c(1:6)) +
+  theme_classic()+
   scale_fill_brewer(palette = "Paired") + coord_flip() +  theme(axis.text = element_text(size = 8))
 
 
@@ -1616,7 +1623,7 @@ ui <- navbarPage(title = "",
                                                        recieve consistent inputs of remittances throughout the data period. Notably, the Sundarbans region was affected by three severe cyclones during this period: 
                                                        Fani, Category 4 (April – May 2019), and Category 1, Bulbul and Matmo (October – November 2019). The Sundarbans also could have been negatively impacted by four 
                                                        cyclones that hit the Arabian Sea during this period: Vayu (Category 1, June 8-18), Hikaa (Category 1, September 20-26), Kyaar (Category 3, October 22 - November 3), and Maha (Category 4, October 28 - November 11). 
-                                                       It is possible households are using remittances to cope with these cyclones and weather-related shocks."),
+                                                       It is possible households are using remittances to prepare and cope with these cyclones and weather-related shocks."),
                                                      p("With climate change impacting coastal areas disproportionately	 compared to other environments, the Sundarban region is seeing the effects of this in one 
                                                        way through employment opportunities. Since farming and fishing are one of the biggest employment opportunities in the region, the effects of climate change 
                                                        on the population of fish or the amount of arable farming land has put a strain on the working population in the region. Due to this reason, many of the younger 
