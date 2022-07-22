@@ -2108,22 +2108,7 @@ server <- function(input, output, session) {
     })
   
   output$ageplot <- renderPlotly({
-<<<<<<< HEAD
     if (ageVar() == "Mean Years of Education for Head of Households") {
-=======
-    if (ageVar() == "Mean Age for Head of Households") {
-      
-      fplot <-  ggplot(by_villagemore, aes(x = village, y = head_age, fill = village, width=0.5, srt = 45)) +
-        geom_col(hoverinfo = "text", aes(text = paste("Age: ", round(head_age,2))), width = "5") +
-        ylab("Age") + 
-        xlab("")+
-        theme(legend.position = "none") +
-        theme_classic()+
-        rotate_x_text(angle = 33, size = rel(1)) + scale_fill_brewer(palette = "Paired")
-      ggplotly(fplot, tooltip = c("text"))
-    }
-    else if (ageVar() == "Mean Years of Education for Head of Households") {
->>>>>>> f876a36952ab7bd63502cf27b05921490d60fd15
       splot <- ggplot(by_villagemore, aes(x = "", y= head_edu, fill = village)) +
         geom_bar(width = 1, stat = "identity", hoverinfo = "text", aes(text = paste("Education: ", round(head_edu, 2), "<br>Village: ", village))) +
         facet_wrap(~village, ncol = 5) +
@@ -2148,26 +2133,6 @@ server <- function(input, output, session) {
         theme_classic()
       ggplotly(marplot, tooltip = c("text"))
     }
-<<<<<<< HEAD
-=======
-    else if (ageVar() == "Household Size by Village") {
-      hh_size_plot <- ggplot(median_hhsize, aes(x = forcats::fct_rev(village), y = median, fill = village)) +
-        geom_col( hoverinfo = "text", aes(text = paste("Village:", village,"<br>Median: ", median))) +
-        labs( x = "", y = "Median Household Size")+
-        coord_flip()+
-        theme(legend.position="none") + scale_fill_brewer(palette = "Paired")+
-        theme_classic()
-      ggplotly(hh_size_plot, tooltip = c("text"))
-    }
-    else if (ageVar() == "Total Children per Household") {
-      chhoplot <- ggplot(avg_children, aes(x = village, y = avg_children, fill = village)) + 
-        geom_col(hoverinfo = "text", aes(text = paste("Village:", village,"<br>Average Children: ", round(avg_children, digit = 2)))) + labs(x = "", y = "Average number of children" ,title = "", fill = "Village") + 
-        theme(legend.position = "none") +
-        rotate_x_text(angle = 33, size = rel(1)) + scale_fill_brewer(palette = "Paired")
-        #theme_classic()
-      ggplotly(chhoplot, tooltip = c("text"))
-    }
->>>>>>> f876a36952ab7bd63502cf27b05921490d60fd15
   })
   
   
