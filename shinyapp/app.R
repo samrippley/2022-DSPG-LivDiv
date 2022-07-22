@@ -395,7 +395,7 @@ rmt_method_plot <- ggplot(method_dat, aes( x= reorder(Method, method_counts), y 
   geom_text(aes(label = method_values), size = 3) + scale_fill_brewer(palette = "Paired")
 
 
-# leaflet data --------------------------------------------------------------------
+# leaflet data for villages tab--------------------------------------------------------------------
 
 require(rgdal)
 
@@ -437,7 +437,6 @@ addAwesomeMarkers(
   lat = 22.227912, lng = 89.00475,
   label = "Pargumti",
   labelOptions = , icon=icons) %>%
-  addAwesomeMarkers(~lon, ~lat, label = ~as.character(Village.Na), labelOptions =  ,icon=icons, data=village) %>%
 addCircles(lat = 21.657, lng = 88.0591,
            radius=6000, color = 'blue', opacity = 1) %>%
   addCircles(lat = 22.227912, lng = 89.02,
@@ -450,6 +449,110 @@ addCircles(lat = 21.657, lng = 88.0591,
              radius=6000, color = 'black') %>%
   addLegend(title = "Administrative Blocks:", position = "bottomright", colors = c("blue", "black","purple", "yellow","red"), labels = c("Block 1", "Block 2", "Block 3", "Block 4", "Block 5"))
   
+# leaflet data for age graph--------------------------------------------------------------------
+
+icons2 <- awesomeIcons(
+  icon = 'ios-close',
+  iconColor = 'black',
+  library = 'ion',
+  markerColor = "lightred"
+)
+
+
+map_leaflet2 <- leaflet(data = d.sundarban) %>%
+  addTiles() %>%
+  #addPolygons(
+  #  fillColor = "black",
+   # stroke=TRUE,
+  #  weight = 1,
+   # smoothFactor = 0.2,
+   # opacity = 1.0,
+  #  fillOpacity = 0.5,
+   # highlightOptions = highlightOptions(color = "white",
+    #                                    weight = 2,
+     #                                   bringToFront = FALSE)) %>%
+  setView(lat= 21.9342, lng = 88.5345, zoom = 9) %>%
+  addAwesomeMarkers(popup = paste0("Amrabati",
+                                   br(),
+                                   "Age: 46.68",
+                                   br(),
+                                   "Median Household Size: 4"),
+                    lat = 21.570553, lng = 88.263257,
+                    label = "Amrabati",
+                    labelOptions = , icon=icons2)%>%
+  addAwesomeMarkers(popup = paste0("Beguakhali",
+                                   br(),
+                                   "Age: 49.47",
+                                   br(),
+                                   "Median Household Size: 5"),
+                    lat = 21.660021, lng = 88.046135,
+                    label = "Beguakhali",
+                    labelOptions = , icon=icons2)%>%
+  addAwesomeMarkers(popup = paste0("Bijoynagar",
+                                   br(),
+                                   "Age: 52.6",
+                                   br(),
+                                   "Median Household Size: 4"),
+                    lat = 22.141427, lng = 88.786918,
+                    label = "Bijoynagar",
+                    labelOptions = , icon=icons2)%>%
+  addAwesomeMarkers(popup = paste0("Birajnagar",
+                                   br(),
+                                   "Age: 48.79",
+                                   br(),
+                                   "Median Household Size: 4.5"),
+                    lat = 22.152742, lng = 88.790464,
+                    label = "Birajnagar",
+                    labelOptions = , icon=icons2)%>%
+  addAwesomeMarkers(popup = paste0("Haridaskati Samsernagar",
+                                   br(),
+                                   "Age: 50.97",
+                                   br(),
+                                   "Median Household Size: 4"),
+                    lat = 22.219522, lng = 89.033886,
+                    label = "Haridaskati Samsernagar",
+                    labelOptions = , icon=icons2)%>%
+  addAwesomeMarkers(popup = paste0("Lakshmi Janardanpur",
+                                   br(),
+                                   "Age: 50.68",
+                                   br(),
+                                   "Median Household Size: 4"),
+                    lat = 21.835391, lng = 88.45752,
+                    label = "Lakshmi Janardanpur",
+                    labelOptions = , icon=icons2)%>%
+  addAwesomeMarkers(popup = paste0("Pargumti",
+                                   br(),
+                                   "Age: 53.78",
+                                   br(),
+                                   "Median Household Size: 4"),
+    lat = 22.227912, lng = 89.00475,
+    label = "Pargumti",
+    labelOptions = , icon=icons2) %>%
+  addAwesomeMarkers(popup = paste0("Purba Dwarokapur",
+                                   br(),
+                                   "Age: 43.64",
+                                   br(),
+                                   "Median Household Size: 4"),
+                    lat = 21.885951, lng = 88.423895,
+                    label = "Purba Dwarokapur",
+                    labelOptions = , icon=icons2)%>%
+  addAwesomeMarkers(popup = paste0("Sagar",
+                                   br(),
+                                   "Age: 47.5",
+                                   br(),
+                                   "Median Household Size: 5"),
+                    lat = 21.6528, lng = 88.0753,
+                    label = "Sagar",
+                    labelOptions = , icon=icons2) %>%
+  addAwesomeMarkers(popup = paste0("Shibpur",
+                                   br(),
+                                   "Age: 51.29",
+                                   br(),
+                                   "Median Household Size: 4"),
+                    lat = 21.616568, lng = 88.253216,
+                    label = "Shibpur",
+                    labelOptions = , icon=icons2)
+
 
 
 #-------------------------------
@@ -568,7 +671,7 @@ shocks_2009 <- data.frame(y=unlist(shocks_2009))
 colnames(shocks_2009) <- c('shk')
 
 shocks_plot_2009 <-ggplot(shocks_2009, aes(shk)) + geom_bar(fill = "dark red") + 
-  labs(x = "", y = "Occurances" ,title = "") + theme(axis.text = element_text(size = 7)) + 
+  labs(x = "", y = "Occurances" ,title = "") + theme(axis.text = element_text(size = 8)) + 
   scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10),labels = str_wrap(shock_labels_2009, width = 25) ,limits = c(0:10)) + 
   coord_flip()
 ## Type of Cope after 2009 Shock
@@ -587,7 +690,7 @@ shocks_cope$shk_2009_cope<-replace(shocks_cope$shk_2009_cope, shocks_cope$shk_20
 
 cope_2009_plot <- ggplot(shocks_cope, aes(shk_2009_cope, fill = village)) + geom_bar() +
   labs(x = "", y = "" ,title = "", fill = "Village") + scale_fill_brewer(palette = "Paired") +
-  theme(axis.text = element_text(size = 6)) +
+  theme(axis.text = element_text(size = 8)) +
   scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), labels = str_wrap(cope_labels, width = 30), limits = c(0:20)) + 
   coord_flip() 
 
@@ -947,7 +1050,7 @@ ui <- navbarPage(title = "",
                                      
                                      fluidRow(style = "margin: 6px;", #align = "justify",
                                               p("", style = "padding-top:10px;"),
-                                              column(4, 
+                                              column(5, 
                                                      h2(strong("Sundarbans Area")),
                                                      p("This project examines households living in the Sundarbans in West Bengal, India – a coastal delta region in the Bay of Bengal.  Gupta et al. (2021) surveyed households in the North 24 – Parganas and South 24 – Parganas districts. Specifically, ten representative villages were randomly chosen from five administrative blocks in the Sundarbans:"),
                                                      (tags$ul(
@@ -1008,9 +1111,9 @@ ui <- navbarPage(title = "",
                                                     )),
                                              ),
 
-                                              column(8, 
+                                              column(7, 
                                                      h2(strong("")),
-                                                     leafletOutput("map_leaflet", width = "100%", height = 700)
+                                                     leafletOutput("map_leaflet", width = "100%", height = 800)
                                               
                                                      
                                                      
@@ -1039,13 +1142,11 @@ ui <- navbarPage(title = "",
                                               
                                      ),
                             tabPanel("Timelapse", 
-                                     fluidRow(style = "margin: 6px;",
+                                     fluidRow(style = "margin: 2px;",
                                               align = "center",
-                                              p("", style = "padding-top:10px;"),
-                                              column(12, 
-                                                     h2(strong("Coastal Degradation Timelapse of Sundarbans Area"), align = "center"),
-                                                     br(""),
-                                                     br(""),
+                                              h1(strong("Coastal Degradation Timelapse")),
+                                              column(4, 
+                                                     h4(strong("Sundarbans Area"), align = "justify"),
                                                      p("The video below shows the coastline of the Sundarbans from 1984 to 2022. This timelapse shows that the coastline has degraded significantly over the years. The circles indicate where this degredation is most evident; some islands have disappeared completely."), 
                                                      p("One such factor of this degradation are the effects caused by climate change; one of these effects being the rising of the sea level, resulting in an increase of runoff and the accelerated erosion of the coast. This coastal erosion reduces the sediment in the area that acts as a natural buffer to flooding, as well as
                                                        increasing the salinity of groundwater, pushing salt water up stream, ultimately causing a decrease in the supply of drinkable water.
@@ -1056,24 +1157,23 @@ ui <- navbarPage(title = "",
                                                        These cyclones are occuring more often, and their effects are becoming more severe, as the rising sea level increases the base upon which these storm surges are built.
                                                        The impacts of these cyclones include flooding, extreme winds, erosion, and further raising the sea level, significantly increasing the potential to damage property and threaten human health and safety."), 
                                                      align = "justify"),
-                                                     br(""), 
-                                              tags$video(type = "video/mp4",src = "Sundarbansv3 ‑ Made with FlexClip.mp4", width = "70%", align = "right", controls = "controls", autoplay = T, loop = T)
-                                              ),
-                                     br(""),
-                                     br(""),
-                                     fluidRow(align = "left",
-                                              p(tags$small(em('References: ')))),
-                                     fluidRow(align = "left",
-                                              p(tags$small(em('CCSP (2008). Impacts of Climate Change and Variability on Transportation Systems and Infrastructure: Gulf Coast Study, Phase I. A Report by the U.S. Climate Change Science Program and the Subcommittee on Global Change Research. Savonis, M. J., V.R. Burkett, and J.R. Potter (eds.). Department of Transportation, Washington, DC, USA, 445 pp.')))),
-                                     fluidRow(align = "left",
-                                              p(tags$small(em('USGCRP (2014). Moser, S. C., M. A. Davidson, P. Kirshen, P. Mulvaney, J. F. Murley, J. E. Neumann, L. Petes, and D. Reed, 2014: Ch. 25: Coastal Zone Development and Ecosystems. Climate Change Impacts in the United States: The Third National Climate As­sessment, J. M. Melillo, Terese (T.C.) Richmond, and G. W. Yohe, Eds., U.S. Global Change Research Program, , 579-618.')))),
-                                     fluidRow(align = "left",
-                                              p(tags$small(em('NRC (2010). Adapting to the Impacts of Climate Change. National Research Council. The National Academies Press, Washington, DC, USA.')))),
-                                     fluidRow(align = "left",
-                                              p(tags$small(em('Evan, Amato & Camargo, Suzana. (2011). A Climatology of Arabian Sea Cyclonic Storms. JOURNAL OF CLIMATE.')))),
-                                     fluidRow(align = "left",
-                                              p(tags$small(em('Alam, M. M., Hossain, M. A., &amp; Shafee, S. (2003). Frequency of bay of bengal cyclonic storms and depressions crossing different Coastal Zones. International Journal of Climatology, 23(9), 1119–1125. https://doi.org/10.1002/joc.927 '))))
-                                     )
+                                             
+                                      column(8, 
+                                             #h2(strong("Timelapse of the Sundarbans Area"), align = "center"),
+                                             br(),
+                                             br(),
+                                              tags$video(type = "video/mp4",src = "Sundarbansv3 ‑ Made with FlexClip.mp4", width = "100%", controls = "controls", autoplay = T, loop = T)
+                                              )),
+                                    
+                                     fluidRow(
+                                              align = "left",
+                                              p(tags$small(em('References: '))),
+                                              p(tags$small(em('CCSP (2008). Impacts of Climate Change and Variability on Transportation Systems and Infrastructure: Gulf Coast Study, Phase I. A Report by the U.S. Climate Change Science Program and the Subcommittee on Global Change Research. Savonis, M. J., V.R. Burkett, and J.R. Potter (eds.). Department of Transportation, Washington, DC, USA, 445 pp.'))),
+                                      p(tags$small(em('USGCRP (2014). Moser, S. C., M. A. Davidson, P. Kirshen, P. Mulvaney, J. F. Murley, J. E. Neumann, L. Petes, and D. Reed, 2014: Ch. 25: Coastal Zone Development and Ecosystems. Climate Change Impacts in the United States: The Third National Climate As­sessment, J. M. Melillo, Terese (T.C.) Richmond, and G. W. Yohe, Eds., U.S. Global Change Research Program, , 579-618.'))),
+                                     p(tags$small(em('NRC (2010). Adapting to the Impacts of Climate Change. National Research Council. The National Academies Press, Washington, DC, USA.'))),
+                                     p(tags$small(em('Evan, Amato & Camargo, Suzana. (2011). A Climatology of Arabian Sea Cyclonic Storms. JOURNAL OF CLIMATE.'))),
+                                     p(tags$small(em('Alam, M. M., Hossain, M. A., &amp; Shafee, S. (2003). Frequency of bay of bengal cyclonic storms and depressions crossing different Coastal Zones. International Journal of Climatology, 23(9), 1119–1125. https://doi.org/10.1002/joc.927 ')))
+                                     ),
                                      
                             ),
                             #tabPanel("Gallery",
@@ -1089,12 +1189,12 @@ ui <- navbarPage(title = "",
                                      #           imageOutput("image")
                                                 
                                       #        ))),
-                 #),
+                 ),
                  
                  ## Tab Demographics --------------------------------------------
                  navbarMenu("Demographics" , 
-                            tabPanel("Socioeconomic", 
-                                     fluidRow(style = "margin: 6px;", align = "justify",
+                            tabPanel("Socioeconomic",
+                                         fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Socioeconomic Characteristics"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
@@ -1107,8 +1207,10 @@ ui <- navbarPage(title = "",
                                                      )
                                                      
                                               ) ,
-                                              column(8, 
-                                                     h4(strong("Demographics -  November 2018 (Baseline)")),
+                                              column(8,
+                                                     tabsetPanel(
+                                                       tabPanel("Demographics",
+                                                     h4(strong("Head of Household Demographics -  November 2018 (Baseline)")),
                                                      selectInput("agedrop", "Select Characteristic:", width = "100%", choices = c(
                                                        "Age" = "Mean Age for Head of Households",
                                                        "Education" = "Mean Years of Education for Head of Households", 
@@ -1122,13 +1224,19 @@ ui <- navbarPage(title = "",
                                                      fluidRow(align = "center",
                                                               h4(strong(textOutput("result2"))),
                                                      withSpinner(plotlyOutput("ageplot", height = "500px", width = "100%")),
-                                                     
+                                                     ),
                                               ),
+                                             tabPanel("Head of Household Demographics",
+                                                      h4(strong("Head of Household Demographics -  November 2018 (Baseline)")),
+                                                     withSpinner(leafletOutput("ageplo", height = "500px", width = "80%")),
+                                                    
+                                     
+                                              ))),
                                               # column(12, 
                                               #     h4("References: "), 
                                               #   p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
                                               #  p("", style = "padding-top:10px;")) 
-                                     ))), 
+                                     )), 
                             tabPanel("Livelihood", 
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Livelihood Behavior"), align = "center"),
@@ -1154,7 +1262,7 @@ ui <- navbarPage(title = "",
                                                      
                                                      
                                               ) ,
-                                              column(8, h4(strong("Demographics -  November 2018 (Baseline)")),
+                                              column(8, h4(strong("Livelihood – November 2018 (Baseline)")),
                                                      selectInput("ocudrop", "Select Characteristic:", width = "100%", choices = c(    
                                                        "Primary Occupation" = "Primary Occupation for Head of Households",
                                                        "Secondary Occupation" ="Secondary Occupation for Head of Households", 
@@ -1195,7 +1303,7 @@ ui <- navbarPage(title = "",
                                                        income-earning opportunities it is no surprise that many families are unable to or rarely save any money.")
                                                      
                                               ) ,
-                                              column(8, h4(strong("Demographics -  November 2018 (Baseline)")),
+                                              column(8, h4(strong("Financial – November 2018 (Baseline)")),
                                                      selectInput("findrop", "Select Practice:", width = "100%", choices = c( 
                                                        
                                                        "Household Business" = "Number of Households that Own a Business",
@@ -1629,8 +1737,8 @@ ui <- navbarPage(title = "",
                                                 )
                                                                             ),
                                         column(8,tabsetPanel(
-                                          tabPanel("Frequency", plotlyOutput("shocks_plot_2009")),
-                                          tabPanel("Copes", plotlyOutput("cope_2009_plot")),
+                                          tabPanel("Frequency", plotlyOutput("shocks_plot_2009", height = "500")),
+                                          tabPanel("Copes", plotlyOutput("cope_2009_plot", height = "600")),
                                           tabPanel("Relocation Status", plotlyOutput("shock_relocation_2009_yn")),
                                           tabPanel("Where the households relocated?", plotlyOutput("shock_relocation_2009"))
                                                             )
@@ -1970,14 +2078,18 @@ server <- function(input, output, session) {
     
   })
   
-  
-  
-  
-  
   #sociodemo tabset -----------------------------------------------------
   ageVar <- reactive({
     input$agedrop
   })
+  
+  
+  
+  output$ageplo <- renderLeaflet({
+    if (ageVar() == "Mean Age for Head of Households") {
+      map_leaflet2
+    }
+    })
   
   output$ageplot <- renderPlotly({
     if (ageVar() == "Mean Age for Head of Households") {
@@ -2034,7 +2146,6 @@ server <- function(input, output, session) {
       ggplotly(chhoplot, tooltip = c("text"))
     }
   })
-  
   
   
   #livelihood tabset -----------------------------------------------------
