@@ -1386,7 +1386,7 @@ ui <- navbarPage(title = "",
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Average Weekly Expenditure",plotOutput("exp")),
+                                           tabPanel("Average Weekly Expenditure",plotOutput("exp", height = "500px")),
                                            tabPanel("Table", DT::DTOutput("exp_table"))
                                          )
                                        ),
@@ -1425,11 +1425,11 @@ ui <- navbarPage(title = "",
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Average Food Consumption",plotOutput("cs_exp")),
-                                           tabPanel("Staple Items", plotOutput("cs_staple")),
-                                           tabPanel("Meats", plotOutput("cs_meats")),
-                                           tabPanel("Other", plotOutput("cs_other")),
-                                           tabPanel("No. of Food Items", plotOutput("cs_item"))
+                                           tabPanel("Average Food Consumption",plotOutput("cs_exp", height = "500px")),
+                                           tabPanel("Staple Items", plotOutput("cs_staple", height = "500px")),
+                                           tabPanel("Meats", plotOutput("cs_meats", height = "500px")),
+                                           tabPanel("Other", plotOutput("cs_other", height = "500px")),
+                                           tabPanel("No. of Food Items", plotOutput("cs_item", height = "500px"))
                                            #tabPanel("Table", DT::DTOutput("cs_table"))
                                          )
                                        ),
@@ -1488,7 +1488,7 @@ ui <- navbarPage(title = "",
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Average Non-Food Consumption", plotOutput("nonfood_plot")),
+                                           tabPanel("Average Non-Food Consumption", plotOutput("nonfood_plot", height = "500px")),
                                            #tabPanel("Table", DT::DTOutput("nonfood_table"))
                                          )
                                        ),
@@ -1538,8 +1538,8 @@ ui <- navbarPage(title = "",
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Average Weekly Income",plotOutput("inc")),
-                                           tabPanel("Male/Female Income", plotOutput("malefemaleinc")),
+                                           tabPanel("Average Weekly Income",plotOutput("inc", height = "500px")),
+                                           tabPanel("Male/Female Income", plotOutput("malefemaleinc", height = "500px")),
                                            #tabPanel("Full Income", plotOutput("fullinc")),
                                            tabPanel("Table", DT::DTOutput("inc_table"))
                                          )
@@ -1568,8 +1568,8 @@ ui <- navbarPage(title = "",
                                      
                                      mainPanel(
                                        tabsetPanel(
-                                         tabPanel("Amount",plotOutput("bor")),
-                                         tabPanel("Count",plotOutput("borr")),
+                                         tabPanel("Amount",plotOutput("bor", height = "500px")),
+                                         tabPanel("Count",plotOutput("borr", height = "500px")),
                                          tabPanel("Purpose", plotOutput("purpplot", height = "500px"))
                                        
                                        )
@@ -1665,10 +1665,10 @@ ui <- navbarPage(title = "",
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Average Weekly Remittances",plotOutput("rmt")),
+                                           tabPanel("Average Weekly Remittances",plotOutput("rmt", height = "500px")),
                                            tabPanel("Table",DT:: DTOutput("rmt_table")),
-                                           tabPanel("Method", plotOutput("rmt_method")),
-                                           tabPanel("Purpose", plotOutput("rmt_purpose"))
+                                           tabPanel("Method", plotOutput("rmt_method", height = "500px")),
+                                           tabPanel("Purpose", plotOutput("rmt_purpose", height = "500px"))
                                          )
                                        ), 
                                        
@@ -2024,6 +2024,7 @@ server <- function(input, output, session) {
       xlab("") +
       ylab("")+
       theme(legend.position = "none")+
+      theme_classic()
       scale_fill_brewer(palette = "Paired")
   })
   
@@ -2107,10 +2108,26 @@ server <- function(input, output, session) {
     })
   
   output$ageplot <- renderPlotly({
+<<<<<<< HEAD
     if (ageVar() == "Mean Years of Education for Head of Households") {
+=======
+    if (ageVar() == "Mean Age for Head of Households") {
+      
+      fplot <-  ggplot(by_villagemore, aes(x = village, y = head_age, fill = village, width=0.5, srt = 45)) +
+        geom_col(hoverinfo = "text", aes(text = paste("Age: ", round(head_age,2))), width = "5") +
+        ylab("Age") + 
+        xlab("")+
+        theme(legend.position = "none") +
+        theme_classic()+
+        rotate_x_text(angle = 33, size = rel(1)) + scale_fill_brewer(palette = "Paired")
+      ggplotly(fplot, tooltip = c("text"))
+    }
+    else if (ageVar() == "Mean Years of Education for Head of Households") {
+>>>>>>> f876a36952ab7bd63502cf27b05921490d60fd15
       splot <- ggplot(by_villagemore, aes(x = "", y= head_edu, fill = village)) +
         geom_bar(width = 1, stat = "identity", hoverinfo = "text", aes(text = paste("Education: ", round(head_edu, 2), "<br>Village: ", village))) +
         facet_wrap(~village, ncol = 5) +
+        #theme_minimal()+
         labs(x = NULL, y = "Years of Education") +
         theme(legend.position="none", strip.text.x = element_text(size = 9)) + scale_fill_brewer(palette = "Paired")
       ggplotly(splot, tooltip = c("text"))
@@ -2119,7 +2136,7 @@ server <- function(input, output, session) {
       village_pl_count_plot <- ggplot(dat_pl, aes(x= Village, y = Households, fill = Key)) + 
         geom_col(position = 'stack', hoverinfo = "text", aes(text = paste("Village:", Village,"<br>Key: ", Key, "<br>Percentage:", percentage,"%" , "<br>Total Households: ", Households ))) + 
         labs(x= "", y = "Total Households", fill = "") + 
-        theme_classic() + 
+        theme_classic()+ 
         coord_flip()
       ggplotly(village_pl_count_plot, tooltip = c("text"))
     }
@@ -2127,9 +2144,30 @@ server <- function(input, output, session) {
       marplot <- ggplot(countmar, aes(x = head_married, y = n, fill = Gender)) +
         geom_col(hoverinfo = "text", aes(text = paste("Total:", n,"<br>Gender: ", Gender))) +
         labs(x = "Not Married                                         Married", y = "Total Household Head", fill = "") +
-        scale_x_discrete() + theme(legend.title=element_blank())
+        scale_x_discrete() + theme(legend.title=element_blank())+
+        theme_classic()
       ggplotly(marplot, tooltip = c("text"))
     }
+<<<<<<< HEAD
+=======
+    else if (ageVar() == "Household Size by Village") {
+      hh_size_plot <- ggplot(median_hhsize, aes(x = forcats::fct_rev(village), y = median, fill = village)) +
+        geom_col( hoverinfo = "text", aes(text = paste("Village:", village,"<br>Median: ", median))) +
+        labs( x = "", y = "Median Household Size")+
+        coord_flip()+
+        theme(legend.position="none") + scale_fill_brewer(palette = "Paired")+
+        theme_classic()
+      ggplotly(hh_size_plot, tooltip = c("text"))
+    }
+    else if (ageVar() == "Total Children per Household") {
+      chhoplot <- ggplot(avg_children, aes(x = village, y = avg_children, fill = village)) + 
+        geom_col(hoverinfo = "text", aes(text = paste("Village:", village,"<br>Average Children: ", round(avg_children, digit = 2)))) + labs(x = "", y = "Average number of children" ,title = "", fill = "Village") + 
+        theme(legend.position = "none") +
+        rotate_x_text(angle = 33, size = rel(1)) + scale_fill_brewer(palette = "Paired")
+        #theme_classic()
+      ggplotly(chhoplot, tooltip = c("text"))
+    }
+>>>>>>> f876a36952ab7bd63502cf27b05921490d60fd15
   })
   
   
@@ -2144,7 +2182,7 @@ server <- function(input, output, session) {
         geom_col(hoverinfo = "text", aes(text = paste("Village:", village, "<br>Households: ", n))) +
         scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
         coord_flip() +
-        theme_minimal () +
+        theme_classic() +
         labs(x = "", y = "Total Households", fill = "Select Village:") + scale_fill_brewer(palette = "Paired")
       ggplotly(pocuplot, tooltip = c("text"))
     } 
@@ -2153,20 +2191,22 @@ server <- function(input, output, session) {
         geom_col(hoverinfo = "text", aes(text = paste("Village:", village, "<br>Household: ", n))) +
         scale_x_discrete(limits = factor(1:16), labels = c("1" = "Agricultural wage worker","2" =  "Livestock worker", "3" = "Farmer", "4" = "Casual labor","5" =  "Construction/brick labor","6" =  "Gleaning/foraging","7" =  "Fisherman","8" =  "Fishery worker", "9" = "Factory worker" , "10" = "Household help" ,"11" =  "Transport related work","12" =  "Own business", "13" = "Service Work (NGO, gov,etc.)", "14" = "NREGA","15" =  "Housewife","16" =  "Other")) +
         coord_flip() +
-        theme_minimal () +
+        theme_classic() +
         labs(x = "", y = "Total Households", fill = "Select Village:") + scale_fill_brewer(palette = "Paired")
       ggplotly(socplot, tooltip = c("text"))
     }
     else if (ocuVar() == "Proportion of Households Involved in Agricultural Farming") {
       agfaplot <- ggplot(grouped, aes(forcats::fct_rev(village),prop_farm*100, fill = village)) + 
         geom_col(hoverinfo = "text", aes(text = paste("Village:", village,"<br>Percentage: ", round(prop_farm*100, 2), "%"))) + 
-        labs(x = "", y = "Percentage", title = "") + coord_flip() + theme(legend.position = "none") + scale_fill_brewer(palette = "Paired")
+        labs(x = "", y = "Percentage", title = "") + coord_flip() + theme(legend.position = "none") + scale_fill_brewer(palette = "Paired")+
+        theme_classic()
       ggplotly(agfaplot,tooltip = c("text"))
     }
     else if (ocuVar() == "Average Amount of Land Owned by Village") {
       mean_land_plot <- ggplot(land_stats, aes(x = forcats::fct_rev(villages), y = mean_land_value, fill = villages)) +
         geom_col(hoverinfo = "text", aes(text = paste("Village:", villages,"<br>Mean Land Owned: ", round(mean_land_value,3)))) +
         coord_flip() + theme(legend.position = "none") +
+        theme_classic()+
         labs(x = "", y = "Land Owned (Kathas)") + scale_fill_brewer(palette = "Paired")
       ggplotly(mean_land_plot, tooltip = c("text"))
       
@@ -2175,6 +2215,7 @@ server <- function(input, output, session) {
       land_fallow_plot <- ggplot(land_fallow, aes(x = forcats::fct_rev(village), y = sum, fill = village)) +
         geom_col(hoverinfo = "text", aes(text = paste("Village:", villages,"<br>Land Fallowed: ", sum)))+
         theme(legend.position = "none") +
+        theme_classic()+
         labs(x = "", y = "Total Land Fallowed", caption = "*Note: For missing bars, villages did not have any land fallowed")+
         coord_flip() + scale_fill_brewer(palette = "Paired")
       ggplotly(land_fallow_plot, tooltip = c("text"))
@@ -2185,6 +2226,7 @@ server <- function(input, output, session) {
         coord_flip()+
         labs(x= "", y = "Average Job Duration (Months)")+
         ggtitle("") +
+        theme_classic()+
         theme(legend.position = "none") + scale_fill_brewer(palette = "Paired")
       ggplotly(job_duration_plot, tooltip = c("text"))
     }
@@ -2213,6 +2255,7 @@ server <- function(input, output, session) {
         labs(x = "Asset", y = "Percentage" ,title = "") + 
         theme(legend.position = "none") +
         rotate_x_text(angle = 33, size = rel(1)) +
+        theme_classic()+
         scale_fill_brewer(palette = "Paired")    
       
       ggplotly(assetplot, tooltip = c("text"))
@@ -2222,7 +2265,8 @@ server <- function(input, output, session) {
       rem_inc <- ggplot(baseline.summary, aes(rmt_total, full_inc, color= village)) +
         geom_point(data=baseline.summary, shape=17, size=3, hoverinfo = "text", 
                    aes(text = paste("Village: ", village, "<br>Total Remmitance: ", round(rmt_total,2), "<br>Total Income: ", round(full_inc, 2)))) +
-        labs(x="Average Weekly Remmitances", y="Average Weekly Income", color="Villages") + 
+        labs(x="Average Weekly Remmitances", y="Average Weekly Income", color="Villages") +
+        theme_classic()+
         ggtitle("") + scale_color_brewer(palette = "Paired") +coord_flip() 
       ggplotly(rem_inc, tooltip = c("text"))
     }
@@ -2231,6 +2275,7 @@ server <- function(input, output, session) {
         geom_col(hoverinfo = "text", aes(text = paste("Average Salary:", round(avg_salary,2), "₹"))) + 
         labs(x = "", y = "Indian Rupees ₹" ,title = "", fill = "") +
         theme(legend.position = "none") + scale_fill_brewer(palette = "Paired") +
+        theme_classic()+
         rotate_x_text(angle = 33, size = rel(1))
       ggplotly(salplot, tooltip = c("text"))
     }
@@ -2247,6 +2292,7 @@ server <- function(input, output, session) {
       migplot <- ggplot(migrant_prop, aes(forcats::fct_rev(village), migrant_proportion, fill = village)) + 
         geom_col(hoverinfo = "text", aes(text = paste("Percentage: ", round(migrant_proportion, 2), "%"))) + theme(legend.position = "none") + 
         labs(x = "", y = "Percentage", title = "", fill = "") + coord_flip()+
+        theme_classic()+
         scale_fill_brewer(palette = "Paired")
       ggplotly(migplot, tooltip = c("text"))
     }
@@ -2348,7 +2394,8 @@ server <- function(input, output, session) {
   output$malefemaleinc <- renderPlot({
     ggplot(filtered_malefemaleinc(), aes(x = week,y = !!input$Gender, color = village)) + geom_line() + 
       #geom_line(aes(y = !!input$gender, color = village), linetype = "twodash") +  
-      labs(x = "", y = "Income (INR)", color = "Village") + 
+      labs(x = "", y = "Income (INR)", color = "Village") +
+      theme_classic()+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + scale_color_brewer(palette = "Paired")+
       geom_rect(data = filtered_event_inc(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
   })
