@@ -30,7 +30,7 @@ library(gridExtra)
 library(ggpubr)
 library(lubridate)
 library(shinyWidgets)
-library(viridis)
+library(viridis) 
 library(RColorBrewer)
 library(plotly)
 
@@ -2024,7 +2024,7 @@ server <- function(input, output, session) {
       xlab("") +
       ylab("")+
       theme(legend.position = "none")+
-      theme_classic()
+      theme_classic() +
       scale_fill_brewer(palette = "Paired")
   })
   
