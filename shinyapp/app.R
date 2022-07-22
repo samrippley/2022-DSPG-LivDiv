@@ -33,6 +33,7 @@ library(shinyWidgets)
 library(viridis) 
 library(RColorBrewer)
 library(plotly)
+library(brio)
 
 prettyblue <- "#232D4B"
 navBarBlue <- '#427EDC'
@@ -1349,9 +1350,8 @@ ui <- navbarPage(title = "",
                                                        This salary is more likely coming from working for someone else as the majority of family members do not own a business."),
                                                      p("Migration appears to be a prominent livelihood strategy – 15% of households had at least one migrant in the last ten years.
                                                      Job opportunities may play a primary factor in this migration trend, thus explaining the high remittance level for our sample. Remittances are any income household receives 
-                                                     from someone working away from home. We visualize the relationship between average weekly remittances and average weekly income. In most villages, higher remittances correlate with a higher weekly income. 
-                                                     This suggests that remittances are a primary income source for most families Given the poverty level and low 
-                                                       income-earning opportunities it is no surprise that many families are unable to or rarely save any money.")
+                                                  from someone working away from home. We visualize the relationship between average weekly remittances and average weekly income. In most villages, higher remittances correlate with a higher weekly income. 
+                                                     This suggests that remittances are a primary income source for most families Given the poverty level and low               income-earning opportunities it is no surprise that many families are unable to or rarely save any money.")
                                                     # fluidRow(
                                                      #         withSpinner(leafletOutput("map3", height = "400px", width = "100%")))
                                                      
