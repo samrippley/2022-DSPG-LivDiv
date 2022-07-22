@@ -900,10 +900,10 @@ filtered_non_food_cs <- reactive({
 })
 
 # Events data -------------------------------------
-Events <- c("Kharif Crop Harvest", "Rabi Crop Harvest","Honey Harvest", "Fani Cyclone", "Matmo/Bulbul Cyclone", "Vayu Cyclone", "Hikaa Cyclone","Kyaar Cyclone","Maha Cyclone",
+Events <- c("Khairf Crop Preparation","Kharif Crop Harvest", "Rabi Crop Harvest","Honey Harvest", "Fani Cyclone", "Matmo/Bulbul Cyclone", "Vayu Cyclone", "Hikaa Cyclone","Kyaar Cyclone","Maha Cyclone",
             "Republic Day", "Rama Navami", "Eid al-Fitr", "Indian Independence Day", "Dussehra", "Diwali" ,"Christmas")
-start_week <- c(2, 0, 19, 22, 48, 30, 43, 47, 48, 10, 20, 28, 38, 46, 49, 5)
-end_week <- c(12, 14, 32, 24, 49, 31, 44, 49, 49, 10.2, 20.2, 28.2, 38.2, 46.2, 49.2, 5.2)
+start_week <- c(28, 2, 0, 19, 22, 48, 30, 43, 47, 48, 10, 20, 28, 38, 46, 49, 5)
+end_week <- c(36, 12, 14, 32, 24, 49, 31, 44, 49, 49, 10.2, 20.2, 28.2, 38.2, 46.2, 49.2, 5.2)
 event_periods <- data.frame(Events, start_week, end_week)
 events_vector <- Events
 
