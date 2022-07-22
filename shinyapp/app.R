@@ -575,6 +575,32 @@ map_leaflet2 <- leaflet(data = d.sundarban) %>%
 
 
 
+
+map_leaflet3 <- leaflet(data = d.sundarban) %>%
+  addTiles() %>%
+  setView(lat= 21.95, lng = 87.9, zoom = 8) %>%
+  #addAwesomeMarkers(
+   # lat = 21.6528, lng = 88.0753,
+  #  label = "Sagar",
+   # labelOptions = , icon=icons) %>%
+  #addAwesomeMarkers(~lon, ~lat, label = ~as.character(Village.Na), labelOptions =  ,icon=icons, data=village) %>%
+  #addAwesomeMarkers(
+  #  lat = 22.227912, lng = 89.00475,
+   # label = "Pargumti",
+    #labelOptions = , icon=icons) %>%
+  addCircles(lat = 21.657, lng = 88.0591,
+             radius=6000, color = 'blue', opacity = 1) %>%
+  addCircles(lat = 22.227912, lng = 89.02,
+             radius=6000, color = 'red') %>%
+  addCircles(lat = 21.8619, lng = 88.43877,
+             radius=6000, color = 'purple') %>%
+  addCircles(lat = 22.16, lng = 88.789,
+             radius=6000, color = 'yellow') %>%
+  addCircles(lat = 21.5896, lng = 88.2653,
+             radius=6000, color = 'black') %>%
+  addLegend(title = "Administrative Blocks:", position = "bottomright", colors = c("blue", "black","purple", "yellow","red"), labels = c("Block 1 - Beguakhali and Sagar", "Block 2 - Amrabati and Shibpur", "Block 3 - Lakshmi Janardanpur and Purba Dwarokapur", "Block 4 - Birajnagar and Bijoynagar", "Block 5 - Haridaskati Samsernagar and Pargumti"))
+
+
 #-------------------------------
 
 
@@ -1326,8 +1352,10 @@ ui <- navbarPage(title = "",
                                                      from someone working away from home. We visualize the relationship between average weekly remittances and average weekly income. In most villages, higher remittances correlate with a higher weekly income. 
                                                      This suggests that remittances are a primary income source for most families Given the poverty level and low 
                                                        income-earning opportunities it is no surprise that many families are unable to or rarely save any money.")
+                                                    # fluidRow(
+                                                     #         withSpinner(leafletOutput("map3", height = "400px", width = "100%")))
                                                      
-                                              ) ,
+                                              ),
                                               column(8, h4(strong("Financial – November 2018 (Baseline)")),
                                                      selectInput("findrop", "Select Practice:", width = "100%", choices = c( 
                                                        
@@ -2108,7 +2136,9 @@ server <- function(input, output, session) {
     input$agedrop
   })
   
-  
+  output$map3 <- renderLeaflet({
+    map_leaflet3
+  })  
   
   output$ageplo <- renderLeaflet({
       map_leaflet2
