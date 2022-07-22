@@ -472,83 +472,103 @@ map_leaflet2 <- leaflet(data = d.sundarban) %>%
     #                                    weight = 2,
      #                                   bringToFront = FALSE)) %>%
   setView(lat= 21.9342, lng = 88.5345, zoom = 9) %>%
-  addAwesomeMarkers(popup = paste0("Amrabati",
+  addAwesomeMarkers(popup = paste0(tags$h4(strong("Village:"),"Amrabati"),
+                                   #br(),
+                                   tags$b("Average Age:"), " 46.68",
                                    br(),
-                                   "Age: 46.68",
-                                   br(),
-                                   "Median Household Size: 4"),
+                                   tags$b("Median Household Size:"), " 4",
+                     br(),
+                     tags$b("Average Number of Children per Household:"), " 2.68"),
                     lat = 21.570553, lng = 88.263257,
                     label = "Amrabati",
                     labelOptions = , icon=icons2)%>%
-  addAwesomeMarkers(popup = paste0("Beguakhali",
+  addAwesomeMarkers(popup = paste0(tags$h4(strong("Village:"), " Beguakhali"),
+                                   #br(),
+                                   tags$b("Average Age:"), " 49.47",
                                    br(),
-                                   "Age: 49.47",
+                                   tags$b("Median Household Size:"), " 5",
                                    br(),
-                                   "Median Household Size: 5"),
+                                   tags$b("Average Number of Children per Household:"), " 3.07"),
                     lat = 21.660021, lng = 88.046135,
                     label = "Beguakhali",
                     labelOptions = , icon=icons2)%>%
-  addAwesomeMarkers(popup = paste0("Bijoynagar",
+  addAwesomeMarkers(popup = paste0(tags$h4(strong("Village:"), " Bijoynagar"),
+                                   #br(),
+                                   tags$b("Average Age:"), " 52.6",
                                    br(),
-                                   "Age: 52.6",
+                                   tags$b("Median Household Size:"), " 4",
                                    br(),
-                                   "Median Household Size: 4"),
+                                   tags$b("Average Number of Children per Household:"), " 1.92"),
                     lat = 22.141427, lng = 88.786918,
                     label = "Bijoynagar",
                     labelOptions = , icon=icons2)%>%
-  addAwesomeMarkers(popup = paste0("Birajnagar",
+  addAwesomeMarkers(popup = paste0(tags$h4(strong("Village:"), " Birajnagar"),
+                                   #br(),
+                                   tags$b("Average Age:"), " 48.79",
                                    br(),
-                                   "Age: 48.79",
+                                   tags$b("Median Household Size:"), " 4.5",
                                    br(),
-                                   "Median Household Size: 4.5"),
+                                   tags$b("Average Number of Children per Household:"), " 2.54"),
                     lat = 22.152742, lng = 88.790464,
                     label = "Birajnagar",
                     labelOptions = , icon=icons2)%>%
-  addAwesomeMarkers(popup = paste0("Haridaskati Samsernagar",
+  addAwesomeMarkers(popup = paste0(tags$h4(strong("Village:"), " Haridaskati Samsernagar"),
+                                  # br(),
+                                   tags$b("Average Age:"), " 50.97",
                                    br(),
-                                   "Age: 50.97",
+                                   tags$b("Median Household Size:"), " 4",
                                    br(),
-                                   "Median Household Size: 4"),
+                                   tags$b("Average Number of Children per Household:"), " 1.83"),
                     lat = 22.219522, lng = 89.033886,
                     label = "Haridaskati Samsernagar",
                     labelOptions = , icon=icons2)%>%
-  addAwesomeMarkers(popup = paste0("Lakshmi Janardanpur",
+  addAwesomeMarkers(popup = paste0(tags$h4(strong("Village:"), " Lakshmi Janardanpur"),
+                                  # br(),
+                                   tags$b("Average Age:"), " 50.68",
                                    br(),
-                                   "Age: 50.68",
+                                   tags$b("Median Household Size:"), " 4",
                                    br(),
-                                   "Median Household Size: 4"),
+                                   tags$b("Average Number of Children per Household:"), " 2.5"),
                     lat = 21.835391, lng = 88.45752,
                     label = "Lakshmi Janardanpur",
                     labelOptions = , icon=icons2)%>%
-  addAwesomeMarkers(popup = paste0("Pargumti",
+  addAwesomeMarkers(popup = paste0(tags$h4(strong("Village:"), " Pargumti"),
+                                   #br(),
+                                   tags$b("Average Age:"), " 53.78",
                                    br(),
-                                   "Age: 53.78",
+                                   tags$b("Median Household Size:"), " 4",
                                    br(),
-                                   "Median Household Size: 4"),
+                                   tags$b("Average Number of Children per Household:"), " 1.57"),
     lat = 22.227912, lng = 89.00475,
     label = "Pargumti",
     labelOptions = , icon=icons2) %>%
-  addAwesomeMarkers(popup = paste0("Purba Dwarokapur",
+  addAwesomeMarkers(popup = paste0(tags$h4(strong("Village:"), " Purba Dwarokapur"),
+                                  # br(),
+                                   tags$b("Average Age:"), " 43.64",
                                    br(),
-                                   "Age: 43.64",
+                                   tags$b("Median Household Size:"), " 4",
                                    br(),
-                                   "Median Household Size: 4"),
+                                   tags$b("Average Number of Children per Household:"), " 3.32"),
                     lat = 21.885951, lng = 88.423895,
                     label = "Purba Dwarokapur",
                     labelOptions = , icon=icons2)%>%
-  addAwesomeMarkers(popup = paste0("Sagar",
+  addAwesomeMarkers(popup = paste0(tags$h4(strong("Village:"), " Sagar"),
+                                   #br(),
+                                   tags$b("Average Age:"), " 47.5",
                                    br(),
-                                   "Age: 47.5",
+                                   tags$b("Median Household Size:"), " 5",
                                    br(),
-                                   "Median Household Size: 5"),
+                                   tags$b("Average Number of Children per Household:"), " 3.11"),
                     lat = 21.6528, lng = 88.0753,
                     label = "Sagar",
                     labelOptions = , icon=icons2) %>%
-  addAwesomeMarkers(popup = paste0("Shibpur",
+  addAwesomeMarkers(popup = paste0(tags$h4(strong("Village:"), " Shibpur"),
+                                   #br(),
+                                   tags$b("Average Age:"), " 51.29",
                                    br(),
-                                   "Age: 51.29",
+                                   tags$b("Median Household Size:"), " 4",
                                    br(),
-                                   "Median Household Size: 4"),
+                                   tags$b("Average Number of Children per Household:"), " 3.14"),
                     lat = 21.616568, lng = 88.253216,
                     label = "Shibpur",
                     labelOptions = , icon=icons2)
@@ -1209,15 +1229,16 @@ ui <- navbarPage(title = "",
                                               ) ,
                                               column(8,
                                                      tabsetPanel(
-                                                       tabPanel("Demographics",
+                                                       tabPanel("By Village",
+                                                                h4(strong("Head of Household Demographics -  November 2018 (Baseline)")),
+                                                                p(tags$small("Select marker for demographic analysis by village")),
+                                                                withSpinner(leafletOutput("ageplo", height = "500px", width = "80%")),),
+                                                       tabPanel("Graphics",
                                                      h4(strong("Head of Household Demographics -  November 2018 (Baseline)")),
                                                      selectInput("agedrop", "Select Characteristic:", width = "100%", choices = c(
-                                                       "Age" = "Mean Age for Head of Households",
                                                        "Education" = "Mean Years of Education for Head of Households", 
                                                        "Poverty" = "Households that Live Below Poverty Line (₹240) per week", 
-                                                       "Marital Status" = "Household Heads Marital Status",
-                                                       "Household Size" = "Household Size by Village", 
-                                                       "Children per Household" = "Total Children per Household"
+                                                       "Marital Status" = "Household Heads Marital Status"
                                                      ),
                                                      
                                                      ),
@@ -1226,17 +1247,14 @@ ui <- navbarPage(title = "",
                                                      withSpinner(plotlyOutput("ageplot", height = "500px", width = "100%")),
                                                      ),
                                               ),
-                                             tabPanel("Head of Household Demographics",
-                                                      h4(strong("Head of Household Demographics -  November 2018 (Baseline)")),
-                                                     withSpinner(leafletOutput("ageplo", height = "500px", width = "80%")),
-                                                    
+                          
                                      
                                               ))),
                                               # column(12, 
                                               #     h4("References: "), 
                                               #   p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
                                               #  p("", style = "padding-top:10px;")) 
-                                     )), 
+                                     ), 
                             tabPanel("Livelihood", 
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Livelihood Behavior"), align = "center"),
@@ -2085,23 +2103,11 @@ server <- function(input, output, session) {
   
   
   output$ageplo <- renderLeaflet({
-    if (ageVar() == "Mean Age for Head of Households") {
       map_leaflet2
-    }
     })
   
   output$ageplot <- renderPlotly({
-    if (ageVar() == "Mean Age for Head of Households") {
-      
-      fplot <-  ggplot(by_villagemore, aes(x = village, y = head_age, fill = village, width=0.5, srt = 45)) +
-        geom_col(hoverinfo = "text", aes(text = paste("Age: ", round(head_age,2))), width = "5") +
-        ylab("Age") + 
-        xlab("")+
-        theme(legend.position = "none") +
-        rotate_x_text(angle = 33, size = rel(1)) + scale_fill_brewer(palette = "Paired")
-      ggplotly(fplot, tooltip = c("text"))
-    }
-    else if (ageVar() == "Mean Years of Education for Head of Households") {
+    if (ageVar() == "Mean Years of Education for Head of Households") {
       splot <- ggplot(by_villagemore, aes(x = "", y= head_edu, fill = village)) +
         geom_bar(width = 1, stat = "identity", hoverinfo = "text", aes(text = paste("Education: ", round(head_edu, 2), "<br>Village: ", village))) +
         facet_wrap(~village, ncol = 5) +
@@ -2123,21 +2129,6 @@ server <- function(input, output, session) {
         labs(x = "Not Married                                         Married", y = "Total Household Head", fill = "") +
         scale_x_discrete() + theme(legend.title=element_blank())
       ggplotly(marplot, tooltip = c("text"))
-    }
-    else if (ageVar() == "Household Size by Village") {
-      hh_size_plot <- ggplot(median_hhsize, aes(x = forcats::fct_rev(village), y = median, fill = village)) +
-        geom_col( hoverinfo = "text", aes(text = paste("Village:", village,"<br>Median: ", median))) +
-        labs( x = "", y = "Median Household Size")+
-        coord_flip()+
-        theme(legend.position="none") + scale_fill_brewer(palette = "Paired")
-      ggplotly(hh_size_plot, tooltip = c("text"))
-    }
-    else if (ageVar() == "Total Children per Household") {
-      chhoplot <- ggplot(avg_children, aes(x = village, y = avg_children, fill = village)) + 
-        geom_col(hoverinfo = "text", aes(text = paste("Village:", village,"<br>Average Children: ", round(avg_children, digit = 2)))) + labs(x = "", y = "Average number of children" ,title = "", fill = "Village") + 
-        theme(legend.position = "none") +
-        rotate_x_text(angle = 33, size = rel(1)) + scale_fill_brewer(palette = "Paired")
-      ggplotly(chhoplot, tooltip = c("text"))
     }
   })
   
