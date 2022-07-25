@@ -990,7 +990,18 @@ jscode <- "function getUrlVars() {
                    link.setAttribute('href', newurl);
                  }
             }
-        
+             var x = document.getElementsByClassName('navbar-brand');
+           if (mytype != 'economic') {
+             x[0].innerHTML = '<div style=\"margin-top:-14px\"><a href=\"https://datascienceforthepublicgood.org/events/symposium2020/poster-sessions\">' +
+                              '<img src=\"DSPG_black-01.png\", alt=\"DSPG 2020 Symposium Proceedings\", style=\"height:42px;\">' +
+                              '</a></div>';
+             //changeLinks('dspg');
+           } else {
+             x[0].innerHTML = '<div style=\"margin-top:-14px\"><a href=\"https://datascienceforthepublicgood.org/economic-mobility/community-insights/case-studies\">' +
+                              '<img src=\"AEMLogoGatesColorsBlack-11.png\", alt=\"Gates Economic Mobility Case Studies\", style=\"height:42px;\">' +
+                              '</a></div>';
+             //changeLinks('economic');
+           }
            "
 
 # user -------------------------------------------------------------
@@ -1353,9 +1364,15 @@ ui <- navbarPage(title = "",
                                                      p("Migration appears to be a prominent livelihood strategy – 15% of households had at least one migrant in the last ten years.
                                                      Job opportunities may play a primary factor in this migration trend, thus explaining the high remittance level for our sample. Remittances are any income household receives 
                                                   from someone working away from home. We visualize the relationship between average weekly remittances and average weekly income. In most villages, higher remittances correlate with a higher weekly income. 
+<<<<<<< HEAD
+                                                     This suggests that remittances are a primary income source for most families Given the poverty level and low               income-earning opportunities it is no surprise that many families are unable to or rarely save any money."),
+                                                    
+                                                     
+=======
                                                      This suggests that remittances are a primary income source for most families Given the poverty level and low 
                                                        income-earning opportunities it is no surprise that many families are unable to or rarely save any money."),
                                                     
+>>>>>>> cc468c65d21e2d0aef31b5ada5d57163b549b2e8
                                               ),
                                               column(8, h4(strong("Financial – November 2018 (Baseline)")),
                                                      selectInput("findrop", "Select Practice:", width = "100%", choices = c( 
@@ -1369,6 +1386,20 @@ ui <- navbarPage(title = "",
                                                      )),
                                                      fluidRow(align = "center",
                                                               h4(strong(textOutput("result"))),
+<<<<<<< HEAD
+                                                              
+                                                              withSpinner(plotlyOutput("finplot", height = "500px")),
+                                                              
+                                                              
+                                                     )),
+                                                     column(12, 
+                                                            fluidPage(
+                                                              actionButton(inputId ="button2", label = "Map"),
+                                                              br()
+                                                              
+                                                            )),
+                                              ))),
+=======
                                                      
                                                      withSpinner(plotlyOutput("finplot", height = "500px")),
                                                    
@@ -1385,6 +1416,7 @@ ui <- navbarPage(title = "",
                  )), 
                  
                  
+>>>>>>> cc468c65d21e2d0aef31b5ada5d57163b549b2e8
                  
                  
                  # FD data tab-----------------------------------------------------------
