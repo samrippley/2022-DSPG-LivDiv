@@ -1398,8 +1398,9 @@ ui <- navbarPage(title = "",
                                      
                             column(12, 
                                    fluidPage(
-                                     actionButton(inputId ="button1", label = "Map")
-                                     
+                                     actionButton(inputId ="button1", label = "Map"),
+                                     br(),
+                                     br()
                                    )))),
                             
                             
@@ -1439,7 +1440,8 @@ ui <- navbarPage(title = "",
                                                      )),
                                                      column(12, 
                                                             fluidPage(
-                                                              actionButton(inputId ="button2", label = "Map")
+                                                              actionButton(inputId ="button2", label = "Map"),
+                                                              br()
                                                               
                                                             )),
                                      ))),
