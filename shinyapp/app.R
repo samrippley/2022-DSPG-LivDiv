@@ -434,22 +434,22 @@ map_leaflet <- leaflet(data = d.sundarban) %>%
     label = "Sagar",
     labelOptions = , icon=icons) %>%
   addAwesomeMarkers(~lon, ~lat, label = ~as.character(Village.Na), labelOptions =  ,icon=icons, data=village) %>%
-addAwesomeMarkers(
-  lat = 22.227912, lng = 89.00475,
-  label = "Pargumti",
-  labelOptions = , icon=icons) %>%
-addCircles(lat = 21.657, lng = 88.0591,
-           radius=6000, color = 'blue', opacity = 1) %>%
+  addAwesomeMarkers(
+    lat = 22.227912, lng = 89.00475,
+    label = "Pargumti",
+    labelOptions = , icon=icons) %>%
+  addCircles(lat = 21.657, lng = 88.0591,
+             radius=6000, color = 'blue', opacity = 1) %>%
   addCircles(lat = 22.227912, lng = 89.02,
              radius=6000, color = 'red') %>%
- addCircles(lat = 21.8619, lng = 88.43877,
-            radius=6000, color = 'purple') %>%
+  addCircles(lat = 21.8619, lng = 88.43877,
+             radius=6000, color = 'purple') %>%
   addCircles(lat = 22.16, lng = 88.789,
-            radius=6000, color = 'yellow') %>%
+             radius=6000, color = 'yellow') %>%
   addCircles(lat = 21.5896, lng = 88.2653,
              radius=6000, color = 'black') %>%
   addLegend(title = "Administrative Blocks:", position = "bottomright", colors = c("blue", "black","purple", "yellow","red"), labels = c("Block 1", "Block 2", "Block 3", "Block 4", "Block 5"))
-  
+
 # leaflet data for age graph--------------------------------------------------------------------
 
 icons2 <- awesomeIcons(
@@ -464,22 +464,22 @@ map_leaflet2 <- leaflet(data = d.sundarban) %>%
   addTiles() %>%
   #addPolygons(
   #  fillColor = "black",
-   # stroke=TRUE,
+  # stroke=TRUE,
   #  weight = 1,
-   # smoothFactor = 0.2,
-   # opacity = 1.0,
+  # smoothFactor = 0.2,
+  # opacity = 1.0,
   #  fillOpacity = 0.5,
-   # highlightOptions = highlightOptions(color = "white",
-    #                                    weight = 2,
-     #                                   bringToFront = FALSE)) %>%
+  # highlightOptions = highlightOptions(color = "white",
+  #                                    weight = 2,
+  #                                   bringToFront = FALSE)) %>%
   setView(lat= 21.9342, lng = 88.5345, zoom = 9) %>%
   addAwesomeMarkers(popup = paste0(tags$h4(strong("Village:"),"Amrabati"),
                                    #br(),
                                    tags$b("Average Age:"), " 46.68",
                                    br(),
                                    tags$b("Median Household Size:"), " 4",
-                     br(),
-                     tags$b("Average Number of Children per Household:"), " 2.68"),
+                                   br(),
+                                   tags$b("Average Number of Children per Household:"), " 2.68"),
                     lat = 21.570553, lng = 88.263257,
                     label = "Amrabati",
                     labelOptions = , icon=icons2)%>%
@@ -514,7 +514,7 @@ map_leaflet2 <- leaflet(data = d.sundarban) %>%
                     label = "Birajnagar",
                     labelOptions = , icon=icons2)%>%
   addAwesomeMarkers(popup = paste0(tags$h4(strong("Village:"), " Haridaskati Samsernagar"),
-                                  # br(),
+                                   # br(),
                                    tags$b("Average Age:"), " 50.97",
                                    br(),
                                    tags$b("Median Household Size:"), " 4",
@@ -524,7 +524,7 @@ map_leaflet2 <- leaflet(data = d.sundarban) %>%
                     label = "Haridaskati Samsernagar",
                     labelOptions = , icon=icons2)%>%
   addAwesomeMarkers(popup = paste0(tags$h4(strong("Village:"), " Lakshmi Janardanpur"),
-                                  # br(),
+                                   # br(),
                                    tags$b("Average Age:"), " 50.68",
                                    br(),
                                    tags$b("Median Household Size:"), " 4",
@@ -540,11 +540,11 @@ map_leaflet2 <- leaflet(data = d.sundarban) %>%
                                    tags$b("Median Household Size:"), " 4",
                                    br(),
                                    tags$b("Average Number of Children per Household:"), " 1.57"),
-    lat = 22.227912, lng = 89.00475,
-    label = "Pargumti",
-    labelOptions = , icon=icons2) %>%
+                    lat = 22.227912, lng = 89.00475,
+                    label = "Pargumti",
+                    labelOptions = , icon=icons2) %>%
   addAwesomeMarkers(popup = paste0(tags$h4(strong("Village:"), " Purba Dwarokapur"),
-                                  # br(),
+                                   # br(),
                                    tags$b("Average Age:"), " 43.64",
                                    br(),
                                    tags$b("Median Household Size:"), " 4",
@@ -581,14 +581,14 @@ map_leaflet3 <- leaflet(data = d.sundarban) %>%
   addTiles() %>%
   setView(lat= 21.95, lng = 87.9, zoom = 8) %>%
   #addAwesomeMarkers(
-   # lat = 21.6528, lng = 88.0753,
+  # lat = 21.6528, lng = 88.0753,
   #  label = "Sagar",
-   # labelOptions = , icon=icons) %>%
+  # labelOptions = , icon=icons) %>%
   #addAwesomeMarkers(~lon, ~lat, label = ~as.character(Village.Na), labelOptions =  ,icon=icons, data=village) %>%
   #addAwesomeMarkers(
   #  lat = 22.227912, lng = 89.00475,
-   # label = "Pargumti",
-    #labelOptions = , icon=icons) %>%
+  # label = "Pargumti",
+  #labelOptions = , icon=icons) %>%
   addCircles(lat = 21.657, lng = 88.0591,
              radius=6000, color = 'blue', opacity = 1) %>%
   addCircles(lat = 22.227912, lng = 89.02,
@@ -926,7 +926,64 @@ filtered_non_food_cs <- reactive({
     filter(village %in% input$village_cs_nonfood)
 })
 
+<<<<<<< HEAD
 
+=======
+# HFD by Block------------------------------------
+# expenditure
+spending_vill <- fd %>% 
+  select("village", "week", "total_spending")
+
+exp_vill <- spending_vill %>%
+  group_by(week, village) %>% 
+  summarise(exp_total = mean(na.omit(total_spending))) %>% 
+  mutate("Block" = c(blocks))
+
+exp_block <- exp_vill %>% 
+  group_by(week, Block) %>% 
+  summarise(block_avg_exp = mean(exp_total))
+
+# income
+inc <- livdiv %>% 
+  select(village, week, full_inc)
+
+inc_vill <- inc %>% 
+  group_by(week, village) %>% 
+  summarise(inc_total = mean(na.omit(full_inc))) %>% 
+  mutate("Block" = c(blocks))
+
+inc_block <- inc_vill %>% 
+  group_by(week, Block) %>% 
+  summarise(block_avg_inc = mean(inc_total))
+
+# remittances
+rmt_v2 <- fd %>% 
+  select(village, week, rmt_total)
+
+rmt_v3 <- rmt_v2 %>% 
+  group_by(week, village) %>% 
+  summarise(remt_total = mean(na.omit(rmt_total))) %>% 
+  mutate("Block" = c(blocks))
+
+rmt_block <- rmt_v3 %>% 
+  group_by(week, Block) %>% 
+  summarise(block_avg_rmt = mean(remt_total))
+
+# consumption
+cs_v2 <- fd %>% 
+  select(village, week, cs_total)
+
+cs_vill <- cs_v2 %>% 
+  group_by(week, village) %>% 
+  summarise(cs_tot = mean(na.omit(cs_total))) %>% 
+  mutate("Block" = c(blocks))
+
+cs_block <- cs_vill %>% 
+  group_by(week, Block) %>% 
+  summarise(block_avg_cs = mean(cs_tot))
+
+blocks_vector <- c("Block 1", "Block 2", "Block 3", "Block 4", "Block 5")
+>>>>>>> af2a82dc231a778f714ef1676c1fbe1920bece7b
 
 # Events data -------------------------------------
 Events <- c("Kharif Crop Preparation","Kharif Crop Harvest", "Rabi Crop Harvest","Honey Harvest", "Fani Cyclone", "Matmo/Bulbul Cyclone", "Vayu Cyclone", "Hikaa Cyclone","Kyaar Cyclone","Maha Cyclone",
@@ -1045,7 +1102,7 @@ ui <- navbarPage(title = "",
                                    )
                           ),
                           fluidRow(align = "center",
-                          p(tags$small(em('Source: Images taken by Sundarbans Field Team')))),
+                                   p(tags$small(em('Source: Images taken by Sundarbans Field Team')))),
                           br(""),
                           br(""), 
                           fluidRow(align = "left",
@@ -1085,15 +1142,15 @@ ui <- navbarPage(title = "",
                                           br()
                                           
                                    ),
-                                  
+                                   
                           ),
                           fluidRow(
                             h3(strong("Example of Financial Diary")),
                             align = "center",
-                                   img(src='Picture2.png', width = "50%"),)
+                            img(src='Picture2.png', width = "50%"),)
                           
                           
-                          ), 
+                 ), 
                  ## Sundarbans Region--------------------------------------------
                  navbarMenu("Sundarbans Region" ,
                             tabPanel("Villages", 
@@ -1101,8 +1158,8 @@ ui <- navbarPage(title = "",
                                      fluidRow(style = "margin: 2px;",
                                               align = "center",
                                               h1(strong("Representative Villages in the Sundarbans"))
-                                                 
-                                              ),
+                                              
+                                     ),
                                      
                                      fluidRow(style = "margin: 6px;", #align = "justify",
                                               p("", style = "padding-top:10px;"),
@@ -1110,71 +1167,67 @@ ui <- navbarPage(title = "",
                                                      h2(strong("Sundarbans Area")),
                                                      p("This project examines households living in the Sundarbans in West Bengal, India – a coastal delta region in the Bay of Bengal.  Gupta et al. (2021) surveyed households in the North 24 – Parganas and South 24 – Parganas districts. Specifically, ten representative villages were randomly chosen from five administrative blocks in the Sundarbans:"),
                                                      (tags$ul(
-                                                     tags$li(tags$b("Beguakhali and Sagar"), "- Block 1"),
-                                                     tags$li(tags$b("Amrabati and Shibpur"), "- Block 2"),
-                                                     tags$li(tags$b("Lakshmi Janardanpur and Purba Dwarokapur"), "- Block 3"),
-                                                     tags$li(tags$b("Birajnagar and Bijoynagar"), "- Block 4"),
-                                                     tags$li(tags$b("Haridaskati Samsernagar and Pargumti"), "- Block 5"),
+                                                       tags$li(tags$b("Beguakhali and Sagar"), "- Block 1"),
+                                                       tags$li(tags$b("Amrabati and Shibpur"), "- Block 2"),
+                                                       tags$li(tags$b("Lakshmi Janardanpur and Purba Dwarokapur"), "- Block 3"),
+                                                       tags$li(tags$b("Birajnagar and Bijoynagar"), "- Block 4"),
+                                                       tags$li(tags$b("Haridaskati Samsernagar and Pargumti"), "- Block 5"),
                                                      )),
                                                      p("As shown on the map, villages within the same block are close in proximity to each other – at most the distance is 15km between the two villages."),
                                                      
-                                                    h4(strong("Weather Related Events")),
+                                                     h4(strong("Weather Related Events")),
                                                      p("The Sundarbans proximity to the Bay of Bengal causes it to be frequented by cyclones. These tropical cyclones usually form in May, October, and November. Although tropical cyclones are common to the area, the frequency and severity have increased in the past few years, with climate change as a contributing factor."),
                                                      p("During the data collection period, November 2018 to October 2019, the Sundarbans area was struck by two significant cyclones: "),
-                                                    (tags$ul(
-                                                     tags$li(tags$b("Fani"), "(Category 4): 26 April– 4 May 2019 "),
-                                                     tags$li(tags$b("Matmo/Bulbul"), "(Category 2): 28 October - 11 November 2019 "),
-                                                    )),
+                                                     (tags$ul(
+                                                       tags$li(tags$b("Fani"), "(Category 4): 26 April– 4 May 2019 "),
+                                                       tags$li(tags$b("Matmo/Bulbul"), "(Category 2): 28 October - 11 November 2019 "),
+                                                     )),
                                                      p("The Fani Cyclone was an extremely severe tropical storm, reported as the strongest in 2019, and the 10th most severe cyclone in the Indian subcontinent within the last 52 years. 
                                                        Its high-speed winds and torrential rain caused extensive flooding, destroying property, assets, agricultural lands, and leading to a significant loss of approximately sixty-four lives across Eastern and Northern Inida.
                                                        The Matmo cyclone formed in the Philippine Sea on October 28th, dissipated as it went West over land (Cambodia), then regained energy and reached peak strength as it went over the Andaman Sea and into the Bengal Bay, making landfall on November 7th, where it was renamed Bulbul.
                                                        This cyclone also caused severe impacts to the property and agricultural lands of the Sundarbans."),
                                                      p("Four cyclones also developed along the Arabian Sea during this period:"),
-                                                    (tags$ul(
-                                                     tags$li(tags$b("Vayu"), "(Category 1): 8 - 18 June 2019 "),
-                                                     tags$li(tags$b("Hikka"), "(Category 1): 20 - 26 September 2019"),
-                                                     tags$li(tags$b("Kyaar"), "(Category 4): 22 October - 3 November 2019"),
-                                                     tags$li(tags$b("Maha"), "(Category 3): 28 October - 11 November 2019"),
-                                                    )),
+                                                     (tags$ul(
+                                                       tags$li(tags$b("Vayu"), "(Category 1): 8 - 18 June 2019 "),
+                                                       tags$li(tags$b("Hikka"), "(Category 1): 20 - 26 September 2019"),
+                                                       tags$li(tags$b("Kyaar"), "(Category 4): 22 October - 3 November 2019"),
+                                                       tags$li(tags$b("Maha"), "(Category 3): 28 October - 11 November 2019"),
+                                                     )),
                                                      p("While the Sundarbans was not reported as a region directly affected by these four cyclones, it is very likely that the they still experienced some of the negative effects of these storms due to their proximity to the Arabian Sea."),
-                                                    
-                                                    h4(strong("Harvest Seasons")),
-                                                    p("Agriculture is the backbone of the Sundarbans economy, with mostly small–scale farmers. The sector largely depends on a single crop, the rain-fed paddy Aman. In this region, however, agriculture is very seasonal as it depends on the monsoons:"),
-                                                    (tags$ul(
-                                                    tags$li(tags$b("Kharif"),"Season - This season occurs with the onset of monsoon."),
-                                                    tags$ul(
-                                                    tags$li("Preparation and cultivation of Aman paddy usually occurs from", tags$b("June – August.")),
-                                                    tags$li("Harvesting occurs between", tags$b("December – February.")),
-                                                    ),
-                                                    tags$li(tags$b("Rabi"),"Season - This is the dry season. While some vegetables are grown during this season, there are not many crops as most of the cultivated areas are fallowed."),
-                                                    tags$ul(
-                                                    tags$li("Crop Cultivation is between", tags$b("December – February")),
-                                                    tags$li("Harvesting of rabi crops happens during summer,", tags$b("March - June")),
-                                                    )
-                                                    )),
-                                                    p("Fisheries is the next dominant productive activity. This occurs year-round but majority of fish catch occurs during", tags$b("November to January"),". Some months", tags$b("(April, May, and June)"), "are closed for fishing. Honey collection on the other hand occurs from", tags$b("April to June.")),
-                                                    
-                                                    h4(strong("Festivals/Holidays")),
-                                                    p("Several festivals and holidays that occur during the data collection period are: "),
-                                                    (tags$ul(
-                                                    tags$li(tags$b("Republic Day"),": Janurary 26"),
-                                                    tags$li(tags$b("Rama Navami"),": April 14"),
-                                                    tags$li(tags$b("Eid al-Fitr"),": June 4-5"),
-                                                    tags$li(tags$b("Independence Day"),": August 15"),
-                                                    tags$li(tags$b("Dussehra"),": October 8"),
-                                                    tags$li(tags$b("Diwali"),": October 27"),
-                                                    tags$li(tags$b("Christmas"),": December 25"),
-                                                    )),
-                                             ),
-
+                                                     
+                                                     h4(strong("Harvest Seasons")),
+                                                     p("Agriculture is the backbone of the Sundarbans economy, with mostly small–scale farmers. The sector largely depends on a single crop, the rain-fed paddy Aman. In this region, however, agriculture is very seasonal as it depends on the monsoons:"),
+                                                     (tags$ul(
+                                                       tags$li(tags$b("Kharif"),"Season - This season occurs with the onset of monsoon."),
+                                                       tags$ul(
+                                                         tags$li("Preparation and cultivation of Aman paddy usually occurs from", tags$b("June – August.")),
+                                                         tags$li("Harvesting occurs between", tags$b("December – February.")),
+                                                       ),
+                                                       tags$li(tags$b("Rabi"),"Season - This is the dry season. While some vegetables are grown during this season, there are not many crops as most of the cultivated areas are fallowed."),
+                                                       tags$ul(
+                                                         tags$li("Crop Cultivation is between", tags$b("December – February")),
+                                                         tags$li("Harvesting of rabi crops happens during summer,", tags$b("March - June")),
+                                                       )
+                                                     )),
+                                                     p("Fisheries is the next dominant productive activity. This occurs year-round but majority of fish catch occurs during", tags$b("November to January"),". Some months", tags$b("(April, May, and June)"), "are closed for fishing. Honey collection on the other hand occurs from", tags$b("April to June.")),
+                                                     
+                                                     h4(strong("Festivals/Holidays")),
+                                                     p("Several festivals and holidays that occur during the data collection period are: "),
+                                                     (tags$ul(
+                                                       tags$li(tags$b("Republic Day"),": Janurary 26"),
+                                                       tags$li(tags$b("Rama Navami"),": April 14"),
+                                                       tags$li(tags$b("Eid al-Fitr"),": June 4-5"),
+                                                       tags$li(tags$b("Independence Day"),": August 15"),
+                                                       tags$li(tags$b("Dussehra"),": October 8"),
+                                                       tags$li(tags$b("Diwali"),": October 27"),
+                                                       tags$li(tags$b("Christmas"),": December 25"),
+                                                     )),
+                                              ),
+                                              
                                               column(7, 
                                                      h2(strong("")),
-                                                     leafletOutput("map_leaflet", width = "100%", height = 800),
-                                                     br(),
-                                                     br(),
-                                                    
-                                                     img(src='months.png', align = "center", width = "95%") 
-                                              
+                                                     leafletOutput("map_leaflet", width = "100%", height = 800)
+                                                     
                                                      
                                                      
                                               )),
@@ -1198,9 +1251,9 @@ ui <- navbarPage(title = "",
                                               p(tags$small(em('Connect. Collaborate. Express | RoundGlass Living. (n.d.). Roundglass.com. Retrieved July 20, 2022, from https://roundglasssustain.com/photo-stories/honey-gatherers-sundarbans.')))),
                                      fluidRow(align = "left",
                                               p(tags$small(em('Kabir, Kazi Ahmed & Saha, S B & Phillips, Michael. (2019). Aquaculture and Fisheries in the Sundarbans and Adjacent Areas in Bangladesh: Resources, Productivity, Challenges and Opportunities. 10.1007/978-3-030-00680-8_9.'))))
-
-                                              
-                                     ),
+                                     
+                                     
+                            ),
                             tabPanel("Timelapse", 
                                      fluidRow(style = "margin: 2px;",
                                               align = "center",
@@ -1217,49 +1270,48 @@ ui <- navbarPage(title = "",
                                                        These cyclones are occuring more often, and their effects are becoming more severe, as the rising sea level increases the base upon which these storm surges are built.
                                                        The impacts of these cyclones include flooding, extreme winds, erosion, and further raising the sea level, significantly increasing the potential to damage property and threaten human health and safety."), 
                                                      align = "justify"),
-                                             
-                                      column(8, 
-                                             #h2(strong("Timelapse of the Sundarbans Area"), align = "center"),
-                                             br(),
-                                             br(),
-                                              tags$video(type = "video/mp4",src = "Sundarbansv3 ‑ Made with FlexClip.mp4", width = "100%", controls = "controls", autoplay = T, loop = T)
-                                            
-                                             )),
+                                              
+                                              column(8, 
+                                                     #h2(strong("Timelapse of the Sundarbans Area"), align = "center"),
+                                                     br(),
+                                                     br(),
+                                                     tags$video(type = "video/mp4",src = "Sundarbansv3 ‑ Made with FlexClip.mp4", width = "100%", controls = "controls", autoplay = T, loop = T)
+                                              )),
                                      br(),
                                      br(),
                                      br(),
                                      br(),
-                                    
+                                     
                                      fluidRow(
-                                              align = "left",
-                                              p(tags$small(em('References: '))),
-                                              p(tags$small(em('CCSP (2008). Impacts of Climate Change and Variability on Transportation Systems and Infrastructure: Gulf Coast Study, Phase I. A Report by the U.S. Climate Change Science Program and the Subcommittee on Global Change Research. Savonis, M. J., V.R. Burkett, and J.R. Potter (eds.). Department of Transportation, Washington, DC, USA, 445 pp.'))),
-                                      p(tags$small(em('USGCRP (2014). Moser, S. C., M. A. Davidson, P. Kirshen, P. Mulvaney, J. F. Murley, J. E. Neumann, L. Petes, and D. Reed, 2014: Ch. 25: Coastal Zone Development and Ecosystems. Climate Change Impacts in the United States: The Third National Climate As­sessment, J. M. Melillo, Terese (T.C.) Richmond, and G. W. Yohe, Eds., U.S. Global Change Research Program, , 579-618.'))),
-                                     p(tags$small(em('NRC (2010). Adapting to the Impacts of Climate Change. National Research Council. The National Academies Press, Washington, DC, USA.'))),
-                                     p(tags$small(em('Evan, Amato & Camargo, Suzana. (2011). A Climatology of Arabian Sea Cyclonic Storms. JOURNAL OF CLIMATE.'))),
-                                     p(tags$small(em('Alam, M. M., Hossain, M. A., &amp; Shafee, S. (2003). Frequency of bay of bengal cyclonic storms and depressions crossing different Coastal Zones. International Journal of Climatology, 23(9), 1119–1125. https://doi.org/10.1002/joc.927 ')))
+                                       align = "left",
+                                       p(tags$small(em('References: '))),
+                                       p(tags$small(em('CCSP (2008). Impacts of Climate Change and Variability on Transportation Systems and Infrastructure: Gulf Coast Study, Phase I. A Report by the U.S. Climate Change Science Program and the Subcommittee on Global Change Research. Savonis, M. J., V.R. Burkett, and J.R. Potter (eds.). Department of Transportation, Washington, DC, USA, 445 pp.'))),
+                                       p(tags$small(em('USGCRP (2014). Moser, S. C., M. A. Davidson, P. Kirshen, P. Mulvaney, J. F. Murley, J. E. Neumann, L. Petes, and D. Reed, 2014: Ch. 25: Coastal Zone Development and Ecosystems. Climate Change Impacts in the United States: The Third National Climate As­sessment, J. M. Melillo, Terese (T.C.) Richmond, and G. W. Yohe, Eds., U.S. Global Change Research Program, , 579-618.'))),
+                                       p(tags$small(em('NRC (2010). Adapting to the Impacts of Climate Change. National Research Council. The National Academies Press, Washington, DC, USA.'))),
+                                       p(tags$small(em('Evan, Amato & Camargo, Suzana. (2011). A Climatology of Arabian Sea Cyclonic Storms. JOURNAL OF CLIMATE.'))),
+                                       p(tags$small(em('Alam, M. M., Hossain, M. A., &amp; Shafee, S. (2003). Frequency of bay of bengal cyclonic storms and depressions crossing different Coastal Zones. International Journal of Climatology, 23(9), 1119–1125. https://doi.org/10.1002/joc.927 ')))
                                      ),
                                      
                             ),
                             #tabPanel("Gallery",
-                             #        fluidRow(style = "margin: 6px;", 
-                              #                column(12,
-                               #                      h2(strong("Images"))
-                                                     
-                                #                     
-                                 #             ),   
-                                  #            mainPanel( 
-                                   #             actionButton("previous", "Previous"),
-                                    #            actionButton("next", "Next"),
-                                     #           imageOutput("image")
-                                                
-                                      #        ))),
+                            #        fluidRow(style = "margin: 6px;", 
+                            #                column(12,
+                            #                      h2(strong("Images"))
+                            
+                            #                     
+                            #             ),   
+                            #            mainPanel( 
+                            #             actionButton("previous", "Previous"),
+                            #            actionButton("next", "Next"),
+                            #           imageOutput("image")
+                            
+                            #        ))),
                  ),
                  
                  ## Tab Demographics --------------------------------------------
                  navbarMenu("Demographics" , 
                             tabPanel("Socioeconomic",
-                                         fluidRow(style = "margin: 6px;", align = "justify",
+                                     fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Socioeconomic Characteristics"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
@@ -1279,29 +1331,31 @@ ui <- navbarPage(title = "",
                                                                 p(tags$small("Select marker for demographic analysis by village")),
                                                                 withSpinner(leafletOutput("ageplo", height = "500px", width = "80%")),),
                                                        tabPanel("Graphics",
-                                                     h4(strong("Head of Household Demographics -  November 2018 (Baseline)")),
-                                                     selectInput("agedrop", "Select Characteristic:", width = "100%", choices = c(
-                                                       "Education" = "Mean Years of Education for Head of Households", 
-                                                       "Poverty" = "Households that Live Below Poverty Line (₹240) per week", 
-                                                       "Marital Status" = "Household Heads Marital Status"
-                                                     ),
-                                                     
-                                                     ),
-                                                     fluidRow(align = "center",
-                                                              h4(strong(textOutput("result2"))),
-                                                     withSpinner(plotlyOutput("ageplot", height = "500px", width = "100%")),
-                                                     ),
-                                              ))),
-                                              column(12, 
-                                                     fluidPage(
-                                                       actionButton(inputId ="button2", label = "Map")
+                                                                h4(strong("Head of Household Demographics -  November 2018 (Baseline)")),
+                                                                selectInput("agedrop", "Select Characteristic:", width = "100%", choices = c(
+                                                                  "Education" = "Mean Years of Education for Head of Households", 
+                                                                  "Poverty" = "Households that Live Below Poverty Line (₹240) per week", 
+                                                                  "Marital Status" = "Household Heads Marital Status"
+                                                                ),
+                                                                
+                                                                ),
+                                                                fluidRow(align = "center",
+                                                                         h4(strong(textOutput("result2"))),
+                                                                         withSpinner(plotlyOutput("ageplot", height = "500px", width = "100%")),
+                                                                ),
+                                                       ))),
+                                                       column(12, 
+                                                              fluidPage(
+                                                                actionButton(inputId ="button", label = "Map")
+                                                                
+                                                              ),
+                                                              
                                                        
-                                                     ),
-                          
-                                     
+                                                     ))
+                                              
                                               ),
-                                            
-                                     )), 
+                                    
+                           
                             tabPanel("Livelihood", 
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Livelihood Behavior"), align = "center"),
@@ -1341,15 +1395,18 @@ ui <- navbarPage(title = "",
                                                      ),
                                                      fluidRow(align = "center",
                                                               h4(strong(textOutput("result1"))),
-                                                     withSpinner(plotlyOutput("ocuplot", height = "500px")),
-                                                     br(),
-                                                     textOutput("result4")),
+                                                              withSpinner(plotlyOutput("ocuplot", height = "500px")),
+                                                              br(),
+                                                              textOutput("result4")),
                                               ),
-                                              column(12, 
-                                                     fluidPage(
-                                                       actionButton(inputId ="button", label = "Map")
-                                                    ),
-                                     ))),
+                                     
+                            column(12, 
+                                   fluidPage(
+                                     actionButton(inputId ="button1", label = "Map")
+                                     
+                                   )))),
+                            
+                            
                             tabPanel("Financial", 
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Financial Practices"), align = "center"),
@@ -1362,9 +1419,10 @@ ui <- navbarPage(title = "",
                                                      p("Migration appears to be a prominent livelihood strategy – 15% of households had at least one migrant in the last ten years.
                                                      Job opportunities may play a primary factor in this migration trend, thus explaining the high remittance level for our sample. Remittances are any income household receives 
                                                   from someone working away from home. We visualize the relationship between average weekly remittances and average weekly income. In most villages, higher remittances correlate with a higher weekly income. 
-                                                     This suggests that remittances are a primary income source for most families Given the poverty level and low 
-                                                       income-earning opportunities it is no surprise that many families are unable to or rarely save any money."),
-                                                    
+                                                     This suggests that remittances are a primary income source for most families Given the poverty level and low               income-earning opportunities it is no surprise that many families are unable to or rarely save any money.")
+                                                     # fluidRow(
+                                                     #         withSpinner(leafletOutput("map3", height = "400px", width = "100%")))
+                                                     
                                               ),
                                               column(8, h4(strong("Financial – November 2018 (Baseline)")),
                                                      selectInput("findrop", "Select Practice:", width = "100%", choices = c( 
@@ -1378,23 +1436,19 @@ ui <- navbarPage(title = "",
                                                      )),
                                                      fluidRow(align = "center",
                                                               h4(strong(textOutput("result"))),
-                                                     
-                                                     withSpinner(plotlyOutput("finplot", height = "500px")),
-                                                   
-                                                     
-                                              )),
-                                               column(12, 
-                                                      fluidPage(
-                                                        actionButton(inputId ="button1", label = "Map")
-                                                      
-                                                      ),
-                                              
-                                     )),
-                            
-                 )), 
+                                                              
+                                                              withSpinner(plotlyOutput("finplot", height = "500px")),
+                                                              
+                                                              
+                                                     )),
+                                                     column(12, 
+                                                            fluidPage(
+                                                              actionButton(inputId ="button2", label = "Map")
+                                                              
+                                                            )),
+                                     ))),
                  
-                 
-                 
+                
                  
                  # FD data tab-----------------------------------------------------------
                  
@@ -1406,13 +1460,13 @@ ui <- navbarPage(title = "",
                                               column(12,h4(strong("Total Spending")),
                                                      p("We present average weekly expenditure from Nov 2018 - Oct 2019 to examine the spending behaviors of households in the region. This will provide information on the changing nature of spending in the Sundarbans region due to events such as festivals and holidays, 
                                                        harvest seasons, and weather-related shocks."),
-
+                                                     
                                                      p("Expenditure is defined as spending on consumption (e.g., food) and non-consumption (e.g., rent) items.
                                                      The average weekly expenditure over the data period was 1982.77 rupees, with a median of 1832.1 rupees. 
                                                        It appears that the largest expenses occured during harvest seasons, where hosueholds are able to spend more with their harvest returns. 
                                                        We also observed increases in expenditure beofre and after cyclones hit, when households could be buying supplies
                                                        to prepare and cope from the storms."),
-
+                                                     
                                                      br("")
                                                      
                                               )),
@@ -1425,6 +1479,8 @@ ui <- navbarPage(title = "",
                                                      multiple = T, options = list(`actions-box` = T)),
                                          pickerInput("event_choose_exp", "Select Event:", choices = events_vector, selected = "Kharif Crop Preparation", 
                                                      multiple = T, options = list(`actions-box` = T)),
+                                         pickerInput("block_choose_exp", "Select Block:", choices = blocks_vector, selected = blocks_vector, 
+                                                     multiple = T, options = list(`actions-box` = T)),
                                          
                                          
                                        ),
@@ -1433,6 +1489,7 @@ ui <- navbarPage(title = "",
                                        mainPanel(
                                          tabsetPanel(
                                            tabPanel("Average Weekly Expenditure",plotOutput("exp", height = "500px")),
+                                           tabPanel("Expenditure By Block", plotOutput("exp_block", height = "500px")),
                                            tabPanel("Table", DT::DTOutput("exp_table"))
                                          )
                                        ),
@@ -1466,6 +1523,8 @@ ui <- navbarPage(title = "",
                                                      multiple = T, options = list(`actions-box` = T)),
                                          pickerInput("event_choose_cs", "Select Event:", choices = events_vector, selected = "Kharif Crop Preparation", 
                                                      multiple = T, options = list(`actions-box` = T)),
+                                         pickerInput("block_choose_cs", "Select Block:", choices = blocks_vector, selected = blocks_vector, 
+                                                     multiple = T, options = list(`actions-box` = T))
                                          
                                        ),
                                        # Show a plot of the generated plot
@@ -1475,7 +1534,8 @@ ui <- navbarPage(title = "",
                                            tabPanel("Staple Items", plotOutput("cs_staple", height = "500px")),
                                            tabPanel("Meats", plotOutput("cs_meats", height = "500px")),
                                            tabPanel("Other", plotOutput("cs_other", height = "500px")),
-                                           tabPanel("No. of Food Items", plotOutput("cs_item", height = "500px"))
+                                           tabPanel("No. of Food Items", plotOutput("cs_item", height = "500px")),
+                                           tabPanel("Food Consumption by Block", plotOutput("cs_block", height = "500px"))
                                            #tabPanel("Table", DT::DTOutput("cs_table"))
                                          )
                                        ),
@@ -1569,7 +1629,7 @@ ui <- navbarPage(title = "",
                                                        INR which is one of the higher weekly incomes in the region. Since many of these households work for 
                                                        wage either as an agriculture worker or casual laborer, the per week income is relatively same throughout 
                                                        the region. This can indicate why the weekly income is ranging consistently in-between 1000 INR and 2000 INR.")
-                                                     )),
+                                              )),
                                      # Sidebar with a select input for village
                                      sidebarLayout(
                                        sidebarPanel(
@@ -1580,6 +1640,8 @@ ui <- navbarPage(title = "",
                                          varSelectInput("Gender", "Select Gender:", malefemale_inc[,-(1:2)]),
                                          pickerInput("event_choose_inc", "Select Event:", choices = events_vector, selected = "Kharif Crop Preparation", 
                                                      multiple = T, options = list(`actions-box` = T)),
+                                         pickerInput("block_choose_inc", "Select Block:", choices = blocks_vector, selected = blocks_vector, 
+                                                     multiple = T, options = list(`actions-box` = T))
                                        ),
                                        # Show a plot of the generated plot
                                        mainPanel(
@@ -1587,6 +1649,7 @@ ui <- navbarPage(title = "",
                                            tabPanel("Average Weekly Income",plotOutput("inc", height = "500px")),
                                            tabPanel("Male/Female Income", plotOutput("malefemaleinc", height = "500px")),
                                            #tabPanel("Full Income", plotOutput("fullinc")),
+                                           tabPanel("Income by Block", plotOutput("inc_block", height = "500px")),
                                            tabPanel("Table", DT::DTOutput("inc_table"))
                                          )
                                        ),
@@ -1602,7 +1665,7 @@ ui <- navbarPage(title = "",
                                                      p("Issues in the Sundarbans region, including extreme weather, has constrained livelihood opportunities as the natural resources are dwindling. This has constrained households’ income levels and incentivized a large proportion of the population to migrate from this mangrove delta in hopes of acquiring a better income. Additionally, in the Sundarbans region, households are turning to borrowing when they have a need but cannot afford to make the purchase on their own."),
                                                      p("Our evaluation shows the main purpose for borrowing is consumption, with over 2000 total borrowing transactions from November 2018 to October 2019. Consumption includes purchasing any food or non-food items (e.g. rent). Borrowing is often used to invest in assets in hopes of producing a better return. In the Sundarbans region, this is not common. There are very few occurrences of households making asset purchases or investing in agricultural purchases. Rather, these households borrow for consumption. This includes borrowing when unexpected costs come up, such as accidents or unexpected repairs. Approximately half of the loans are given in cash, the other half is given in-kind. An in-kind loan is where a debtor can borrow without having to pay in cash. This can be done in multiple forms, such as lending land or labor. This form of loan often leads to larger losses in the event of a default, where the borrowed is unable to pay back the lender."),
                                                      p("Our evaluations show that both the amount borrowed and number of households borrowing throughout the year is relatively consistent. There was a large spike in amount borrowed between April and July in Purba Dwarokapur, Shibpur and Sagar. This spike occurred during the dry season at roughly the same time the Fani Cyclone hit this region. The number of households borrowing had an early spike in Bijoynagar, with over 30 households borrowing before January of 2019. This spike occurs at the same time as the Kharif and Rabi crop harvests. If you deselect Bijoynagar, there is a maximum of 17 households borrowing each week. During the Rabi, or dry season, there was a dip in the number of households borrowing. During the Rabi Season, while some vegetables are grown, there are not many crops and most of the cultivated areas are fallowed. This dip in number of households borrowing during the Rabi Season coincides with the peak in amount borrowed. This is evidence that the peak comes from outlier households borrowing large sums of money on a few occurrences. This supports our evaluation that borrowing throughout the year is relatively consistent, regardless of different shocks and seasons.")
-                                                   
+                                                     
                                               )),
                                      sidebarLayout(
                                        sidebarPanel(pickerInput("village_bramt", "Select Village:", choices = village_vector, 
@@ -1611,45 +1674,45 @@ ui <- navbarPage(title = "",
                                                     pickerInput("event_choose_borr", "Select Event:", choices = events_vector, selected = "Kharif Crop Preparation", 
                                                                 multiple = T, options = list(`actions-box` = T))
                                        ),
-                                     
-                                     mainPanel(
-                                       tabsetPanel(
-                                         tabPanel("Amount",plotOutput("bor", height = "500px")),
-                                         tabPanel("Count",plotOutput("borr", height = "500px")),
-                                         tabPanel("Purpose", plotOutput("purpplot", height = "500px"))
                                        
-                                       )
-                                     ),
-                            )
+                                       mainPanel(
+                                         tabsetPanel(
+                                           tabPanel("Amount",plotOutput("bor", height = "500px")),
+                                           tabPanel("Count",plotOutput("borr", height = "500px")),
+                                           tabPanel("Purpose", plotOutput("purpplot", height = "500px"))
+                                           
+                                         )
+                                       ),
+                                     )
                             ),
-                                     
-                                     # Show a plot of the generated plot
-                                     #mainPanel(
-                                       #tabsetPanel(
-                                        # tabPanel("Amount",plotOutput("bor"),
-                                         #         sidebarPanel(
-                                          #          pickerInput("village_bramt", "Select Village:", choices = village_vector, 
-                                           #                     selected = village_vector, 
-                                            #                    multiple = T, options = list(`actions-box` = T)),
-                                             #       pickerInput("event_choose_borr", "Select Event:", choices = events_vector, selected = "Kharif Crop Harvest", 
-                                              #                  multiple = T, options = list(`actions-box` = T)),), 
-                                       #  ),
-                                        # tabPanel("Count",plotOutput("borr"),
-                                        #          sidebarPanel(
-                                         #           pickerInput("village_borr", "Select Village:", choices = village_vector, 
-                                          #                      selected = village_vector,
-                                           #                     multiple = T, options = list(`actions-box` = T)),
-                                            #        pickerInput("event_choose_borr_count", "Select Event:", choices = events_vector, selected = "Kharif Crop Harvest", 
-                                        #                        multiple = T, options = list(`actions-box` = T))),
-                                      #   ),
-                                      #   tabPanel("Purpose", 
-                                      #            plotOutput("purpplot", height = "500px")
-                                      #   ),
-                                         
-                                         
-                                         
-                                         
-                                       #))),
+                            
+                            # Show a plot of the generated plot
+                            #mainPanel(
+                            #tabsetPanel(
+                            # tabPanel("Amount",plotOutput("bor"),
+                            #         sidebarPanel(
+                            #          pickerInput("village_bramt", "Select Village:", choices = village_vector, 
+                            #                     selected = village_vector, 
+                            #                    multiple = T, options = list(`actions-box` = T)),
+                            #       pickerInput("event_choose_borr", "Select Event:", choices = events_vector, selected = "Kharif Crop Harvest", 
+                            #                  multiple = T, options = list(`actions-box` = T)),), 
+                            #  ),
+                            # tabPanel("Count",plotOutput("borr"),
+                            #          sidebarPanel(
+                            #           pickerInput("village_borr", "Select Village:", choices = village_vector, 
+                            #                      selected = village_vector,
+                            #                     multiple = T, options = list(`actions-box` = T)),
+                            #        pickerInput("event_choose_borr_count", "Select Event:", choices = events_vector, selected = "Kharif Crop Harvest", 
+                            #                        multiple = T, options = list(`actions-box` = T))),
+                            #   ),
+                            #   tabPanel("Purpose", 
+                            #            plotOutput("purpplot", height = "500px")
+                            #   ),
+                            
+                            
+                            
+                            
+                            #))),
                             
                             
                             tabPanel("Remittances", value = "",
@@ -1705,6 +1768,8 @@ ui <- navbarPage(title = "",
                                                      multiple = T, options = list(`actions-box` = T)),
                                          pickerInput("event_choose_rmt", "Select Event:", choices = events_vector, selected = "Kharif Crop Preparation", 
                                                      multiple = T, options = list(`actions-box` = T)),
+                                         pickerInput("block_choose_rmt", "Select Block:", choices = blocks_vector, selected = blocks_vector, 
+                                                     multiple = T, options = list(`actions-box` = T))
                                          
                                        ),
                                        
@@ -1712,37 +1777,38 @@ ui <- navbarPage(title = "",
                                        mainPanel(
                                          tabsetPanel(
                                            tabPanel("Average Weekly Remittances",plotOutput("rmt", height = "500px")),
-                                           tabPanel("Table",DT:: DTOutput("rmt_table")),
+                                           tabPanel("Remittances by Block", plotOutput("rmt_block", height = "500px")),
                                            tabPanel("Method", plotOutput("rmt_method", height = "500px")),
-                                           tabPanel("Purpose", plotOutput("rmt_purpose", height = "500px"))
+                                           tabPanel("Purpose", plotOutput("rmt_purpose", height = "500px")),
+                                           tabPanel("Table",DT:: DTOutput("rmt_table"))
                                          )
                                        ), 
                                        
                                        
                                      ),
                                      #fluidRow(style = "margin: 6px;", align = "justify",
-                                      #        p("", style = "padding-top:10px;"),
-                                       #       column(12, align = "center", h4(strong("Remittances Sources")),
-                                        #             p("We also examine how households received remittances. We find that households primarily collected remittances 
-                                         #              in person or through a bank suggesting these methods to be the most convenient. Although a money order is a 
-                                          #             secure method of sending/receiving money, it requires additional fees, which may make it more expensive for 
-                                           #            this poverty-stricken area. Moreover, households may be more concerned about receiving the remittance quickly 
-                                            #           rather than safely. Also, using mobile apps can be difficult in regions where data usage is limited."),
-                                             #        br(""), #plotOutput("rmt_method", width = "70%")
-                                                     
-                                                     
-                                              #)),
+                                     #        p("", style = "padding-top:10px;"),
+                                     #       column(12, align = "center", h4(strong("Remittances Sources")),
+                                     #             p("We also examine how households received remittances. We find that households primarily collected remittances 
+                                     #              in person or through a bank suggesting these methods to be the most convenient. Although a money order is a 
+                                     #             secure method of sending/receiving money, it requires additional fees, which may make it more expensive for 
+                                     #            this poverty-stricken area. Moreover, households may be more concerned about receiving the remittance quickly 
+                                     #           rather than safely. Also, using mobile apps can be difficult in regions where data usage is limited."),
+                                     #        br(""), #plotOutput("rmt_method", width = "70%")
+                                     
+                                     
+                                     #)),
                                      #plotOutput("rmt_method", width = "65%"),
                                      
                                      #fluidRow(style = "margin: 6px;", align = "justify",
-                                      #        p("", style = "padding-top:10px;"),
-                                       #       column(12, align = "center", h4(strong("Usage of Remmittances")),
-                                        #             p("Remittances is primarily being used for food and utility purchases, which are 
-                                         #              often the most essential items for households in underdeveloped regions."),
-                                          #           br(""), #plotOutput("rmt_purpose", width = "70%")
-                                                     
-                                                     
-                                           #   )),
+                                     #        p("", style = "padding-top:10px;"),
+                                     #       column(12, align = "center", h4(strong("Usage of Remmittances")),
+                                     #             p("Remittances is primarily being used for food and utility purchases, which are 
+                                     #              often the most essential items for households in underdeveloped regions."),
+                                     #           br(""), #plotOutput("rmt_purpose", width = "70%")
+                                     
+                                     
+                                     #   )),
                                      
                                      
                                      
@@ -1753,9 +1819,9 @@ ui <- navbarPage(title = "",
                  ),
                  ## Shocks Tab --------------------------------------------
                  
-                tabPanel("Shocks",
-                                       fluidRow(style = "margin: 6px;", h1(strong("Shocks"), align = "center"), column(4, 
-                                                p("As one of the most vulnerable locations in the world in regards to the effects of climate change. 
+                 tabPanel("Shocks",
+                          fluidRow(style = "margin: 6px;", h1(strong("Shocks"), align = "center"), column(4, 
+                                                                                                          p("As one of the most vulnerable locations in the world in regards to the effects of climate change. 
                                                   Even the proximity of these communities to the ocean as well as the abundant flora and fauna in the 
                                                   region can mean that there are many shocks that can take place. Shocks can be classified as any event,
                                                   most likely negative that can harm the household livelihood. When looking at “Frequency of Shocks” 
@@ -1773,17 +1839,17 @@ ui <- navbarPage(title = "",
                                                   The impact of the cyclone in 2009 (Alia) is still evident as the majority of households reported a shock. 
                                                   in 2009, even though this interview was done in 2018. Moreover, many families reported experiencing to 3 shocks, 
                                                   with some reporting a high of 4 shocks in 2009. ", style = "padding-top:10px;")),
-                                       # Show a plot of the generated plot
-                                         column(8,
-                                           tabsetPanel(
-                                             tabPanel("Frequency of Shocks", plotlyOutput("shocks_all")),
-                                             tabPanel("Shocks by Village", plotOutput("shocks_village")),
-                                             tabPanel("Shocks by Year", plotlyOutput("shocks_by_year"))
-                                                      )
-                                                  ),
-                                       ), 
-                                      fluidRow(style = "margin: 6px;", h1(strong("Shocks in 2009"), align = "center"), column(4, 
-                                              p("After seeing that there is a disproportionate amount of shocks taking place in 2009, we wanted to take a further 
+                                   # Show a plot of the generated plot
+                                   column(8,
+                                          tabsetPanel(
+                                            tabPanel("Frequency of Shocks", plotlyOutput("shocks_all")),
+                                            tabPanel("Shocks by Village", plotOutput("shocks_village")),
+                                            tabPanel("Shocks by Year", plotlyOutput("shocks_by_year"))
+                                          )
+                                   ),
+                          ), 
+                          fluidRow(style = "margin: 6px;", h1(strong("Shocks in 2009"), align = "center"), column(4, 
+                                                                                                                  p("After seeing that there is a disproportionate amount of shocks taking place in 2009, we wanted to take a further 
                                                 look at the causes and the effects of it. Cyclone Aila was a devastating force during that year that affected about 
                                                 40 million people; washed away several thousand homes, took 190 lives, wounded more than 7103 people, and caused 
                                                 almost a billion dollars(USD) worth of damage. Since a majority of the shocks taking during the time period this 
@@ -1798,23 +1864,23 @@ ui <- navbarPage(title = "",
                                                 they relocate for either less or more than a month, many of these households relocate to a safer place in the same 
                                                 village. Less frequently do the households relocate to Kolkata (the biggest city nearby) or other villages around the 
                                                 Sundarbans.", style = "padding-top:10px;"
-                                                )
-                                                                            ),
-                                        column(8,tabsetPanel(
-                                          tabPanel("Frequency", plotlyOutput("shocks_plot_2009", height = "500")),
-                                          tabPanel("Copes", plotlyOutput("cope_2009_plot", height = "600")),
-                                          tabPanel("Relocation Status", plotlyOutput("shock_relocation_2009_yn")),
-                                          tabPanel("Where the households relocated?", plotlyOutput("shock_relocation_2009"))
-                                                            )
-                                               
-                                               
-                                              )
-                                            )
-
-                            
+                                                                                                                  )
                           ),
+                          column(8,tabsetPanel(
+                            tabPanel("Frequency", plotlyOutput("shocks_plot_2009", height = "500")),
+                            tabPanel("Copes", plotlyOutput("cope_2009_plot", height = "600")),
+                            tabPanel("Relocation Status", plotlyOutput("shock_relocation_2009_yn")),
+                            tabPanel("Where the households relocated?", plotlyOutput("shock_relocation_2009"))
+                          )
+                          
+                          
+                          )
+                          )
+                          
+                          
+                 ),
                  
-        
+                 
                  ## Tab Team --------------------------------------------
                  tabPanel("Team", 
                           fluidRow(style = "margin-left: 100px; margin-right: 100px;",
@@ -1845,7 +1911,7 @@ ui <- navbarPage(title = "",
                                           br(), 
                                           img(src = "Sid.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
                                           p(a(href = 'https://www.linkedin.com/in/siddarth-ravikanti-63374b207/', 'Siddarth Ravikanti', target = '_blank'), "(B.S. & B.A. Double-Majoring in Computational Modeling & Data Analytics and Political Science, Virginia Tech)"),
-                                         p("", style = "padding-top:10px;") 
+                                          p("", style = "padding-top:10px;") 
                                    ),
                                    column(6, align = "center",
                                           h4(strong("VT Faculty Team Members")),
@@ -1856,24 +1922,24 @@ ui <- navbarPage(title = "",
                                           br(),
                                           br(),
                                           
-                                   h4(strong("Project Stakeholders")), 
-                                   #img(src = "anubhab.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                   p(a(href = 'https://www.linkedin.com/in/samantha-rippley-58846119b/', 'Dr. Anubhab Gupta', target = '_blank'), "(Assistant Professor, Department of Agriculture and Applied Economics, Virginia Tech);"),
-                                  # br(), 
-                                   #img(src = "", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                   p(a(href = 'https://www.linkedin.com/in/aleksandr-michuda/', 'Dr. Aleksandr Michuda', target = '_blank'), "(Assistant Research Professor, Center for Data Science for Enterprise and Society, Cornell University)"),
-                                  # br(), 
-                                 #  img(src = "", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                   p(a(href = 'https://www.linkedin.com/in/mikidoan/', 'Miki Doan', target = '_blank'), "(Ph.D. Candidate in Applied Economics, UC Davis)."),
-                                 #  br(), 
-                                  # img(src = "", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                   p(a(href = 'https://www.linkedin.com/in/binoy-majumder-60703230/', 'Binoy Majumder', target = '_blank'), "(Sundarbans Field Team Lead, Independent Researcher, West Bengal, India)"),
-                                  # br(), 
-                                  # img(src = "", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                   p(a(href = 'https://www.researchgate.net/profile/Heng-Zhu-15', 'Heng Zhu', target = '_blank'), "(United Nations World Food Program, RAM)"),
-                                   # p("", style = "padding-top:10px;") 
-                 ))),
-                          
+                                          h4(strong("Project Stakeholders")), 
+                                          #img(src = "anubhab.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                          p(a(href = 'https://www.linkedin.com/in/samantha-rippley-58846119b/', 'Dr. Anubhab Gupta', target = '_blank'), "(Assistant Professor, Department of Agriculture and Applied Economics, Virginia Tech);"),
+                                          # br(), 
+                                          #img(src = "", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                          p(a(href = 'https://www.linkedin.com/in/aleksandr-michuda/', 'Dr. Aleksandr Michuda', target = '_blank'), "(Assistant Research Professor, Center for Data Science for Enterprise and Society, Cornell University)"),
+                                          # br(), 
+                                          #  img(src = "", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                          p(a(href = 'https://www.linkedin.com/in/mikidoan/', 'Miki Doan', target = '_blank'), "(Ph.D. Candidate in Applied Economics, UC Davis)."),
+                                          #  br(), 
+                                          # img(src = "", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                          p(a(href = 'https://www.linkedin.com/in/binoy-majumder-60703230/', 'Binoy Majumder', target = '_blank'), "(Sundarbans Field Team Lead, Independent Researcher, West Bengal, India)"),
+                                          # br(), 
+                                          # img(src = "", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
+                                          p(a(href = 'https://www.researchgate.net/profile/Heng-Zhu-15', 'Heng Zhu', target = '_blank'), "(United Nations World Food Program, RAM)"),
+                                          # p("", style = "padding-top:10px;") 
+                                   ))),
+                 
                  
                  inverse = T)
 
@@ -1884,8 +1950,44 @@ server <- function(input, output, session) {
   # Run JavaScript Code
   runjs(jscode)
   
+  #map button -----------------------------------------------------
   
-
+  observeEvent(input$button, {
+    showModal(modalDialog(
+      img(src='map3.png', height = "310px", align = "center"),
+      easyClose = TRUE,
+      footer = NULL
+    ))
+    
+  })  
+  
+  observeEvent(input$button1, {
+    showModal(modalDialog(
+      img(src='map3.png', height = "310px", align = "center"),
+      easyClose = TRUE,
+      footer = NULL
+    ))
+    
+  })    
+  
+  observeEvent(input$button2, {
+    showModal(modalDialog(
+      img(src='map3.png', height = "310px", align = "center"),
+      easyClose = TRUE,
+      footer = NULL
+    ))
+    
+  })    
+  
+  observeEvent(input$button3, {
+    showModal(modalDialog(
+      img(src='map3.png', height = "310px", align = "center"),
+      easyClose = TRUE,
+      footer = NULL
+    ))
+    
+  })     
+  
   
   #titles 
   output$result2 <- renderText({
@@ -1928,30 +2030,30 @@ server <- function(input, output, session) {
   })  
   
   output$result4 <- renderText({ 
-  if (ocuVar() == "Primary Occupation for Head of Households") {
-    paste("")
-  } 
-  else if (ocuVar() == "Secondary Occupation for Head of Households") {
-    paste("")
-  }
-  else if (ocuVar() == "Proportion of Households Involved in Agricultural Farming") {
-    paste("")
-  }
-  else if (ocuVar() == "Average Amount of Land Owned by Village") {
-    paste("")
+    if (ocuVar() == "Primary Occupation for Head of Households") {
+      paste("")
+    } 
+    else if (ocuVar() == "Secondary Occupation for Head of Households") {
+      paste("")
+    }
+    else if (ocuVar() == "Proportion of Households Involved in Agricultural Farming") {
+      paste("")
+    }
+    else if (ocuVar() == "Average Amount of Land Owned by Village") {
+      paste("")
+      
+    }
+    else if (ocuVar() == "Average Amount of Land Fallowed by Village") {
+      paste("*Note: Data missing for some villages or missing bar means zero land was fallowed for village")
+    }
+    else if (ocuVar() == "Average Job Duration for Head of Household") {
+      paste("")
+    }
     
-  }
-  else if (ocuVar() == "Average Amount of Land Fallowed by Village") {
-    paste("*Note: Data missing for some villages or missing bar means zero land was fallowed for village")
-  }
-  else if (ocuVar() == "Average Job Duration for Head of Household") {
-    paste("")
-  }
-  
-})
+  })
   
   
-
+  
   #overview photos 
   index <- reactiveVal(1)
   
@@ -2054,7 +2156,8 @@ server <- function(input, output, session) {
       xlab("Date") +
       ylab("Number of HH")+
       theme_classic()+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) +
+      labs(color = "Villages")
+    scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) +
       scale_color_brewer(palette = "Paired") +
       #theme(legend.position = "none")+
       geom_rect(data = filtered_event_borr(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
@@ -2095,6 +2198,11 @@ server <- function(input, output, session) {
   filtered_cs_other <- reactive({
     avg_cs_food %>% 
       filter(village %in% input$village_cs)
+  })
+  
+  filtered_cs_block <- reactive({
+    cs_block %>% 
+      filter(Block %in% input$block_choose_cs)
   })
   
   # Consumption by food group plots
@@ -2142,53 +2250,18 @@ server <- function(input, output, session) {
     
   })
   
-  #map button -----------------------------------------------------
-
-  observeEvent(input$button, {
-    showModal(modalDialog(
-      img(src='map3.png', height = "310px", align = "center"),
-      easyClose = TRUE,
-      footer = NULL
-    ))
-    
-  })  
-  
-  observeEvent(input$button1, {
-    showModal(modalDialog(
-      img(src='map3.png', height = "310px", align = "center"),
-      easyClose = TRUE,
-      footer = NULL
-    ))
-    
-  })    
-  
-  observeEvent(input$button2, {
-    showModal(modalDialog(
-      img(src='map3.png', height = "310px", align = "center"),
-      easyClose = TRUE,
-      footer = NULL
-    ))
-    
-  })    
-  
-  observeEvent(input$button3, {
-    showModal(modalDialog(
-      img(src='map3.png', height = "310px", align = "center"),
-      easyClose = TRUE,
-      footer = NULL
-    ))
-    
-  })    
-
-
   #sociodemo tabset -----------------------------------------------------
   ageVar <- reactive({
     input$agedrop
-  }) 
+  })
   
-   output$ageplo <- renderLeaflet({
-      map_leaflet2
-    })
+  output$map3 <- renderLeaflet({
+    map_leaflet3
+  })  
+  
+  output$ageplo <- renderLeaflet({
+    map_leaflet2
+  })
   
   output$ageplot <- renderPlotly({
     if (ageVar() == "Mean Years of Education for Head of Households") {
@@ -2367,9 +2440,24 @@ server <- function(input, output, session) {
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + 
       scale_color_brewer(palette = "Paired")+
       theme(plot.caption = element_text(size = 12))+
-      scale_color_viridis_d()+
       geom_rect(data = filtered_event_rmt(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
     
+  })
+  
+  filtered_rmt_block <- reactive({
+    rmt_block %>% 
+      filter(Block %in% input$block_choose_rmt)
+  })
+  
+  output$rmt_block <- renderPlot({
+    ggplot(filtered_rmt_block(), aes(x = week , y = block_avg_rmt, , color = Block)) +
+      geom_line() +
+      theme_classic() +
+      labs(x = "Date", y = "Average Weekly Remittances", color = "Blocks") +
+      #ggtitle("Average Weekly Remittances by Block")+
+      #scale_color_brewer(palette = "Paired")+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
+      geom_rect(data = filtered_event_rmt(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
   })
   
   # Render rmt table
@@ -2389,6 +2477,7 @@ server <- function(input, output, session) {
   output$rmt_purpose <- renderPlot({
     rmt_purpose_plot
   })
+  # Expenditure
   # exp plot ouput
   # Filter by input
   filtered_exp <- reactive({
@@ -2396,6 +2485,10 @@ server <- function(input, output, session) {
       filter(village %in% input$village_exp)
   })
   
+  filtered_exp_block <- reactive({
+    exp_block %>% 
+      filter(Block %in% input$block_choose_exp)
+  })
   # Plot
   output$exp <- renderPlot({
     ggplot(filtered_exp(), aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) +
@@ -2408,6 +2501,17 @@ server <- function(input, output, session) {
       geom_rect(data = filtered_event_exp(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
     
     
+  })
+  
+  output$exp_block <- renderPlot({
+    ggplot(filtered_exp_block(), aes(x = week , y = block_avg_exp, , color = Block)) +
+      geom_line() +
+      theme_classic() +
+      labs(x = "Date", y = "Average Weekly Expenditure", color = "Blocks") +
+      #ggtitle("Average Expenditure by Block")+
+      #scale_color_brewer(palette = "Paired")+
+      geom_rect(data = filtered_event_exp(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
   })
   # Render exp table 
   output$exp_table <- DT::renderDT({
@@ -2425,7 +2529,7 @@ server <- function(input, output, session) {
   output$inc <- renderPlot({
     ggplot(filtered_inc(), aes(week, avg_inc, color = village)) + 
       geom_line() + 
-      labs(x = "", y = "Income (INR)", color = "Village",
+      labs(x = "", y = "Income (INR)", color = "Villages",
            caption = "Mean: 1395.61   Median: 1341.82") + 
       scale_color_brewer(palette = "Paired")+
       theme_classic()+
@@ -2442,7 +2546,7 @@ server <- function(input, output, session) {
   output$malefemaleinc <- renderPlot({
     ggplot(filtered_malefemaleinc(), aes(x = week,y = !!input$Gender, color = village)) + geom_line() + 
       #geom_line(aes(y = !!input$gender, color = village), linetype = "twodash") +  
-      labs(x = "", y = "Income (INR)", color = "Village") +
+      labs(x = "", y = "Income (INR)", color = "Villages") +
       theme_classic()+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + scale_color_brewer(palette = "Paired")+
       geom_rect(data = filtered_event_inc(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
@@ -2473,7 +2577,21 @@ server <- function(input, output, session) {
       geom_rect(data = filtered_event_inc(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
   })
   
+  filtered_inc_block <- reactive({
+    inc_block %>% 
+      filter(Block %in% input$block_choose_inc)
+  }) 
   
+  output$inc_block <- renderPlot({
+    ggplot(filtered_inc_block(), aes(x = week , y = block_avg_inc, , color = Block)) +
+      geom_line() +
+      theme_classic() +
+      labs(x = "Date", y = "Average Weekly Income", color = "Blocks") +
+      #ggtitle("Average Weekly Income by Block")+
+      #scale_color_brewer(palette = "Paired")+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
+      geom_rect(data = filtered_event_inc(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
+  })
   
   
   #Render inc table
@@ -2507,6 +2625,17 @@ server <- function(input, output, session) {
       scale_color_brewer(palette = "Paired")
   })
   
+  output$cs_block <- renderPlot({
+    ggplot(filtered_cs_block(), aes(x = week , y = block_avg_cs, , color = Block)) +
+      geom_line() +
+      theme_classic() +
+      labs(x = "Date", y = "Average Weekly Consumption", color = "Blocks") +
+      #ggtitle("Average Weekly Consumption by Block")+
+      #scale_color_brewer(palette = "Paired")+
+      geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+  })
+  
   # Filtered cs items
   filtered_cs_avg_items <- reactive({
     cs_avg_items %>% 
@@ -2526,6 +2655,7 @@ server <- function(input, output, session) {
       geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
       scale_color_brewer(palette = "Paired")
   })
+  
   
   # Filtered consumption by group
   
@@ -2548,9 +2678,9 @@ server <- function(input, output, session) {
     
   })
   # cs table
-#  output$cs_table <- DT::renderDT({
-#    avg_cs_table
-#  })
+  #  output$cs_table <- DT::renderDT({
+  #    avg_cs_table
+  #  })
   
   filtered_non_food_cs <- reactive({
     non_food_cs %>% 
@@ -2571,9 +2701,9 @@ server <- function(input, output, session) {
   })
   # Render non food table
   
- # output$nonfood_table <- DT::renderDT({
+  # output$nonfood_table <- DT::renderDT({
   #  nonfood_table
- # })
+  # })
   
   #Event Filtered
   
