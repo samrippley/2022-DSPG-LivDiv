@@ -1239,7 +1239,7 @@ ui <- navbarPage(title = "",
                                                      br(),
                                                      br(),
                                                     
-                                                     img(src='months.png', align = "center", width = "95%") 
+                                                     img(src='month.png', align = "center", width = "95%") 
                                               
                                                      
                                                      
@@ -1354,7 +1354,7 @@ ui <- navbarPage(title = "",
                                               ))),
                                               column(12, 
                                                      fluidPage(
-                                                       actionButton(inputId ="button3", label = "Map")
+                                                       actionButton(inputId ="button", label = "Map")
                                                        
                                                      ),
                           
@@ -1406,7 +1406,9 @@ ui <- navbarPage(title = "",
                                               ),
                                               column(12, 
                                                      fluidPage(
-                                                       actionButton(inputId ="button", label = "Map")
+                                                       actionButton(inputId ="button1", label = "Map"),
+                                                       br(),
+                                                       br()
                                                     ),
                                      ))),
                             tabPanel("Financial", 
@@ -1444,7 +1446,7 @@ ui <- navbarPage(title = "",
                                               )),
                                                column(12, 
                                                       fluidPage(
-                                                        actionButton(inputId ="button1", label = "Map")
+                                                        actionButton(inputId ="button2", label = "Map")
                                                       
                                                       ),
                                               
@@ -1491,6 +1493,14 @@ ui <- navbarPage(title = "",
                                          )
                                        ),
                                        
+                                     ),
+                                     
+                                     column(12, 
+                                            fluidPage(
+                                              actionButton(inputId ="button3", label = "Map")
+                                            ),
+                                            br(),
+                                            br(),
                                      ),
                                      
                                      fluidRow(style = "margin: 6px;", align = "justify",
@@ -1554,6 +1564,15 @@ ui <- navbarPage(title = "",
                                      
                                      
                                      #),
+                                     
+                                     column(12, 
+                                            fluidPage(
+                                              actionButton(inputId ="button4", label = "Map")
+                                            ),
+                                            br(),
+                                            br(),
+                                     ),
+                                     
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h4(strong(""), align = "center"),
                                               p("", style = "padding-top:10px;"),
@@ -1585,7 +1604,13 @@ ui <- navbarPage(title = "",
                                        
                                      ),
                                      
-                                     
+                                     column(12, 
+                                            fluidPage(
+                                              actionButton(inputId ="button5", label = "Map")
+                                            ),
+                                            br(),
+                                            br(),
+                                     ),
                                      
                             ), 
                             
@@ -1623,8 +1648,16 @@ ui <- navbarPage(title = "",
                                          )
                                        ),
                                      ),
+                                     column(12, 
+                                            fluidPage(
+                                              actionButton(inputId ="button6", label = "Map")
+                                            ),
+                                            br(),
+                                            br(),
+                                     ),
+                                     
+                                     
                             ),
-                            
                             
                             tabPanel("Borrowing",
                                      fluidRow(style = "margin: 6px;", align = "justify",
@@ -1652,7 +1685,14 @@ ui <- navbarPage(title = "",
                                        
                                        )
                                      ),
-                            )
+                            ), 
+                            column(12, 
+                                   fluidPage(
+                                     actionButton(inputId ="button7", label = "Map")
+                                   ),
+                                   br(),
+                                   br(),
+                            ),  
                             ),
                                      
                                      # Show a plot of the generated plot
@@ -1757,12 +1797,17 @@ ui <- navbarPage(title = "",
                                            #   )),
                                      
                                      
-                                     
+                                     column(12, 
+                                            fluidPage(
+                                              actionButton(inputId ="button8", label = "Map")
+                                            ),
+                                            br(),
+                                            br(),      
                             ),
                             
                             
                             
-                 ),
+                 )),
                  ## Shocks Tab --------------------------------------------
                  
                 tabPanel("Shocks",
@@ -2128,8 +2173,13 @@ server <- function(input, output, session) {
     
   })
   
+  
   #map button -----------------------------------------------------
-
+  
+  output$map3 <- renderLeaflet({
+    map_leaflet3
+  })    
+  
   observeEvent(input$button, {
     showModal(modalDialog(
       img(src='map3.png', height = "310px", align = "center"),
@@ -2164,8 +2214,53 @@ server <- function(input, output, session) {
       footer = NULL
     ))
     
+  })     
+  
+  observeEvent(input$button4, {
+    showModal(modalDialog(
+      img(src='map3.png', height = "310px", align = "center"),
+      easyClose = TRUE,
+      footer = NULL
+    ))
+    
   })    
-
+  
+  observeEvent(input$button5, {
+    showModal(modalDialog(
+      img(src='map3.png', height = "310px", align = "center"),
+      easyClose = TRUE,
+      footer = NULL
+    ))
+    
+  })
+  
+  observeEvent(input$button6, {
+    showModal(modalDialog(
+      img(src='map3.png', height = "310px", align = "center"),
+      easyClose = TRUE,
+      footer = NULL
+    ))
+    
+  })   
+  
+  
+  observeEvent(input$button7, {
+    showModal(modalDialog(
+      img(src='map3.png', height = "310px", align = "center"),
+      easyClose = TRUE,
+      footer = NULL
+    ))
+    
+  })   
+  
+  observeEvent(input$button8, {
+    showModal(modalDialog(
+      img(src='map3.png', height = "310px", align = "center"),
+      easyClose = TRUE,
+      footer = NULL
+    ))
+    
+  })   
 
   #sociodemo tabset -----------------------------------------------------
   ageVar <- reactive({
