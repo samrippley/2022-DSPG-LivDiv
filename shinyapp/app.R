@@ -1218,6 +1218,10 @@ ui <- navbarPage(title = "",
                                              br(),
                                               tags$video(type = "video/mp4",src = "Sundarbansv3 ‑ Made with FlexClip.mp4", width = "100%", controls = "controls", autoplay = T, loop = T)
                                               )),
+                                     br(),
+                                     br(),
+                                     br(),
+                                     br(),
                                     
                                      fluidRow(
                                               align = "left",
@@ -1398,9 +1402,9 @@ ui <- navbarPage(title = "",
 
                                                      p("Expenditure is defined as spending on consumption (e.g., food) and non-consumption (e.g., rent) items.
                                                      The average weekly expenditure over the data period was 1982.77 rupees, with a median of 1832.1 rupees. 
-                                                       It appears that the largest expenses occured during harvest seasons, partculary in villages with high amounts of land holding
-                                                       and proportions of agricultrue farming, such asBeguakhali and Shibpur. We also observed increases in expenditure near when cyclones hit, when households could be buying ssupplies
-                                                       to prepare for the storms."),
+                                                       It appears that the largest expenses occured during harvest seasons, where hosueholds are able to spend more with their harvest returns. 
+                                                       We also observed increases in expenditure beofre and after cyclones hit, when households could be buying supplies
+                                                       to prepare and cope from the storms."),
 
                                                      br("")
                                                      
@@ -1500,7 +1504,7 @@ ui <- navbarPage(title = "",
                                                        books and tuition, utilities, toiletries, health, home repairs, transportation, livestock,
                                                        agriculture, labor, and other non-food items."), 
                                                      p("Expenditures on health, home repairs, and books/tuition
-                                                       made up the largest but least frequent expenses, while utilities, toilitries, and transportation made up the most frequent
+                                                       made up the largest, but least frequent expenses, while utilities, toilitries, and transportation made up the most frequent
                                                        purchases. Considering farmers make up the largest proportion of occupation in the Sundarbans, it is predictable to also see 
                                                        frequent consumption expenditures on agriculture, livestock, and labor. The average weekly expenditure
                                                        on non-food items was 882.22 rupees. We observed increases in expenditure
@@ -2020,7 +2024,7 @@ server <- function(input, output, session) {
     ggplot(filtered_bramt(), aes(x=week_num, y=br_amt, color = village, na.rm = T)) +
       geom_line() +
       theme_classic()+
-      #labs(title ="Amount Borrowed by Village") + 
+      labs(color = "Villages") + 
       xlab("Date") +
       ylab("Amount Borrowed (INR)")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) +
