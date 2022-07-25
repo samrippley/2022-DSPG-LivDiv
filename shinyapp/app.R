@@ -1489,7 +1489,7 @@ ui <- navbarPage(title = "",
                                        mainPanel(
                                          tabsetPanel(
                                            tabPanel("Average Weekly Expenditure",plotOutput("exp", height = "500px")),
-                                           tabPanel("Expenditure By Block", plotOutput("exp_block", height = "500px")),
+                                           tabPanel("Expenditure by Block", plotOutput("exp_block", height = "500px")),
                                            tabPanel("Table", DT::DTOutput("exp_table"))
                                          )
                                        ),
