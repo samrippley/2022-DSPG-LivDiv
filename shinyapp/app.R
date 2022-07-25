@@ -927,6 +927,8 @@ filtered_non_food_cs <- reactive({
 })
 
 # HFD by Block------------------------------------
+blocks <- rep(c("Block 2", "Block 1", "Block 4", "Block 4", "Block 5", "Block 3", "Block 5", "Block 3", "Block 1", "Block 2"))
+
 # expenditure
 spending_vill <- fd %>% 
   select("village", "week", "total_spending")
@@ -2168,6 +2170,7 @@ server <- function(input, output, session) {
       #labs(title = "Purpose of Borrowing") + 
       xlab("") +
       ylab("")+
+      labs(fill = "")+
       theme(legend.position = "none")+
       theme_classic() +
       scale_fill_brewer(palette = "Paired")
