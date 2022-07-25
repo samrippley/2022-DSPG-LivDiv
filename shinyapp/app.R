@@ -926,6 +926,61 @@ filtered_non_food_cs <- reactive({
     filter(village %in% input$village_cs_nonfood)
 })
 
+# HFD by Block------------------------------------
+# expenditure
+spending_vill <- fd %>% 
+  select("village", "week", "total_spending")
+
+exp_vill <- spending_vill %>%
+  group_by(week, village) %>% 
+  summarise(exp_total = mean(na.omit(total_spending))) %>% 
+  mutate("Block" = c(blocks))
+
+exp_block <- exp_vill %>% 
+  group_by(week, Block) %>% 
+  summarise(block_avg_exp = mean(exp_total))
+
+# income
+inc <- livdiv %>% 
+  select(village, week, full_inc)
+
+inc_vill <- inc %>% 
+  group_by(week, village) %>% 
+  summarise(inc_total = mean(na.omit(full_inc))) %>% 
+  mutate("Block" = c(blocks))
+
+inc_block <- inc_vill %>% 
+  group_by(week, Block) %>% 
+  summarise(block_avg_inc = mean(inc_total))
+
+# remittances
+rmt_v2 <- fd %>% 
+  select(village, week, rmt_total)
+
+rmt_v3 <- rmt_v2 %>% 
+  group_by(week, village) %>% 
+  summarise(remt_total = mean(na.omit(rmt_total))) %>% 
+  mutate("Block" = c(blocks))
+
+rmt_block <- rmt_v3 %>% 
+  group_by(week, Block) %>% 
+  summarise(block_avg_rmt = mean(remt_total))
+
+# consumption
+cs_v2 <- fd %>% 
+  select(village, week, cs_total)
+
+cs_vill <- cs_v2 %>% 
+  group_by(week, village) %>% 
+  summarise(cs_tot = mean(na.omit(cs_total))) %>% 
+  mutate("Block" = c(blocks))
+
+cs_block <- cs_vill %>% 
+  group_by(week, Block) %>% 
+  summarise(block_avg_cs = mean(cs_tot))
+
+blocks_vector <- c("Block 1", "Block 2", "Block 3", "Block 4", "Block 5")
+
 # Events data -------------------------------------
 Events <- c("Kharif Crop Preparation","Kharif Crop Harvest", "Rabi Crop Harvest","Honey Harvest", "Fani Cyclone", "Matmo/Bulbul Cyclone", "Vayu Cyclone", "Hikaa Cyclone","Kyaar Cyclone","Maha Cyclone",
             "Republic Day", "Rama Navami", "Eid al-Fitr", "Indian Independence Day", "Dussehra", "Diwali" ,"Christmas")
@@ -1423,6 +1478,8 @@ ui <- navbarPage(title = "",
                                                      multiple = T, options = list(`actions-box` = T)),
                                          pickerInput("event_choose_exp", "Select Event:", choices = events_vector, selected = "Kharif Crop Preparation", 
                                                      multiple = T, options = list(`actions-box` = T)),
+                                         pickerInput("block_choose_exp", "Select Block:", choices = blocks_vector, selected = blocks_vector, 
+                                                     multiple = T, options = list(`actions-box` = T)),
                                          
                                          
                                        ),
@@ -1431,6 +1488,7 @@ ui <- navbarPage(title = "",
                                        mainPanel(
                                          tabsetPanel(
                                            tabPanel("Average Weekly Expenditure",plotOutput("exp", height = "500px")),
+                                           tabPanel("Expenditure By Block", plotOutput("exp_block", height = "500px")),
                                            tabPanel("Table", DT::DTOutput("exp_table"))
                                          )
                                        ),
@@ -1464,6 +1522,8 @@ ui <- navbarPage(title = "",
                                                      multiple = T, options = list(`actions-box` = T)),
                                          pickerInput("event_choose_cs", "Select Event:", choices = events_vector, selected = "Kharif Crop Preparation", 
                                                      multiple = T, options = list(`actions-box` = T)),
+                                         pickerInput("block_choose_cs", "Select Block:", choices = blocks_vector, selected = blocks_vector, 
+                                                     multiple = T, options = list(`actions-box` = T))
                                          
                                        ),
                                        # Show a plot of the generated plot
@@ -1473,7 +1533,8 @@ ui <- navbarPage(title = "",
                                            tabPanel("Staple Items", plotOutput("cs_staple", height = "500px")),
                                            tabPanel("Meats", plotOutput("cs_meats", height = "500px")),
                                            tabPanel("Other", plotOutput("cs_other", height = "500px")),
-                                           tabPanel("No. of Food Items", plotOutput("cs_item", height = "500px"))
+                                           tabPanel("No. of Food Items", plotOutput("cs_item", height = "500px")),
+                                           tabPanel("Food Consumption by Block", plotOutput("cs_block", height = "500px"))
                                            #tabPanel("Table", DT::DTOutput("cs_table"))
                                          )
                                        ),
@@ -1578,6 +1639,8 @@ ui <- navbarPage(title = "",
                                          varSelectInput("Gender", "Select Gender:", malefemale_inc[,-(1:2)]),
                                          pickerInput("event_choose_inc", "Select Event:", choices = events_vector, selected = "Kharif Crop Preparation", 
                                                      multiple = T, options = list(`actions-box` = T)),
+                                         pickerInput("block_choose_inc", "Select Block:", choices = blocks_vector, selected = blocks_vector, 
+                                                     multiple = T, options = list(`actions-box` = T))
                                        ),
                                        # Show a plot of the generated plot
                                        mainPanel(
@@ -1585,6 +1648,7 @@ ui <- navbarPage(title = "",
                                            tabPanel("Average Weekly Income",plotOutput("inc", height = "500px")),
                                            tabPanel("Male/Female Income", plotOutput("malefemaleinc", height = "500px")),
                                            #tabPanel("Full Income", plotOutput("fullinc")),
+                                           tabPanel("Income by Block", plotOutput("inc_block", height = "500px")),
                                            tabPanel("Table", DT::DTOutput("inc_table"))
                                          )
                                        ),
@@ -1703,6 +1767,8 @@ ui <- navbarPage(title = "",
                                                      multiple = T, options = list(`actions-box` = T)),
                                          pickerInput("event_choose_rmt", "Select Event:", choices = events_vector, selected = "Kharif Crop Preparation", 
                                                      multiple = T, options = list(`actions-box` = T)),
+                                         pickerInput("block_choose_rmt", "Select Block:", choices = blocks_vector, selected = blocks_vector, 
+                                                     multiple = T, options = list(`actions-box` = T))
                                          
                                        ),
                                        
@@ -1710,9 +1776,10 @@ ui <- navbarPage(title = "",
                                        mainPanel(
                                          tabsetPanel(
                                            tabPanel("Average Weekly Remittances",plotOutput("rmt", height = "500px")),
-                                           tabPanel("Table",DT:: DTOutput("rmt_table")),
+                                           tabPanel("Remittances by Block", plotOutput("rmt_block", height = "500px")),
                                            tabPanel("Method", plotOutput("rmt_method", height = "500px")),
-                                           tabPanel("Purpose", plotOutput("rmt_purpose", height = "500px"))
+                                           tabPanel("Purpose", plotOutput("rmt_purpose", height = "500px")),
+                                           tabPanel("Table",DT:: DTOutput("rmt_table"))
                                          )
                                        ), 
                                        
@@ -2052,6 +2119,7 @@ server <- function(input, output, session) {
       xlab("Date") +
       ylab("Number of HH")+
       theme_classic()+
+      labs(color = "Villages")
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) +
       scale_color_brewer(palette = "Paired") +
       #theme(legend.position = "none")+
@@ -2093,6 +2161,11 @@ server <- function(input, output, session) {
   filtered_cs_other <- reactive({
     avg_cs_food %>% 
       filter(village %in% input$village_cs)
+  })
+  
+  filtered_cs_block <- reactive({
+    cs_block %>% 
+      filter(Block %in% input$block_choose_cs)
   })
   
   # Consumption by food group plots
@@ -2357,9 +2430,24 @@ server <- function(input, output, session) {
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + 
       scale_color_brewer(palette = "Paired")+
       theme(plot.caption = element_text(size = 12))+
-      scale_color_viridis_d()+
       geom_rect(data = filtered_event_rmt(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
     
+  })
+  
+  filtered_rmt_block <- reactive({
+    rmt_block %>% 
+      filter(Block %in% input$block_choose_rmt)
+  })
+  
+  output$rmt_block <- renderPlot({
+    ggplot(filtered_rmt_block(), aes(x = week , y = block_avg_rmt, , color = Block)) +
+      geom_line() +
+      theme_classic() +
+      labs(x = "Date", y = "Average Weekly Remittances", color = "Blocks") +
+      #ggtitle("Average Weekly Remittances by Block")+
+      #scale_color_brewer(palette = "Paired")+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
+      geom_rect(data = filtered_event_rmt(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
   })
   
   # Render rmt table
@@ -2379,13 +2467,18 @@ server <- function(input, output, session) {
   output$rmt_purpose <- renderPlot({
     rmt_purpose_plot
   })
+# Expenditure
   # exp plot ouput
   # Filter by input
   filtered_exp <- reactive({
     exbyvil %>% 
       filter(village %in% input$village_exp)
   })
-  
+
+filtered_exp_block <- reactive({
+  exp_block %>% 
+    filter(Block %in% input$block_choose_exp)
+})
   # Plot
   output$exp <- renderPlot({
     ggplot(filtered_exp(), aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) +
@@ -2398,6 +2491,17 @@ server <- function(input, output, session) {
       geom_rect(data = filtered_event_exp(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
     
     
+  })
+  
+  output$exp_block <- renderPlot({
+    ggplot(filtered_exp_block(), aes(x = week , y = block_avg_exp, , color = Block)) +
+      geom_line() +
+      theme_classic() +
+      labs(x = "Date", y = "Average Weekly Expenditure", color = "Blocks") +
+      #ggtitle("Average Expenditure by Block")+
+      #scale_color_brewer(palette = "Paired")+
+      geom_rect(data = filtered_event_exp(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
   })
   # Render exp table 
   output$exp_table <- DT::renderDT({
@@ -2415,7 +2519,7 @@ server <- function(input, output, session) {
   output$inc <- renderPlot({
     ggplot(filtered_inc(), aes(week, avg_inc, color = village)) + 
       geom_line() + 
-      labs(x = "", y = "Income (INR)", color = "Village",
+      labs(x = "", y = "Income (INR)", color = "Villages",
            caption = "Mean: 1395.61   Median: 1341.82") + 
       scale_color_brewer(palette = "Paired")+
       theme_classic()+
@@ -2432,7 +2536,7 @@ server <- function(input, output, session) {
   output$malefemaleinc <- renderPlot({
     ggplot(filtered_malefemaleinc(), aes(x = week,y = !!input$Gender, color = village)) + geom_line() + 
       #geom_line(aes(y = !!input$gender, color = village), linetype = "twodash") +  
-      labs(x = "", y = "Income (INR)", color = "Village") +
+      labs(x = "", y = "Income (INR)", color = "Villages") +
       theme_classic()+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + scale_color_brewer(palette = "Paired")+
       geom_rect(data = filtered_event_inc(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
@@ -2463,7 +2567,21 @@ server <- function(input, output, session) {
       geom_rect(data = filtered_event_inc(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
   })
   
-  
+ filtered_inc_block <- reactive({
+   inc_block %>% 
+     filter(Block %in% input$block_choose_inc)
+ }) 
+ 
+ output$inc_block <- renderPlot({
+   ggplot(filtered_inc_block(), aes(x = week , y = block_avg_inc, , color = Block)) +
+     geom_line() +
+     theme_classic() +
+     labs(x = "Date", y = "Average Weekly Income", color = "Blocks") +
+     #ggtitle("Average Weekly Income by Block")+
+     #scale_color_brewer(palette = "Paired")+
+     scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
+     geom_rect(data = filtered_event_inc(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
+ })
   
   
   #Render inc table
@@ -2497,6 +2615,17 @@ server <- function(input, output, session) {
       scale_color_brewer(palette = "Paired")
   })
   
+  output$cs_block <- renderPlot({
+    ggplot(filtered_cs_block(), aes(x = week , y = block_avg_cs, , color = Block)) +
+      geom_line() +
+      theme_classic() +
+      labs(x = "Date", y = "Average Weekly Consumption", color = "Blocks") +
+      #ggtitle("Average Weekly Consumption by Block")+
+      #scale_color_brewer(palette = "Paired")+
+      geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+  })
+  
   # Filtered cs items
   filtered_cs_avg_items <- reactive({
     cs_avg_items %>% 
@@ -2516,6 +2645,7 @@ server <- function(input, output, session) {
       geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
       scale_color_brewer(palette = "Paired")
   })
+  
   
   # Filtered consumption by group
   
