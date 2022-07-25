@@ -926,6 +926,8 @@ filtered_non_food_cs <- reactive({
     filter(village %in% input$village_cs_nonfood)
 })
 
+
+
 # Events data -------------------------------------
 Events <- c("Kharif Crop Preparation","Kharif Crop Harvest", "Rabi Crop Harvest","Honey Harvest", "Fani Cyclone", "Matmo/Bulbul Cyclone", "Vayu Cyclone", "Hikaa Cyclone","Kyaar Cyclone","Maha Cyclone",
             "Republic Day", "Rama Navami", "Eid al-Fitr", "Indian Independence Day", "Dussehra", "Diwali" ,"Christmas")
