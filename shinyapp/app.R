@@ -926,9 +926,6 @@ filtered_non_food_cs <- reactive({
     filter(village %in% input$village_cs_nonfood)
 })
 
-<<<<<<< HEAD
-
-=======
 # HFD by Block------------------------------------
 # expenditure
 spending_vill <- fd %>% 
@@ -983,7 +980,6 @@ cs_block <- cs_vill %>%
   summarise(block_avg_cs = mean(cs_tot))
 
 blocks_vector <- c("Block 1", "Block 2", "Block 3", "Block 4", "Block 5")
->>>>>>> af2a82dc231a778f714ef1676c1fbe1920bece7b
 
 # Events data -------------------------------------
 Events <- c("Kharif Crop Preparation","Kharif Crop Harvest", "Rabi Crop Harvest","Honey Harvest", "Fani Cyclone", "Matmo/Bulbul Cyclone", "Vayu Cyclone", "Hikaa Cyclone","Kyaar Cyclone","Maha Cyclone",
@@ -2583,7 +2579,7 @@ server <- function(input, output, session) {
   }) 
   
   output$inc_block <- renderPlot({
-    ggplot(filtered_inc_block(), aes(x = week , y = block_avg_inc, , color = Block)) +
+    ggplot(filtered_inc_block(), aes(x = week, y = block_avg_inc, color = Block)) +
       geom_line() +
       theme_classic() +
       labs(x = "Date", y = "Average Weekly Income", color = "Blocks") +
@@ -2614,7 +2610,7 @@ server <- function(input, output, session) {
   })
   
   output$cs_exp <- renderPlot({
-    ggplot(filtered_cs_avg(), aes(x = week, y = avg_cs , color = village)) +
+    ggplot(filtered_cs_avg(), aes(x = week, y = avg_cs, color = village)) +
       geom_line() +
       theme_classic()+
       #ggtitle("Average Weekly Consumption Expenditure by Village")+
@@ -2626,7 +2622,7 @@ server <- function(input, output, session) {
   })
   
   output$cs_block <- renderPlot({
-    ggplot(filtered_cs_block(), aes(x = week , y = block_avg_cs, , color = Block)) +
+    ggplot(filtered_cs_block(), aes(x = week , y = block_avg_cs, color = Block)) +
       geom_line() +
       theme_classic() +
       labs(x = "Date", y = "Average Weekly Consumption", color = "Blocks") +
