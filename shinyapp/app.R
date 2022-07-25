@@ -1764,9 +1764,9 @@ ui <- navbarPage(title = "",
                                          tabsetPanel(
                                            tabPanel("Average Weekly Remittances",plotOutput("rmt", height = "500px")),
                                            tabPanel("Remittances by Block", plotOutput("rmt_block", height = "500px")),
-                                           tabPanel("Table",DT:: DTOutput("rmt_table")),
                                            tabPanel("Method", plotOutput("rmt_method", height = "500px")),
-                                           tabPanel("Purpose", plotOutput("rmt_purpose", height = "500px"))
+                                           tabPanel("Purpose", plotOutput("rmt_purpose", height = "500px")),
+                                           tabPanel("Table",DT:: DTOutput("rmt_table")),
                                          )
                                        ), 
                                        
