@@ -1167,7 +1167,11 @@ ui <- navbarPage(title = "",
 
                                               column(7, 
                                                      h2(strong("")),
-                                                     leafletOutput("map_leaflet", width = "100%", height = 800)
+                                                     leafletOutput("map_leaflet", width = "100%", height = 800),
+                                                     br(),
+                                                     br(),
+                                                    
+                                                     img(src='months.png', align = "center", width = "95%") 
                                               
                                                      
                                                      
@@ -1217,7 +1221,8 @@ ui <- navbarPage(title = "",
                                              br(),
                                              br(),
                                               tags$video(type = "video/mp4",src = "Sundarbansv3 ‑ Made with FlexClip.mp4", width = "100%", controls = "controls", autoplay = T, loop = T)
-                                              )),
+                                            
+                                             )),
                                      br(),
                                      br(),
                                      br(),
@@ -1284,15 +1289,17 @@ ui <- navbarPage(title = "",
                                                               h4(strong(textOutput("result2"))),
                                                      withSpinner(plotlyOutput("ageplot", height = "500px", width = "100%")),
                                                      ),
-                                              ),
+                                              ))),
+                                              column(12, 
+                                                     fluidPage(
+                                                       actionButton(inputId ="button2", label = "Map")
+                                                       
+                                                     ),
                           
                                      
-                                              ))),
-                                              # column(12, 
-                                              #     h4("References: "), 
-                                              #   p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
-                                              #  p("", style = "padding-top:10px;")) 
-                                     ), 
+                                              ),
+                                            
+                                     )), 
                             tabPanel("Livelihood", 
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Livelihood Behavior"), align = "center"),
@@ -1336,13 +1343,11 @@ ui <- navbarPage(title = "",
                                                      br(),
                                                      textOutput("result4")),
                                               ),
-                                     )),
-                            # column(12, 
-                            #       h4("References: "), 
-                            #       p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
-                            #      p("", style = "padding-top:10px;")) 
-                            
-                            
+                                              column(12, 
+                                                     fluidPage(
+                                                       actionButton(inputId ="button", label = "Map")
+                                                    ),
+                                     ))),
                             tabPanel("Financial", 
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Financial Practices"), align = "center"),
@@ -1355,10 +1360,9 @@ ui <- navbarPage(title = "",
                                                      p("Migration appears to be a prominent livelihood strategy – 15% of households had at least one migrant in the last ten years.
                                                      Job opportunities may play a primary factor in this migration trend, thus explaining the high remittance level for our sample. Remittances are any income household receives 
                                                   from someone working away from home. We visualize the relationship between average weekly remittances and average weekly income. In most villages, higher remittances correlate with a higher weekly income. 
-                                                     This suggests that remittances are a primary income source for most families Given the poverty level and low               income-earning opportunities it is no surprise that many families are unable to or rarely save any money.")
-                                                    # fluidRow(
-                                                     #         withSpinner(leafletOutput("map3", height = "400px", width = "100%")))
-                                                     
+                                                     This suggests that remittances are a primary income source for most families Given the poverty level and low 
+                                                       income-earning opportunities it is no surprise that many families are unable to or rarely save any money."),
+                                                    
                                               ),
                                               column(8, h4(strong("Financial – November 2018 (Baseline)")),
                                                      selectInput("findrop", "Select Practice:", width = "100%", choices = c( 
@@ -1376,11 +1380,12 @@ ui <- navbarPage(title = "",
                                                      withSpinner(plotlyOutput("finplot", height = "500px")),
                                                    
                                                      
-                                              ),
-                                              # column(12, 
-                                              #   h4("References: "), 
-                                              #  p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
-                                              #  p("", style = "padding-top:10px;")) 
+                                              )),
+                                               column(12, 
+                                                      fluidPage(
+                                                        actionButton(inputId ="button1", label = "Map")
+                                                      
+                                                      ),
                                               
                                      )),
                             
@@ -2135,16 +2140,43 @@ server <- function(input, output, session) {
     
   })
   
+  #map button -----------------------------------------------------
+
+  observeEvent(input$button, {
+    showModal(modalDialog(
+      img(src='map3.png', height = "310px", align = "center"),
+      easyClose = TRUE,
+      footer = NULL
+    ))
+    
+  })  
+  
+  observeEvent(input$button1, {
+    showModal(modalDialog(
+      img(src='map3.png', height = "310px", align = "center"),
+      easyClose = TRUE,
+      footer = NULL
+    ))
+    
+  })    
+  
+  observeEvent(input$button2, {
+    showModal(modalDialog(
+      img(src='map3.png', height = "310px", align = "center"),
+      easyClose = TRUE,
+      footer = NULL
+    ))
+    
+  })    
+  
+
+
   #sociodemo tabset -----------------------------------------------------
   ageVar <- reactive({
     input$agedrop
-  })
+  }) 
   
-  output$map3 <- renderLeaflet({
-    map_leaflet3
-  })  
-  
-  output$ageplo <- renderLeaflet({
+   output$ageplo <- renderLeaflet({
       map_leaflet2
     })
   
