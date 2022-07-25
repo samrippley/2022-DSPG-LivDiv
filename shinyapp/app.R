@@ -1225,7 +1225,7 @@ ui <- navbarPage(title = "",
                                                      leafletOutput("map_leaflet", width = "100%", height = 800),
                                                      br(),
                                                      br(),
-                                                     img(src='months.png', align = "center", width = "95%") 
+                                                     img(src='month.png', align = "center", width = "95%") 
                                                      
                                               )),
                                      br(""),
