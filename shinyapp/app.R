@@ -1222,9 +1222,10 @@ ui <- navbarPage(title = "",
                                               
                                               column(7, 
                                                      h2(strong("")),
-                                                     leafletOutput("map_leaflet", width = "100%", height = 800)
-                                                     
-                                                     
+                                                     leafletOutput("map_leaflet", width = "100%", height = 800),
+                                                     br(),
+                                                     br(),
+                                                     img(src='months.png', align = "center", width = "95%") 
                                                      
                                               )),
                                      br(""),
@@ -1948,6 +1949,10 @@ server <- function(input, output, session) {
   
   #map button -----------------------------------------------------
   
+  output$map3 <- renderLeaflet({
+    map_leaflet3
+  })    
+  
   observeEvent(input$button, {
     showModal(modalDialog(
       img(src='map3.png', height = "310px", align = "center"),
@@ -2250,10 +2255,6 @@ server <- function(input, output, session) {
   ageVar <- reactive({
     input$agedrop
   })
-  
-  output$map3 <- renderLeaflet({
-    map_leaflet3
-  })  
   
   output$ageplo <- renderLeaflet({
     map_leaflet2
