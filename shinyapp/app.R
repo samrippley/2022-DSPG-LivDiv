@@ -1297,7 +1297,7 @@ ui <- navbarPage(title = "",
                                               ))),
                                               column(12, 
                                                      fluidPage(
-                                                       actionButton(inputId ="button2", label = "Map")
+                                                       actionButton(inputId ="button3", label = "Map")
                                                        
                                                      ),
                           
@@ -1364,15 +1364,9 @@ ui <- navbarPage(title = "",
                                                      p("Migration appears to be a prominent livelihood strategy – 15% of households had at least one migrant in the last ten years.
                                                      Job opportunities may play a primary factor in this migration trend, thus explaining the high remittance level for our sample. Remittances are any income household receives 
                                                   from someone working away from home. We visualize the relationship between average weekly remittances and average weekly income. In most villages, higher remittances correlate with a higher weekly income. 
-<<<<<<< HEAD
-                                                     This suggests that remittances are a primary income source for most families Given the poverty level and low               income-earning opportunities it is no surprise that many families are unable to or rarely save any money."),
-                                                    
-                                                     
-=======
                                                      This suggests that remittances are a primary income source for most families Given the poverty level and low 
                                                        income-earning opportunities it is no surprise that many families are unable to or rarely save any money."),
                                                     
->>>>>>> cc468c65d21e2d0aef31b5ada5d57163b549b2e8
                                               ),
                                               column(8, h4(strong("Financial – November 2018 (Baseline)")),
                                                      selectInput("findrop", "Select Practice:", width = "100%", choices = c( 
@@ -1386,20 +1380,6 @@ ui <- navbarPage(title = "",
                                                      )),
                                                      fluidRow(align = "center",
                                                               h4(strong(textOutput("result"))),
-<<<<<<< HEAD
-                                                              
-                                                              withSpinner(plotlyOutput("finplot", height = "500px")),
-                                                              
-                                                              
-                                                     )),
-                                                     column(12, 
-                                                            fluidPage(
-                                                              actionButton(inputId ="button2", label = "Map"),
-                                                              br()
-                                                              
-                                                            )),
-                                              ))),
-=======
                                                      
                                                      withSpinner(plotlyOutput("finplot", height = "500px")),
                                                    
@@ -1414,9 +1394,7 @@ ui <- navbarPage(title = "",
                                      )),
                             
                  )), 
-                 
-                 
->>>>>>> cc468c65d21e2d0aef31b5ada5d57163b549b2e8
+
                  
                  
                  # FD data tab-----------------------------------------------------------
