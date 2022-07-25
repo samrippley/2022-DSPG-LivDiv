@@ -1,3 +1,4 @@
+# Load Packages ---------------------------------------------------------------
 library(shiny)
 library(leaflet)
 library(tidyverse)
@@ -1338,15 +1339,19 @@ ui <- navbarPage(title = "",
                                                                          h4(strong(textOutput("result2"))),
                                                                          withSpinner(plotlyOutput("ageplot", height = "500px", width = "100%")),
                                                                 ),
-                                                       ),
+                                                       ))),
+                                                       column(12, 
+                                                              fluidPage(
+                                                                actionButton(inputId ="button", label = "Map")
+                                                                
+                                                              ),
+                                                              
                                                        
-                                                       
-                                                     ))),
-                                     # column(12, 
-                                     #     h4("References: "), 
-                                     #   p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
-                                     #  p("", style = "padding-top:10px;")) 
-                            ), 
+                                                     ))
+                                              
+                                              ),
+                                    
+                           
                             tabPanel("Livelihood", 
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Livelihood Behavior"), align = "center"),
@@ -1390,11 +1395,12 @@ ui <- navbarPage(title = "",
                                                               br(),
                                                               textOutput("result4")),
                                               ),
-                                     )),
-                            # column(12, 
-                            #       h4("References: "), 
-                            #       p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
-                            #      p("", style = "padding-top:10px;")) 
+                                     
+                            column(12, 
+                                   fluidPage(
+                                     actionButton(inputId ="button1", label = "Map")
+                                     
+                                   )))),
                             
                             
                             tabPanel("Financial", 
@@ -1430,18 +1436,15 @@ ui <- navbarPage(title = "",
                                                               withSpinner(plotlyOutput("finplot", height = "500px")),
                                                               
                                                               
-                                                     ),
-                                                     # column(12, 
-                                                     #   h4("References: "), 
-                                                     #  p(tags$small("[1] Groundwater: Groundwater sustainability. (2021). Retrieved July 27, 2021, from https://www.ngwa.org/what-is-groundwater/groundwater-issues/groundwater-sustainability")) ,
-                                                     #  p("", style = "padding-top:10px;")) 
-                                                     
-                                              )),
-                                     
-                            )), 
+                                                     )),
+                                                     column(12, 
+                                                            fluidPage(
+                                                              actionButton(inputId ="button2", label = "Map")
+                                                              
+                                                            )),
+                                     ))),
                  
-                 
-                 
+                
                  
                  # FD data tab-----------------------------------------------------------
                  
@@ -1943,7 +1946,43 @@ server <- function(input, output, session) {
   # Run JavaScript Code
   runjs(jscode)
   
+  #map button -----------------------------------------------------
   
+  observeEvent(input$button, {
+    showModal(modalDialog(
+      img(src='map3.png', height = "310px", align = "center"),
+      easyClose = TRUE,
+      footer = NULL
+    ))
+    
+  })  
+  
+  observeEvent(input$button1, {
+    showModal(modalDialog(
+      img(src='map3.png', height = "310px", align = "center"),
+      easyClose = TRUE,
+      footer = NULL
+    ))
+    
+  })    
+  
+  observeEvent(input$button2, {
+    showModal(modalDialog(
+      img(src='map3.png', height = "310px", align = "center"),
+      easyClose = TRUE,
+      footer = NULL
+    ))
+    
+  })    
+  
+  observeEvent(input$button3, {
+    showModal(modalDialog(
+      img(src='map3.png', height = "310px", align = "center"),
+      easyClose = TRUE,
+      footer = NULL
+    ))
+    
+  })     
   
   
   #titles 
