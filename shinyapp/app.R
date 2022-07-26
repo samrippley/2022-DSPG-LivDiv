@@ -1049,7 +1049,7 @@ jscode <- "function getUrlVars() {
             }
              var x = document.getElementsByClassName('navbar-brand');
            if (mytype != 'economic') {
-             x[0].innerHTML = '<div style=\"margin-top:-14px\"><a href=\"https://datascienceforthepublicgood.org/events/symposium2020/poster-sessions\">' +
+             x[0].innerHTML = '<div style=\"margin-top:-14px\"><a href=\"https://datascienceforthepublicgood.org/events\">' +
                               '<img src=\"DSPG_black-01.png\", alt=\"DSPG 2020 Symposium Proceedings\", style=\"height:42px;\">' +
                               '</a></div>';
              //changeLinks('dspg');
@@ -1147,16 +1147,19 @@ ui <- navbarPage(title = "",
                                           h2(strong("Financial Diaries")),
                                           p("Gupta et al. (2021) use financial diaries to capture high-frequency data on household income, expenditure, and consumption behavior. As such, we have weekly financial and economic activities for approximately 300 households for an entire year (November 2018 to October 2019). "),
                                           p("Household members were trained during the baseline interview to independently record their financial activities in their respective diaries (see image below for an example of a financial diary). Household received two more training sessions in the following two weeks and filled out the first four financial diaries during the training period. Additional support was given to families via phone calls and during the field teams monthly visit to collect completed diaries. These steps were implemented to ensure proper recording of weekly information. These diaries include data on weekly income, remittances, borrowing, lending, expenditure on consumption, and non-consumption items."),
-                                          br(),
                                           br()
-                                          
                                    ),
                                   
                           ),
                           fluidRow(
                             h3(strong("Example of Financial Diary")),
                             align = "center",
-                                   img(src='Picture2.png', width = "50%"),)
+                                   img(src='Picture2.png', width = "50%"),
+                            br(),
+                            br(),
+                            br(),
+                            br(),
+                            br())
                           
                           
                           ), 
@@ -1247,26 +1250,18 @@ ui <- navbarPage(title = "",
                                      br(""),
                                      br(""),
                                      fluidRow(align = "left",
-                                              p(tags$small(em('References: ')))),
-                                     fluidRow(align = "left",
-                                              p(tags$small(em('Worlddata.info. (n.d.). Most recent cyclones in India. Worlddata.info. Retrieved July 19, 2022, from https://www.worlddata.info/asia/india/cyclones.php.')))),
-                                     fluidRow(align = "left",
-                                              p(tags$small(em('Kumar, Shubham & Lal, Preet & Kumar, Amit. (2020). Turbulence of tropical cyclone ‘Fani’ in the Bay of Bengal and Indian subcontinent. Natural Hazards.')))),
-                                     fluidRow(align = "left",
-                                              p(tags$small(em('ReliefWeb. (2020, May 15). Bangladesh: Cyclone Bulbul final report - operation dref N° MDRBD023 - bangladesh. ReliefWeb. Retrieved July 20, 2022, from https://reliefweb.int/report/bangladesh/bangladesh-cyclone-bulbul-final-report-operation-dref-n-mdrbd023 ')))),
-                                     fluidRow(align = "left",
-                                              p(tags$small(em('Sundarbans - an overview | ScienceDirect Topics. (n.d.). Www.sciencedirect.com. https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/sundarbans.')))),
-                                     fluidRow(align = "left",
-                                              p(tags$small(em('Velmurugan, A., Ambast, S. K., Swarnam, T. P., Burman, D., Mandal, S., & Subramani, T. (2018, January 1). Chapter 21 - Land Shaping Methods for Climate Change Adaptation in Coastal and Island Region (C. Sivaperuman, A. Velmurugan, A. K. Singh, & I. Jaisankar, Eds.). ScienceDirect; Academic Press. https://www.sciencedirect.com/science/article/pii/B9780128130643000211.')))),
-                                     fluidRow(align = "left",
-                                              p(tags$small(em('Chandra, Ganesh & Sagar, R.. (2003). Fisheries in Sundarbans: Problems and Prospects. 10.2139/ssrn.2084014. ')))),
-                                     fluidRow(align = "left",
-                                              p(tags$small(em('Connect. Collaborate. Express | RoundGlass Living. (n.d.). Roundglass.com. Retrieved July 20, 2022, from https://roundglasssustain.com/photo-stories/honey-gatherers-sundarbans.')))),
-                                     fluidRow(align = "left",
-                                              p(tags$small(em('Kabir, Kazi Ahmed & Saha, S B & Phillips, Michael. (2019). Aquaculture and Fisheries in the Sundarbans and Adjacent Areas in Bangladesh: Resources, Productivity, Challenges and Opportunities. 10.1007/978-3-030-00680-8_9.'))))
+                                     p(tags$small(em('References: '))),
+                                     p(tags$small(em('Worlddata.info. (n.d.). Most recent cyclones in India. Worlddata.info. Retrieved July 19, 2022, from https://www.worlddata.info/asia/india/cyclones.php.'))),
+                                     p(tags$small(em('Kumar, Shubham & Lal, Preet & Kumar, Amit. (2020). Turbulence of tropical cyclone ‘Fani’ in the Bay of Bengal and Indian subcontinent. Natural Hazards.'))),
+                                     p(tags$small(em('ReliefWeb. (2020, May 15). Bangladesh: Cyclone Bulbul final report - operation dref N° MDRBD023 - bangladesh. ReliefWeb. Retrieved July 20, 2022, from https://reliefweb.int/report/bangladesh/bangladesh-cyclone-bulbul-final-report-operation-dref-n-mdrbd023 '))),
+                                     p(tags$small(em('Sundarbans - an overview | ScienceDirect Topics. (n.d.). Www.sciencedirect.com. https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/sundarbans.'))),
+                                     p(tags$small(em('Velmurugan, A., Ambast, S. K., Swarnam, T. P., Burman, D., Mandal, S., & Subramani, T. (2018, January 1). Chapter 21 - Land Shaping Methods for Climate Change Adaptation in Coastal and Island Region (C. Sivaperuman, A. Velmurugan, A. K. Singh, & I. Jaisankar, Eds.). ScienceDirect; Academic Press. https://www.sciencedirect.com/science/article/pii/B9780128130643000211.'))),
+                                     p(tags$small(em('Chandra, Ganesh & Sagar, R.. (2003). Fisheries in Sundarbans: Problems and Prospects. 10.2139/ssrn.2084014. '))),
+                                     p(tags$small(em('Connect. Collaborate. Express | RoundGlass Living. (n.d.). Roundglass.com. Retrieved July 20, 2022, from https://roundglasssustain.com/photo-stories/honey-gatherers-sundarbans.'))),
+                                     p(tags$small(em('Kabir, Kazi Ahmed & Saha, S B & Phillips, Michael. (2019). Aquaculture and Fisheries in the Sundarbans and Adjacent Areas in Bangladesh: Resources, Productivity, Challenges and Opportunities. 10.1007/978-3-030-00680-8_9.')))
 
                                               
-                                     ),
+                                     )),
                             tabPanel("Timelapse", 
                                      fluidRow(style = "margin: 2px;",
                                               align = "center",
