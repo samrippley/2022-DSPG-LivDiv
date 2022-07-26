@@ -333,7 +333,7 @@ scountv <- scountv %>%
 
 # Poverty line counts
 Village <- c(rep("Amrabati", 2), rep("Beguakhali", 2), rep("Bijoynagar", 2), rep("Birajnagar", 2), rep("Haridaskati Samsernagar", 2), rep("Lakshmi Janardanpur",2), rep("Pargumti",2),rep("Purba Dwarokapur", 2), rep("Sagar", 2), rep("Shibpur",2))
-`Key` <- rep(c("Live Above ₹240", "Live Below ₹240"), 2)
+`Key` <- rep(c("Live Above ₹204", "Live Below ₹204"), 2)
 `Households` <- c(17,11,20,10,32,18,19,9,14,16,17,11,18,10,23,5,21,6,21,7)
 Percentage<- c("60", "40", "67", "33", "64","36","68","32","53",
                "47","60","40","64","36","82","18","77","23","75","25" )
@@ -931,7 +931,7 @@ filtered_non_food_cs <- reactive({
 })
 
 # HFD by Block------------------------------------
-blocks <- rep(c("Block 2", "Block 1", "Block 4", "Block 4", "Block 5", "Block 3", "Block 5", "Block 3", "Block 1", "Block 2"))
+blocks <- rep(c("Namkhana Block", "Sagar Block", "Gosaba Block", "Gosaba Block", "Hangalganj Block", "Patharpratima Block", "Hangalganj Block", "Patharpratima Block", "Sagar Block", "Namkhana Block"))
 
 # expenditure
 spending_vill <- fd %>% 
@@ -985,13 +985,13 @@ cs_block <- cs_vill %>%
   group_by(week, Block) %>% 
   summarise(block_avg_cs = mean(cs_tot))
 
-blocks_vector <- c("Block 1", "Block 2", "Block 3", "Block 4", "Block 5")
+blocks_vector <- c("Sagar Block", "Namkhana Block", "Patharpratima Block", "Gosaba Block", "Hangalganj Block")
 
 # Events data -------------------------------------
-Events <- c("Kharif Crop Preparation","Kharif Crop Harvest", "Rabi Crop Harvest","Honey Harvest", "Fani Cyclone", "Matmo/Bulbul Cyclone", "Vayu Cyclone", "Hikaa Cyclone","Kyaar Cyclone","Maha Cyclone",
+Events <- c("Kharif Crop Preparation","Kharif Crop Harvest", "Rabi Crop Harvest","Honey Harvest", "Fani Cyclone", "Matmo Cyclone",
             "Republic Day", "Rama Navami", "Eid al-Fitr", "Indian Independence Day", "Dussehra", "Diwali" ,"Christmas")
-start_week <- c(28, 2, 0, 19, 22, 48, 30, 43, 47, 48, 10, 20, 28, 38, 46, 49, 5)
-end_week <- c(36, 12, 14, 32, 24, 49, 31, 44, 49, 49, 10.2, 20.2, 28.2, 38.2, 46.2, 49.2, 5.2)
+start_week <- c(28, 2, 0, 19, 22, 48, 10, 20, 28, 38, 46, 49, 5)
+end_week <- c(36, 12, 14, 32, 24, 49, 10.2, 20.2, 28.2, 38.2, 46.2, 49.2, 5.2)
 event_periods <- data.frame(Events, start_week, end_week)
 events_vector <- Events
 
@@ -1162,42 +1162,37 @@ ui <- navbarPage(title = "",
                                                  
                                               ),
                                      
-                                     fluidRow(style = "margin: 6px;", #align = "justify",
+                                     fluidRow(style = "margin: 6px;", align = "justify",
                                               p("", style = "padding-top:10px;"),
                                               column(5, 
                                                      h2(strong("Sundarbans Area")),
-                                                     p("This project examines households living in the Sundarbans in West Bengal, India – a coastal delta region in the Bay of Bengal.  Gupta et al. (2021) surveyed households in the North 24 – Parganas and South 24 – Parganas districts. Specifically, ten representative villages were randomly chosen from five administrative blocks in the Sundarbans:"),
+                                                     p("Sampled households were surveyed in both North 24 –and South 24 – Parganas districts in West Bengal, India, where the Sundarbans region belongs administratively.
+                                                       Specifically, ten representative villages were randomly chosen from five administrative blocks in the Sundarbans. Villages with the same administrative block are close in proximity to each other – the distance between villages is at most 15km. 
+                                                       The villages were chosen in clusters of two so that they represent the diverse ecological variations within the Sundarbans region, including proximity to railways, roadways, and waterways. 
+                                                       We visualize villages using an interactive map so a user can hover over the red markers to see the name and location of a specific village:"),
                                                      (tags$ul(
-                                                     tags$li(tags$b("Beguakhali and Sagar"), "- Block 1"),
-                                                     tags$li(tags$b("Amrabati and Shibpur"), "- Block 2"),
-                                                     tags$li(tags$b("Lakshmi Janardanpur and Purba Dwarokapur"), "- Block 3"),
-                                                     tags$li(tags$b("Birajnagar and Bijoynagar"), "- Block 4"),
-                                                     tags$li(tags$b("Haridaskati Samsernagar and Pargumti"), "- Block 5"),
+                                                     tags$li(tags$b("Beguakhali and Sagar"), "- Sagar Block"),
+                                                     tags$li(tags$b("Amrabati and Shibpur"), "- Namkhana Block"),
+                                                     tags$li(tags$b("Lakshmi Janardanpur and Purba Dwarokapur"), "- Patharpratima Block"),
+                                                     tags$li(tags$b("Birajnagar and Bijoynagar"), "- Gosaba Block"),
+                                                     tags$li(tags$b("Haridaskati Samsernagar and Pargumti"), "- Hangalganj Block"),
                                                      )),
-                                                     p("As shown on the map, villages within the same block are close in proximity to each other – at most the distance is 15km between the two villages."),
-                                                     
+                                                    br(),
                                                     h4(strong("Weather Related Events")),
-                                                     p("The Sundarbans proximity to the Bay of Bengal causes it to be frequented by cyclones. These tropical cyclones usually form in May, October, and November. Although tropical cyclones are common to the area, the frequency and severity have increased in the past few years, with climate change as a contributing factor."),
-                                                     p("During the data collection period, November 2018 to October 2019, the Sundarbans area was struck by two significant cyclones: "),
+                                                    br(),
+                                                     p("The Sundarbans proximity to the Bay of Bengal causes it to be frequented by cyclones. These tropical cyclones usually form in May, October, and November. 
+                                                       Although tropical cyclones are common to the area, the frequency and severity have increased in the past few years, with climate change as a contributing factor. During the data collection period, November 2018 to October 2019, the Sundarbans area was struck by two significant cyclones: "),
                                                     (tags$ul(
                                                      tags$li(tags$b("Fani"), "(Category 4): 26 April– 4 May 2019 "),
-                                                     tags$li(tags$b("Matmo/Bulbul"), "(Category 2): 28 October - 11 November 2019 "),
+                                                     tags$li(tags$b("Matmo"), "(Category 2): 28 October"),
                                                     )),
-                                                     p("The Fani Cyclone was an extremely severe tropical storm, reported as the strongest in 2019, and the 10th most severe cyclone in the Indian subcontinent within the last 52 years. 
-                                                       Its high-speed winds and torrential rain caused extensive flooding, destroying property, assets, and agricultural lands, and leading to a significant loss of approximately sixty-four lives across Eastern and Northern India.
-                                                       The Matmo cyclone formed in the Philippine Sea on October 28th, dissipated as it went West over land (Cambodia), then regained energy and reached peak strength as it went over the Andaman Sea and into the Bengal Bay, making landfall on November 7th, where it was renamed Bulbul.
-                                                       This cyclone also caused severe impacts on the property and agricultural lands of the Sundarbans."),
-                                                     p("Four cyclones also developed along the Arabian Sea during this period:"),
-                                                    (tags$ul(
-                                                     tags$li(tags$b("Vayu"), "(Category 1): 8 - 18 June 2019 "),
-                                                     tags$li(tags$b("Hikka"), "(Category 1): 20 - 26 September 2019"),
-                                                     tags$li(tags$b("Kyaar"), "(Category 4): 22 October - 3 November 2019"),
-                                                     tags$li(tags$b("Maha"), "(Category 3): 28 October - 11 November 2019"),
-                                                    )),
-                                                     p("While the Sundarbans were not reported as a region directly affected by these four cyclones, it is very likely that they still experienced some of the negative effects of these storms due to their proximity to the Arabian Sea."),
-                                                    
+                                                     p("Fani was reported as the strongest tropical cyclone in 2019 and the 10th most severe cyclone in the Indian subcontinent within the last 52 years. Although Fani downgraded when it hit the Sundarbans, 
+                                                       its high-speed winds and torrential rain destroyed homes, property, trees, and agricultural lands. Matmo formed in the Philippine Sea on October 28th and dissipated as it went"),
+                                                    br(),
                                                     h4(strong("Harvest Seasons")),
-                                                    p("Agriculture is the backbone of the Sundarbans economy, with mostly small–scale farmers. The sector largely depends on a single crop, the rain-fed paddy Aman. In this region, however, agriculture is very seasonal as it depends on the monsoons:"),
+                                                    br(),
+                                                    p("Agriculture is the backbone of the Sundarbans economy, with mostly small–scale farmers. 
+                                                      The sector largely depends on a single crop, the rain-fed paddy Aman. In this region, however, agriculture is very seasonal as it depends on the monsoons: "),
                                                     (tags$ul(
                                                     tags$li(tags$b("Kharif"),"Season - This season occurs with the onset of monsoon."),
                                                     tags$ul(
@@ -1210,9 +1205,19 @@ ui <- navbarPage(title = "",
                                                     tags$li("Harvesting of rabi crops happens during summer,", tags$b("March - June")),
                                                     )
                                                     )),
-                                                    p("Fisheries are the next dominant productive activity. This occurs year-round but the majority of fish catch occurs from", tags$b("November to January."),"Some months", tags$b("(April, May, and June)"), "are closed for fishing. Honey collection on the other hand occurs from", tags$b("April to June.")),
-                                                    
+                                                    (tags$ul(
+                                                      tags$li(tags$b("Fisheries"),"is the dominant productive activity."),
+                                                      tags$ul(
+                                                        tags$li("Occurs year-round but majority of fish catch is during",tags$b("November – January ")),
+                                                        tags$li("Some months", tags$b("(April, May, and June)"),"are closed for fishing.")
+                                                      )
+                                                      )),
+                                                    tags$ul(
+                                                    tags$li(tags$b("Honey Collection"), "occurs from", tags$b("April- June"))
+                                                    ),
+                                                    br(),
                                                     h4(strong("Festivals/Holidays")),
+                                                    br(),
                                                     p("Several festivals and holidays that occur during the data collection period are: "),
                                                     (tags$ul(
                                                     tags$li(tags$b("Republic Day"),": Janurary 26"),
@@ -1245,9 +1250,13 @@ ui <- navbarPage(title = "",
                                               h1(strong("Coastal Degradation Timelapse")),
                                               column(4, 
                                                      h4(strong("Sundarbans Area"), align = "justify"),
-                                                     p("The video below shows the coastline of the Sundarbans from 1984 to 2022. This timelapse shows that the coastline has degraded significantly over the years. The circles indicate where this degradation is most evident; some islands have disappeared completely."), 
-                                                     p("One such factor of this degradation is the effects caused by climate change; one of these effects is the rising of the sea level, resulting in an increase in runoff and the accelerated erosion of the coast. This coastal erosion reduces the sediment in the area that acts as a natural buffer to flooding, as well as increases the salinity of groundwater, pushing salt water upstream, ultimately causing a decrease in the supply of drinkable water. The thinning of the Sundarbans coast also negatively impacts households’ agricultural yields. Families heavily depend on these yields to support their livelihoods, as it serves as an essential source of income and food. Due to this, we've observed fluctuations in income, and frequent occurrences of households having to reduce or skip meals."),
-                                                     p("The Bay of Bengal and the Arabian Sea have proven to be hotspots for cyclones. As such, these frequent cyclones that occur in the Sundarbans region are a factor that greatly contributes to the degradation of its coastline. On average, the Bay of Bengal is hit by seven cyclones per year, with the Arabian sea experiencing an average of two. These cyclones are occurring more often, and their effects are becoming more severe, as the rising sea level increases the base upon which these storm surges are built. The impacts of these cyclones include flooding, extreme winds, erosion, and further raising the sea level, significantly increasing the potential to damage property and threaten human health and safety."), 
+                                                     p("The video shows a timelapse of the Sundarbans region from 1984 to 2022. There appears to be a significant degradation of the Sundarbans coastline over the years. 
+                                                       We impose circles on the map to indicate areas experiencing substantial coastline erosion. For instance, an island disappears entirely in the lower left-hand corner."), 
+                                                     p("Climate change plays a primary role in this degradation. Rising sea levels, stronger waves, more extended tides, and increased frequency and intensity of storms and cyclones wear down rocks and soil, 
+                                                       causing erosion of coastal areas. This erosion is a concern for Sundarbans residents as it reduces the sediment in the area, which acts as a 'natural buffer' to flooding and wind. 
+                                                       Moreover, the degradation increases groundwater's salinity, pushing salt water upstream, thus reducing the supply of drinking water. The thinning of the Sundarbans coast also negatively impacts households' agricultural yields, an essential source of income and food for families in this region."),
+                                                     p("We expect that this erosion will continue in the next few years. The Bay of Bengal and the Arabian Sea are hotspots for cyclones. As such, with the increased frequency and intensity of cyclones in the Sundarbans region, 
+                                                       these coastlines will likely continue to erode rapidly, increasing the negative impact of these cyclones, which will further threaten residents' safety and livelihood. "), 
                                                      align = "justify"),
                                              
                                       column(8, 
