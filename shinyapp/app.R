@@ -599,7 +599,11 @@ map_leaflet3 <- leaflet(data = d.sundarban) %>%
              radius=6000, color = 'yellow') %>%
   addCircles(lat = 21.5896, lng = 88.2653,
              radius=6000, color = 'black') %>%
-  addLegend(title = "Administrative Blocks:", position = "bottomright", colors = c("blue", "black","purple", "yellow","red"), labels = c("Block 1 - Beguakhali and Sagar", "Block 2 - Amrabati and Shibpur", "Block 3 - Lakshmi Janardanpur and Purba Dwarokapur", "Block 4 - Birajnagar and Bijoynagar", "Block 5 - Haridaskati Samsernagar and Pargumti"))
+  addLegend(title = "Administrative Blocks:", position = "bottomright", colors = c("blue", "black","purple", "yellow","red"), 
+            labels = c(
+            "Sagar Block - Beguakhali and Sagar","Namkhana Block - Amrabati and Shibpur", "Patharpratima Block - Lakshmi Janardanpur and Purba Dwarokapur", 
+             "Gosaba Block - Birajnagar and Bijoynagar", "Hangalganj Block - Haridaskati Samsernagar and Pargumti"
+             ))
 
 
 #-------------------------------
@@ -1113,8 +1117,7 @@ ui <- navbarPage(title = "",
                           fluidRow(align = "center",
                           p(tags$small(em('Source: Images taken by Sundarbans Field Team')))),
                           
-                 ),
-                 
+                ),
                  
                  ## Tab Date Intro--------------------------------------------
                  tabPanel("Data", value = "overview",
