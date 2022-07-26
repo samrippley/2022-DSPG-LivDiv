@@ -2291,11 +2291,11 @@ server <- function(input, output, session) {
     }
     else if (ageVar() == "Household Heads Marital Status") {
       marplot <- ggplot(countmar, aes(x = head_married, y = n, fill = Gender)) +
-        geom_col(hoverinfo = "text", aes(text = paste("Total:", n,"<br>Gender: ", Gender))) +
+        geom_col() +
         labs(x = "Not Married                                         Married", y = "Total Household Head", fill = "") +
         scale_x_discrete() + theme(legend.title=element_blank())+
         theme_classic()
-      ggplotly(marplot, tooltip = c("text"))
+      ggplotly()
     }
   })
   
@@ -2369,13 +2369,13 @@ server <- function(input, output, session) {
   
   output$finplot <- renderPlotly({
     if (finVar() == "Number of Households that Own a Business") {
-      village_bus_count_plot <- ggplot(dat_bus, aes(x= Village, y = households, fill = key)) + 
-        geom_col(position = 'stack', hoverinfo = "text", aes(text = paste("Households: ", households, "<br>Percentage:",`percentage`,"%\n", "Key:", key))) + 
+      village_bus_count_plot <- ggplot(dat_bus, aes(x= Village, y = households, fill = key)) + geom_col(position = 'stack') +
+        geom_col() + 
         labs( x= "", y = "Total Households", fill = "") + 
         theme_classic() + 
         #ggtitle("Households That Own a Business") +
         coord_flip()
-      ggplotly(village_bus_count_plot, tooltip = c("text"))
+      
     }
     else if (finVar() == "Proportion of Households Owning Assets") {
       assetplot <- ggplot(assets_long, aes(property, percentage, fill = property, text = paste(""))) + 
