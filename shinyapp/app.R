@@ -391,9 +391,9 @@ rmt_method_plot <- ggplot(method_dat, aes( x= reorder(Method, method_counts), y 
   labs(x = "", y = "Total") +
   theme_classic() +
   coord_flip()+
-  theme(legend.position = "none")+
+  theme(legend.position = "none", axis.text.y = element_text(size = 14))+
   #ggtitle("Method of Receiving Remittances")+
-  geom_text(aes(label = method_values), size = 3) + scale_fill_brewer(palette = "Paired")
+  geom_text(aes(label = method_values), size = 5) + scale_fill_brewer(palette = "Paired")
 
 
 # leaflet data for villages tab--------------------------------------------------------------------
@@ -618,8 +618,8 @@ rmt_purpose_plot <- ggplot(purpose_dat, aes(x = reorder(Purpose, purpose_count),
   #ggtitle("Purpose for Receiving Remittances")+
   #rotate_x_text(angle = 22, size = rel(0.8))
   coord_flip()+
-  theme(legend.position = "none")+
-  geom_text(aes(label = purpose_values), size = 3) + scale_fill_brewer(palette = "Paired")
+  theme(legend.position = "none", axis.text.y = element_text(size = 14))+
+  geom_text(aes(label = purpose_values), size = 5) + scale_fill_brewer(palette = "Paired")
 #--------------------------------------------------------------------
 # rmt table
 fd <- livdiv %>%
@@ -1811,7 +1811,7 @@ ui <- navbarPage(title = "",
                  ## Shocks Tab --------------------------------------------
                  
                 tabPanel("Shocks",
-                                       fluidRow(style = "margin: 6px;", h1(strong("Shocks"), align = "center"), column(4, 
+                                       fluidRow(style = "margin: 6px;", h1(strong("Shocks"), align = "justify"), column(4, 
                                                 p("As one of the most vulnerable locations in the world in regards to the effects of climate change. Even the proximity of these communities to the ocean as well as the abundant flora and fauna in the region can mean that many shocks can take place. Shocks can be classified as any event, most likely negative that can harm the household livelihood. When looking at “Frequency of Shocks” it’s evident by a great margin that many of the shocks that are impacting these households are random environmental impacts or loss of various items. Although it’s easy to classify natural disasters as one characteristic, our team is more focused on the effects each shock has on the household. Some of the most frequent shocks that took place are loss of business, loss of vegetation, and loss of livestock. Our team also wanted to take a look at how each village was impacted by the different shocks taking place. Since many of the shocks are climate-related, and the proximity of all the villages are in the same region, the number of shocks taking place per year in every household was the same. Since the households reported on shocks taking place for the past 11 years from when the data was collected, we wanted to see if there were disproportionate impacts caused by certain shocks during that period. The Sundarbans area typically faces tropical events such as cyclones. However, the frequency and intensity of cyclones have increased in the past decade. Especially, the most devastating cyclones in the region occurred in 2007, 2009, 2019, 2020, and 2021. The impact of the cyclone in 2009 (Alia) is still evident as the majority of households reported a shock. in 2009, even though this interview was done in 2018. Moreover, many families reported experiencing 3 shocks, with some reporting a high of 4 shocks in 2009.", style = "padding-top:10px;")),
                                        # Show a plot of the generated plot
                                          column(8,
@@ -1821,8 +1821,10 @@ ui <- navbarPage(title = "",
                                              tabPanel("Shocks by Year", plotlyOutput("shocks_by_year"))
                                                       )
                                                   ),
-                                       ), 
-                                      fluidRow(style = "margin: 6px;", h1(strong("Shocks in 2009"), align = "center"), column(4, 
+                                       ),
+                         br(),
+                         br(),
+                                      fluidRow(style = "margin: 6px;", h1(strong("Shocks in 2009"), align = "justify"), column(4, 
                                               p("After seeing that there is a disproportionate amount of shocks taking place in 2009, we wanted to take a further look at the causes and the effects of it. Cyclone Aila was a devastating force during that year that affected about 40 million people; washed away several thousand homes, took 190 lives, wounded more than 7103 people, and caused almost a billion dollars(USD) worth of damage. Since a majority of the shocks were taken during the period this data was collected in 2009, the most common shocks are still a loss of business, loss of vegetation, and loss of livestock. Actions taken after shocks to accommodate for losses of income or valuables are called copes. After the many shocks in 2009, families in the Sundarbans region coped by taking steps such as obtaining credit or pursuing other jobs. Notably, the most common coping method was unconditional help from the government, followed by receiving support from friends or relatives. Often, families did nothing and tried to “weather the storm” until better times. Since many of the houses in this region are made from wood or are propped by materials that can be easily wiped away from floods or high winds, relocation is common after shocks. Most often relocation is only taken place for less than a month, but in certain instances, this can be more permanent or longer. With a vast majority of households saying that they relocate for either less or more than a month, many of these households relocate to a safer place in the same village. Less frequently do the households relocate to Kolkata (the biggest city nearby) or other villages around the Sundarbans.", style = "padding-top:10px;"
                                                 )
                                                                             ),
@@ -2078,7 +2080,7 @@ server <- function(input, output, session) {
       geom_line() +
       #labs(title = "Number of Households Borrowing (Cash or in Kind)") + 
       xlab("Date") +
-      ylab("Number of HH")+
+      ylab("Number of Households")+
       theme_classic()+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) +
       scale_color_brewer(palette = "Paired") +
@@ -2092,10 +2094,10 @@ server <- function(input, output, session) {
   output$purpplot <- renderPlot({
     ggplot(dfpurp, aes(x= reorder(A,B), y = B, fill = A)) + geom_col() + 
       coord_flip()+
-      #labs(title = "Purpose of Borrowing") + 
+      labs(fill = "") + 
       xlab("") +
       ylab("")+
-      theme(legend.position = "none")+
+      theme(legend.position = "none", axis.text.y = element_text(size = 14))+
       theme_classic() +
       scale_fill_brewer(palette = "Paired")
   })
@@ -2461,10 +2463,10 @@ server <- function(input, output, session) {
     ggplot(filtered_rmt_block(), aes(x = week , y = block_avg_rmt, color = Block)) +
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Weekly Remittances", color = "Blocks") +
-      #ggtitle("Average Weekly Remittances by Block")+
+      labs(x = "Date", y = "Average Weekly Remittances", color = "Blocks", caption = "Mean: 205.61  Median: 172.82") +
+      theme(plot.caption = element_text(size = 12))+
       #scale_color_brewer(palette = "Paired")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       geom_rect(data = filtered_event_rmt(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
   })
   
@@ -2501,7 +2503,7 @@ server <- function(input, output, session) {
   output$exp <- renderPlot({
     ggplot(filtered_exp(), aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) +
       geom_line() +
-      labs(x="Date", y="Average Weekly Expenditure (INR)", caption = "Mean: 1982.77   Median: 1832.1", color = "Villages") +
+      labs(x="Date", y="Average Weekly Expenditure (INR)", caption = "Mean: 1982.77   Median: 1832.10", color = "Villages") +
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + 
       scale_color_brewer(palette = "Paired")+
       theme_classic()+
@@ -2515,11 +2517,12 @@ server <- function(input, output, session) {
     ggplot(filtered_exp_block(), aes(x = week , y = block_avg_exp, color = Block)) +
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Weekly Expenditure", color = "Blocks") +
+      labs(x = "Date", y = "Average Weekly Expenditure", color = "Blocks", caption = "Mean: 1982.77  Median 1869.61") +
+      theme(plot.caption = element_text(size = 12))+
       #ggtitle("Average Expenditure by Block")+
       #scale_color_brewer(palette = "Paired")+
       geom_rect(data = filtered_event_exp(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))
   })
   # Render exp table 
   output$exp_table <- DT::renderDT({
@@ -2542,6 +2545,7 @@ server <- function(input, output, session) {
       scale_color_brewer(palette = "Paired")+
       theme_classic()+
       theme(plot.caption = element_text(size = 12))+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + 
       geom_rect(data = filtered_event_inc(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
     
   })
@@ -2585,10 +2589,10 @@ server <- function(input, output, session) {
     ggplot(filtered_inc_block(), aes(x = week, y = block_avg_inc, color = Block)) +
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Weekly Income", color = "Blocks") +
-      #ggtitle("Average Weekly Income by Block")+
+      labs(x = "Date", y = "Average Weekly Income", color = "Blocks", caption = "Mean: 1395.61  Median: 1329.69") +
+      theme(plot.caption = element_text(size = 12))+
       #scale_color_brewer(palette = "Paired")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       geom_rect(data = filtered_event_inc(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
   })
   
@@ -2659,11 +2663,11 @@ server <- function(input, output, session) {
     ggplot(filtered_cs_block(), aes(x = week , y = block_avg_cs, color = Block)) +
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Weekly Consumption", color = "Blocks") +
-      #ggtitle("Average Weekly Consumption by Block")+
+      labs(x = "Date", y = "Average Weekly Consumption", color = "Blocks", caption = "Mean: 766.13  Median: 721.76") +
+      theme(plot.caption = element_text(size = 12))+
       #scale_color_brewer(palette = "Paired")+
       geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))
   })
   
   # Filtered consumption by group
