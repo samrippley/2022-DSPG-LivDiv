@@ -2156,7 +2156,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$button, {
     showModal(modalDialog(
-      img(src='map3.png', height = "310px", align = "center"),
+      img(src='map4.png', height = "310px", align = "center"),
       easyClose = TRUE,
       footer = NULL
     ))
@@ -2165,7 +2165,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$button1, {
     showModal(modalDialog(
-      img(src='map3.png', height = "310px", align = "center"),
+      img(src='map4.png', height = "310px", align = "center"),
       easyClose = TRUE,
       footer = NULL
     ))
@@ -2174,7 +2174,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$button2, {
     showModal(modalDialog(
-      img(src='map3.png', height = "310px", align = "center"),
+      img(src='map4.png', height = "310px", align = "center"),
       easyClose = TRUE,
       footer = NULL
     ))
@@ -2183,7 +2183,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$button3, {
     showModal(modalDialog(
-      img(src='map3.png', height = "310px", align = "center"),
+      img(src='map4.png', height = "310px", align = "center"),
       easyClose = TRUE,
       footer = NULL
     ))
@@ -2192,7 +2192,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$button4, {
     showModal(modalDialog(
-      img(src='map3.png', height = "310px", align = "center"),
+      img(src='map4.png', height = "310px", align = "center"),
       easyClose = TRUE,
       footer = NULL
     ))
@@ -2201,7 +2201,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$button5, {
     showModal(modalDialog(
-      img(src='map3.png', height = "310px", align = "center"),
+      img(src='map4.png', height = "310px", align = "center"),
       easyClose = TRUE,
       footer = NULL
     ))
@@ -2210,7 +2210,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$button6, {
     showModal(modalDialog(
-      img(src='map3.png', height = "310px", align = "center"),
+      img(src='map4.png', height = "310px", align = "center"),
       easyClose = TRUE,
       footer = NULL
     ))
@@ -2220,7 +2220,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$button7, {
     showModal(modalDialog(
-      img(src='map3.png', height = "310px", align = "center"),
+      img(src='map4.png', height = "310px", align = "center"),
       easyClose = TRUE,
       footer = NULL
     ))
@@ -2229,7 +2229,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$button8, {
     showModal(modalDialog(
-      img(src='map3.png', height = "310px", align = "center"),
+      img(src='map4.png', height = "310px", align = "center"),
       easyClose = TRUE,
       footer = NULL
     ))
