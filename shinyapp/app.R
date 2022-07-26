@@ -1112,64 +1112,50 @@ ui <- navbarPage(title = "",
                           ),
                           fluidRow(align = "center",
                           p(tags$small(em('Source: Images taken by Sundarbans Field Team')))),
-                          br(""),
-                          br(""), 
-                          fluidRow(align = "left",
-                                   p(tags$small(em('References:')))),
-                          fluidRow(align = "left",
-                                   p(tags$small(em('Saha, (Dr.)Dipankar. (2015). Diversified Agriculture in Sundarbans. 10.13140/RG.2.1.4691.3446. ')))),
-                          fluidRow(align = "left",
-                                   p(tags$small(em('Pramanik, A., Sengupta, S., & Bhattacharyya, M. (2019, January 1). Chapter 5 - Microbial Diversity and Community Analysis of the Sundarbans Mangrove, a World Heritage Site (S. Das & H. R. Dash, Eds.). ScienceDirect; Academic Press. https://www.sciencedirect.com/science/article/pii/B9780128148495000058‌')))),
-                          fluidRow(align = "left",
-                                   p(tags$small(em('Halder, Nirmol & Merchant, Andrew & Misbahuzzaman, Khaled & Wagner, Sven & Mukul, Sharif. (2021). Why some trees are more vulnerable during catastrophic cyclone events in the Sundarbans mangrove forest of Bangladesh?. Forest Ecology and Management. 490. 119117. 10.1016/j.foreco.2021.119117.')))),
-                          fluidRow(align = "left",
-                                   p(tags$small(em('Titumir, R. A. M. (n.d.). Sundarbans under threat. Prothomalo. Retrieved July 20, 2022, from https://en.prothomalo.com/environment/sundarbans-under-threat.')))),
-                          fluidRow(align = "left",
-                                   p(tags$small(em('UNESCO World Heritage Centre. (2018). The Sundarbans. Unesco.org. https://whc.unesco.org/en/list/798/.'))))
                           
                  ),
                  
                  
                  ## Tab Date Intro--------------------------------------------
                  tabPanel("Data", value = "overview",
-                          fluidRow(style = "margin: 6px;", align = "justify",
-                                   column(4, 
-                                          h2(strong("Data")),
-                                          p("We acquire weekly household financial and consumption data from Gupta et al. (2021). Gupta et al. (2021) originally collected household-level data from a representative sample of rural households in the Sundarbans region in West Bengal, India. They collected information from approximately 300 households in 10 villages from November 2018 to October 2019.")
-                                   ),
-                                   column(4,
-                                          h2(strong("Initial/Baseline")),
-                                          p("The initial or baseline survey was conducted in November 2018. This data allows the team to visualize and provide insights into the region's demographic and socio-economic characteristics. The baseline survey collected information on household demographics, economic activities, assets and landholding, shock history, migration, and agricultural behaviors.")
+                          fluidRow(style = "margin: 6px;",
+                                   column(6, 
+                                          h2(strong("Data Overview")),
+                                          p("We acquire weekly household financial and consumption data from Gupta et al. (2021). Gupta et al. (2021) originally collected household-level data from a representative sample of rural households in the Sundarbans region in West Bengal, India. They collected information from approximately 300 households in 10 villages from November 2018 to October 2019.", align = "justify"),
+                                   #),
+                                   #column(4,
+                                          h4(strong("Initial Survey")),
+                                          p("The initial or baseline survey was conducted in November 2018. This data allows the team to visualize and provide insights into the region's demographic and socio-economic characteristics. The baseline survey collected information on household demographics, economic activities, assets and landholding, shock history, migration, and agricultural behaviors.", align = "justify"),
                                           
                                           
                                    ),
-                                   column(4,
-                                          h2(strong("Financial Diaries")),
+                                   column(6,
+                                          h4(strong("Financial Diaries")),
                                           p("Gupta et al. (2021) use financial diaries to capture high-frequency data on household income, expenditure, and consumption behavior. As such, we have weekly financial and economic activities for approximately 300 households for an entire year (November 2018 to October 2019). "),
-                                          p("Household members were trained during the baseline interview to independently record their financial activities in their respective diaries (see image below for an example of a financial diary). Household received two more training sessions in the following two weeks and filled out the first four financial diaries during the training period. Additional support was given to families via phone calls and during the field teams monthly visit to collect completed diaries. These steps were implemented to ensure proper recording of weekly information. These diaries include data on weekly income, remittances, borrowing, lending, expenditure on consumption, and non-consumption items."),
+                                          p("Household members were trained during the baseline interview to independently record their financial activities in their respective diaries (see image below for an example of a financial diary). Household received two more training sessions in the following two weeks and filled out the first four financial diaries during the training period. Additional support was given to families via phone calls and during the field teams monthly visit to collect completed diaries. These steps were implemented to ensure proper recording of weekly information. These diaries include data on weekly income, remittances, borrowing, lending, expenditure on consumption, and non-consumption items.", align = "justify"),
                                           br()
                                    ),
-                                  
-                          ),
-                          fluidRow(
-                            h3(strong("Example of Financial Diary")),
-                            align = "center",
-                                   img(src='Picture2.png', width = "50%"),
-                            br(),
-                            br(),
-                            br(),
-                            br(),
-                            br())
+                        fluidRow(style = "margin: 6px;", align = "center", 
+                                 h3(strong("Example of Financial Diary", align = "center")),
+                            column(7, align = "center",
+                                   #br(),
+                            h4(strong("Front Side- Financial Activity")),
+                                   img(src='Picture2.png', width = "100%")),
+                            column(5,
+                                   h4(strong("Back Side- Expenditure Activity")),
+                                   align = "center",
+                                   img(src='fd.png', width = "90%")),
+                           
                           
                           
-                          ), 
+                          ))), 
                  ## Sundarbans Region--------------------------------------------
                  navbarMenu("Sundarbans Region" ,
                             tabPanel("Villages", 
                                      
                                      fluidRow(style = "margin: 2px;",
                                               align = "center",
-                                              h1(strong("Representative Villages in the Sundarbans"))
+                                              h1(strong("Representative Sample of Villages"))
                                                  
                                               ),
                                      
@@ -1304,11 +1290,11 @@ ui <- navbarPage(title = "",
                                               ) ,
                                               column(8,
                                                      tabsetPanel(
-                                                       tabPanel("By Village",
+                                                       tabPanel("Household Formation",
                                                                 h4(strong("Head of Household Demographics -  November 2018 (Baseline)")),
-                                                                p(tags$small("Select marker for demographic analysis by village")),
+                                                                p(tags$small("Select marker for specific attributes:")),
                                                                 withSpinner(leafletOutput("ageplo", height = "500px", width = "80%")),),
-                                                       tabPanel("Graphics",
+                                                       tabPanel("Socioeconomic Status",
                                                      h4(strong("Head of Household Demographics -  November 2018 (Baseline)")),
                                                      selectInput("agedrop", "Select Characteristic:", width = "100%", choices = c(
                                                        "Education" = "Mean Years of Education for Head of Households", 
@@ -1754,8 +1740,10 @@ ui <- navbarPage(title = "",
                  ## Shocks Tab --------------------------------------------
                  
                 tabPanel("Shocks",
-                                       fluidRow(style = "margin: 6px;", h1(strong("Shocks"), align = "justify"), column(4, 
-                                                p("As one of the most vulnerable locations in the world in regards to the effects of climate change. Even the proximity of these communities to the ocean as well as the abundant flora and fauna in the region can mean that many shocks can take place. Shocks can be classified as any event, most likely negative that can harm the household livelihood. When looking at “Frequency of Shocks” it’s evident by a great margin that many of the shocks that are impacting these households are random environmental impacts or loss of various items. Although it’s easy to classify natural disasters as one characteristic, our team is more focused on the effects each shock has on the household. Some of the most frequent shocks that took place are loss of business, loss of vegetation, and loss of livestock. Our team also wanted to take a look at how each village was impacted by the different shocks taking place. Since many of the shocks are climate-related, and the proximity of all the villages are in the same region, the number of shocks taking place per year in every household was the same. Since the households reported on shocks taking place for the past 11 years from when the data was collected, we wanted to see if there were disproportionate impacts caused by certain shocks during that period. The Sundarbans area typically faces tropical events such as cyclones. However, the frequency and intensity of cyclones have increased in the past decade. Especially, the most devastating cyclones in the region occurred in 2007, 2009, 2019, 2020, and 2021. The impact of the cyclone in 2009 (Alia) is still evident as the majority of households reported a shock. in 2009, even though this interview was done in 2018. Moreover, many families reported experiencing 3 shocks, with some reporting a high of 4 shocks in 2009.", style = "padding-top:10px;")),
+                                       fluidRow(style = "margin: 6px;", h1(strong("Shocks"), align = "center"), 
+                                                column(4, 
+                                                h4(strong("Title"), align = "center"), 
+                                                p("As one of the most vulnerable locations in the world in regards to the effects of climate change. Even the proximity of these communities to the ocean as well as the abundant flora and fauna in the region can mean that many shocks can take place. Shocks can be classified as any event, most likely negative that can harm the household livelihood. When looking at “Frequency of Shocks” it’s evident by a great margin that many of the shocks that are impacting these households are random environmental impacts or loss of various items. Although it’s easy to classify natural disasters as one characteristic, our team is more focused on the effects each shock has on the household. Some of the most frequent shocks that took place are loss of business, loss of vegetation, and loss of livestock. Our team also wanted to take a look at how each village was impacted by the different shocks taking place. Since many of the shocks are climate-related, and the proximity of all the villages are in the same region, the number of shocks taking place per year in every household was the same. Since the households reported on shocks taking place for the past 11 years from when the data was collected, we wanted to see if there were disproportionate impacts caused by certain shocks during that period. The Sundarbans area typically faces tropical events such as cyclones. However, the frequency and intensity of cyclones have increased in the past decade. Especially, the most devastating cyclones in the region occurred in 2007, 2009, 2019, 2020, and 2021. The impact of the cyclone in 2009 (Alia) is still evident as the majority of households reported a shock. in 2009, even though this interview was done in 2018. Moreover, many families reported experiencing 3 shocks, with some reporting a high of 4 shocks in 2009.", style = "padding-top:10px;", align = "justify")),
                                        # Show a plot of the generated plot
                                          column(8,
                                            tabsetPanel(
@@ -1767,8 +1755,10 @@ ui <- navbarPage(title = "",
                                        ),
                          br(),
                          br(),
-                                      fluidRow(style = "margin: 6px;", h1(strong("Shocks in 2009"), align = "justify"), column(4, 
-                                              p("After seeing that there is a disproportionate amount of shocks taking place in 2009, we wanted to take a further look at the causes and the effects of it. Cyclone Aila was a devastating force during that year that affected about 40 million people; washed away several thousand homes, took 190 lives, wounded more than 7103 people, and caused almost a billion dollars(USD) worth of damage. Since a majority of the shocks were taken during the period this data was collected in 2009, the most common shocks are still a loss of business, loss of vegetation, and loss of livestock. Actions taken after shocks to accommodate for losses of income or valuables are called copes. After the many shocks in 2009, families in the Sundarbans region coped by taking steps such as obtaining credit or pursuing other jobs. Notably, the most common coping method was unconditional help from the government, followed by receiving support from friends or relatives. Often, families did nothing and tried to “weather the storm” until better times. Since many of the houses in this region are made from wood or are propped by materials that can be easily wiped away from floods or high winds, relocation is common after shocks. Most often relocation is only taken place for less than a month, but in certain instances, this can be more permanent or longer. With a vast majority of households saying that they relocate for either less or more than a month, many of these households relocate to a safer place in the same village. Less frequently do the households relocate to Kolkata (the biggest city nearby) or other villages around the Sundarbans.", style = "padding-top:10px;"
+                                      fluidRow(style = "margin: 6px;", h1(strong("Shocks in 2009"), align = "center"), 
+                                               column(4, 
+                                                      h4(strong("Title"), align = "center"), 
+                                              p("After seeing that there is a disproportionate amount of shocks taking place in 2009, we wanted to take a further look at the causes and the effects of it. Cyclone Aila was a devastating force during that year that affected about 40 million people; washed away several thousand homes, took 190 lives, wounded more than 7103 people, and caused almost a billion dollars(USD) worth of damage. Since a majority of the shocks were taken during the period this data was collected in 2009, the most common shocks are still a loss of business, loss of vegetation, and loss of livestock. Actions taken after shocks to accommodate for losses of income or valuables are called copes. After the many shocks in 2009, families in the Sundarbans region coped by taking steps such as obtaining credit or pursuing other jobs. Notably, the most common coping method was unconditional help from the government, followed by receiving support from friends or relatives. Often, families did nothing and tried to “weather the storm” until better times. Since many of the houses in this region are made from wood or are propped by materials that can be easily wiped away from floods or high winds, relocation is common after shocks. Most often relocation is only taken place for less than a month, but in certain instances, this can be more permanent or longer. With a vast majority of households saying that they relocate for either less or more than a month, many of these households relocate to a safer place in the same village. Less frequently do the households relocate to Kolkata (the biggest city nearby) or other villages around the Sundarbans.", align = "justify", style = "padding-top:10px;"
                                                 )
                                                                             ),
                                         column(8,tabsetPanel(
