@@ -1135,7 +1135,7 @@ ui <- navbarPage(title = "",
                                           p("The financial diaries captured high-frequency data on household income, expenditure, and consumption behavior. As such, we have weekly financial and economic activities for approximately 300 households for an entire year (November 2018 to October 2019)."),
                                           p("Household members were trained during the baseline interview to independently record their financial activities in their respective diaries (see images below for an example of a blank financial diary). Households received two more training sessions in the following two weeks and filled out the first four financial diaries during the training period. Additional support was given to families via phone calls and during the field team's monthly visit to collect completed diaries. These steps were implemented to ensure proper recording of weekly information. These diaries include data on weekly income, remittances, borrowing, lending, expenditure on consumption, and non-consumption items.", align = "justify"),
                                           br()
-                                   ),
+                                   )),
                         fluidRow(style = "margin: 6px;", align = "center", 
                                  h3(strong("Example of Financial Diary", align = "center")),
                             column(7, align = "center",
@@ -1149,7 +1149,7 @@ ui <- navbarPage(title = "",
                            
                           
                           
-                          ))), 
+                          )), 
                  ## Sundarbans Region--------------------------------------------
                  navbarMenu("Sundarbans Region" ,
                             tabPanel("Villages", 
@@ -1305,7 +1305,7 @@ ui <- navbarPage(title = "",
                                                      h4(strong("Head of Household Demographics -  November 2018 (Baseline)")),
                                                      selectInput("agedrop", "Select Characteristic:", width = "100%", choices = c(
                                                        "Education" = "Mean Years of Education for Head of Households", 
-                                                       "Poverty" = "Households that Live Below Poverty Line (₹240) per week", 
+                                                       "Poverty" = "Households that Live Below Poverty Line (₹204) per week", 
                                                        "Marital Status" = "Household Heads Marital Status"
                                                      ),
                                                      
@@ -1749,8 +1749,8 @@ ui <- navbarPage(title = "",
                 tabPanel("Shocks",
                                        fluidRow(style = "margin: 6px;", h1(strong("Shocks"), align = "center"), 
                                                 column(4, 
-                                                h4(strong("Title"), align = "center"), 
-                                                p("As one of the most vulnerable locations in the world in regards to the effects of climate change. Even the proximity of these communities to the ocean as well as the abundant flora and fauna in the region can mean that many shocks can take place. Shocks can be classified as any event, most likely negative that can harm the household livelihood. When looking at “Frequency of Shocks” it’s evident by a great margin that many of the shocks that are impacting these households are random environmental impacts or loss of various items. Although it’s easy to classify natural disasters as one characteristic, our team is more focused on the effects each shock has on the household. Some of the most frequent shocks that took place are loss of business, loss of vegetation, and loss of livestock. Our team also wanted to take a look at how each village was impacted by the different shocks taking place. Since many of the shocks are climate-related, and the proximity of all the villages are in the same region, the number of shocks taking place per year in every household was the same. Since the households reported on shocks taking place for the past 11 years from when the data was collected, we wanted to see if there were disproportionate impacts caused by certain shocks during that period. The Sundarbans area typically faces tropical events such as cyclones. However, the frequency and intensity of cyclones have increased in the past decade. Especially, the most devastating cyclones in the region occurred in 2007, 2009, 2019, 2020, and 2021. The impact of the cyclone in 2009 (Alia) is still evident as the majority of households reported a shock. in 2009, even though this interview was done in 2018. Moreover, many families reported experiencing 3 shocks, with some reporting a high of 4 shocks in 2009.", style = "padding-top:10px;", align = "justify")),
+                                                h4(strong("What shocks affect this region?"), align = "center"), 
+                                                p("The Sundarbans are one of the most vulnerable regions in the world in regards to climate change. It is a very biodiverse region, largely made up of low-lying islands. Due to this, any changes to sea level is going to dramatically affect the area. Shocks can be classified as any event, most likely negative that can harm the household livelihood. When looking at “Frequency of Shocks” many of the shocks that are impacting these households are environmental impacts or loss of various items. Natural disasters could be a potential cause to many shocks. Some of the most frequent shocks that took place are loss of business, loss of vegetation, and loss of livestock. Our team also wanted to take a look at how each village was impacted by the different shocks taking place. Since many of the shocks are climate-related, and the proximity of all the villages are in the same region, the number of shocks taking place per year in every household was the same. Since the households reported on shocks taking place for the past 11 years from when the data was collected, we wanted to see if there were disproportionate impacts caused by certain shocks during that period. The Sundarbans area typically faces tropical events such as cyclones. However, the frequency and intensity of cyclones have increased in the past decade. Especially, the most devastating cyclones in the region occurred in 2007, 2009, 2019, 2020, and 2021. The impact of the cyclone in 2009 (Alia) is still evident as the majority of households reported a shock. in 2009, even though this interview was done in 2018. Moreover, many families reported experiencing 3 shocks, with some reporting a high of 4 shocks in 2009.", style = "padding-top:10px;", align = "justify")),
                                        # Show a plot of the generated plot
                                          column(8,
                                            tabsetPanel(
@@ -1764,7 +1764,7 @@ ui <- navbarPage(title = "",
                          br(),
                                       fluidRow(style = "margin: 6px;", h1(strong("Shocks in 2009"), align = "center"), 
                                                column(4, 
-                                                      h4(strong("Title"), align = "center"), 
+                                                      h4(strong("2009 Shocks in Representative Sample"), align = "center"), 
                                               p("After seeing that there is a disproportionate amount of shocks taking place in 2009, we wanted to take a further look at the causes and the effects of it. Cyclone Aila was a devastating force during that year that affected about 40 million people; washed away several thousand homes, took 190 lives, wounded more than 7103 people, and caused almost a billion dollars(USD) worth of damage. Since a majority of the shocks were taken during the period this data was collected in 2009, the most common shocks are still a loss of business, loss of vegetation, and loss of livestock. Actions taken after shocks to accommodate for losses of income or valuables are called copes. After the many shocks in 2009, families in the Sundarbans region coped by taking steps such as obtaining credit or pursuing other jobs. Notably, the most common coping method was unconditional help from the government, followed by receiving support from friends or relatives. Often, families did nothing and tried to “weather the storm” until better times. Since many of the houses in this region are made from wood or are propped by materials that can be easily wiped away from floods or high winds, relocation is common after shocks. Most often relocation is only taken place for less than a month, but in certain instances, this can be more permanent or longer. With a vast majority of households saying that they relocate for either less or more than a month, many of these households relocate to a safer place in the same village. Less frequently do the households relocate to Kolkata (the biggest city nearby) or other villages around the Sundarbans.", align = "justify", style = "padding-top:10px;"
                                                 )
                                                                             ),
@@ -1846,27 +1846,25 @@ ui <- navbarPage(title = "",
                          fluidRow(style = "margin: 6px;", align = "justify",
                                   column(12, 
                                          h2(strong("References", align = "center")),
-                                         p(tags$small(em('Saha, (Dr.)Dipankar. (2015). Diversified Agriculture in Sundarbans. 10.13140/RG.2.1.4691.3446. '))),
-                                         p(tags$small(em('Pramanik, A., Sengupta, S., & Bhattacharyya, M. (2019, January 1). Chapter 5 - Microbial Diversity and Community Analysis of the Sundarbans Mangrove, a World Heritage Site (S. Das & H. R. Dash, Eds.). ScienceDirect; Academic Press. https://www.sciencedirect.com/science/article/pii/B9780128148495000058‌'))),
+                                         p(tags$small(em('Alam, M. M., Hossain, M. A., &amp; Shafee, S. (2003). Frequency of bay of bengal cyclonic storms and depressions crossing different Coastal Zones. International Journal of Climatology, 23(9), 1119–1125. https://doi.org/10.1002/joc.927 '))),
+                                         p(tags$small(em('CCSP (2008). Impacts of Climate Change and Variability on Transportation Systems and Infrastructure: Gulf Coast Study, Phase I. A Report by the U.S. Climate Change Science Program and the Subcommittee on Global Change Research. Savonis, M. J., V.R. Burkett, and J.R. Potter (eds.). Department of Transportation, Washington, DC, USA, 445 pp.'))),
+                                         p(tags$small(em('Chandra, Ganesh & Sagar, R.. (2003). Fisheries in Sundarbans: Problems and Prospects. 10.2139/ssrn.2084014. '))),
+                                         p(tags$small(em('Connect. Collaborate. Express | RoundGlass Living. (n.d.). Roundglass.com. Retrieved July 20, 2022, from https://roundglasssustain.com/photo-stories/honey-gatherers-sundarbans.'))),
+                                         p(tags$small(em('Evan, Amato & Camargo, Suzana. (2011). A Climatology of Arabian Sea Cyclonic Storms. JOURNAL OF CLIMATE.'))),
                                          p(tags$small(em('Halder, Nirmol & Merchant, Andrew & Misbahuzzaman, Khaled & Wagner, Sven & Mukul, Sharif. (2021). Why some trees are more vulnerable during catastrophic cyclone events in the Sundarbans mangrove forest of Bangladesh?. Forest Ecology and Management. 490. 119117. 10.1016/j.foreco.2021.119117.'))),
+                                         p(tags$small(em('Kabir, Kazi Ahmed & Saha, S B & Phillips, Michael. (2019). Aquaculture and Fisheries in the Sundarbans and Adjacent Areas in Bangladesh: Resources, Productivity, Challenges and Opportunities. 10.1007/978-3-030-00680-8_9.'))),
+                                         p(tags$small(em('Kumar, Shubham & Lal, Preet & Kumar, Amit. (2020). Turbulence of tropical cyclone ‘Fani’ in the Bay of Bengal and Indian subcontinent. Natural Hazards.'))),
+                                         p(tags$small(em('NRC (2010). Adapting to the Impacts of Climate Change. National Research Council. The National Academies Press, Washington, DC, USA.'))),
+                                         p(tags$small(em('Pramanik, A., Sengupta, S., & Bhattacharyya, M. (2019, January 1). Chapter 5 - Microbial Diversity and Community Analysis of the Sundarbans Mangrove, a World Heritage Site (S. Das & H. R. Dash, Eds.). ScienceDirect; Academic Press. https://www.sciencedirect.com/science/article/pii/B9780128148495000058‌'))),
+                                         p(tags$small(em('ReliefWeb. (2020, May 15). Bangladesh: Cyclone Bulbul final report - operation dref N° MDRBD023 - bangladesh. ReliefWeb. Retrieved July 20, 2022, from https://reliefweb.int/report/bangladesh/bangladesh-cyclone-bulbul-final-report-operation-dref-n-mdrbd023 '))),
+                                         p(tags$small(em('Saha, (Dr.)Dipankar. (2015). Diversified Agriculture in Sundarbans. 10.13140/RG.2.1.4691.3446. '))),
+                                         p(tags$small(em('Sundarbans - an overview | ScienceDirect Topics. (n.d.). Www.sciencedirect.com. https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/sundarbans.'))),
                                          p(tags$small(em('Titumir, R. A. M. (n.d.). Sundarbans under threat. Prothomalo. Retrieved July 20, 2022, from https://en.prothomalo.com/environment/sundarbans-under-threat.'))),
                                          p(tags$small(em('UNESCO World Heritage Centre. (2018). The Sundarbans. Unesco.org. https://whc.unesco.org/en/list/798/.'))),
-                                 
-                                            p(tags$small(em('Worlddata.info. (n.d.). Most recent cyclones in India. Worlddata.info. Retrieved July 19, 2022, from https://www.worlddata.info/asia/india/cyclones.php.'))),
-                                           p(tags$small(em('Kumar, Shubham & Lal, Preet & Kumar, Amit. (2020). Turbulence of tropical cyclone ‘Fani’ in the Bay of Bengal and Indian subcontinent. Natural Hazards.'))),
-                                           p(tags$small(em('ReliefWeb. (2020, May 15). Bangladesh: Cyclone Bulbul final report - operation dref N° MDRBD023 - bangladesh. ReliefWeb. Retrieved July 20, 2022, from https://reliefweb.int/report/bangladesh/bangladesh-cyclone-bulbul-final-report-operation-dref-n-mdrbd023 '))),
-                                           p(tags$small(em('Sundarbans - an overview | ScienceDirect Topics. (n.d.). Www.sciencedirect.com. https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/sundarbans.'))),
-                                           p(tags$small(em('Velmurugan, A., Ambast, S. K., Swarnam, T. P., Burman, D., Mandal, S., & Subramani, T. (2018, January 1). Chapter 21 - Land Shaping Methods for Climate Change Adaptation in Coastal and Island Region (C. Sivaperuman, A. Velmurugan, A. K. Singh, & I. Jaisankar, Eds.). ScienceDirect; Academic Press. https://www.sciencedirect.com/science/article/pii/B9780128130643000211.'))),
-                                           p(tags$small(em('Chandra, Ganesh & Sagar, R.. (2003). Fisheries in Sundarbans: Problems and Prospects. 10.2139/ssrn.2084014. '))),
-                                           p(tags$small(em('Connect. Collaborate. Express | RoundGlass Living. (n.d.). Roundglass.com. Retrieved July 20, 2022, from https://roundglasssustain.com/photo-stories/honey-gatherers-sundarbans.'))),
-                                           p(tags$small(em('Kabir, Kazi Ahmed & Saha, S B & Phillips, Michael. (2019). Aquaculture and Fisheries in the Sundarbans and Adjacent Areas in Bangladesh: Resources, Productivity, Challenges and Opportunities. 10.1007/978-3-030-00680-8_9.'))),
-                                  
-                                             p(tags$small(em('CCSP (2008). Impacts of Climate Change and Variability on Transportation Systems and Infrastructure: Gulf Coast Study, Phase I. A Report by the U.S. Climate Change Science Program and the Subcommittee on Global Change Research. Savonis, M. J., V.R. Burkett, and J.R. Potter (eds.). Department of Transportation, Washington, DC, USA, 445 pp.'))),
-                                             p(tags$small(em('USGCRP (2014). Moser, S. C., M. A. Davidson, P. Kirshen, P. Mulvaney, J. F. Murley, J. E. Neumann, L. Petes, and D. Reed, 2014: Ch. 25: Coastal Zone Development and Ecosystems. Climate Change Impacts in the United States: The Third National Climate As­sessment, J. M. Melillo, Terese (T.C.) Richmond, and G. W. Yohe, Eds., U.S. Global Change Research Program, , 579-618.'))),
-                                             p(tags$small(em('NRC (2010). Adapting to the Impacts of Climate Change. National Research Council. The National Academies Press, Washington, DC, USA.'))),
-                                             p(tags$small(em('Evan, Amato & Camargo, Suzana. (2011). A Climatology of Arabian Sea Cyclonic Storms. JOURNAL OF CLIMATE.'))),
-                                             p(tags$small(em('Alam, M. M., Hossain, M. A., &amp; Shafee, S. (2003). Frequency of bay of bengal cyclonic storms and depressions crossing different Coastal Zones. International Journal of Climatology, 23(9), 1119–1125. https://doi.org/10.1002/joc.927 ')))
-                                           ),
+                                         p(tags$small(em('Velmurugan, A., Ambast, S. K., Swarnam, T. P., Burman, D., Mandal, S., & Subramani, T. (2018, January 1). Chapter 21 - Land Shaping Methods for Climate Change Adaptation in Coastal and Island Region (C. Sivaperuman, A. Velmurugan, A. K. Singh, & I. Jaisankar, Eds.). ScienceDirect; Academic Press. https://www.sciencedirect.com/science/article/pii/B9780128130643000211.'))),
+                                         p(tags$small(em('Worlddata.info. (n.d.). Most recent cyclones in India. Worlddata.info. Retrieved July 19, 2022, from https://www.worlddata.info/asia/india/cyclones.php.'))),
+                                         p(tags$small(em('USGCRP (2014). Moser, S. C., M. A. Davidson, P. Kirshen, P. Mulvaney, J. F. Murley, J. E. Neumann, L. Petes, and D. Reed, 2014: Ch. 25: Coastal Zone Development and Ecosystems. Climate Change Impacts in the United States: The Third National Climate As­sessment, J. M. Melillo, Terese (T.C.) Richmond, and G. W. Yohe, Eds., U.S. Global Change Research Program, , 579-618.')))
+                                             ),
             
                                   )),
                  
@@ -2151,7 +2149,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$button, {
     showModal(modalDialog(
-      img(src='map4.png', height = "310px", align = "center"),
+      img(src='map4.png', height = "250px", align = "center"),
       easyClose = TRUE,
       footer = NULL
     ))
@@ -2160,7 +2158,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$button1, {
     showModal(modalDialog(
-      img(src='map4.png', height = "310px", align = "center"),
+      img(src='map4.png', height = "250px", align = "center"),
       easyClose = TRUE,
       footer = NULL
     ))
@@ -2169,7 +2167,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$button2, {
     showModal(modalDialog(
-      img(src='map4.png', height = "310px", align = "center"),
+      img(src='map4.png', height = "250px", align = "center"),
       easyClose = TRUE,
       footer = NULL
     ))
@@ -2178,7 +2176,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$button3, {
     showModal(modalDialog(
-      img(src='map4.png', height = "310px", align = "center"),
+      img(src='map4.png', height = "250px", align = "center"),
       easyClose = TRUE,
       footer = NULL
     ))
@@ -2187,7 +2185,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$button4, {
     showModal(modalDialog(
-      img(src='map4.png', height = "310px", align = "center"),
+      img(src='map4.png', height = "250px", align = "center"),
       easyClose = TRUE,
       footer = NULL
     ))
@@ -2196,7 +2194,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$button5, {
     showModal(modalDialog(
-      img(src='map4.png', height = "310px", align = "center"),
+      img(src='map4.png', height = "250px", align = "center"),
       easyClose = TRUE,
       footer = NULL
     ))
@@ -2205,7 +2203,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$button6, {
     showModal(modalDialog(
-      img(src='map4.png', height = "310px", align = "center"),
+      img(src='map4.png', height = "250px", align = "center"),
       easyClose = TRUE,
       footer = NULL
     ))
@@ -2215,7 +2213,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$button7, {
     showModal(modalDialog(
-      img(src='map4.png', height = "310px", align = "center"),
+      img(src='map4.png', height = "250px", align = "center"),
       easyClose = TRUE,
       footer = NULL
     ))
@@ -2224,7 +2222,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$button8, {
     showModal(modalDialog(
-      img(src='map4.png', height = "310px", align = "center"),
+      img(src='map4.png', height = "250px", align = "center"),
       easyClose = TRUE,
       footer = NULL
     ))
@@ -2250,7 +2248,7 @@ server <- function(input, output, session) {
         theme(legend.position="none", strip.text.x = element_text(size = 9)) + scale_fill_brewer(palette = "Paired")
       ggplotly(splot, tooltip = c("text"))
     }
-    else if (ageVar() == "Households that Live Below Poverty Line (₹240) per week") {
+    else if (ageVar() == "Households that Live Below Poverty Line (₹204) per week") {
       village_pl_count_plot <- ggplot(dat_pl, aes(x= Village, y = Households, fill = Key)) + 
         geom_col(position = 'stack', hoverinfo = "text", aes(text = paste("Village:", Village,"<br>Key: ", Key, "<br>Percentage:", percentage,"%" , "<br>Total Households: ", Households ))) + 
         labs(x= "", y = "Total Households", fill = "") + 
