@@ -391,9 +391,9 @@ rmt_method_plot <- ggplot(method_dat, aes( x= reorder(Method, method_counts), y 
   labs(x = "", y = "Total") +
   theme_classic() +
   coord_flip()+
-  theme(legend.position = "none")+
+  theme(legend.position = "none", axis.text.y = element_text(size = 14))+
   #ggtitle("Method of Receiving Remittances")+
-  geom_text(aes(label = method_values), size = 3) + scale_fill_brewer(palette = "Paired")
+  geom_text(aes(label = method_values), size = 5) + scale_fill_brewer(palette = "Paired")
 
 
 # leaflet data for villages tab--------------------------------------------------------------------
@@ -618,8 +618,8 @@ rmt_purpose_plot <- ggplot(purpose_dat, aes(x = reorder(Purpose, purpose_count),
   #ggtitle("Purpose for Receiving Remittances")+
   #rotate_x_text(angle = 22, size = rel(0.8))
   coord_flip()+
-  theme(legend.position = "none")+
-  geom_text(aes(label = purpose_values), size = 3) + scale_fill_brewer(palette = "Paired")
+  theme(legend.position = "none", axis.text.y = element_text(size = 14))+
+  geom_text(aes(label = purpose_values), size = 5) + scale_fill_brewer(palette = "Paired")
 #--------------------------------------------------------------------
 # rmt table
 fd <- livdiv %>%
@@ -2078,7 +2078,7 @@ server <- function(input, output, session) {
       geom_line() +
       #labs(title = "Number of Households Borrowing (Cash or in Kind)") + 
       xlab("Date") +
-      ylab("Number of HH")+
+      ylab("Number of Households")+
       theme_classic()+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) +
       scale_color_brewer(palette = "Paired") +
@@ -2092,10 +2092,10 @@ server <- function(input, output, session) {
   output$purpplot <- renderPlot({
     ggplot(dfpurp, aes(x= reorder(A,B), y = B, fill = A)) + geom_col() + 
       coord_flip()+
-      #labs(title = "Purpose of Borrowing") + 
+      labs(fill = "") + 
       xlab("") +
       ylab("")+
-      theme(legend.position = "none")+
+      theme(legend.position = "none", axis.text.y = element_text(size = 14))+
       theme_classic() +
       scale_fill_brewer(palette = "Paired")
   })
@@ -2461,10 +2461,10 @@ server <- function(input, output, session) {
     ggplot(filtered_rmt_block(), aes(x = week , y = block_avg_rmt, color = Block)) +
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Weekly Remittances", color = "Blocks") +
-      #ggtitle("Average Weekly Remittances by Block")+
+      labs(x = "Date", y = "Average Weekly Remittances", color = "Blocks", caption = "Mean: 205.61  Median: 172.82") +
+      theme(plot.caption = element_text(size = 12))+
       #scale_color_brewer(palette = "Paired")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       geom_rect(data = filtered_event_rmt(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
   })
   
@@ -2515,11 +2515,12 @@ server <- function(input, output, session) {
     ggplot(filtered_exp_block(), aes(x = week , y = block_avg_exp, color = Block)) +
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Weekly Expenditure", color = "Blocks") +
+      labs(x = "Date", y = "Average Weekly Expenditure", color = "Blocks", caption = "Mean: 1982.77  Median 1869.61") +
+      theme(plot.caption = element_text(size = 12))+
       #ggtitle("Average Expenditure by Block")+
       #scale_color_brewer(palette = "Paired")+
       geom_rect(data = filtered_event_exp(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))
   })
   # Render exp table 
   output$exp_table <- DT::renderDT({
@@ -2542,6 +2543,7 @@ server <- function(input, output, session) {
       scale_color_brewer(palette = "Paired")+
       theme_classic()+
       theme(plot.caption = element_text(size = 12))+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + 
       geom_rect(data = filtered_event_inc(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
     
   })
@@ -2585,10 +2587,10 @@ server <- function(input, output, session) {
     ggplot(filtered_inc_block(), aes(x = week, y = block_avg_inc, color = Block)) +
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Weekly Income", color = "Blocks") +
-      #ggtitle("Average Weekly Income by Block")+
+      labs(x = "Date", y = "Average Weekly Income", color = "Blocks", caption = "Mean: 1395.61  Median: 1329.69") +
+      theme(plot.caption = element_text(size = 12))+
       #scale_color_brewer(palette = "Paired")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       geom_rect(data = filtered_event_inc(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
   })
   
@@ -2659,11 +2661,11 @@ server <- function(input, output, session) {
     ggplot(filtered_cs_block(), aes(x = week , y = block_avg_cs, color = Block)) +
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Weekly Consumption", color = "Blocks") +
-      #ggtitle("Average Weekly Consumption by Block")+
+      labs(x = "Date", y = "Average Weekly Consumption", color = "Blocks", caption = "Mean: 766.13  Median: 721.76") +
+      theme(plot.caption = element_text(size = 12))+
       #scale_color_brewer(palette = "Paired")+
       geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))
   })
   
   # Filtered consumption by group
