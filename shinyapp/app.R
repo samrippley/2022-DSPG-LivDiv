@@ -1236,7 +1236,7 @@ ui <- navbarPage(title = "",
                                                      br(),
                                                      br(),
                                                     
-                                                     img(src='month.png', align = "center", width = "95%") 
+                                                     img(src='months4.png', align = "center", width = "95%") 
                                               
                                                      
                                                      
