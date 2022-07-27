@@ -1507,26 +1507,7 @@ ui <- navbarPage(title = "",
                                        
                                      ),
                                      
-                                     # Sidebar with a select input for village
-                                     #sidebarLayout(
-                                     #sidebarPanel(
-                                     #pickerInput("village_cs_food", "Select Village:", choices = village_vector, 
-                                     #selected = village_vector,
-                                     #multiple = T, options = list(`actions-box` = T)),
-                                     #varSelectInput("food_group", "Select Consumption Group:", avg_cs_food[,-(1:2)]),
-                                     #pickerInput("event_choose_cs_food", "Select Event:", choices = events_vector, selected = "Kharif Crop Harvest", 
-                                     #multiple = T, options = list(`actions-box` = T)),
                                      
-                                     #),
-                                     # Show a plot of the generated plot
-                                     #mainPanel(
-                                     #tabsetPanel(
-                                     #tabPanel("Plot", plotOutput("food_plot"))                                         
-                                     #)
-                                     #),
-                                     
-                                     
-                                     #),
                                      
                                      column(12, 
                                             fluidPage(
@@ -1708,30 +1689,7 @@ ui <- navbarPage(title = "",
                                        
                                        
                                      ),
-                                     #fluidRow(style = "margin: 6px;", align = "justify",
-                                      #        p("", style = "padding-top:10px;"),
-                                       #       column(12, align = "center", h4(strong("Remittances Sources")),
-                                        #             p("We also examine how households received remittances. We find that households primarily collected remittances 
-                                         #              in person or through a bank suggesting these methods to be the most convenient. Although a money order is a 
-                                          #             secure method of sending/receiving money, it requires additional fees, which may make it more expensive for 
-                                           #            this poverty-stricken area. Moreover, households may be more concerned about receiving the remittance quickly 
-                                            #           rather than safely. Also, using mobile apps can be difficult in regions where data usage is limited."),
-                                             #        br(""), #plotOutput("rmt_method", width = "70%")
-                                                     
-                                                     
-                                              #)),
-                                     #plotOutput("rmt_method", width = "65%"),
-                                     
-                                     #fluidRow(style = "margin: 6px;", align = "justify",
-                                      #        p("", style = "padding-top:10px;"),
-                                       #       column(12, align = "center", h4(strong("Usage of Remmittances")),
-                                        #             p("Remittances is primarily being used for food and utility purchases, which are 
-                                         #              often the most essential items for households in underdeveloped regions."),
-                                          #           br(""), #plotOutput("rmt_purpose", width = "70%")
-                                                     
-                                                     
-                                           #   )),
-                                     
+                                    
                                      
                                      column(12, 
                                             fluidPage(
