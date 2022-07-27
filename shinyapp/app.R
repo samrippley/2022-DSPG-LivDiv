@@ -446,7 +446,7 @@ addCircles(lat = 21.657, lng = 88.0591,
             radius=6000, color = 'yellow') %>%
   addCircles(lat = 21.5896, lng = 88.2653,
              radius=6000, color = 'black') %>%
-  addLegend(title = "Administrative Blocks:", position = "bottomright", colors = c("blue", "black","purple", "yellow","red"), labels = c("Block 1", "Block 2", "Block 3", "Block 4", "Block 5"))
+  addLegend(title = "Administrative Blocks:", position = "bottomright", colors = c("blue", "black","purple", "yellow","red"), labels = c("Sagar Block", "Namkhana Block", "Patharpratima Block", "Gosaba Block", "Hangalganj Block"))
   
 # leaflet data for age graph--------------------------------------------------------------------
 
@@ -599,8 +599,8 @@ map_leaflet3 <- leaflet(data = d.sundarban) %>%
              radius=6000, color = 'black') %>%
   addLegend(title = "Administrative Blocks:", position = "bottomright", colors = c("blue", "black","purple", "yellow","red"), 
             labels = c(
-            "Sagar Block - Beguakhali and Sagar","Namkhana Block - Amrabati and Shibpur", "Patharpratima Block - Lakshmi Janardanpur and Purba Dwarokapur", 
-             "Gosaba Block - Birajnagar and Bijoynagar", "Hangalganj Block - Haridaskati Samsernagar and Pargumti"
+            "Beguakhali and Sagar - Sagar Block","Amrabati and Shibpur - Namkhana Block", "Lakshmi Janardanpur and Purba Dwarokapur - Patharpratima Block", 
+             "Birajnagar and Bijoynagar - Gosaba Block", "Haridaskati Samsernagar and Pargumti - Hangalganj Block"
              ))
 
 
@@ -1110,10 +1110,11 @@ ui <- navbarPage(title = "",
                                           img(src='sunphoto2.png', align = "center", width = "95%")
                                    )
                           ),
-                          fluidRow(align = "center",
-                          p(tags$small(em('Source: Images taken by Sundarbans Field Team')))),
-                          
-                ),
+                          fluidRow(align = "left",
+                          p(tags$small(em('Source: Images taken by Sundarbans Field Team'))),
+                          ),
+                 ),
+
                  
                  ## Tab Date Intro--------------------------------------------
                  tabPanel("Data", value = "overview",
@@ -2108,7 +2109,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$button, {
     showModal(modalDialog(
-      img(src='map4.png', height = "250px", align = "center"),
+      img(src='map5.png', height = "258px", align = "center"),
       easyClose = TRUE,
       footer = NULL
     ))
@@ -2117,7 +2118,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$button1, {
     showModal(modalDialog(
-      img(src='map4.png', height = "250px", align = "center"),
+      img(src='map5.png', height = "258px", align = "center"),
       easyClose = TRUE,
       footer = NULL
     ))
@@ -2126,7 +2127,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$button2, {
     showModal(modalDialog(
-      img(src='map4.png', height = "250px", align = "center"),
+      img(src='map5.png', height = "258px", align = "center"),
       easyClose = TRUE,
       footer = NULL
     ))
@@ -2135,7 +2136,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$button3, {
     showModal(modalDialog(
-      img(src='map4.png', height = "250px", align = "center"),
+      img(src='map5.png', height = "258px", align = "center"),
       easyClose = TRUE,
       footer = NULL
     ))
@@ -2144,7 +2145,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$button4, {
     showModal(modalDialog(
-      img(src='map4.png', height = "250px", align = "center"),
+      img(src='map5.png', height = "258px", align = "center"),
       easyClose = TRUE,
       footer = NULL
     ))
@@ -2153,7 +2154,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$button5, {
     showModal(modalDialog(
-      img(src='map4.png', height = "250px", align = "center"),
+      img(src='map5.png', height = "258px", align = "center"),
       easyClose = TRUE,
       footer = NULL
     ))
@@ -2162,7 +2163,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$button6, {
     showModal(modalDialog(
-      img(src='map4.png', height = "250px", align = "center"),
+      img(src='map5.png', height = "258px", align = "center"),
       easyClose = TRUE,
       footer = NULL
     ))
@@ -2172,7 +2173,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$button7, {
     showModal(modalDialog(
-      img(src='map4.png', height = "250px", align = "center"),
+      img(src='map5.png', height = "258px", align = "center"),
       easyClose = TRUE,
       footer = NULL
     ))
@@ -2181,7 +2182,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$button8, {
     showModal(modalDialog(
-      img(src='map4.png', height = "250px", align = "center"),
+      img(src='map5.png', height = "258px", align = "center"),
       easyClose = TRUE,
       footer = NULL
     ))
