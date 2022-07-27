@@ -889,38 +889,12 @@ non_food_cs <- fin_diary %>%
   select(village, week, aggregated_exp_clothes, exp_bookstuition, exp_utility, exp_toiletries,
          exp_health, exp_homerepairs, exp_transport, exp_livestock, exp_aginputs, exp_labor,exp_nonfoodother ) %>% 
   group_by(week, village) %>%
-  #summarise(avg_inc_clothes = mean(aggregated_exp_clothes, na.rm = TRUE), avg_bookstuition = mean(exp_bookstuition, na.rm = TRUE),
-  #avg_utility = mean(exp_utility, na.rm = TRUE), avg_toilet = mean(exp_toiletries, na.rm = TRUE),
-  #avg_health = mean(exp_health, na.rm = TRUE), avg_homerepairs = mean(exp_homerepairs, na.rm = TRUE), 
-  #avg_transport = mean(exp_transport, na.rm = TRUE), avg_livestock = mean(exp_livestock, na.rm = TRUE),
-  #avg_aginputs = mean(exp_aginputs, na.rm = TRUE), avg_labor = mean(exp_labor, na.rm = TRUE),
-  #avg_nonfoodother = mean(exp_nonfoodother, na.rm = TRUE))
   summarise("Clothes" = mean(aggregated_exp_clothes, na.rm = TRUE), "Books/Tuition" = mean(exp_bookstuition, na.rm = TRUE),
             "Utilities" = mean(exp_utility, na.rm = TRUE), "Toiletries" = mean(exp_toiletries, na.rm = TRUE),
             "Health" = mean(exp_health, na.rm = TRUE), "Home Repairs" = mean(exp_homerepairs, na.rm = TRUE), 
             "Transportation" = mean(exp_transport, na.rm = TRUE), "Livestock" = mean(exp_livestock, na.rm = TRUE),
             "Agriculture" = mean(exp_aginputs, na.rm = TRUE), "Labor" = mean(exp_labor, na.rm = TRUE),
             "Other" = mean(exp_nonfoodother, na.rm = TRUE))
-#names(non_food_cs) <- c("village", "week", "Clothes", "Books/Tuition", "Utilities", "Toilitries", "Health", "Home Repairs",
-#"Transport", "Livestock", "Agriculure", "Labor", "Other")
-
-# food consupmtion table -----------------
-#avg_cs_table <- fin_diary %>% 
-#  select(village, date, week, cs_count, cs_total, cs_ricegrains, cs_wheatflour, cs_veg,
-#         cs_tubers, cs_fishshrimp, cs_poultry, cs_eggs, cs_pulsespice,
-#         cs_redmeat, cs_dairy, cs_packaged, cs_fruit, cs_sinful, cs_other) %>% 
-#  group_by(date, village) %>% 
-#  summarise( "Average Food Expenditure" = mean(na.omit(cs_total)), "Average Food Items Bought" = mean(na.omit(cs_count)),
-#             "Clothes" = mean(aggregated_exp_clothes, na.rm = TRUE), "Books/Tuition" = mean(exp_bookstuition, na.rm = TRUE),
-#             "Utilities" = mean(exp_utility, na.rm = TRUE), "Toiletries" = mean(exp_toiletries, na.rm = TRUE),
-#             "Health" = mean(exp_health, na.rm = TRUE), "Home Repairs" = mean(exp_homerepairs, na.rm = TRUE), 
-#             "Transportation" = mean(exp_transport, na.rm = TRUE), "Livestock" = mean(exp_livestock, na.rm = TRUE),
-#             "Agriculture" = mean(exp_aginputs, na.rm = TRUE), "Labor" = mean(exp_labor, na.rm = TRUE),
-#             "Other" = mean(exp_nonfoodother, na.rm = TRUE))
-
-#nonfood_table <- non_food_cs
-#nonfood_table[,(3:13)] <- format(round(unlist(nonfood_table[,3:13]), digits = 2), nsmall = 2)
-
 
 
 filtered_non_food_cs <- reactive({
@@ -1260,7 +1234,6 @@ ui <- navbarPage(title = "",
                                                      align = "justify"),
                                              
                                       column(8, 
-                                             #h2(strong("Timelapse of the Sundarbans Area"), align = "center"),
                                              br(),
                                              br(),
                                               tags$video(type = "video/mp4",src = "Sundarbansv3 ‑ Made with FlexClip.mp4", width = "100%", controls = "controls", autoplay = T, loop = T)
@@ -2055,13 +2028,7 @@ server <- function(input, output, session) {
       filter(Block %in% input$block_choose_cs)
   })
   
-  # Consumption by food group plots
-  
-  #output$food_plot <- renderPlot({
-  #ggplot(filtered_cs_food(), aes(x = week, y = !!input$food_group, color = village))+
-  #geom_line()
-  #})
-  
+
   output$cs_staple <- renderPlot({
     ggplot(filtered_cs_food_staple(), aes(x = week, y = `Staple Items`, color = village)) +
       geom_line()+
@@ -2352,7 +2319,7 @@ server <- function(input, output, session) {
   # High Frequency Data Output------------------- 
   
   # rmt plot output
-  # Filter by inputt
+  # Filter by input
   filtered_rmt <- reactive({
     rmt_mean %>%
       filter(village %in% input$village_rmt)
@@ -2364,7 +2331,6 @@ server <- function(input, output, session) {
       geom_line() +
       theme_classic() +
       labs(x = "Date", y = "Average Weekly Remittance (INR)", caption = "Mean: 205.61   Median: 107.14", color = "Villages") +
-      #ggtitle("Average Weekly Household Remittance Income by Village")+ #(11/16/18 - 10/31/19)
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + 
       scale_color_brewer(palette = "Paired")+
       theme(plot.caption = element_text(size = 12))+
@@ -2383,7 +2349,6 @@ server <- function(input, output, session) {
       theme_classic() +
       labs(x = "Date", y = "Average Weekly Remittances", color = "Blocks", caption = "Mean: 205.61  Median: 172.82") +
       theme(plot.caption = element_text(size = 12))+
-      #scale_color_brewer(palette = "Paired")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       geom_rect(data = filtered_event_rmt(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
   })
@@ -2437,8 +2402,6 @@ server <- function(input, output, session) {
       theme_classic() +
       labs(x = "Date", y = "Average Weekly Expenditure", color = "Blocks", caption = "Mean: 1982.77  Median 1869.61") +
       theme(plot.caption = element_text(size = 12))+
-      #ggtitle("Average Expenditure by Block")+
-      #scale_color_brewer(palette = "Paired")+
       geom_rect(data = filtered_event_exp(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))
   })
@@ -2475,23 +2438,12 @@ server <- function(input, output, session) {
   
   output$malefemaleinc <- renderPlot({
     ggplot(filtered_malefemaleinc(), aes(x = week,y = !!input$Gender, color = village)) + geom_line() + 
-      #geom_line(aes(y = !!input$gender, color = village), linetype = "twodash") +  
       labs(x = "", y = "Income (INR)", color = "Village") +
       theme_classic()+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + scale_color_brewer(palette = "Paired")+
       geom_rect(data = filtered_event_inc(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
   })
   
-  # filtered_fullinc <- reactive({
-  #    fullinc  %>% 
-  #      filter(village %in% input$village_inc)
-  #  })
-  #  
-  #  output$fullinc <- renderPlot({
-  #    ggplot(filtered_fullinc(), aes(x=week_num, y=full_inc, color = village, na.rm=TRUE)) +
-  #      geom_line() + labs(title ="Full Income by Village") + xlab("Date") + ylab("Full Income (INR)") +
-  #      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = 10:40)
-  #  })
   
   filtered_totalinc <- reactive({
     totinc  %>% 
@@ -2509,7 +2461,6 @@ server <- function(input, output, session) {
       theme_classic() +
       labs(x = "Date", y = "Average Weekly Income", color = "Blocks", caption = "Mean: 1395.61  Median: 1329.69") +
       theme(plot.caption = element_text(size = 12))+
-      #scale_color_brewer(palette = "Paired")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       geom_rect(data = filtered_event_inc(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
   })
@@ -2517,7 +2468,6 @@ server <- function(input, output, session) {
   output$totalinc <- renderPlot({
     qplot(x=week_num, y=inc_total, color = village,
           data=filtered_totalinc(), na.rm=TRUE,
-          #main="Total Income by Village",
           xlab="Date", ylab="Total Income (INR)", geom = "line") +
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + scale_color_brewer(palette = "Paired")+
       geom_rect(data = filtered_event_inc(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
@@ -2549,7 +2499,6 @@ server <- function(input, output, session) {
     ggplot(filtered_cs_avg(), aes(x = week, y = avg_cs , color = village)) +
       geom_line() +
       theme_classic()+
-      #ggtitle("Average Weekly Consumption Expenditure by Village")+
       labs(x = "", y = "Average Consumption Expenditure (INR)", caption = "Mean: 766.13  Median: 731.68", color = "Villages")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       theme(plot.caption = element_text(size = 12))+
@@ -2569,7 +2518,6 @@ server <- function(input, output, session) {
     ggplot(filtered_cs_avg_items(), aes(x = week, y = avg_item, color = village))+
       geom_line() +
       theme_classic()+
-      #ggtitle("Average Consumption Items Bought a Week")+
       labs(x = "", y = "No. of Consumption Items Bought", color = "Villages", caption = "Mean: 7.2  Median: 7.2")+
       theme(plot.caption = element_text(size = 12))+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
@@ -2583,7 +2531,6 @@ server <- function(input, output, session) {
       theme_classic() +
       labs(x = "Date", y = "Average Weekly Consumption", color = "Blocks", caption = "Mean: 766.13  Median: 721.76") +
       theme(plot.caption = element_text(size = 12))+
-      #scale_color_brewer(palette = "Paired")+
       geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))
   })
@@ -2608,10 +2555,7 @@ server <- function(input, output, session) {
       geom_rect(data = filtered_event_cs_food(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
     
   })
-  # cs table
-#  output$cs_table <- DT::renderDT({
-#    avg_cs_table
-#  })
+
   
   filtered_non_food_cs <- reactive({
     non_food_cs %>% 
@@ -2624,18 +2568,13 @@ server <- function(input, output, session) {
       theme_classic()+
       labs(x = "", y = "Average Weekly Expenditure", color = "Villages", caption = "Mean: 882.22  Median: 769.75")+
       theme(plot.caption = element_text(size = 12))+
-      #ggtitle("Average Consumption Expenditure on Non-Food Items")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       geom_rect(data = filtered_event_cs_nonfood(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
       scale_color_brewer(palette = "Paired")
     
   })
-  # Render non food table
-  
- # output$nonfood_table <- DT::renderDT({
-  #  nonfood_table
- # })
-  
+
+
   #Event Filtered
   
   filtered_event <- reactive({
