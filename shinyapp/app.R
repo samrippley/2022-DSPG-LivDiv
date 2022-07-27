@@ -2329,7 +2329,7 @@ server <- function(input, output, session) {
     }
     else if (finVar() == "Number of Times Households Saved in Prior Year") {
       savplot <- ggplot(nbsavcount, aes(x = village, y = nb_put_saving, fill = "red")) +
-        geom_point(hoverinfo = "text", aes(text = paste("Number of Times Household Saved: ", nb_put_saving))) 
+        geom_point(hoverinfo = "text", aes(text = paste("Number of Times Household Saved: ", nb_put_saving)))+ 
         labs(x = " ", y = " Number of Times Household Saved") + coord_flip() + theme(legend.position = "none")
       ggplotly(savplot, tooltip = c("text"))
     }
