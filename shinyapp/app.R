@@ -446,7 +446,10 @@ addCircles(lat = 21.657, lng = 88.0591,
             radius=6000, color = 'yellow') %>%
   addCircles(lat = 21.5896, lng = 88.2653,
              radius=6000, color = 'black') %>%
-  addLegend(title = "Administrative Blocks:", position = "bottomright", colors = c("blue", "black","purple", "yellow","red"), labels = c("Sagar Block", "Namkhana Block", "Patharpratima Block", "Gosaba Block", "Hangalganj Block"))
+  addLegend(title = "Administrative Blocks:", position = "bottomright", colors = c("blue", "black","purple", "yellow","red"), labels = c(
+    "Beguakhali and Sagar - Sagar Block","Amrabati and Shibpur - Namkhana Block", "Lakshmi Janardanpur and Purba Dwarokapur - Patharpratima Block", 
+    "Birajnagar and Bijoynagar - Gosaba Block", "Haridaskati Samsernagar and Pargumti - Hangalganj Block"
+  ))
   
 # leaflet data for age graph--------------------------------------------------------------------
 
@@ -460,16 +463,6 @@ icons2 <- awesomeIcons(
 
 map_leaflet2 <- leaflet(data = d.sundarban) %>%
   addTiles() %>%
-  #addPolygons(
-  #  fillColor = "black",
-   # stroke=TRUE,
-  #  weight = 1,
-   # smoothFactor = 0.2,
-   # opacity = 1.0,
-  #  fillOpacity = 0.5,
-   # highlightOptions = highlightOptions(color = "white",
-    #                                    weight = 2,
-     #                                   bringToFront = FALSE)) %>%
   setView(lat= 21.9342, lng = 88.5345, zoom = 9) %>%
   addAwesomeMarkers(popup = paste0(tags$h4(strong("Village:"),"Amrabati"),
                                    #br(),
@@ -578,15 +571,6 @@ map_leaflet2 <- leaflet(data = d.sundarban) %>%
 map_leaflet3 <- leaflet(data = d.sundarban) %>%
   addTiles() %>%
   setView(lat= 21.95, lng = 87.9, zoom = 8) %>%
-  #addAwesomeMarkers(
-   # lat = 21.6528, lng = 88.0753,
-  #  label = "Sagar",
-   # labelOptions = , icon=icons) %>%
-  #addAwesomeMarkers(~lon, ~lat, label = ~as.character(Village.Na), labelOptions =  ,icon=icons, data=village) %>%
-  #addAwesomeMarkers(
-  #  lat = 22.227912, lng = 89.00475,
-   # label = "Pargumti",
-    #labelOptions = , icon=icons) %>%
   addCircles(lat = 21.657, lng = 88.0591,
              radius=6000, color = 'blue', opacity = 1) %>%
   addCircles(lat = 22.227912, lng = 89.02,
