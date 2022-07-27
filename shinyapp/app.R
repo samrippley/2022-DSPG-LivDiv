@@ -118,9 +118,9 @@ assets <- baseline %>% select(contains("asset")) %>% select(contains("num"))  %>
             PC = sum(asset_pc_num)/n(), TV = sum(asset_tv_num)/n(), Phone = sum(asset_mobile_num)/n(), 
             `Water Filter` = sum(asset_waterfilter_num)/n())
 
-assets_long <- gather(assets, property, percentage, Stove:`Water Filter`)
-assets_long["percentage"] = assets_long["percentage"]*100
-assets_long["percentage"] <- round(assets_long$percentage, digits = 2)
+assets_long <- gather(assets, property, proportion, Stove:`Water Filter`)
+assets_long["propotion"] = assets_long["proportion"]
+assets_long["proportion"] <- round(assets_long$proportion, digits = 2)
 
 
 #household size data
@@ -254,9 +254,7 @@ nbsav <- baseline %>%
   group_by(village) %>% 
   summarize_at(c("nb_put_saving"), mean, na.rm=TRUE)
 
-nbsavcount <- baseline %>% 
-  group_by(village) %>% 
-  count(nb_put_saving) 
+nbsavcount <- baseline %>% select(nb_put_saving, village) 
 
 #land holding data 
 
@@ -2258,11 +2256,11 @@ server <- function(input, output, session) {
     }
     else if (ageVar() == "Household Heads Marital Status") {
       marplot <- ggplot(countmar, aes(x = head_married, y = n, fill = Gender)) +
-        geom_col() +
+        geom_col(hoverinfo = "text", aes(text = paste(""))) +
         labs(x = "Not Married                                         Married", y = "Total Household Head", fill = "") +
         scale_x_discrete() + theme(legend.title=element_blank())+
         theme_classic()
-      ggplotly()
+      ggplotly(marplot, tooltip = c("text"))
     }
   })
   
@@ -2322,7 +2320,6 @@ server <- function(input, output, session) {
         coord_flip()+
         labs(x= "", y = "Average Job Duration (Months)")+
         ggtitle("") +
-        theme_classic()+
         theme(legend.position = "none") + scale_fill_brewer(palette = "Paired")
       ggplotly(job_duration_plot, tooltip = c("text"))
     }
@@ -2345,13 +2342,11 @@ server <- function(input, output, session) {
       
     }
     else if (finVar() == "Proportion of Households Owning Assets") {
-      assetplot <- ggplot(assets_long, aes(property, percentage, fill = property, text = paste(""))) + 
-        geom_col(hoverinfo = "text", aes(text = paste("Property: ", property,
-                                                      "<br>Percentage: ", percentage))) + 
-        labs(x = "Asset", y = "Percentage" ,title = "") + 
+      assetplot <- ggplot(assets_long, aes(property, proportion, fill = property, text = paste(""))) + 
+        geom_col(hoverinfo = "text", aes(text = paste("Property: ", property, "<br>Proportion: ", proportion))) + 
+        labs(x = "Asset", y = "Proportion" , title = "") + 
         theme(legend.position = "none") +
         rotate_x_text(angle = 33, size = rel(1)) +
-        theme_classic()+
         scale_fill_brewer(palette = "Paired")    
       
       ggplotly(assetplot, tooltip = c("text"))
@@ -2371,24 +2366,20 @@ server <- function(input, output, session) {
         geom_col(hoverinfo = "text", aes(text = paste("Average Salary:", round(avg_salary,2), "₹"))) + 
         labs(x = "", y = "Indian Rupees ₹" ,title = "", fill = "") +
         theme(legend.position = "none") + scale_fill_brewer(palette = "Paired") +
-        theme_classic()+
         rotate_x_text(angle = 33, size = rel(1))
       ggplotly(salplot, tooltip = c("text"))
     }
     else if (finVar() == "Number of Times Households Saved in Prior Year") {
-      savplot <- ggplot(nbsavcount, aes(x = nb_put_saving, y = n, fill = "red")) +
-        geom_point(hoverinfo = "text", aes(text = paste("Number of Households: ", n, "<br>Number of Times Household Saved: ", nb_put_saving))) +
-        labs(x = "Total Households ", y = " Number of Times Household Saved") +
-        theme_classic() +
-        theme(legend.position="none")
+      savplot <- ggplot(nbsavcount, aes(x = village, y = nb_put_saving, fill = "red")) +
+        geom_point(hoverinfo = "text", aes(text = paste("Number of Times Household Saved: ", nb_put_saving))) 
+        labs(x = " ", y = " Number of Times Household Saved") + coord_flip() + theme(legend.position = "none")
       ggplotly(savplot, tooltip = c("text"))
     }
     
     else if (finVar() == "Percentage of Household with Migrant Workers") {
       migplot <- ggplot(migrant_prop, aes(forcats::fct_rev(village), migrant_proportion, fill = village)) + 
         geom_col(hoverinfo = "text", aes(text = paste("Percentage: ", round(migrant_proportion, 2), "%"))) + theme(legend.position = "none") + 
-        labs(x = "", y = "Percentage", title = "", fill = "") + coord_flip()+
-        theme_classic()+
+        labs(x = "", y = "Percentage", title = "", fill = "") + coord_flip() +
         scale_fill_brewer(palette = "Paired")
       ggplotly(migplot, tooltip = c("text"))
     }
