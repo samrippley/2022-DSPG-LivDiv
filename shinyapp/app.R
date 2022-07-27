@@ -2177,7 +2177,7 @@ server <- function(input, output, session) {
     }
     else if (ageVar() == "Households that Live Below Poverty Line (₹204) per week") {
       village_pl_count_plot <- ggplot(dat_pl, aes(x= Village, y = Households, fill = Key)) + 
-        geom_col(position = 'stack', hoverinfo = "text", aes(text = paste("Village:", Village,"<br>Key: ", Key, "<br>Percentage:", percentage,"%" , "<br>Total Households: ", Households ))) + 
+        geom_col(position = 'stack', hoverinfo = "text", aes(text = paste("Village:", Village,"<br>Key: ", Key, "<br>Percentage:", prop_pl_values,"<br>Total Households: ", Households ))) + 
         labs(x= "", y = "Total Households", fill = "") + 
         theme_classic()+ 
         coord_flip()
