@@ -241,14 +241,15 @@ land_stats <- data.frame(villages, land_owners, max_land_value, min_land_value, 
 
 #Migrant woker proportion data 
 
-migrant_prop <- baseline %>% group_by(village) %>% summarize(migrant_proportion = (mean(hh_migrant_prop)*100))
+migrant_prop <- baseline %>% group_by(village) %>% summarize(migrant_proportion = (mean(hh_migrant)*100))
 
 # savings data 
 nbsav <- baseline %>% 
   group_by(village) %>% 
   summarize_at(c("nb_put_saving"), mean, na.rm=TRUE)
 
-nbsavcount <- baseline %>% select(nb_put_saving, village) 
+nbsavcount <- baseline %>% select(nb_put_saving, village) %>% count(nb_put_saving)
+
 
 #land holding data 
 
@@ -656,7 +657,7 @@ colnames(shocks) <- c('shock_nmb')
 shock_labels <- c('None', 'Crop Loss', 'Loss of vegetation', 'Damage(saline water)','Forced to move(Flooding)', 'Loss of agricultural land(erosion)',
                   'Loss of home(erosion/cyclone)', 'Loss of livestock', 'Loss of business', 'Death/health', 'Other')
 
-shocks_all <- ggplot(shocks, aes(shock_nmb)) + geom_bar(fill = "dark red") + 
+shocks_all <- ggplot(shocks, aes(shock_nmb)) + geom_bar(fill = "dark red", hoverinfo = "text", aes(text = paste("Count: ", shock_nmb))) + 
   labs(x = "", y = "Occurrences" ,title = "") + theme(axis.text = element_text(size = 7)) +
   theme_classic()+
   scale_x_discrete(breaks = c(1,2,3,4,5,6,7,8,9,10,11),labels = str_wrap(shock_labels, width = 25) ,limits = c(0:11)) + 
@@ -681,7 +682,7 @@ shock_year <- baseline %>% select(village, shk_2009_count, shk_2010_count, shk_2
 
 shocks_year_long <- gather(shock_year, year, count, "2009":"2018")
 
-shocks_by_year <- ggplot(shocks_year_long, aes(year, count, fill = year)) + geom_col() + 
+shocks_by_year <- ggplot(shocks_year_long, aes(year, count, fill = year)) + geom_col(hoverinfo = "text", aes(text = paste("Count: ", count))) + 
   labs(x = "", y = "Total Shocks" ,title = "") + 
   theme_classic()+
   theme(axis.ticks.x=element_blank(), legend.position="none") + scale_fill_brewer(palette = "Paired")
@@ -696,7 +697,7 @@ shock_labels_2009 <- c('Crop Loss', 'Loss of vegetation', 'Damage(saline water)'
 shocks_2009 <- data.frame(y=unlist(shocks_2009))
 colnames(shocks_2009) <- c('shk')
 
-shocks_plot_2009 <-ggplot(shocks_2009, aes(shk)) + geom_bar(fill = "dark red") + 
+shocks_plot_2009 <-ggplot(shocks_2009, aes(shk)) + geom_bar(fill = "dark red",hoverinfo = "text", aes(text = paste("Count: ", shk))) + 
   labs(x = "", y = "Occurrences" ,title = "") + theme(axis.text = element_text(size = 8)) + 
   scale_x_discrete(breaks = c(1,2,3,4,5,6,7,8,9,10),labels = str_wrap(shock_labels_2009, width = 25) ,limits = c(0:11)) +
   theme_classic()+
@@ -715,7 +716,7 @@ cope_labels <- c("Did not do anything","Relatives/friends Aid",
 
 shocks_cope$shk_2009_cope<-replace(shocks_cope$shk_2009_cope, shocks_cope$shk_2009_cope == 997, 16)
 
-cope_2009_plot <- ggplot(shocks_cope, aes(shk_2009_cope, fill = village)) + geom_bar() +
+cope_2009_plot <- ggplot(shocks_cope, aes(shk_2009_cope, fill = village)) + geom_bar(hoverinfo = "text", aes(text = paste("Village: ", village, "<br>Count: ", shk_2009_cope))) +
   labs(x = "", y = "Total Shocks" ,title = "", fill = "Village") + scale_fill_brewer(palette = "Paired") +
   theme(axis.text = element_text(size = 8)) +
   theme_classic()+
@@ -728,7 +729,7 @@ shock_relocation <- baseline %>% select(village, shk_2009_reloc_yn)
 
 relocation_labels <- c("No", "Yes, for under a month", "Yes, for over a month")
 
-shock_relocation_2009_yn <- ggplot(shock_relocation, aes(shk_2009_reloc_yn, fill = village)) + geom_bar() + 
+shock_relocation_2009_yn <- ggplot(shock_relocation, aes(shk_2009_reloc_yn, fill = village)) + geom_bar(hoverinfo = "text", aes(text = paste("Village: ", village, "<br>Count: ", shk_2009_reloc_yn))) + 
   labs(x = "", y = "Total Households" ,title = "", fill = "Village") + 
   theme_classic()+
   scale_x_discrete(breaks = c(0,1,2), labels = str_wrap(relocation_labels, width = 30), limits = c(0:2)) + 
@@ -742,7 +743,7 @@ relocation_where_labels <- c("Within same village","Other village in Sundarbans"
                              "Village outside Sundarbans, within West Bengal", "Kolkata", 
                              "Other Urban area outside Sundarbans, within West Bengal","Urban area outside West Bengal")
 
-shock_relocation_2009 <- ggplot(shock_relocation_where, aes(shk_2009_reloc1, fill = village)) + geom_bar() + 
+shock_relocation_2009 <- ggplot(shock_relocation_where, aes(shk_2009_reloc1, fill = village)) + geom_bar(hoverinfo = "text", aes(text = paste("Village: ", village, "<br>Count: ", shk_2009_reloc1))) + 
   labs(x = "Relocation Areas", y = "Total Households" ,title = "", fill = "Village") + 
   scale_x_discrete(breaks = c(1,2,3,4,5,6), labels = str_wrap(relocation_where_labels, width = 20), limits = c(1:6)) +
   theme_classic()+
@@ -2358,9 +2359,9 @@ server <- function(input, output, session) {
       ggplotly(salplot, tooltip = c("text"))
     }
     else if (finVar() == "Number of Times Households Saved in Prior Year") {
-      savplot <- ggplot(nbsavcount, aes(x = village, y = nb_put_saving, fill = "red")) +
-        geom_point(hoverinfo = "text", aes(text = paste("Number of Times Household Saved: ", nb_put_saving)))+ 
-        labs(x = " ", y = " Number of Times Household Saved") + coord_flip() + theme(legend.position = "none")
+      savplot <- ggplot(nbsavcount, aes(x = nb_put_saving, y = n, fill = "red")) +
+        geom_point(hoverinfo = "text", aes(text = paste("Occurances: ", n)))+ 
+        labs(x = "Number of Times Household Saved ", y = " Number of Occurances") + theme(legend.position = "none")
       ggplotly(savplot, tooltip = c("text"))
     }
     
@@ -2664,7 +2665,7 @@ server <- function(input, output, session) {
   
   #shock_all plot output
   output$shocks_all <- renderPlotly({
-    shocks_all
+    ggplotly(shocks_all, tooltip = c("text"))
   })
   
   #shock_village plot output
@@ -2674,27 +2675,27 @@ server <- function(input, output, session) {
   
   #shock_by_year plot output
   output$shocks_by_year <- renderPlotly({
-    shocks_by_year
+    ggplotly(shocks_by_year, tooltip = c("text"))
   })
   
   #shock_2009 plot output
   output$shocks_plot_2009 <- renderPlotly({
-    shocks_plot_2009
+    ggplotly(shocks_plot_2009, tooltip = c("text"))
   })
   
   #cope_2009 plot output
   output$cope_2009_plot <- renderPlotly({
-    cope_2009_plot
+    ggplotly(cope_2009_plot, tooltip = c("text"))
   })
   
   #shock_relocation_2009_yn plot output
   output$shock_relocation_2009_yn <- renderPlotly({
-    shock_relocation_2009_yn
+    ggplotly(shock_relocation_2009_yn, tooltip = c("text"))
   })
   
   #shock_relocation_2009 plot output
   output$shock_relocation_2009 <- renderPlotly({
-    shock_relocation_2009
+    ggplotly(shock_relocation_2009, tooltip = c("text"))
   })
   
   
