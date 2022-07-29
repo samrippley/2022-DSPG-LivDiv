@@ -2211,12 +2211,12 @@ server <- function(input, output, session) {
       ggplotly(socplot, tooltip = c("text"))
     }
     else if (ocuVar() == "Percentage of Households Involved in Agricultural Farming") {
-      agfaplot <- ggplot(agfa, aes(forcats::fct_rev(village), prop_farm, fill = village)) + 
+      agfaplot <- ggplot(agfa, aes(forcats::fct_rev(village),prop_farm*100, fill = village)) + 
         geom_col(hoverinfo = "text", aes(text = paste("Village:", village,"<br>Percentage: ", round(prop_farm*100, 2), "%"))) + 
-        theme_classic()+
         labs(x = "", y = "Percentage", title = "") + coord_flip() + theme(legend.position = "none") + scale_fill_brewer(palette = "Paired")+
-      ggplotly(agfaplot, tooltip = c("text"))
-      }
+        theme_classic()
+      ggplotly(agfaplot,tooltip = c("text"))
+    }
     else if (ocuVar() == "Average Amount of Land Owned by Village") {
       mean_land_plot <- ggplot(land_stats, aes(x = forcats::fct_rev(villages), y = mean_land_value, fill = villages)) +
         geom_col(hoverinfo = "text", aes(text = paste("Village:", villages,"<br>Mean Land Owned: ", round(mean_land_value,3)))) +
