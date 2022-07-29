@@ -653,8 +653,8 @@ names(avg_inc_table) <- c("Date", "Village", "Average Income (INR ₹)")
 shocks <- baseline %>% select(village,shk1,shk2,shk3,shk4,shk5,shk6,shk7)
 shocks <- data.frame(y=unlist(shocks))
 colnames(shocks) <- c('shock_nmb')
-shock_labels <- c('None', 'Crop Loss', 'Loss of vegetation', 'Damage(saline water)','Forced to move(Flooding)', 'Loss of agricultural land(river erosion)',
-                  'Loss of home(river erosion/cyclone)', 'Loss of livestock', 'Loss of business/shop/etc.', 'Death/health issues', 'Other')
+shock_labels <- c('None', 'Crop Loss', 'Loss of vegetation', 'Damage(saline water)','Forced to move(Flooding)', 'Loss of agricultural land(erosion)',
+                  'Loss of home(erosion/cyclone)', 'Loss of livestock', 'Loss of business', 'Death/health', 'Other')
 
 shocks_all <- ggplot(shocks, aes(shock_nmb)) + geom_bar(fill = "dark red") + 
   labs(x = "", y = "Occurrences" ,title = "") + theme(axis.text = element_text(size = 7)) +
@@ -690,9 +690,9 @@ shocks_by_year <- ggplot(shocks_year_long, aes(year, count, fill = year)) + geom
 
 shocks_2009 <- baseline %>% select(shk_2009_type1, shk_2009_type2, shk_2009_type3, shk_2009_type4, shk_2009_type5, shk_2009_type6)
 shock_labels_2009 <- c('Crop Loss', 'Loss of vegetation', 'Damage(saline water)',
-                       'Forced to move(Flooding)', 'Loss of agricultural land(river erosion)',
-                       'Loss of home(river erosion/cyclone)', 'Loss of livestock', 'Loss of business/shop', 
-                       'Death/health issues', 'Other')
+                       'Forced to move(Flooding)', 'Loss of agricultural land(erosion)',
+                       'Loss of home(erosion/cyclone)', 'Loss of livestock', 'Loss of business', 
+                       'Death/health', 'Other')
 shocks_2009 <- data.frame(y=unlist(shocks_2009))
 colnames(shocks_2009) <- c('shk')
 
@@ -705,13 +705,13 @@ shocks_plot_2009 <-ggplot(shocks_2009, aes(shk)) + geom_bar(fill = "dark red") +
 
 shocks_cope <- baseline %>% select(village, shk_2009_cope) 
 
-cope_labels <- c("Did not do anything","Aid from relatives/friends",
-                 "Aid from local government", "Changed dietary practices", 
-                 "Changed cropping practices", "FM took on more non-farm employment", 
-                 "FM took on more farm wage employment", "FM migrated",
+cope_labels <- c("Did not do anything","Relatives/friends Aid",
+                 "Local government aid", "Changed dietary practices", 
+                 "Changed cropping practices", "Family increased non-farm employment", 
+                 "Family increased farm wage employment", "Family migrated",
                  "Relied on savings", "Obtained credit", "Sold durable HH assets", "Sold land/building", 
-                 "Rented out land/building","Distress sales of animal stock", "Sent children to live elsewhere",
-                 "Reduced expenditures on health/education","Did not know/want to answer")
+                 "Rented out land/building","Distress sales of animal stock", "Relocated children",
+                 "Reduced health/education","Did not know")
 
 shocks_cope$shk_2009_cope<-replace(shocks_cope$shk_2009_cope, shocks_cope$shk_2009_cope == 997, 16)
 
@@ -1194,7 +1194,6 @@ ui <- navbarPage(title = "",
 
                                               column(7, 
                                                      h2(strong("")),
-                                                     p(tags$small("Hover over marker for village names:")),
                                                      leafletOutput("map_leaflet", width = "100%", height = 800),
                                                      br(),
                                                      br(),
@@ -1329,7 +1328,7 @@ ui <- navbarPage(title = "",
                                                               h4(strong(textOutput("result1"))),
                                                      withSpinner(plotlyOutput("ocuplot", height = "500px")),
                                                      br(),
-                                                     textOutput("result4")),
+                                                     textOutput("result4"), align = "left"),
                                               ),
                                               column(12, 
                                                      fluidPage(
@@ -1365,7 +1364,7 @@ ui <- navbarPage(title = "",
                                                        "Savings" = "Number of Times Households Saved in Prior Year"
                                                      )),
                                                      fluidRow(align = "center",
-                                                              h4(strong(textOutput("result"))),
+                                                              h4(strong(textOutput("result")), align = "left"),
                                                      
                                                      withSpinner(plotlyOutput("finplot", height = "500px")),
                                                    
