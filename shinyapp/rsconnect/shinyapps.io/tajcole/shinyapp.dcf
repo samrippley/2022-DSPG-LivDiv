@@ -1,0 +1,13 @@
+name: shinyapp
+title: shinyapp
+username:
+account: tajcole
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 6713851
+bundleId: 6146825
+url: https://tajcole.shinyapps.io/shinyapp/
+when: 1659121769.70583
+lastSyncTime: 1659121769.70584
+asMultiple: FALSE
+asStatic: FALSE
