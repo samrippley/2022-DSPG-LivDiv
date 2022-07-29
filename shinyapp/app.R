@@ -386,7 +386,7 @@ method_values <- c("       397", "       472", "   1", "   1", "    13")
 
 rmt_method_plot <- ggplot(method_dat, aes( x= reorder(Method, method_counts), y = method_counts, fill = Method)) +
   geom_col() +
-  labs(x = "", y = "Total") +
+  labs(x = "Method of Sending Remittances", y = "Total Households") +
   theme_classic() +
   coord_flip()+
   theme(legend.position = "none", axis.text.y = element_text(size = 14))+
@@ -599,7 +599,7 @@ purpose_values <- c("      594", "      128", "     93", "     43", "      37", 
 
 rmt_purpose_plot <- ggplot(purpose_dat, aes(x = reorder(Purpose, purpose_count), y = purpose_count, fill = Purpose)) + 
   geom_col() +
-  labs(x = "", y = "Total") +
+  labs(x = "Uses of Remittances", y = "Total Households") +
   theme_classic() +
   #ggtitle("Purpose for Receiving Remittances")+
   #rotate_x_text(angle = 22, size = rel(0.8))
@@ -620,7 +620,7 @@ avg_rmt <- rmt_dat %>%
   group_by(date, village) %>% 
   summarize("Average Remitances" = mean(rmt_total, na.rm = T))
 avg_rmt[,3] <- format(round(unlist(avg_rmt[,3]), digits = 2), nsmall = 2)
-names(avg_rmt) <- c("Date", "Village", "Average Remittances")
+names(avg_rmt) <- c("Date", "Village", "Average Remittances (INR ₹)")
 
 #-----------------------------------------------------------------
 
@@ -645,7 +645,7 @@ expend_table <- expen %>%
   group_by(date, village) %>% 
   summarize("Average Expenditure" = mean(total_spending, na.rm = T))
 expend_table[,3] <- format(round(unlist(expend_table[,3]), digits = 2), nsmall = 2)
-names(expend_table) <- c("Date", "Village", "Average Expenditure")
+names(expend_table) <- c("Date", "Village", "Average Expenditure (INR ₹)")
 #--------------------------------------------------------------------
 # Income plot data:
 fin_diary <- livdiv %>% select(village, date, week, name, full_inc) %>% arrange(week, village) %>% group_by(week) 
@@ -656,7 +656,7 @@ ggplot(avg_tot_inc, aes(date, avg_inc, color = village)) + geom_line() + labs(x 
 #Income table 
 avg_inc_table <- fin_diary %>% group_by(date, village) %>% summarize("Average Income" = mean(full_inc, na.rm = TRUE))
 avg_inc_table[,3] <- format(round(unlist(avg_inc_table[,3]), digits = 2), nsmall = 2)
-names(avg_inc_table) <- c("Date", "Village", "Average Income")
+names(avg_inc_table) <- c("Date", "Village", "Average Income (INR ₹)")
 
 #Shocks Data ------------------------------------------------------------------- 
 ## Frequency of each shock (Total baseline)
@@ -1190,6 +1190,7 @@ ui <- navbarPage(title = "",
 
                                               column(7, 
                                                      h2(strong("")),
+                                                     p(tags$small("Hover over marker for village names:")),
                                                      leafletOutput("map_leaflet", width = "100%", height = 800),
                                                      br(),
                                                      br(),
@@ -1286,7 +1287,7 @@ ui <- navbarPage(title = "",
                                      )), 
                             tabPanel("Livelihood", 
                                      fluidRow(style = "margin: 6px;", align = "justify",
-                                              h1(strong("Livelihood Behavior"), align = "center"),
+                                              h1(strong("Livelihood"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
                                                      h4(strong("Working in the Sundarbans ")),
@@ -1313,9 +1314,9 @@ ui <- navbarPage(title = "",
                                                        "Primary Occupation" = "Primary Occupation for Head of Households",
                                                        "Secondary Occupation" ="Secondary Occupation for Head of Households", 
                                                        "Job Duration" = "Average Job Duration for Head of Household",
-                                                       "Agricultural Farming" = "Proportion of Households Involved in Agricultural Farming",
+                                                       "Agriculture" = "Percentage of Households Involved in Agricultural Farming",
                                                        "Land Holding" = "Average Amount of Land Owned by Village",
-                                                       "Land Fallow" = "Average Amount of Land Fallowed by Village"
+                                                       "Land Fallow" = "Total Land Fallowed (Kathas)"
                                                        
                                                        
                                                      ),
@@ -1402,28 +1403,30 @@ ui <- navbarPage(title = "",
                                                      multiple = T, options = list(`actions-box` = T)),
                                          pickerInput("event_choose_exp", "Select Event:", choices = events_vector, selected = "Kharif Crop Preparation", 
                                                      multiple = T, options = list(`actions-box` = T)),
-                                         pickerInput("block_choose_exp", "Select Block:", choices = blocks_vector, selected = blocks_vector, 
-                                                     multiple = T, options = list(`actions-box` = T))
-                                       ),
+                                         pickerInput("block_choose_exp", "Select Administrative Block (For Expenditure by Blocks):", choices = blocks_vector, selected = blocks_vector, 
+                                                     multiple = T, options = list(`actions-box` = T)),
+                                         actionButton(inputId ="button3", label = "Map")
+                                         
+                                         ),
                                        
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Average Weekly Expenditure",plotOutput("exp", height = "500px")),
-                                           tabPanel("Expenditure by Block", plotOutput("exp_block", height = "500px")),
-                                           tabPanel("Table", DT::DTOutput("exp_table"))
+                                           tabPanel("Weekly Expenditure",
+                                                    h4(strong("Average Weekly Expenditure"), align = "center"), 
+                                                    plotOutput("exp", height = "500px"),
+                                                    ),
+                                           tabPanel("Weekly Expenditure by Blocks",
+                                                    h4(strong("Average Weekly Expenditure by Administrative Blocks"), align = "center"),
+                                                    plotOutput("exp_block", height = "500px")),
+                                           tabPanel("Expenditure Table", 
+                                                    h4(strong(""), align = "center"),
+                                                    DT::DTOutput("exp_table"))
                                          )
                                        ),
                                        
                                      ),
                                      
-                                     column(12, 
-                                            fluidPage(
-                                              actionButton(inputId ="button3", label = "Map")
-                                            ),
-                                            br(),
-                                            br(),
-                                     ),
                                      
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h4(strong(""), align = "justify"),
@@ -1446,19 +1449,32 @@ ui <- navbarPage(title = "",
                                                      multiple = T, options = list(`actions-box` = T)),
                                          pickerInput("event_choose_cs", "Select Event:", choices = events_vector, selected = "Kharif Crop Preparation", 
                                                      multiple = T, options = list(`actions-box` = T)),
-                                         pickerInput("block_choose_cs", "Select Block:", choices = blocks_vector, selected = blocks_vector, 
-                                                     multiple = T, options = list(`actions-box` = T))
+                                         pickerInput("block_choose_cs", "Select Administrative Block (For Expenditure by Blocks):", choices = blocks_vector, selected = blocks_vector, 
+                                                     multiple = T, options = list(`actions-box` = T)),
+                                         actionButton(inputId ="button4", label = "Map")
                                          
                                        ),
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Average Food Consumption",plotOutput("cs_exp", height = "500px")),
-                                           tabPanel("Staple Items", plotOutput("cs_staple", height = "500px")),
-                                           tabPanel("Meats", plotOutput("cs_meats", height = "500px")),
-                                           tabPanel("Other", plotOutput("cs_other", height = "500px")),
-                                           tabPanel("No. of Food Items", plotOutput("cs_item", height = "500px")),
-                                           tabPanel("Food Consumption by Block", plotOutput("cs_block", height = "500px"))
+                                           tabPanel("Weekly Food Consumption",
+                                                    h4(strong("Average Weekly Food Consumption Spending"), align = "center"),
+                                                    plotOutput("cs_exp", height = "500px")),
+                                           tabPanel("Staple Items", 
+                                                    h4(strong("Average Weekly Expenditure on Staple Food"), align = "center"),
+                                                    plotOutput("cs_staple", height = "500px")),
+                                           tabPanel("Meats", 
+                                                    h4(strong("Average Weekly Expenditure on Meats"), align = "center"),
+                                                    plotOutput("cs_meats", height = "500px")),
+                                           tabPanel("Other", 
+                                                    h4(strong("Average Weekly Expenditure on Other Food Items"), align = "center"),
+                                                    plotOutput("cs_other", height = "500px")),
+                                           tabPanel("Total Food Items", 
+                                                    h4(strong("Total Weekly Consumption Items Purchased"), align = "center"),
+                                                    plotOutput("cs_item", height = "500px")),
+                                           tabPanel("Weekly Food Consumption by Blocks", 
+                                                    h4(strong("Average Weekly Food Consumption by Administrative Block"), align = "center"),
+                                                    plotOutput("cs_block", height = "500px"))
                                            #tabPanel("Table", DT::DTOutput("cs_table"))
                                          )
                                        ),
@@ -1466,15 +1482,6 @@ ui <- navbarPage(title = "",
                                        
                                      ),
                                      
-                                     
-                                     
-                                     column(12, 
-                                            fluidPage(
-                                              actionButton(inputId ="button4", label = "Map")
-                                            ),
-                                            br(),
-                                            br(),
-                                     ),
                                      
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h4(strong(""), align = "justify"),
@@ -1494,12 +1501,15 @@ ui <- navbarPage(title = "",
                                          varSelectInput("nonfood_group", "Select Consumption Group:", non_food_cs[,-(1:2)]),
                                          pickerInput("event_choose_cs_nonfood", "Select Event:", choices = events_vector, selected = "Kharif Crop Preparation", 
                                                      multiple = T, options = list(`actions-box` = T)),
+                                         actionButton(inputId ="button5", label = "Map")
                                          
                                        ),
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Average Non-Food Consumption", plotOutput("nonfood_plot", height = "500px")),
+                                           tabPanel("Weekly Non-Food Consumption",
+                                                    h4(strong("Average Weekly Non-Food Consumption"), align = "center"),
+                                                    plotOutput("nonfood_plot", height = "500px")),
                                            #tabPanel("Table", DT::DTOutput("nonfood_table"))
                                          )
                                        ),
@@ -1507,13 +1517,6 @@ ui <- navbarPage(title = "",
                                        
                                      ),
                                      
-                                     column(12, 
-                                            fluidPage(
-                                              actionButton(inputId ="button5", label = "Map")
-                                            ),
-                                            br(),
-                                            br(),
-                                     ),
                                      
                             ), 
                             
@@ -1534,29 +1537,30 @@ ui <- navbarPage(title = "",
                                          pickerInput("village_inc", "Select Village:", choices = village_vector, 
                                                      selected = village_vector,
                                                      multiple = T, options = list(`actions-box` = T)),
-                                         varSelectInput("Gender", "Select Gender:", malefemale_inc[,-(1:2)]),
                                          pickerInput("event_choose_inc", "Select Event:", choices = events_vector, selected = "Kharif Crop Preparation", 
                                                      multiple = T, options = list(`actions-box` = T)),
-                                         pickerInput("block_choose_inc", "Select Block:", choices = blocks_vector, selected = blocks_vector, 
-                                                     multiple = T, options = list(`actions-box` = T))
+                                         varSelectInput("Gender", "Select Gender (For Income by Gender):", malefemale_inc[,-(1:2)]),
+                                         pickerInput("block_choose_inc", "Select Administrative Block (For Income by Blocks):", choices = blocks_vector, selected = blocks_vector, 
+                                                     multiple = T, options = list(`actions-box` = T)),
+                                         actionButton(inputId ="button6", label = "Map")
                                        ),
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Average Weekly Income",plotOutput("inc", height = "500px")),
-                                           tabPanel("Male/Female Income", plotOutput("malefemaleinc", height = "500px")),
+                                           tabPanel("Weekly Income",
+                                                    h4(strong("Average Weekly Income"), align = "center"),
+                                                    plotOutput("inc", height = "500px")),
+                                           tabPanel("Weekly Income by Gender", 
+                                                    h4(strong("Average Weekly Income by Gender"), align = "center"),
+                                                    plotOutput("malefemaleinc", height = "500px")),
                                            #tabPanel("Full Income", plotOutput("fullinc")),
-                                           tabPanel("Income by Block", plotOutput("inc_block", height = "500px")),
-                                           tabPanel("Table", DT::DTOutput("inc_table"))
+                                           tabPanel("Weekly Income by Blocks", 
+                                                    h4(strong("Average Weekly Income by Administrative Blocks"), align = "center"),
+                                                    plotOutput("inc_block", height = "500px")),
+                                           tabPanel("Weekly Income Table", 
+                                                    DT::DTOutput("inc_table"))
                                          )
                                        ),
-                                     ),
-                                     column(12, 
-                                            fluidPage(
-                                              actionButton(inputId ="button6", label = "Map")
-                                            ),
-                                            br(),
-                                            br(),
                                      ),
                                      
                                      
@@ -1577,24 +1581,24 @@ ui <- navbarPage(title = "",
                                                                 selected = village_vector, 
                                                                 multiple = T, options = list(`actions-box` = T)),
                                                     pickerInput("event_choose_borr", "Select Event:", choices = events_vector, selected = "Kharif Crop Preparation", 
-                                                                multiple = T, options = list(`actions-box` = T))
+                                                                multiple = T, options = list(`actions-box` = T)),
+                                                    actionButton(inputId ="button7", label = "Map")
                                        ),
                                      
                                      mainPanel(
                                        tabsetPanel(
-                                         tabPanel("Amount",plotOutput("bor", height = "500px")),
-                                         tabPanel("Count",plotOutput("borr", height = "500px")),
-                                         tabPanel("Purpose", plotOutput("purpplot", height = "500px"))
+                                         tabPanel("Weekly Borrowing",
+                                                  h4(strong("Average Weekly Amount Borrowed"), align = "center"),
+                                                  plotOutput("bor", height = "500px")),
+                                         tabPanel("Total Households Borrowing",
+                                                  h4(strong("Total Households Borrowing"), align = "center"),
+                                                  plotOutput("borr", height = "500px")),
+                                         tabPanel("Borrowing Usage", 
+                                                  h4(strong("Households’ Purpose for Borrowing"), align = "center"),
+                                                  plotOutput("purpplot", height = "500px"))
                                        
                                        )
                                      ),
-                            ), 
-                            column(12, 
-                                   fluidPage(
-                                     actionButton(inputId ="button7", label = "Map")
-                                   ),
-                                   br(),
-                                   br(),
                             ),  
                             ),
                                      
@@ -1630,33 +1634,34 @@ ui <- navbarPage(title = "",
                                                      multiple = T, options = list(`actions-box` = T)),
                                          pickerInput("event_choose_rmt", "Select Event:", choices = events_vector, selected = "Kharif Crop Preparation", 
                                                      multiple = T, options = list(`actions-box` = T)),
-                                         pickerInput("block_choose_rmt", "Select Block:", choices = blocks_vector, selected = blocks_vector, 
-                                                     multiple = T, options = list(`actions-box` = T))
+                                         pickerInput("block_choose_rmt", "Select Administrative Block (For Expenditure by Blocks):", choices = blocks_vector, selected = blocks_vector, 
+                                                     multiple = T, options = list(`actions-box` = T)),
+                                         actionButton(inputId ="button8", label = "Map")
                                          
                                        ),
                                        
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
-                                           tabPanel("Average Weekly Remittances",plotOutput("rmt", height = "500px")),
-                                           tabPanel("Remittances by Block", plotOutput("rmt_block", height = "500px")),
-                                           tabPanel("Method", plotOutput("rmt_method", height = "500px")),
-                                           tabPanel("Purpose", plotOutput("rmt_purpose", height = "500px")),
-                                           tabPanel("Table",DT:: DTOutput("rmt_table")),
+                                           tabPanel("Weekly Remittances",
+                                                    h4(strong("Average Weekly Remittances"), align = "center"),
+                                                    plotOutput("rmt", height = "500px")),
+                                           tabPanel("Weekly Remittances by Blocks", 
+                                                    h4(strong("Average Weekly Remittances by Administrative Blocks"), align = "center"),
+                                                    plotOutput("rmt_block", height = "500px")),
+                                           tabPanel("Method", 
+                                                    h4(strong("Methods of Remittances Transfer"), align = "center"),
+                                                    plotOutput("rmt_method", height = "500px")),
+                                           tabPanel("Remittances Usage", 
+                                                    h4(strong("Usage of Remittances"), align = "center"),
+                                                    plotOutput("rmt_purpose", height = "500px")),
+                                           tabPanel("Weekly Remittances Table",
+                                                    DT:: DTOutput("rmt_table")),
                                          )
                                        ), 
                                        
                                        
                                      ),
-                                    
-                                     
-                                     column(12, 
-                                            fluidPage(
-                                              actionButton(inputId ="button8", label = "Map")
-                                            ),
-                                            br(),
-                                            br(),      
-                            ),
                             
                             
                             
@@ -1671,25 +1676,39 @@ ui <- navbarPage(title = "",
                                        # Show a plot of the generated plot
                                          column(8,
                                            tabsetPanel(
-                                             tabPanel("Frequency of Shocks", plotlyOutput("shocks_all")),
-                                             tabPanel("Shocks by Village", plotOutput("shocks_village")),
-                                             tabPanel("Shocks by Year", plotlyOutput("shocks_by_year"))
+                                             tabPanel("Shocks Frequency", 
+                                                      h4(strong("Total Household Shocks (2009-2018)"), align = "center"),
+                                                      plotlyOutput("shocks_all")),
+                                             tabPanel("Total Shocks per Village", 
+                                                      h4(strong("Average Number of Shocks per Village (2009-2018)"), align = "center"),
+                                                      plotOutput("shocks_village")),
+                                             tabPanel("Yearly Shocks", 
+                                                      h4(strong("Yearly Household Shocks"), align = "center"),
+                                                      plotlyOutput("shocks_by_year"))
                                                       )
                                                   ),
                                        ),
                          br(),
                          br(),
-                                      fluidRow(style = "margin: 6px;", h1(strong("Shocks in 2009"), align = "center"), 
+                                      fluidRow(style = "margin: 6px;", h1(strong("2009 Shocks"), align = "center"), 
                                                column(4, 
                                                       h4(strong("2009 Shocks in Representative Sample"), align = "center"), 
                                               p("After seeing that there is a disproportionate amount of shocks taking place in 2009, we wanted to take a further look at the causes and the effects of it. Cyclone Aila was a devastating force during that year that affected about 40 million people; washed away several thousand homes, took 190 lives, wounded more than 7103 people, and caused almost a billion dollars(USD) worth of damage. Since a majority of the shocks were taken during the period this data was collected in 2009, the most common shocks are still a loss of business, loss of vegetation, and loss of livestock. Actions taken after shocks to accommodate for losses of income or valuables are called copes. After the many shocks in 2009, families in the Sundarbans region coped by taking steps such as obtaining credit or pursuing other jobs. Notably, the most common coping method was unconditional help from the government, followed by receiving support from friends or relatives. Often, families did nothing and tried to “weather the storm” until better times. Since many of the houses in this region are made from wood or are propped by materials that can be easily wiped away from floods or high winds, relocation is common after shocks. Most often relocation is only taken place for less than a month, but in certain instances, this can be more permanent or longer. With a vast majority of households saying that they relocate for either less or more than a month, many of these households relocate to a safer place in the same village. Less frequently do the households relocate to Kolkata (the biggest city nearby) or other villages around the Sundarbans.", align = "justify", style = "padding-top:10px;"
                                                 )
                                                                             ),
                                         column(8,tabsetPanel(
-                                          tabPanel("Frequency", plotlyOutput("shocks_plot_2009", height = "500")),
-                                          tabPanel("Copes", plotlyOutput("cope_2009_plot", height = "600")),
-                                          tabPanel("Relocation Status", plotlyOutput("shock_relocation_2009_yn")),
-                                          tabPanel("Where the households relocated?", plotlyOutput("shock_relocation_2009"))
+                                          tabPanel("Frequency", 
+                                                   h4(strong("Total Household Shocks (2009)"), align = "center"),
+                                                   plotlyOutput("shocks_plot_2009", height = "500")),
+                                          tabPanel("Coping Mechanism", 
+                                                   h4(strong("Coping Mechanism for Shocks (2009)"), align = "center"),
+                                                   plotlyOutput("cope_2009_plot", height = "600")),
+                                          tabPanel("Relocation Status", 
+                                                   h4(strong("Households Relocation Status for 2009 Shocks"), align = "center"),
+                                                   plotlyOutput("shock_relocation_2009_yn")),
+                                          tabPanel("Relocation Areas", 
+                                                   h4(strong("Relocation Areas due to 2009 Shocks"), align = "center"),
+                                                   plotlyOutput("shock_relocation_2009"))
                                                             )
                                                
                                                
@@ -1720,42 +1739,42 @@ ui <- navbarPage(title = "",
                                    column(6, align = "center",
                                           h4(strong("DSPG Team Members")),
                                           img(src = "rippley.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                          p(a(href = 'https://www.linkedin.com/in/samantha-rippley-58846119b/', 'Samantha Rippley', target = '_blank'), "(M.S in Agriculture and Applied Economics, Virginia Tech);"),
+                                          p(a(href = 'https://www.linkedin.com/in/samantha-rippley-58846119b/', 'Samantha Rippley', target = '_blank'), "(M.S in Agriculture and Applied Economics, Virginia Tech)"),
                                           br(), 
                                           img(src = "das.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
                                           p(a(href = 'https://www.linkedin.com/in/nandini-das-390577104/', 'Nandini Das', target = '_blank'), "(Ph.D. in Economics, Virginia Tech)"),
                                           br(), 
                                           img(src = "Taj.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                          p(a(href = 'https://www.linkedin.com/in/taj-cole-83a738221', 'Taj Cole', target = '_blank'), "(B.S. in Environmental Economics: Management and Policy, Minoring in Data and Decisions, Virginia Tech)."),
+                                          p(a(href = 'https://www.linkedin.com/in/taj-cole-83a738221', 'Taj Cole', target = '_blank'), "(B.S. in Environmental Economics: Management and Policy, Minoring in Data and Decisions, Virginia Tech)"),
                                           br(), 
                                           img(src = "Sid.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
                                           p(a(href = 'https://www.linkedin.com/in/siddarth-ravikanti-63374b207/', 'Siddarth Ravikanti', target = '_blank'), "(B.S. & B.A. Double-Majoring in Computational Modeling & Data Analytics and Political Science, Virginia Tech)"),
                                          p("", style = "padding-top:10px;") 
                                    ),
                                    column(6, align = "center",
-                                          h4(strong("VT Faculty Team Members")),
+                                          h4(strong("Faculty Advisor")),
                                           # img(src = "team-posadas.jpg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
                                           img(src = "holmes.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                          p(a(href = "https://www.linkedin.com/in/chanita-holmes-385577234/", 'Dr. Chanita Holmes', target = '_blank'), "(Assistant Research Professor, Department of Agriculture and Applied Economics, Virginia Tech)"),
+                                          p(a(href = "https://www.linkedin.com/in/chanita-holmes-385577234/", 'Dr. Chanita Holmes', target = '_blank'), "(Department of Agricultural and Applied Economics, Virginia Tech)"),
                                           br(),
                                           br(),
                                           br(),
                                           
                                    h4(strong("Project Stakeholders")), 
                                    #img(src = "anubhab.png", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                   p(a(href = 'https://www.linkedin.com/in/samantha-rippley-58846119b/', 'Dr. Anubhab Gupta', target = '_blank'), "(Assistant Professor, Department of Agriculture and Applied Economics, Virginia Tech);"),
+                                   p(a(href = 'https://www.linkedin.com/in/samantha-rippley-58846119b/', 'Dr. Anubhab Gupta', target = '_blank'), "(Assistant Professor, Department of Agriculture and Applied Economics, Virginia Tech)"),
                                   # br(), 
                                    #img(src = "", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
                                    p(a(href = 'https://www.linkedin.com/in/aleksandr-michuda/', 'Dr. Aleksandr Michuda', target = '_blank'), "(Assistant Research Professor, Center for Data Science for Enterprise and Society, Cornell University)"),
                                   # br(), 
                                  #  img(src = "", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                   p(a(href = 'https://www.linkedin.com/in/mikidoan/', 'Miki Doan', target = '_blank'), "(Ph.D. Candidate in Applied Economics, UC Davis)."),
+                                   p(a(href = 'https://www.linkedin.com/in/mikidoan/', 'Miki Doan', target = '_blank'), "(Ph.D. Candidate in Applied Economics, UC Davis)"),
                                  #  br(), 
                                   # img(src = "", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
                                    p(a(href = 'https://www.linkedin.com/in/binoy-majumder-60703230/', 'Binoy Majumder', target = '_blank'), "(Sundarbans Field Team Lead, Independent Researcher, West Bengal, India)"),
                                   # br(), 
                                   # img(src = "", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                   p(a(href = 'https://www.researchgate.net/profile/Heng-Zhu-15', 'Heng Zhu', target = '_blank'), "(United Nations World Food Program, RAM)"),
+                                   p(a(href = 'https://www.researchgate.net/profile/Heng-Zhu-15', 'Dr. Heng Zhu', target = '_blank'), "(United Nations World Food Program, RAM)"),
                                    # p("", style = "padding-top:10px;") 
                  ))),
                 ## References Tab--------------------------------------------
@@ -1839,19 +1858,19 @@ server <- function(input, output, session) {
   
   output$result4 <- renderText({ 
   if (ocuVar() == "Primary Occupation for Head of Households") {
-    paste("")
+    paste("*Note: Missing bar indicates zero value for occupation")
   } 
   else if (ocuVar() == "Secondary Occupation for Head of Households") {
-    paste("")
+    paste("*Note: Missing bar indicates zero value for occupation")
   }
-  else if (ocuVar() == "Proportion of Households Involved in Agricultural Farming") {
+  else if (ocuVar() == "Percentage of Households Involved in Agricultural Farming") {
     paste("")
   }
   else if (ocuVar() == "Average Amount of Land Owned by Village") {
     paste("")
     
   }
-  else if (ocuVar() == "Average Amount of Land Fallowed by Village") {
+  else if (ocuVar() == "Total Land Fallowed (Kathas)") {
     paste("*Note: Data missing for some villages or missing bar means zero land was fallowed for village")
   }
   else if (ocuVar() == "Average Job Duration for Head of Household") {
@@ -1943,7 +1962,7 @@ server <- function(input, output, session) {
       theme_classic()+
       labs(color = "Villages") + 
       xlab("Date") +
-      ylab("Amount Borrowed (INR)")+
+      ylab("Average Weekly Borrowing (INR)")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) +
       scale_color_brewer(palette = "Paired") +
       #theme(legend.position = "none")+
@@ -1977,8 +1996,8 @@ server <- function(input, output, session) {
     ggplot(dfpurp, aes(x= reorder(A,B), y = B, fill = A)) + geom_col() + 
       coord_flip()+
       labs(fill = "") + 
-      xlab("") +
-      ylab("")+
+      xlab("Purpose for Borrowing)") +
+      ylab("Amount Borrowed (INR)")+
       theme(legend.position = "none", axis.text.y = element_text(size = 14))+
       theme_classic() +
       scale_fill_brewer(palette = "Paired")
@@ -2031,7 +2050,7 @@ server <- function(input, output, session) {
       geom_line()+
       theme_classic()+
       #ggtitle("Average Weekly Expenditure on Meat")+
-      labs(x = "", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: 158.97  Median: 431.20")+
+      labs(x = "", y = "Average Weekly Staple Expenditure (INR)", color = "Villages", caption = "Mean: 158.97  Median: 431.20")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       theme(plot.caption = element_text(size = 12))+
       geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
@@ -2043,7 +2062,7 @@ server <- function(input, output, session) {
       geom_line() +
       theme_classic()+
       #ggtitle("Average Weekly Expenditure on 'Other' Items")+
-      labs(x = "", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: 113.75  Median: 111.94")+
+      labs(x = "", y = "Average Weekly Staple Expenditure (INR) ", color = "Villages", caption = "Mean: 113.75  Median: 111.94")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       theme(plot.caption = element_text(size = 12))+
       geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
@@ -2202,7 +2221,7 @@ server <- function(input, output, session) {
         labs(x = "", y = "Total Households", fill = "Select Village:") + scale_fill_brewer(palette = "Paired")
       ggplotly(socplot, tooltip = c("text"))
     }
-    else if (ocuVar() == "Proportion of Households Involved in Agricultural Farming") {
+    else if (ocuVar() == "Percentage of Households Involved in Agricultural Farming") {
       agfaplot <- ggplot(grouped, aes(forcats::fct_rev(village),prop_farm*100, fill = village)) + 
         geom_col(hoverinfo = "text", aes(text = paste("Village:", village,"<br>Percentage: ", round(prop_farm*100, 2), "%"))) + 
         labs(x = "", y = "Percentage", title = "") + coord_flip() + theme(legend.position = "none") + scale_fill_brewer(palette = "Paired")+
@@ -2218,7 +2237,7 @@ server <- function(input, output, session) {
       ggplotly(mean_land_plot, tooltip = c("text"))
       
     }
-    else if (ocuVar() == "Average Amount of Land Fallowed by Village") {
+    else if (ocuVar() == "Total Land Fallowed (Kathas)") {
       land_fallow_plot <- ggplot(land_fallow, aes(x = forcats::fct_rev(village), y = sum, fill = village)) +
         geom_col(hoverinfo = "text", aes(text = paste("Village:", villages,"<br>Land Fallowed: ", sum)))+
         theme(legend.position = "none") +
@@ -2331,7 +2350,7 @@ server <- function(input, output, session) {
     ggplot(filtered_rmt_block(), aes(x = week , y = block_avg_rmt, color = Block)) +
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Weekly Remittances", color = "Blocks", caption = "Mean: 205.61  Median: 172.82") +
+      labs(x = "Date", y = "Average Weekly Remittances (INR)", color = "Blocks", caption = "Mean: 205.61  Median: 172.82") +
       theme(plot.caption = element_text(size = 12))+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       geom_rect(data = filtered_event_rmt(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
@@ -2405,7 +2424,7 @@ server <- function(input, output, session) {
   output$inc <- renderPlot({
     ggplot(filtered_inc(), aes(week, avg_inc, color = village)) + 
       geom_line() + 
-      labs(x = "", y = "Income (INR)", color = "Village",
+      labs(x = "", y = "Average Weekly Income (INR)", color = "Village",
            caption = "Mean: 1395.61   Median: 1341.82") + 
       scale_color_brewer(palette = "Paired")+
       theme_classic()+
@@ -2422,7 +2441,7 @@ server <- function(input, output, session) {
   
   output$malefemaleinc <- renderPlot({
     ggplot(filtered_malefemaleinc(), aes(x = week,y = !!input$Gender, color = village)) + geom_line() + 
-      labs(x = "", y = "Income (INR)", color = "Village") +
+      labs(x = "", y = "Average Weekly Income (INR)", color = "Village") +
       theme_classic()+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + scale_color_brewer(palette = "Paired")+
       geom_rect(data = filtered_event_inc(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
@@ -2443,7 +2462,7 @@ server <- function(input, output, session) {
     ggplot(filtered_inc_block(), aes(x = week, y = block_avg_inc, color = Block)) +
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Weekly Income", color = "Blocks", caption = "Mean: 1395.61  Median: 1329.69") +
+      labs(x = "Date", y = "Average Weekly Income (INR)", color = "Blocks", caption = "Mean: 1395.61  Median: 1329.69") +
       theme(plot.caption = element_text(size = 12))+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       geom_rect(data = filtered_event_inc(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
@@ -2483,7 +2502,7 @@ server <- function(input, output, session) {
     ggplot(filtered_cs_avg(), aes(x = week, y = avg_cs , color = village)) +
       geom_line() +
       theme_classic()+
-      labs(x = "", y = "Average Consumption Expenditure (INR)", caption = "Mean: 766.13  Median: 731.68", color = "Villages")+
+      labs(x = "", y = "Average Weekly Expenditure (INR)", caption = "Mean: 766.13  Median: 731.68", color = "Villages")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       theme(plot.caption = element_text(size = 12))+
       geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
@@ -2502,7 +2521,7 @@ server <- function(input, output, session) {
     ggplot(filtered_cs_avg_items(), aes(x = week, y = avg_item, color = village))+
       geom_line() +
       theme_classic()+
-      labs(x = "", y = "No. of Consumption Items Bought", color = "Villages", caption = "Mean: 7.2  Median: 7.2")+
+      labs(x = "", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: 7.2  Median: 7.2")+
       theme(plot.caption = element_text(size = 12))+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
