@@ -676,7 +676,7 @@ shocks2 <- baseline %>% select(village, shk_count) %>%
   group_by(village) %>% summarize(avg_count = sum(shk_count, na.rm = TRUE)/n())
 
 shocks_village <- ggplot(shocks2, aes(village, avg_count, fill = village)) + geom_col() + 
-  labs(x = "", y = "No. of Shocks" ,title = "", fill = "Village") + 
+  labs(x = "", y = "Average Number of Shocks per Year (2009-2018)" ,title = "", fill = "Village") + 
   theme_classic()+
   theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_brewer(palette = "Paired") + coord_polar()
 
@@ -692,7 +692,7 @@ shock_year <- baseline %>% select(village, shk_2009_count, shk_2010_count, shk_2
 shocks_year_long <- gather(shock_year, year, count, "2009":"2018")
 
 shocks_by_year <- ggplot(shocks_year_long, aes(year, count, fill = year)) + geom_col() + 
-  labs(x = "", y = "Number of Shocks" ,title = "") + 
+  labs(x = "", y = "Total Shocks" ,title = "") + 
   theme_classic()+
   theme(axis.ticks.x=element_blank(), legend.position="none") + scale_fill_brewer(palette = "Paired")
 
