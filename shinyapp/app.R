@@ -1607,7 +1607,7 @@ ui <- navbarPage(title = "",
                                               h1(strong("Borrowing"), align = "center"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
-                                                     p("Households in the Sundarbans seem to use borrowing as a livelihood coping strategy. On average, approximately 0.22 households tend to borrow, and they usually
+                                                     p("Households in the Sundarbans seem to use borrowing as a livelihood coping strategy. On average, approximately 22% of households tend to borrow, and they usually
                                                        borrow around ₹2703.12 (US$ 41.62). The amount borrowed and the number of households borrowing is relatively consistent during the year, despite the differences 
                                                        in borrowing behavior across villages. For example, there is a significant spike in the amount borrowed between April and June by families living in Pargumti,
                                                        Purba Dwarokapur, and Shibpur. This increase coincides with the dry season and after cyclone Fani. Bijoynagar had the largest number of households borrowing, 
@@ -2321,11 +2321,12 @@ server <- function(input, output, session) {
   output$finplot <- renderPlotly({
     if (finVar() == "Number of Households that Own a Business") {
       village_bus_count_plot <- ggplot(dat_bus, aes(x= Village, y = households, fill = key)) + geom_col(position = 'stack') +
-        geom_col() + 
+        geom_col(position = 'stack', hoverinfo = "text", aes(text = paste("Village:", Village,"<br>Key: ", key, "<br>Percentage:", percentage,"%","<br>Total Households: ", households ))) + 
         labs( x= "", y = "Total Households", fill = "") + 
         theme_classic() + 
         #ggtitle("Households That Own a Business") +
         coord_flip()
+      ggplotly(village_bus_count_plot, tooltip = c("text"))
       
     }
     else if (finVar() == "Proportion of Households Owning Assets") {
