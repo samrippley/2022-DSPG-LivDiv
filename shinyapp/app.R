@@ -331,8 +331,8 @@ scountv <- scountv %>%
 
 # Poverty line counts
 Village <- c(rep("Amrabati", 2), rep("Beguakhali", 2), rep("Bijoynagar", 2), rep("Birajnagar", 2), rep("Haridaskati Samsernagar", 2), rep("Lakshmi Janardanpur",2), rep("Pargumti",2),rep("Purba Dwarokapur", 2), rep("Sagar", 2), rep("Shibpur",2))
-`Key` <- rep(c("Live Above ₹204", "Live Below ₹204"), 2)
-`Households` <- c(17,11,20,10,32,18,19,9,14,16,17,11,18,10,23,5,21,6,21,7)
+Key <- rep(c("Live Above ₹204", "Live Below ₹204"), 2)
+Households <- c(17,11,20,10,32,18,19,9,14,16,17,11,18,10,23,5,21,6,21,7)
 Percentage<- c("60", "40", "67", "33", "64","36","68","32","53",
                "47","60","40","64","36","82","18","77","23","75","25" )
 Village <- forcats::fct_rev(Village)
