@@ -102,11 +102,6 @@ land_fallow <- land_fallow %>%
   group_by(village) %>% 
   summarise("avg" = mean(na.omit(land_fallow)), "sum" = sum(na.omit(land_fallow)))
 
-# participate in ag data 
-
-grouped <- baseline %>% group_by(village) %>% summarize(prop_farm = sum(farm_yn)/n())
-
-
 
 # household asset data 
 
