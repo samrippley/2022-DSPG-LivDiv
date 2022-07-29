@@ -878,7 +878,9 @@ non_food_cs <- fin_diary %>%
             "Health" = mean(exp_health, na.rm = TRUE), "Home Repairs" = mean(exp_homerepairs, na.rm = TRUE), 
             "Transportation" = mean(exp_transport, na.rm = TRUE), "Livestock" = mean(exp_livestock, na.rm = TRUE),
             "Agriculture" = mean(exp_aginputs, na.rm = TRUE), "Labor" = mean(exp_labor, na.rm = TRUE),
-            "Other" = mean(exp_nonfoodother, na.rm = TRUE))
+            "Other" = mean(exp_nonfoodother, na.rm = TRUE), avg_nonfood = (aggregated_exp_clothes +exp_bookstuition +exp_utility +exp_toiletries +
+              exp_health +exp_homerepairs +exp_transport +exp_livestock +exp_aginputs +exp_labor + exp_nonfoodother))
+
 
 
 filtered_non_food_cs <- reactive({
@@ -940,6 +942,18 @@ cs_vill <- cs_v2 %>%
 cs_block <- cs_vill %>% 
   group_by(week, Block) %>% 
   summarise(block_avg_cs = mean(cs_tot))
+
+# non food consumption
+
+nonfoodcs <- non_food_cs %>% 
+  select(avg_nonfood) %>% 
+  group_by(week, village) %>% 
+  summarise(nf_total = mean(na.omit(avg_nonfood))) %>% 
+  mutate("Block" = c(blocks))
+
+nonfoodcs_block <- nonfoodcs %>% 
+  group_by(week, Block) %>% 
+  summarise(block_avg_nf = mean(nf_total))
 
 blocks_vector <- c("Sagar Block", "Namkhana Block", "Patharpratima Block", "Gosaba Block", "Hangalganj Block")
 
@@ -1449,7 +1463,7 @@ ui <- navbarPage(title = "",
                                                      multiple = T, options = list(`actions-box` = T)),
                                          pickerInput("event_choose_cs", "Select Event:", choices = events_vector, selected = "Kharif Crop Preparation", 
                                                      multiple = T, options = list(`actions-box` = T)),
-                                         pickerInput("block_choose_cs", "Select Administrative Block (For Expenditure by Blocks):", choices = blocks_vector, selected = blocks_vector, 
+                                         pickerInput("block_choose_cs", "Select Administrative Block (For Weekly Food Consumption by Blocks):", choices = blocks_vector, selected = blocks_vector, 
                                                      multiple = T, options = list(`actions-box` = T)),
                                          actionButton(inputId ="button4", label = "Map")
                                          
@@ -1498,8 +1512,10 @@ ui <- navbarPage(title = "",
                                          pickerInput("village_cs_nonfood", "Select Village:", choices = village_vector, 
                                                      selected = village_vector,
                                                      multiple = T, options = list(`actions-box` = T)),
-                                         varSelectInput("nonfood_group", "Select Consumption Group:", non_food_cs[,-(1:2)]),
+                                         varSelectInput("nonfood_group", "Select Consumption Group:", non_food_cs[,-c(1,2,14)]),
                                          pickerInput("event_choose_cs_nonfood", "Select Event:", choices = events_vector, selected = "Kharif Crop Preparation", 
+                                                     multiple = T, options = list(`actions-box` = T)),
+                                         pickerInput("block_choose_nf", "Select Administrative Block (For Non Food Consumption by Blocks):", choices = blocks_vector, selected = blocks_vector, 
                                                      multiple = T, options = list(`actions-box` = T)),
                                          actionButton(inputId ="button5", label = "Map")
                                          
@@ -1510,6 +1526,9 @@ ui <- navbarPage(title = "",
                                            tabPanel("Weekly Non-Food Consumption",
                                                     h4(strong("Average Weekly Non-Food Consumption"), align = "center"),
                                                     plotOutput("nonfood_plot", height = "500px")),
+                                           tabPanel("Non-Food Consumption by Blocks",
+                                                    h4(strong("Average Weekly Non-Food Consumption by Administrative Block"), align = "center"),
+                                                    plotOutput("nf_block_plot", height = "500px"))
                                            #tabPanel("Table", DT::DTOutput("nonfood_table"))
                                          )
                                        ),
@@ -1588,7 +1607,7 @@ ui <- navbarPage(title = "",
                                      mainPanel(
                                        tabsetPanel(
                                          tabPanel("Weekly Borrowing",
-                                                  h4(strong("Average Weekly Amount Borrowed"), align = "center"),
+                                                  h4(strong("Total Weekly Amount Borrowed"), align = "center"),
                                                   plotOutput("bor", height = "500px")),
                                          tabPanel("Total Households Borrowing",
                                                   h4(strong("Total Households Borrowing"), align = "center"),
@@ -1634,7 +1653,7 @@ ui <- navbarPage(title = "",
                                                      multiple = T, options = list(`actions-box` = T)),
                                          pickerInput("event_choose_rmt", "Select Event:", choices = events_vector, selected = "Kharif Crop Preparation", 
                                                      multiple = T, options = list(`actions-box` = T)),
-                                         pickerInput("block_choose_rmt", "Select Administrative Block (For Expenditure by Blocks):", choices = blocks_vector, selected = blocks_vector, 
+                                         pickerInput("block_choose_rmt", "Select Administrative Block (For Remittances by Blocks):", choices = blocks_vector, selected = blocks_vector, 
                                                      multiple = T, options = list(`actions-box` = T)),
                                          actionButton(inputId ="button8", label = "Map")
                                          
@@ -1960,9 +1979,9 @@ server <- function(input, output, session) {
     ggplot(filtered_bramt(), aes(x=week_num, y=br_amt, color = village, na.rm = T)) +
       geom_line() +
       theme_classic()+
-      labs(color = "Villages") + 
+      labs(color = "Villages", caption = "Mean: 2703.12  Median: 600.00") + 
       xlab("Date") +
-      ylab("Average Weekly Borrowing (INR)")+
+      ylab("Total Weekly Borrowing (INR)")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) +
       scale_color_brewer(palette = "Paired") +
       #theme(legend.position = "none")+
@@ -1979,7 +1998,7 @@ server <- function(input, output, session) {
   output$borr <- renderPlot({
     ggplot(filtered_dbr(), aes(x=week_num, y=d_br, color = village, na.rm=TRUE)) +
       geom_line() +
-      #labs(title = "Number of Households Borrowing (Cash or in Kind)") + 
+      labs(caption = "Mean: 0.22  Median: 0.00") + 
       xlab("Date") +
       ylab("Number of Households")+
       theme_classic()+
@@ -2408,6 +2427,8 @@ server <- function(input, output, session) {
       geom_rect(data = filtered_event_exp(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))
   })
+  
+
   # Render exp table 
   output$exp_table <- DT::renderDT({
     expend_table
@@ -2441,9 +2462,10 @@ server <- function(input, output, session) {
   
   output$malefemaleinc <- renderPlot({
     ggplot(filtered_malefemaleinc(), aes(x = week,y = !!input$Gender, color = village)) + geom_line() + 
-      labs(x = "Date", y = "Average Weekly Income (INR)", color = "Village") +
+      labs(x = "Date", y = "Average Weekly Income (INR)", color = "Village", caption = "Male - Mean: 1065.54  Median = 642.5   Female - Mean: 96.60  Median: 0.00 ") +
       theme_classic()+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + scale_color_brewer(palette = "Paired")+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), 
+                       limits = c(10:40)) + scale_color_brewer(palette = "Paired")+
       geom_rect(data = filtered_event_inc(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
   })
   
@@ -2574,6 +2596,21 @@ server <- function(input, output, session) {
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       geom_rect(data = filtered_event_cs_nonfood(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
       scale_color_brewer(palette = "Paired")
+    
+  })
+  
+  filtered_nf <- reactive({
+    nonfoodcs_block %>% 
+      filter(Block %in% input$block_choose_nf)
+  })
+  
+  output$nf_block_plot <- renderPlot({
+    ggplot(filtered_nf(), aes(x = week , y = block_avg_nf, color = Block)) +
+      geom_line() +
+      theme_classic() +
+      labs(x = "Date", y = "Average Weekly Consumption", color = "Blocks") +
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
+      geom_rect(data = filtered_event_cs_nonfood(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
     
   })
 
