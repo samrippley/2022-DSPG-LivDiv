@@ -2222,17 +2222,16 @@ server <- function(input, output, session) {
       ggplotly(socplot, tooltip = c("text"))
     }
     else if (ocuVar() == "Percentage of Households Involved in Agricultural Farming") {
-      agfaplot <- ggplot(grouped, aes(forcats::fct_rev(village),prop_farm*100, fill = village)) + 
+      agfaplot <- ggplot(grouped, aes(forcats::fct_rev(village), prop_farm, fill = village)) + 
         geom_col(hoverinfo = "text", aes(text = paste("Village:", village,"<br>Percentage: ", round(prop_farm*100, 2), "%"))) + 
+        theme_classic()+
         labs(x = "", y = "Percentage", title = "") + coord_flip() + theme(legend.position = "none") + scale_fill_brewer(palette = "Paired")+
-        theme_classic()
       ggplotly(agfaplot,tooltip = c("text"))
-    }
+      }
     else if (ocuVar() == "Average Amount of Land Owned by Village") {
       mean_land_plot <- ggplot(land_stats, aes(x = forcats::fct_rev(villages), y = mean_land_value, fill = villages)) +
         geom_col(hoverinfo = "text", aes(text = paste("Village:", villages,"<br>Mean Land Owned: ", round(mean_land_value,3)))) +
         coord_flip() + theme(legend.position = "none") +
-        theme_classic()+
         labs(x = "", y = "Land Owned (Kathas)") + scale_fill_brewer(palette = "Paired")
       ggplotly(mean_land_plot, tooltip = c("text"))
       
@@ -2241,14 +2240,13 @@ server <- function(input, output, session) {
       land_fallow_plot <- ggplot(land_fallow, aes(x = forcats::fct_rev(village), y = sum, fill = village)) +
         geom_col(hoverinfo = "text", aes(text = paste("Village:", villages,"<br>Land Fallowed: ", sum)))+
         theme(legend.position = "none") +
-        theme_classic()+
         labs(x = "", y = "Total Land Fallowed", caption = "*Note: For missing bars, villages did not have any land fallowed")+
         coord_flip() + scale_fill_brewer(palette = "Paired")
       ggplotly(land_fallow_plot, tooltip = c("text"))
     }
     else if (ocuVar() == "Average Job Duration for Head of Household") {
       job_duration_plot <- ggplot(job_duration_summary, aes(x = forcats::fct_rev(villages), y = job_duration_avg, fill = villages)) +
-        geom_col(hoverinfo = "text", aes(text = paste("Village:", villages,"<br>Average Job Duration: ", round(job_duration_avg,2), "months"))) + 
+        geom_point(hoverinfo = "text", aes(text = paste("Village:", villages,"<br>Average Job Duration: ", round(job_duration_avg,2), "months"))) + 
         coord_flip()+
         labs(x= "", y = "Average Job Duration (Months)")+
         ggtitle("") +
