@@ -1776,14 +1776,12 @@ ui <- navbarPage(title = "",
                                    p(a(href = 'https://www.linkedin.com/in/aleksandr-michuda/', 'Dr. Aleksandr Michuda', target = '_blank'), "(Assistant Research Professor, Center for Data Science for Enterprise and Society, Cornell University)"),
                                   # br(), 
                                  #  img(src = "", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                   p(a(href = 'https://www.linkedin.com/in/mikidoan/', 'Miki Doan', target = '_blank'), "(Ph.D. Candidate in Applied Economics, UC Davis)"),
+                                 p(a(href = 'https://www.researchgate.net/profile/Heng-Zhu-15', 'Dr. Heng Zhu', target = '_blank'), "(United Nations World Food Program, RAM)"),  
+                                 p(a(href = 'https://www.linkedin.com/in/mikidoan/', 'Miki Doan', target = '_blank'), "(Ph.D. Candidate in Applied Economics, UC Davis)"),
                                  #  br(), 
                                   # img(src = "", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
                                    p(a(href = 'https://www.linkedin.com/in/binoy-majumder-60703230/', 'Binoy Majumder', target = '_blank'), "(Sundarbans Field Team Lead, Independent Researcher, West Bengal, India)"),
-                                  # br(), 
-                                  # img(src = "", style = "display: inline; border: 1px solid #C0C0C0;", width = "150px"),
-                                   p(a(href = 'https://www.researchgate.net/profile/Heng-Zhu-15', 'Dr. Heng Zhu', target = '_blank'), "(United Nations World Food Program, RAM)"),
-                                   # p("", style = "padding-top:10px;") 
+                                  
                  ))),
                 ## References Tab--------------------------------------------
                 tabPanel("References", value = "overview",
