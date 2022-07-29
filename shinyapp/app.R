@@ -667,16 +667,16 @@ shock_labels <- c('None', 'Crop Loss', 'Loss of vegetation', 'Damage(saline wate
                   'Loss of home(river erosion/cyclone)', 'Loss of livestock', 'Loss of business/shop/etc.', 'Death/health issues', 'Other')
 
 shocks_all <- ggplot(shocks, aes(shock_nmb)) + geom_bar(fill = "dark red") + 
-  labs(x = "", y = "Occurances" ,title = "") + theme(axis.text = element_text(size = 7)) +
+  labs(x = "", y = "Occurrences" ,title = "") + theme(axis.text = element_text(size = 7)) +
   theme_classic()+
-  scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10),labels = str_wrap(shock_labels, width = 25) ,limits = c(0:10)) + 
+  scale_x_discrete(breaks = c(1,2,3,4,5,6,7,8,9,10,11),labels = str_wrap(shock_labels, width = 25) ,limits = c(0:11)) + 
   coord_flip()
 ## Average Shocks by Village
 shocks2 <- baseline %>% select(village, shk_count) %>% 
   group_by(village) %>% summarize(avg_count = sum(shk_count, na.rm = TRUE)/n())
 
 shocks_village <- ggplot(shocks2, aes(village, avg_count, fill = village)) + geom_col() + 
-  labs(x = "", y = "No. of Shocks" ,title = "", fill = "Village") + 
+  labs(x = "", y = "Average Number of Shocks per Year (2009-2018)" ,title = "", fill = "Village") + 
   theme_classic()+
   theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_brewer(palette = "Paired") + coord_polar()
 
@@ -692,41 +692,41 @@ shock_year <- baseline %>% select(village, shk_2009_count, shk_2010_count, shk_2
 shocks_year_long <- gather(shock_year, year, count, "2009":"2018")
 
 shocks_by_year <- ggplot(shocks_year_long, aes(year, count, fill = year)) + geom_col() + 
-  labs(x = "", y = "Number of Shocks" ,title = "") + 
+  labs(x = "", y = "Total Shocks" ,title = "") + 
   theme_classic()+
   theme(axis.ticks.x=element_blank(), legend.position="none") + scale_fill_brewer(palette = "Paired")
 
 ## Frequency of each shocks in 2009
 
 shocks_2009 <- baseline %>% select(shk_2009_type1, shk_2009_type2, shk_2009_type3, shk_2009_type4, shk_2009_type5, shk_2009_type6)
-shock_labels_2009 <- c('None', 'Crop Loss', 'Loss of vegetation', 'Damage caused by saline water encroachment',
-                       'Forced to move due to Flooding', 'Loss of agricultural land by river erosion',
-                       'Loss of home by river erosion/cyclone', 'Loss of livestock', 'Loss of business/shop/etc. due to rising water levels', 
-                       'Unexpected death or health consequence in Household', 'Other')
+shock_labels_2009 <- c('Crop Loss', 'Loss of vegetation', 'Damage(saline water)',
+                       'Forced to move(Flooding)', 'Loss of agricultural land(river erosion)',
+                       'Loss of home(river erosion/cyclone)', 'Loss of livestock', 'Loss of business/shop', 
+                       'Death/health issues', 'Other')
 shocks_2009 <- data.frame(y=unlist(shocks_2009))
 colnames(shocks_2009) <- c('shk')
 
 shocks_plot_2009 <-ggplot(shocks_2009, aes(shk)) + geom_bar(fill = "dark red") + 
-  labs(x = "", y = "Occurances" ,title = "") + theme(axis.text = element_text(size = 8)) + 
-  scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10),labels = str_wrap(shock_labels_2009, width = 25) ,limits = c(0:10)) +
+  labs(x = "", y = "Occurrences" ,title = "") + theme(axis.text = element_text(size = 8)) + 
+  scale_x_discrete(breaks = c(1,2,3,4,5,6,7,8,9,10),labels = str_wrap(shock_labels_2009, width = 25) ,limits = c(0:11)) +
   theme_classic()+
   coord_flip()
 ## Type of Cope after 2009 Shock
 
 shocks_cope <- baseline %>% select(village, shk_2009_cope) 
 
-cope_labels <- c("Did not do anything","Unconditional help provided by relatives/friends",
-                 "Unconditional help provided by local government", "Changed dietary practices involuntarily", 
-                 "Changed cropping practices", "Household member(s) took on more non-farm employment", 
-                 "Household member(s) took on more farm wage employment", "Household member(s) migrated",
-                 "Relied on savings", "Obtained credit", "Sold durable household assets", "Sold land/building", 
+cope_labels <- c("Did not do anything","Aid from relatives/friends",
+                 "Aid from local government", "Changed dietary practices", 
+                 "Changed cropping practices", "FM took on more non-farm employment", 
+                 "FM took on more farm wage employment", "FM migrated",
+                 "Relied on savings", "Obtained credit", "Sold durable HH assets", "Sold land/building", 
                  "Rented out land/building","Distress sales of animal stock", "Sent children to live elsewhere",
-                 "Reduced expenditures on health and education","Do not know/Do not want to answer")
+                 "Reduced expenditures on health/education","Did not know/want to answer")
 
 shocks_cope$shk_2009_cope<-replace(shocks_cope$shk_2009_cope, shocks_cope$shk_2009_cope == 997, 16)
 
 cope_2009_plot <- ggplot(shocks_cope, aes(shk_2009_cope, fill = village)) + geom_bar() +
-  labs(x = "", y = "" ,title = "", fill = "Village") + scale_fill_brewer(palette = "Paired") +
+  labs(x = "", y = "Total Shocks" ,title = "", fill = "Village") + scale_fill_brewer(palette = "Paired") +
   theme(axis.text = element_text(size = 8)) +
   theme_classic()+
   scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), labels = str_wrap(cope_labels, width = 30), limits = c(0:20)) + 
@@ -739,7 +739,7 @@ shock_relocation <- baseline %>% select(village, shk_2009_reloc_yn)
 relocation_labels <- c("No", "Yes, for under a month", "Yes, for over a month")
 
 shock_relocation_2009_yn <- ggplot(shock_relocation, aes(shk_2009_reloc_yn, fill = village)) + geom_bar() + 
-  labs(x = "", y = "No. of Households" ,title = "", fill = "Village") + 
+  labs(x = "", y = "Total Households" ,title = "", fill = "Village") + 
   theme_classic()+
   scale_x_discrete(breaks = c(0,1,2), labels = str_wrap(relocation_labels, width = 30), limits = c(0:2)) + 
   scale_fill_brewer(palette = "Paired")
@@ -753,7 +753,7 @@ relocation_where_labels <- c("Within same village","Other village in Sundarbans"
                              "Other Urban area outside Sundarbans, within West Bengal","Urban area outside West Bengal")
 
 shock_relocation_2009 <- ggplot(shock_relocation_where, aes(shk_2009_reloc1, fill = village)) + geom_bar() + 
-  labs(x = "", y = "No. of Households" ,title = "", fill = "Village") + 
+  labs(x = "Relocation Areas", y = "Total Households" ,title = "", fill = "Village") + 
   scale_x_discrete(breaks = c(1,2,3,4,5,6), labels = str_wrap(relocation_where_labels, width = 20), limits = c(1:6)) +
   theme_classic()+
   scale_fill_brewer(palette = "Paired") + coord_flip() +  theme(axis.text = element_text(size = 8))
