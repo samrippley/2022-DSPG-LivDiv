@@ -104,9 +104,7 @@ land_fallow <- land_fallow %>%
 
 # participate in ag data 
 
-grouped <- baseline %>% group_by(village) %>% summarize(prop_farm = sum(farm_yn)/n())
-
-
+agfa <- baseline %>% group_by(village) %>% summarize(prop_farm = sum(farm_yn)/n())
 
 # household asset data 
 
@@ -225,11 +223,6 @@ job_duration_avg <- c(amrabati_job_duration_summary$`avg job duration`, beguakha
 
 job_duration_summary <- data.frame(villages, job_duration_avg)
 
-# participate in ag data 
-
-grouped <- baseline %>% group_by(village) %>% summarize(prop_farm = sum(farm_yn)/n())
-
-
 # remmitences v income data 
 
 baseline.summary <- livdiv %>% select(village, full_inc, rmt_total) %>% 
@@ -264,10 +257,6 @@ land$no_farm_reason <- as.numeric(as.factor(land$no_farm_reason))
 # salary data 
 
 m_salary <-  baseline %>% group_by(village) %>% select(job1_salary1) %>% summarize(avg_salary = sum(job1_salary1, na.rm = TRUE)/n())
-
-#crops data
-
-grouped <- baseline %>% group_by(village) %>% summarize(prop_farm = sum(farm_yn)/n())
 
 #edu and age data 
 by_villagemore <- baseline %>% 
@@ -2222,11 +2211,11 @@ server <- function(input, output, session) {
       ggplotly(socplot, tooltip = c("text"))
     }
     else if (ocuVar() == "Percentage of Households Involved in Agricultural Farming") {
-      agfaplot <- ggplot(grouped, aes(forcats::fct_rev(village), prop_farm, fill = village)) + 
+      agfaplot <- ggplot(agfa, aes(forcats::fct_rev(village), prop_farm, fill = village)) + 
         geom_col(hoverinfo = "text", aes(text = paste("Village:", village,"<br>Percentage: ", round(prop_farm*100, 2), "%"))) + 
         theme_classic()+
         labs(x = "", y = "Percentage", title = "") + coord_flip() + theme(legend.position = "none") + scale_fill_brewer(palette = "Paired")+
-      ggplotly(agfaplot,tooltip = c("text"))
+      ggplotly(agfaplot, tooltip = c("text"))
       }
     else if (ocuVar() == "Average Amount of Land Owned by Village") {
       mean_land_plot <- ggplot(land_stats, aes(x = forcats::fct_rev(villages), y = mean_land_value, fill = villages)) +
