@@ -379,7 +379,7 @@ rmt_method_plot <- ggplot(method_dat, aes( x= reorder(Method, method_counts), y 
   labs(x = "Method of Sending Remittances", y = "Total Households") +
   theme_classic() +
   coord_flip()+
-  theme(legend.position = "none", axis.text.y = element_text(size = 14))+
+  theme(legend.position = "none", axis.text.y = element_text(size = 16))+
   #ggtitle("Method of Receiving Remittances")+
   geom_text(aes(label = method_values), size = 5) + scale_fill_brewer(palette = "Paired")
 
@@ -594,7 +594,7 @@ rmt_purpose_plot <- ggplot(purpose_dat, aes(x = reorder(Purpose, purpose_count),
   #ggtitle("Purpose for Receiving Remittances")+
   #rotate_x_text(angle = 22, size = rel(0.8))
   coord_flip()+
-  theme(legend.position = "none", axis.text.y = element_text(size = 14))+
+  theme(legend.position = "none", axis.text.y = element_text(size = 16))+
   geom_text(aes(label = purpose_values), size = 5) + scale_fill_brewer(palette = "Paired")
 #--------------------------------------------------------------------
 # rmt table
@@ -1213,13 +1213,14 @@ ui <- navbarPage(title = "",
                                               h1(strong("Coastal Degradation Timelapse")),
                                               column(4, 
                                                      h4(strong("Sundarbans Area"), align = "justify"),
-                                                     p("The video shows a timelapse of the Sundarbans region from 1984 to 2022. There appears to be a significant degradation of the Sundarbans coastline over the years. 
+                                                     p("The video shows a timelapse of the Sundarbans region from 1984 to 2022. There appears to be significant degradation of the Sundarbans coastline over the years. 
                                                        We impose circles on the map to indicate areas experiencing substantial coastline erosion. For instance, an island disappears entirely in the lower left-hand corner."), 
-                                                     p("Climate change plays a primary role in this degradation. Rising sea levels, stronger waves, more extended tides, and increased frequency and intensity of storms and cyclones wear down rocks and soil, 
-                                                       causing erosion of coastal areas. This erosion is a concern for Sundarbans residents as it reduces the sediment in the area, which acts as a", dQuote("natural buffer"),"to flooding and wind. 
-                                                       Moreover, the degradation increases groundwater's salinity, pushing salt water upstream, thus reducing the supply of drinking water. The thinning of the Sundarbans coast also negatively impacts households' agricultural yields, an essential source of income and food for families in this region."),
-                                                     p("We expect that this erosion will continue in the next few years. The Bay of Bengal and the Arabian Sea are hotspots for cyclones. As such, with the increased frequency and intensity of cyclones in the Sundarbans region, 
-                                                       these coastlines will likely continue to erode rapidly, increasing the negative impact of these cyclones, which will further threaten residents' safety and livelihood. "), 
+                                                     p("Climate change plays a primary role in this degradation. Rising sea levels, stronger waves, more extended tides, and increased frequency and intensity of storms and cyclones 
+                                                       wear down rocks and soil, causing erosion of coastal areas. This erosion is a concern for Sundarbans residents as it reduces the sediment in the area, which acts as a", dQuote("natural buffer"),
+                                                       "to flooding and wind. Moreover, the degradation increases groundwater's salinity, pushing salt water upstream, thus reducing the supply of drinking water. The thinning of the Sundarbans coast also negatively impacts households' agricultural yields, an essential source of income and food for families in this region."),
+                                                     p("We expect that this erosion will continue in the next few years. The Bay of Bengal and the Arabian Sea are hotspots for cyclones. As such, with the increased frequency and intensity of 
+                                                       cyclones in the Sundarbans region, these coastlines will likely continue to erode rapidly, increasing the negative impact of these cyclones, which will further threaten residents' 
+                                                       safety and livelihood."), 
                                                      align = "justify"),
                                              
                                       column(8, 
@@ -1295,21 +1296,19 @@ ui <- navbarPage(title = "",
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
                                                      h4(strong("Working in the Sundarbans ")),
-                                                     p("Agriculture is the backbone of the Sundarbans' economy, which residents rely heavily on for their livelihood. This is supported by our 
-                                                       interactive graphs where for most heads of households, their primary job is in the agricultural sector regardless of the village, 
-                                                       specifically Farmer, Casual labor, and Agricultural wage workers in 2018. However, there are some differences across villages. For 
-                                                       example, if one selects Amrabati, the majority of household heads are Fishing related (User can select village to see specific attributes). 
-                                                       Agricultural-related jobs are seasonal, which may explain the short average job duration for household heads of approximately 8 months. 
-                                                       Due to this agricultural seasonality, most heads of households (about 60%) have a second job. Interestingly, the distribution of secondary 
-                                                       occupations is similar to the primary, with agricultural jobs dominating the type of occupation."),
+                                                     p("Agriculture is the backbone of the Sundarbans' economy, where residents rely heavily on agriculture for their livelihood. This is supported by our 
+                                                       interactive graphs where for most heads of households, their primary job is in the agricultural sector regardless of village, specifically farmer, 
+                                                       casual labor, and agricultural wage-worker in 2018. However, there are some differences across villages. For example, if one selects Amrabati, the majority 
+                                                       of household heads are employed as fishery workers (users can select village to see specific attributes). Agricultural jobs are seasonal, which may explain 
+                                                       the short average job duration for household heads to an approximate 8 months in a year. Due to seasonality in agriculture, most household heads (about 60%) have 
+                                                       a second job.  Similar to primary occupation, majority of household heads secondary occupation in in the agricultural sector."),
                                                      h4(strong("Agricultural Farming ")),
-                                                     p("Household heads are not the only individuals involved in agriculture. On average, 63.9% of village households cultivated crops in the 
-                                                       last 12 months. There are variations across villages, from as high as 86% in Haridaskati Samsernagar to as low as 7% in Amrabati."), 
-                                                     p("Despite most of the population being involved in agriculture, land holding in the Sundarbans is mostly marginal. Pargumti and Bijoynagar 
-                                                       have the highest average amount of land owned, with households owning over 60 kathas. Kathas is a land measurement commonly used in India. 
-                                                       One unit of katha is equivalent to 720 square feet in West Bengal. This shows that land holding for families is small, which may be related
-                                                       to the increasing population and change in the cultivable land due to erosion or climate change. To help rest and regenerate harvest, farmers 
-                                                       tend to fallow their land. Bijoynagar had the largest average land fallow (about 95 kathas) for the current agricultural season.")
+                                                     p("Household heads are not the only individuals involved in agriculture. On average, 63.9% of village households cultivated crops in the last 12 months. 
+                                                       There are variations across villages, from as high as 86% in Haridaskati Samsernagar to as low as 7% in Amrabati."), 
+                                                     p("Despite most of the population being involved in agriculture, land holding in the Sundarbans is mostly marginal. Pargumti and Bijoynagar have the 
+                                                       highest average amount of land owned, with households owning over 60 kathas. Kathas is a land measurement commonly used in India. For reference, 
+                                                       1 acre of land equals 32 kathas. To help rest and regenerate harvest, farmers tend to fallow their land. Bijoynagar had the largest average land fallow 
+                                                       (about 95 kathas, approx. 3 acres) for the current agricultural season. ")
                                                      
                                                      
                                               ) ,
@@ -1343,15 +1342,15 @@ ui <- navbarPage(title = "",
                                               h1(strong("Financial Practices"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
-                                                     h4(strong("How do residents earn and spend their money?")),
-                                                     p("We present interactive graphs of the baseline survey to understand the financial behavior of the Sundarbans population. 
-                                                     There are slight differences in average household monthly salary across villages ranging from as high as ₹4600 in Amrabati to as low as ₹2500in Sagar.
-                                                       This salary is more likely coming from working for someone else as the majority of family members do not own a business."),
-                                                     p("Migration appears to be a prominent livelihood strategy – 15% of households had at least one migrant in the last ten years.
-                                                     Job opportunities may play a primary factor in this migration trend, thus explaining the high remittance level for our sample. Remittances are any income household receives 
-                                                  from someone working away from home. We visualize the relationship between average weekly remittances and average weekly income. In most villages, higher remittances correlate with a higher weekly income. 
-                                                     This suggests that remittances are a primary income source for most families Given the poverty level and low 
-                                                       income-earning opportunities it is no surprise that many families are unable to or rarely save any money."),
+                                                     h4(strong("How do residents earn their money?")),
+                                                     p("We present interactive graphs of the baseline survey to understand the financial behavior of the Sundarbans population. There are slight differences in average 
+                                                       household monthly salary across villages ranging from as high as ₹4600 (US$ 71) in Amrabati to as low as ₹2500 (US$ 38.5) in Sagar, using 1 US Dollar = ₹0.0154 exchange rate
+                                                       in 2018. The salary is more likely to come from working for someone else as most family members do not own a business."),
+                                                     p("Migration appears to be a prominent livelihood strategy – on average, approximately 65% of households had at least one migrant in the last ten years. 
+                                                       Job opportunities may play a primary factor in the migration trend, thus explaining the high remittances in our sample. Remittances are any income 
+                                                       household receives from someone working away from home. We visualize the relationship between average weekly remittances and average weekly income. 
+                                                       In most villages, higher remittances correlate with a higher weekly income, except for Amrabti, Pargumti, and Sagar, suggesting other possible economic
+                                                       opportunities in these three villages."),
                                                     
                                               ),
                                               column(8, h4(strong("Financial – November 2018 (Baseline)")),
@@ -1390,10 +1389,21 @@ ui <- navbarPage(title = "",
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Expenditure"), align = "center"),
                                               p("", style = "padding-top:10px;"),
-                                              column(12,h4(strong("Total Spending")),
-                                                     p("Whether it's for food, loan repayments, or other typical expenses, the total monthly expenditure is on average very similar throughout the year. But, when unprecedented situations like extreme weather or a sickness in the family, the household is forced to make changes either to discretionary spending or other expenses. We present the average weekly expenditure from Nov 2018 - Oct 2019 to examine the spending behaviors of households in the region. This will provide information on the changing nature of spending in the Sundarbans region due to events such as festivals and holidays, harvest seasons, and weather-related shocks. Expenditure can be further classified into spending on consumption (e.g., food) and non-consumption (e.g., rent) items. The average weekly expenditure over the data period was 1982.77 rupees, with a median of 1832.1 rupees."),
+                                              column(12,h4(strong("How are residents spending their money?")),
+                                                     p("We present average weekly expenditure from November 2018 - October 2019 to examine the spending habits of households in the Sundarbans. 
+                                                       The graphs will provide information on the changing seasonal patterns of residents' spending in the region and how they react to events such as 
+                                                       festivals and holidays, harvest seasons, and weather-related shocks. "),
 
-                                                     p("Below the time series plots, we can see through different events(selectable) that the impact of certain events throughout the year causes a drastic change in household expenses.  During the harvest months of March-June, which is one of the biggest harvest seasons for the region, expenditure increase significantly which can explain many of the spikes in the time series plot. This can be attributed to paying off certain expenses like big loans or other large expenses paid off due to a large influx of income. In addition, during times of festivals like Diwali and Dusserah, expenses are also seen to rise."),
+                                                     p("Household expenditure comprises of spending on consumption (e.g., food) and non-consumption (e.g., rent) items. The average weekly expenditure 
+                                                       over the 52-week data period was ₹1983 (US$ 30.53), with a median of ₹1832 (US$ 28.21), using 1 US Dollar = ₹0.0154 exchange rate in 2018.
+                                                       The most significant expenses occurred during harvest seasons, particularly in villages with high amounts of land-holding and high proportions of 
+                                                       agriculture, such as Beguakhali and Shibpur. We also observed increases in expenditure before the cyclones hit, which may reflect households' panic 
+                                                       purchases to prepare for the onset of cyclones."),
+                                                     
+                                                     p("Villages in the Sagar and Namkhana Blocks have similar expenditure patterns over the 52 weeks. Average weekly expenditure peaks for both 
+                                                       administrative blocks during the harvest season and after the Fani cyclone. Expenditure behavior in Gosba and Hanglganj blocks are also similar. 
+                                                       In both blocks, expenditure fluctuates during Kharif crop harvest, increases on Republic Day, increases before the Fani cyclone and decreases after 
+                                                       the hit of the Fani cyclone. These patterns suggest that households’ location may affect spending habits. "),
 
                                                      br("")
                                                      
@@ -1436,12 +1446,20 @@ ui <- navbarPage(title = "",
                                               h4(strong(""), align = "justify"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Food Consumption")),
-                                                     p("Additionally, we show the average weekly expenditure on food consumption items from November 2018 - October 2019. Consumption expenditure includes purchases by households on goods and services, excluding housing. By visualizing consumption expenditures over time, we can gain information about household spending behavior, identify changes in spending, as well which consumption items are bought most frequently. Within the data period, the Sundarbans region spent an average of 766.13 Rupees per week on consumption items; they also bought an average of seven food items per week."),
-                                                     p("First, we provide a time series of average expenditure on all food items, then separated by staple food items, meats, and other consumable items."),
-                                                     p("• Staple Items - Rice/Grains, Flour, Vegetables, Fruits, Tubers, Beans and Spices"),
-                                                     p("• Meats - Red Meat, Fish, and Poultry"),
-                                                     p("• Other - Eggs, Dairy, Packaged Foods, Tea, and Sinful Items"),
-                                                     p("We identified that most of the food consumption is being used for staple food items, followed by meats. We observed a significant spike in 'Other' items, in Shibpur, in late April due to a large increase in expenditure on sinful items (tea, cigarettes, betel leaves, bidil, etc.). These items are often deemed to be harmful to society, but provide certain satisfaction to consumers. Therefore, this increase in consumption could suggest a communal need to cope with the Fani cyclone that happened at this time."),
+                                                     p("Consumption expenditure includes purchases by households on goods and services. Within the data period, households spent an average of ₹766.13 (US$ 11.79) 
+                                                       per week on consumption items; they also consume on average, seven food items per week. "),
+                                                     p("We decompose food consumption by staple food items, meats, and other consumable items:"),
+                                                     (tags$ul(
+                                                     tags$li("Staple Items - Rice/Grains, Flour, Vegetables, Fruits, Tubers, Beans and Spices"),
+                                                     tags$li("Meats - Red Meat, Fish, and Poultry"),
+                                                     tags$li("Other - Eggs, Dairy, Packaged Foods, Tea, and Sinful Items"),
+                                                     )),
+                                                     p("Families tend to mostly spend on staple food items followed by meats for their food consumption habits. For most villages, there was a significant increase
+                                                       in the consumption of staple food items during Rama Navami and after the Fani cyclone. There is a significant spike for 'Other' items, in Shibpur, in late April. 
+                                                       This spike is due to a large increase in expenditure on items such as tea, cigarettes, betel leaves, bidi, etc. These items are often deemed to be harmful to society 
+                                                       but provide certain satisfaction to consumers. Therefore, the increase in consumption of these items could suggest a consumption mechanism for coping with the aftermath 
+                                                       of Fani cyclone that coincided with this spike. Notably, households within the Sagar, Namkhana, and Patharpratima administrative blocks, on average, spend more on food 
+                                                       consumption than their counterparts in Gosaba and Hangalganj blocks. "),
                                                      br("")
                                                      
                                               )),
@@ -1491,8 +1509,13 @@ ui <- navbarPage(title = "",
                                               h4(strong(""), align = "justify"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Non-Food Consumption")),
-                                                     p("Furthermore, we examined consumption expenditure on non-food items, including clothes, books and tuition, utilities, toiletries, health, home repairs, transportation, livestock, agriculture, labor, and other non-food items."), 
-                                                     p("Expenditures on health, home repairs, and books/tuition made up the largest, but least frequent expenses, while utilities, toiletries, and transportation made up the most frequent purchases. Considering farmers make up the largest proportion of occupation in the Sundarbans, it is predictable to also see frequent consumption expenditures on agriculture, livestock, and labor. The average weekly expenditure on non-food items was 882.22 rupees. We observed increases in expenditure on non-food items during harvest seasons. The largest expenditure on non-food items occurred near the Bulbul, Matmo, and Hikaa cyclone, as well as near Diwali and Dusshera."),
+                                                     p("Consumption of non-food items includes clothes, books and tuition, utilities, toiletries, health, home repairs, transportation, livestock, 
+                                                       agriculture, and labor."), 
+                                                     p("Expenditures on health, home repairs, and books/tuition made up the largest but least recurring expenses, while utilities, toiletries, 
+                                                       and transportation made up the most frequent purchases. Considering farmers make up the largest proportion of occupation in the Sundarbans, 
+                                                       it is predictable to also see frequent expenditures on agriculture, livestock, and labor. The average weekly spending on non-food items was ₹882 (US$ 13.58). 
+                                                       There were also increases in non-food expenditure during harvest seasons. The largest non-food spending occurred near the Bulbul cyclone and local festivals
+                                                       such as Diwali and Dussehra."),
                                                      br("")
                                                      
                                               )),
@@ -1534,9 +1557,14 @@ ui <- navbarPage(title = "",
                                               h1(strong("Income"), align = "center"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
-                                                     p("We also report the average weekly household income for households across villages over 52 weeks. There is a significant increase in households’ income across most villages in late March. This increase coincides with the largest harvest for farmers in the region. We will investigate the different variations (spikes and dips) to determine the correlation between environmental shocks or unexpected household incidents."),
-                                                     p("Income: Over the twelve months that the data was collected, our team was able to track weekly household income and we were able to visualize it by breaking the income by each village. On average, the weekly income per household is 1395.61 INR and the median is 1341.82. Throughout the year many spikes in income can be caused by different harvest seasons, an influx in remittance, or other external factors. In early April we can see a bigger spike as this period marks one of the biggest harvest seasons seen by the local people."),
-                                                     p("Male and Female Income: Although we know that males in the region attain more income than females, we wanted to see if there are certain households in any villages where the female in the household made more than the men."),
+                                                     p("Income is defined as total male and female income, including remittances. On average, the weekly income per household across villages is approximately 
+                                                       ₹1400 (US$ 21.56), and the median is about ₹1400 (US$ 21.56). Throughout the year, income fluctuates for many households due to different factors such as
+                                                       harvest seasons, an influx of remittances, or other external factors. There are also considerable variations in average weekly household income across the sampled
+                                                       villages over the 52 weeks. For example, in late March, there was an increase in average income for families living in Beguakhali, Haridaskati Samsernagar, 
+                                                       Purba Dwarokapur, and Sagar. The increase is especially significant for households in Beguakhali. Before March, the average weekly income was around ₹1500 (US$ 23.1), then it 
+                                                       increased substantially to over ₹7500 (US$ 115.5) in the last week of March. This spike is likely caused by an increase in remittances."),
+                                                     p("Males earn more in this region than females. Males average weekly income is ₹1065.54 (US$ 16.4 whereas for females the mean weekly income is ₹96 (US$ 1.48). 
+                                                       Female income has a higher variance across villages than males."),
                                                      p("The importance of remittance income can be seen in this graph as all of the villages have similar weekly incomes before adding remittance. The village of Sagar has a weekly average income of around 1954 INR which is one of the higher weekly incomes in the region. Since many of these households work for wages either as agriculture workers or casual laborers, the per week income is relatively the same throughout the region. This can indicate why the weekly income is ranging consistently in-between 1000 INR and 2000 INR.")
                                                      )),
                                      # Sidebar with a select input for village
@@ -1580,10 +1608,19 @@ ui <- navbarPage(title = "",
                                               h1(strong("Borrowing"), align = "center"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
-                                                     p("Issues in the Sundarbans region, including extreme weather, have constrained livelihood opportunities as the natural resources are dwindling. This has constrained households’ income levels and incentivized a large proportion of the population to migrate from this mangrove delta in hopes of acquiring a better income. Additionally, in the Sundarbans region, households are turning to borrowing when they have a need but cannot afford to purchase on their own."),
-                                                     p("Our evaluation shows the main purpose for borrowing is consumption, with over 2000 total borrowing transactions from November 2018 to October 2019. Consumption includes purchasing any food or non-food items (e.g. rent). Borrowing is often used to invest in assets in hopes of producing a better return. In the Sundarbans region, this is not common. There are very few occurrences of households making asset purchases or investing in agricultural purchases. Rather, these households borrow for consumption. This includes borrowing when unexpected costs come up, such as accidents or unexpected repairs. Approximately half of the loans are given in cash, the other half are given in kind. An in-kind loan is where a debtor can borrow without having to pay in cash. This can be done in multiple forms, such as lending land or labor. This form of loan often leads to larger losses in the event of a default, where the borrower is unable to pay back the lender."),
-                                                     p("Our evaluations show that both the amount borrowed and the number of households borrowing throughout the year are relatively consistent. There was a large spike in the amount borrowed between April and July in Purba Dwarokapur, Shibpur, and Sagar. This spike occurred during the dry season at roughly the same time the Fani Cyclone hit this region. The number of households borrowing had an early spike in Bijoynagar, with over 30 households borrowing before January of 2019. This spike occurs at the same time as the Kharif and Rabi crop harvests. If you deselect Bijoynagar, there is a maximum of 17 households borrowing each week. During the Rabi season or dry season, there was a dip in the number of households borrowing. During the Rabi Season, while some vegetables are grown, there are not many crops and most of the cultivated areas are fallowed. This dip in the number of households borrowing during the Rabi Season coincides with the peak in the amount borrowed. This is evidence that the peak comes from outlier households borrowing large sums of money on a few occurrences. This supports our evaluation that borrowing throughout the year is relatively consistent, regardless of different shocks and seasons.")
-                                                   
+                                                     p("Households in the Sundarbans seem to use borrowing as a livelihood coping strategy. On average, approximately 0.22 households tend to borrow, and they usually
+                                                       borrow around ₹2703.12 (US$ 41.62). The amount borrowed and the number of households borrowing is relatively consistent during the year, despite the differences 
+                                                       in borrowing behavior across villages. For example, there is a significant spike in the amount borrowed between April and June by families living in Pargumti,
+                                                       Purba Dwarokapur, and Shibpur. This increase coincides with the dry season and after cyclone Fani. Bijoynagar had the largest number of households borrowing, 
+                                                       with over 30 households borrowing in January during the Karif harvest and Rabi planting seasons. During the Karif harvest season, there is a decrease in the number 
+                                                       of households borrowing and the amount borrowed. This suggests that borrowing is used throughout the year to help support families outside the primary harvest season 
+                                                       and to help with different shocks."),
+                                                     p("Families borrow primarily for food and non-food items (consumption), with over 2000 total transactions across households and villages during the 52 weeks, 
+                                                       roughly 6-7 loans per household. Usually, loans are used for investments with hopes of higher returns. In the Sundarbans region, however, this is not the 
+                                                       case as there are very few occurrences of households making asset purchases or investing in agriculture. Approximately half of the loans were in cash, 
+                                                       and the other half were in-kind. An in-kind loan is where a debtor can borrow without paying in cash. Repayment can be in multiple forms, such as lending 
+                                                       land or labor. This loan often leads to more significant losses in the event of a default, where the borrower cannot pay back the lender."),
+
                                               )),
                                      sidebarLayout(
                                        sidebarPanel(pickerInput("village_bramt", "Select Village:", choices = village_vector, 
@@ -1618,9 +1655,21 @@ ui <- navbarPage(title = "",
                                               h1(strong("Remittances"), align = "center"),
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
-                                                     p("In recent years, households have become more reliant on remittances as a significant source of income. As such, we examine temporal changes in remittances between October 2018 and November 2019. The villages in the Sundarbans receive consistent inputs of remittances throughout the data period. Notably, the Sundarbans region was affected by three severe cyclones during this period: Fani, Category 4 (April – May 2019), and Category 1, Bulbul and Matmo (October – November 2019). The Sundarbans also could have been negatively impacted by four cyclones that hit the Arabian Sea during this period: Vayu (Category 1, June 8-18), Hikaa (Category 1, September 20-26), Kyaar (Category 3, October 22 - November 3), and Maha (Category 4, October 28 - November 11). It is possible households are using remittances to prepare and cope with these cyclones and weather-related shocks."),
-                                                     p("With climate change impacting coastal areas disproportionately	compared to other environments, the Sundarban region is seeing the effects of this in one way through employment opportunities. Since farming and fishing are one of the biggest employment opportunities in the region, the effects of climate change on the population of fish or the amount of arable farming land have put a strain on the working population in the region. Due to this reason, many of the younger population (18-30) are seeking work in cities where the wage is higher and employment is easier to find. Since this impacts the households in the Sundarbans greatly, the migrant workers send money back(Remittance Income) to their families. As climate threats continue and are only going to get worse, the Sundarban region is going to see an increase in the lack of employment	opportunities which impacts the demographics of the region since the younger population is moving away."),
-                                                     p("Remittance impact on the livelihood of the Sundarban population can be seen as the data collected shows that the median weekly remittance income is 205.61 INR which is on average almost 800 INR. This significant portion of a household's monthly income shows the importance this income has on the family's ability to function. The graph also does a good job at showing spikes in remittance income which can be either because of festivals, other celebrations, money sent because of health concerns, or other shocks."),
+                                                     p("Sundarbans’ households receive a consistent flow of remittances during the 52 weeks suggesting that families in this area rely heavily on remittances 
+                                                       as a significant source of income. There are substantial variations in the spike of remittances across villages, suggesting that remittances are used not 
+                                                       only for shocks but for day-to-day livelihood. The median weekly remittance across all households is ₹107.14 (US$ 1.64), which is on average almost 
+                                                       ₹206 (US$ 3.17)."),
+                                                     p("Climate change has a heavier impact on coastal areas compared to other regions. The Sundarbans region is seeing the effects of these climate shocks
+                                                       in numerous ways, including employment opportunities. Since farming and fishing are two of the biggest employment sectors in the region, the impact of 
+                                                       climate change and cyclones is putting a strain on the working population. Due to this reason, many of the working population are seeking work in cities 
+                                                       where wages are higher, and there are greater employment prospects. Since out-migration significantly impacts the households’ local incomes in the Sundarbans, 
+                                                       the migrant workers send money back to their families. As threats from climate continue and only worsen, the Sundarbans region will see an increase in the lack 
+                                                       of employment opportunities, potentially impacting the demographics by increasing the dependency ratio of the area with the working population migrating."),
+                                                     p("With migration to different parts of West Bengal like Kolkata, one of the biggest cities in India, other cities in India, or overseas to Gulf countries 
+                                                       or Southeast Asia, migrants have several options to send money back home to the Sundarbans. However, the most common way to send remittances is in-person 
+                                                       when migrants return home to Sundarbans. This preference may be due to the additional costs associated with electronic banking/wire transfers, money orders, 
+                                                       or mobile transactions. Over the year of weekly financial data, families usually use remittances for consumption expenses such as food or utility purchases. 
+                                                       One-time “lump sum” transfers are also sent (seldomly) for expenses like tuition fees or assets needed to mitigate or cope with different shocks or unlikely circumstances."),
                                                      
                                                      
                                               ) ),
@@ -1972,6 +2021,7 @@ server <- function(input, output, session) {
       labs(color = "Villages", caption = "Mean: 2703.12  Median: 600.00") + 
       xlab("Date") +
       ylab("Total Weekly Borrowing (INR)")+
+      theme(plot.caption = element_text(size = 12))+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) +
       scale_color_brewer(palette = "Paired") +
       #theme(legend.position = "none")+
@@ -1988,7 +2038,8 @@ server <- function(input, output, session) {
   output$borr <- renderPlot({
     ggplot(filtered_dbr(), aes(x=week_num, y=d_br, color = village, na.rm=TRUE)) +
       geom_line() +
-      labs(caption = "Mean: 0.22  Median: 0.00") + 
+      labs(caption = "Mean: 0.22  Median: 0.00") +
+      theme(plot.caption = element_text(size = 12))+
       xlab("Date") +
       ylab("Number of Households")+
       theme_classic()+
@@ -2007,7 +2058,7 @@ server <- function(input, output, session) {
       labs(fill = "") + 
       xlab("Purpose for Borrowing)") +
       ylab("Amount Borrowed (INR)")+
-      theme(legend.position = "none", axis.text.y = element_text(size = 14))+
+      theme(legend.position = "none", axis.text.y = element_text(size = 16))+
       theme_classic() +
       scale_fill_brewer(palette = "Paired")
   })
@@ -2357,7 +2408,7 @@ server <- function(input, output, session) {
     ggplot(filtered_rmt_block(), aes(x = week , y = block_avg_rmt, color = Block)) +
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Weekly Remittances (INR)", color = "Blocks", caption = "Mean: 205.61  Median: 172.82") +
+      labs(x = "Date", y = "Average Weekly Remittances (INR)", color = "Blocks", caption = "Mean: 6774.58  Median: 5200.00") +
       theme(plot.caption = element_text(size = 12))+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       geom_rect(data = filtered_event_rmt(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
@@ -2396,7 +2447,7 @@ server <- function(input, output, session) {
   output$exp <- renderPlot({
     ggplot(filtered_exp(), aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) +
       geom_line() +
-      labs(x="Date", y="Average Weekly Expenditure (INR)", caption = "Mean: 1982.77   Median: 1832.10", color = "Villages") +
+      labs(x="Date", y="Average Weekly Expenditure (INR)", caption = "Mean: 19822.77   Median: 1869.61", color = "Villages") +
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + 
       scale_color_brewer(palette = "Paired")+
       theme_classic()+
@@ -2410,7 +2461,7 @@ server <- function(input, output, session) {
     ggplot(filtered_exp_block(), aes(x = week , y = block_avg_exp, color = Block)) +
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Weekly Expenditure", color = "Blocks", caption = "Mean: 1982.77  Median 1869.61") +
+      labs(x = "Date", y = "Average Weekly Expenditure", color = "Blocks", caption = "Mean: 58892.47  Median 55752.50") +
       theme(plot.caption = element_text(size = 12))+
       geom_rect(data = filtered_event_exp(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))
@@ -2452,6 +2503,7 @@ server <- function(input, output, session) {
     ggplot(filtered_malefemaleinc(), aes(x = week,y = !!input$Gender, color = village)) + geom_line() + 
       labs(x = "Date", y = "Average Weekly Income (INR)", color = "Village", caption = "Male - Mean: 1065.54  Median = 642.5   Female - Mean: 96.60  Median: 0.00 ") +
       theme_classic()+
+      theme(plot.caption = element_text(size = 12))+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), 
                        limits = c(10:40)) + scale_color_brewer(palette = "Paired")+
       geom_rect(data = filtered_event_inc(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
@@ -2472,7 +2524,7 @@ server <- function(input, output, session) {
     ggplot(filtered_inc_block(), aes(x = week, y = block_avg_inc, color = Block)) +
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Weekly Income (INR)", color = "Blocks", caption = "Mean: 1395.61  Median: 1329.69") +
+      labs(x = "Date", y = "Average Weekly Income (INR)", color = "Blocks", caption = "Mean: 414548.51  Median: 40988.50") +
       theme(plot.caption = element_text(size = 12))+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       geom_rect(data = filtered_event_inc(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
@@ -2542,7 +2594,7 @@ server <- function(input, output, session) {
     ggplot(filtered_cs_block(), aes(x = week , y = block_avg_cs, color = Block)) +
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Weekly Consumption", color = "Blocks", caption = "Mean: 766.13  Median: 721.76") +
+      labs(x = "Date", y = "Average Weekly Consumption", color = "Blocks", caption = "Mean: 22372.80  Median: 21625.00") +
       theme(plot.caption = element_text(size = 12))+
       geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))
@@ -2596,7 +2648,7 @@ server <- function(input, output, session) {
     ggplot(filtered_nf(), aes(x = week , y = block_avg_nf, color = Block)) +
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Weekly Consumption", color = "Blocks") +
+      labs(x = "Date", y = "Average Weekly Consumption", color = "Blocks", caption = "Mean: 26501.83  Median: 24192.50") +
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       geom_rect(data = filtered_event_cs_nonfood(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
     
