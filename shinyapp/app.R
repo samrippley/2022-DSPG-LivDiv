@@ -1126,7 +1126,6 @@ ui <- navbarPage(title = "",
                                               ),
                                      
                                      fluidRow(style = "margin: 6px;", align = "justify",
-                                              p("", style = "padding-top:10px;"),
                                               column(5, 
                                                      h2(strong("Sundarbans Area")),
                                                      p("Sampled households were surveyed in both North 24 –and South 24 – Parganas districts in West Bengal, India, where the Sundarbans region belongs administratively.
@@ -1195,6 +1194,7 @@ ui <- navbarPage(title = "",
 
                                               column(7, 
                                                      h2(strong("")),
+                                                     br(),
                                                      leafletOutput("map_leaflet", width = "100%", height = 800),
                                                      br(),
                                                      br(),
@@ -1390,7 +1390,6 @@ ui <- navbarPage(title = "",
                             tabPanel("Expenditure",
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Expenditure"), align = "center"),
-                                              p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("How are residents spending their money?")),
                                                      p("We present average weekly expenditure from November 2018 - October 2019 to examine the spending habits of households in the Sundarbans. 
                                                        The graphs will provide information on the changing seasonal patterns of residents' spending in the region and how they react to events such as 
@@ -1407,7 +1406,6 @@ ui <- navbarPage(title = "",
                                                        In both blocks, expenditure fluctuates during Kharif crop harvest, increases on Republic Day, increases before the Fani cyclone and decreases after 
                                                        the hit of the Fani cyclone. These patterns suggest that households’ location may affect spending habits. "),
 
-                                                     br("")
                                                      
                                               )),
                                      # Sidebar with a select input for village
@@ -1463,7 +1461,7 @@ ui <- navbarPage(title = "",
                                                        but provide certain satisfaction to consumers. Therefore, the increase in consumption of these items could suggest a consumption mechanism for coping with the aftermath 
                                                        of Fani cyclone that coincided with this spike. Notably, households within the Sagar, Namkhana, and Patharpratima administrative blocks, on average, spend more on food 
                                                        consumption than their counterparts in Gosaba and Hangalganj blocks. "),
-                                                     br("")
+                                                     
                                                      
                                               )),
                                      # Sidebar with a select input for village
@@ -1520,7 +1518,7 @@ ui <- navbarPage(title = "",
                                                        it is predictable to also see frequent expenditures on agriculture, livestock, and labor. The average weekly spending on non-food items was ₹882 (US$ 13.58). 
                                                        There were also increases in non-food expenditure during harvest seasons. The largest non-food spending occurred near the Bulbul cyclone and local festivals
                                                        such as Diwali and Dussehra."),
-                                                     br("")
+                                                   
                                                      
                                               )),
                                      # Sidebar with a select input for village
@@ -1560,7 +1558,6 @@ ui <- navbarPage(title = "",
                             tabPanel("Income",
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Income"), align = "center"),
-                                              p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
                                                      p("Income is defined as total male and female income, including remittances. On average, the weekly income per household across villages is approximately 
                                                        ₹1400 (US$ 21.56), and the median is about ₹1400 (US$ 21.56). Throughout the year, income fluctuates for many households due to different factors such as
@@ -1612,15 +1609,13 @@ ui <- navbarPage(title = "",
                             tabPanel("Borrowing",
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Borrowing"), align = "center"),
-                                              p("", style = "padding-top:10px;"),
-                                              column(12,h4(strong("Overview")),
-                                                     p("Households in the Sundarbans seem to use borrowing as a livelihood coping strategy. On average, approximately 22% of households tend to borrow, and they usually
-                                                       borrow around ₹2703.12 (US$ 41.62). The amount borrowed and the number of households borrowing is relatively consistent during the year, despite the differences 
-                                                       in borrowing behavior across villages. For example, there is a significant spike in the amount borrowed between April and June by families living in Pargumti,
-                                                       Purba Dwarokapur, and Shibpur. This increase coincides with the dry season and after cyclone Fani. Bijoynagar had the largest number of households borrowing, 
-                                                       with over 30 households borrowing in January during the Karif harvest and Rabi planting seasons. During the Karif harvest season, there is a decrease in the number 
-                                                       of households borrowing and the amount borrowed. This suggests that borrowing is used throughout the year to help support families outside the primary harvest season 
-                                                       and to help with different shocks."),
+                                              column(12,h4(strong("Borrowing Practices by Sundarbans households")),
+                                                     p("Households in the Sundarbans seem to use borrowing as a livelihood coping strategy. On average, approximately 22% of households tend to borrow each week. 
+                                                     It is most common to borrow no re usually borrow around 600₹ (US$ 9.25) a week. The amount borrowed and the number of households borrowing is relatively consistent
+                                                     during the year, despite the differences in borrowing behavior across villages. For example, there is a significant spike in the amount borrowed between April and 
+                                                     June by families living in Pargumti, Purba Dwarokapur, and Shibpur. This increase coincides with the dry season and after cyclone Fani. Bijoynagar had the largest number of households borrowing,
+                                                     with over 30 households borrowing in January during the Karif harvest and Rabi planting seasons. During the Karif harvest season, there is a decrease in the number of households borrowing and the amount borrowed. 
+                                                       This suggests that borrowing is used throughout the year to help support families outside the primary harvest season and to help with different shocks."),
                                                      p("Families borrow primarily for food and non-food items (consumption), with over 2000 total transactions across households and villages during the 52 weeks, 
                                                        roughly 6-7 loans per household. Usually, loans are used for investments with hopes of higher returns. In the Sundarbans region, however, this is not the 
                                                        case as there are very few occurrences of households making asset purchases or investing in agriculture. Approximately half of the loans were in cash, 
@@ -1660,8 +1655,7 @@ ui <- navbarPage(title = "",
                             tabPanel("Remittances", value = "",
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Remittances"), align = "center"),
-                                              p("", style = "padding-top:10px;"),
-                                              column(12,h4(strong("Overview")),
+                                              h4(strong("Remittances Sources and Usage")),
                                                      p("Sundarbans’ households receive a consistent flow of remittances during the 52 weeks suggesting that families in this area rely heavily on remittances 
                                                        as a significant source of income. There are substantial variations in the spike of remittances across villages, suggesting that remittances are used not 
                                                        only for shocks but for day-to-day livelihood. The median weekly remittance across all households is ₹107.14 (US$ 1.64), which is on average almost 
@@ -1672,22 +1666,10 @@ ui <- navbarPage(title = "",
                                                        where wages are higher, and there are greater employment prospects. Since out-migration significantly impacts the households’ local incomes in the Sundarbans, 
                                                        the migrant workers send money back to their families. As threats from climate continue and only worsen, the Sundarbans region will see an increase in the lack 
                                                        of employment opportunities, potentially impacting the demographics by increasing the dependency ratio of the area with the working population migrating."),
-                                                     p("With migration to different parts of West Bengal like Kolkata, one of the biggest cities in India, other cities in India, or overseas to Gulf countries 
-                                                       or Southeast Asia, migrants have several options to send money back home to the Sundarbans. However, the most common way to send remittances is in-person 
-                                                       when migrants return home to Sundarbans. This preference may be due to the additional costs associated with electronic banking/wire transfers, money orders, 
-                                                       or mobile transactions. Over the year of weekly financial data, families usually use remittances for consumption expenses such as food or utility purchases. 
-                                                       One-time “lump sum” transfers are also sent (seldomly) for expenses like tuition fees or assets needed to mitigate or cope with different shocks or unlikely circumstances."),
                                                      
-                                                     
-                                              ) ),
-                                     fluidRow(style = "margin: 6px;", align = "justify",
-                                              p("", style = "padding-top:10px;"),
-                                              column(12, h4(strong("Remittances Sources and Usage")),
                                                      p("With migrant workers coming from different parts of West Bengal like Kolkata which is one the biggest cities in India, or from overseas in the Middle East or Southeast Asia, they use different methods to send money back home to the Sundarbans. This region also has limited access to internet services as well as cellular data making wire transfers, and other electronic banking unfeasible and also expensive due to high transfer rates. Due to this reason, the most common way money is sent back is in person when migrant workers come back home. The second most common method used to send money back is bank transfers. Within India, money can be transferred at the same banks in different locations which is often more convenient. Over the one year of weekly financial data, remittance is sent as a one-time “lump sum” for expenses like tuition fees or needed capital for different shocks or unlikely circumstances. Remittance is also sent on monthly or bi-monthly instances to help with the consistent expenses. Most frequently the money sent from migrant workers is used to take care of consumption expenses like food or utility purchases. Least frequently this money is used for medical expenses, tuition, or big durable purchases."),
-                                                     br(""), #plotOutput("rmt_method", width = "70%")
-                                                     
-                                                     
-                                              )),
+                                                  
+                                              ),
                                      
                                      
                                      # Sidebar with a select input for village
@@ -1789,7 +1771,6 @@ ui <- navbarPage(title = "",
                  tabPanel("Team", 
                           fluidRow(style = "margin-left: 100px; margin-right: 100px;",
                                    align = "center",
-                                   br(""),
                                    h1(strong("Team")),
                                    h4(strong("VT Data Science for the Public Good")),
                                    p("The", a(href = 'https://aaec.vt.edu/academics/undergraduate/beyond-classroom/dspg.html', 'Data Science for the Public Good (DSPG) Young Scholars program', target = "_blank"),
