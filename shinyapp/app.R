@@ -1074,7 +1074,7 @@ ui <- navbarPage(title = "",
                                    )
                           ),
                           fluidRow(align = "left",
-                          p(tags$small(em('Source: Images taken by Sundarbans Field Team'))),
+                                   p(tags$small(em('Source: Images taken by Sundarbans Field Team'))),
                           ),
                  ),
 
@@ -1838,26 +1838,25 @@ ui <- navbarPage(title = "",
                          fluidRow(style = "margin: 6px;", align = "justify",
                                   column(12, 
                                          h2(align = "center", strong("References")),
-                                         p(tags$small(em('Alam, M. M., Hossain, M. A., &amp; Shafee, S. (2003). Frequency of bay of bengal cyclonic storms and depressions crossing different Coastal Zones. International Journal of Climatology, 23(9), 1119–1125. https://doi.org/10.1002/joc.927 '))),
-                                         p(tags$small(em('CCSP (2008). Impacts of Climate Change and Variability on Transportation Systems and Infrastructure: Gulf Coast Study, Phase I. A Report by the U.S. Climate Change Science Program and the Subcommittee on Global Change Research. Savonis, M. J., V.R. Burkett, and J.R. Potter (eds.). Department of Transportation, Washington, DC, USA, 445 pp.'))),
-                                         p(tags$small(em('Chandra, Ganesh & Sagar, R.. (2003). Fisheries in Sundarbans: Problems and Prospects. 10.2139/ssrn.2084014. '))),
-                                         p(tags$small(em('Connect. Collaborate. Express | RoundGlass Living. (n.d.). Roundglass.com. Retrieved July 20, 2022, from https://roundglasssustain.com/photo-stories/honey-gatherers-sundarbans.'))),
-                                         p(tags$small(em('Evan, Amato & Camargo, Suzana. (2011). A Climatology of Arabian Sea Cyclonic Storms. JOURNAL OF CLIMATE.'))),
-                                         p(tags$small(em('Halder, Nirmol & Merchant, Andrew & Misbahuzzaman, Khaled & Wagner, Sven & Mukul, Sharif. (2021). Why some trees are more vulnerable during catastrophic cyclone events in the Sundarbans mangrove forest of Bangladesh?. Forest Ecology and Management. 490. 119117. 10.1016/j.foreco.2021.119117.'))),
-                                         p(tags$small(em('Kabir, Kazi Ahmed & Saha, S B & Phillips, Michael. (2019). Aquaculture and Fisheries in the Sundarbans and Adjacent Areas in Bangladesh: Resources, Productivity, Challenges and Opportunities. 10.1007/978-3-030-00680-8_9.'))),
-                                         p(tags$small(em('Kumar, Shubham & Lal, Preet & Kumar, Amit. (2020). Turbulence of tropical cyclone ‘Fani’ in the Bay of Bengal and Indian subcontinent. Natural Hazards.'))),
-                                         p(tags$small(em('NRC (2010). Adapting to the Impacts of Climate Change. National Research Council. The National Academies Press, Washington, DC, USA.'))),
-                                         p(tags$small(em('Pramanik, A., Sengupta, S., & Bhattacharyya, M. (2019, January 1). Chapter 5 - Microbial Diversity and Community Analysis of the Sundarbans Mangrove, a World Heritage Site (S. Das & H. R. Dash, Eds.). ScienceDirect; Academic Press. https://www.sciencedirect.com/science/article/pii/B9780128148495000058‌'))),
-                                         p(tags$small(em('ReliefWeb. (2020, May 15). Bangladesh: Cyclone Bulbul final report - operation dref N° MDRBD023 - bangladesh. ReliefWeb. Retrieved July 20, 2022, from https://reliefweb.int/report/bangladesh/bangladesh-cyclone-bulbul-final-report-operation-dref-n-mdrbd023 '))),
-                                         p(tags$small(em('Saha, (Dr.)Dipankar. (2015). Diversified Agriculture in Sundarbans. 10.13140/RG.2.1.4691.3446. '))),
-                                         p(tags$small(em('Sundarbans - an overview | ScienceDirect Topics. (n.d.). Www.sciencedirect.com. https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/sundarbans.'))),
-                                         p(tags$small(em('Titumir, R. A. M. (n.d.). Sundarbans under threat. Prothomalo. Retrieved July 20, 2022, from https://en.prothomalo.com/environment/sundarbans-under-threat.'))),
-                                         p(tags$small(em('UNESCO World Heritage Centre. (2018). The Sundarbans. Unesco.org. https://whc.unesco.org/en/list/798/.'))),
-                                         p(tags$small(em('Velmurugan, A., Ambast, S. K., Swarnam, T. P., Burman, D., Mandal, S., & Subramani, T. (2018, January 1). Chapter 21 - Land Shaping Methods for Climate Change Adaptation in Coastal and Island Region (C. Sivaperuman, A. Velmurugan, A. K. Singh, & I. Jaisankar, Eds.). ScienceDirect; Academic Press. https://www.sciencedirect.com/science/article/pii/B9780128130643000211.'))),
-                                         p(tags$small(em('Worlddata.info. (n.d.). Most recent cyclones in India. Worlddata.info. Retrieved July 19, 2022, from https://www.worlddata.info/asia/india/cyclones.php.'))),
-                                         p(tags$small(em('USGCRP (2014). Moser, S. C., M. A. Davidson, P. Kirshen, P. Mulvaney, J. F. Murley, J. E. Neumann, L. Petes, and D. Reed, 2014: Ch. 25: Coastal Zone Development and Ecosystems. Climate Change Impacts in the United States: The Third National Climate As­sessment, J. M. Melillo, Terese (T.C.) Richmond, and G. W. Yohe, Eds., U.S. Global Change Research Program, , 579-618.')))
+                                         p('Alam, M. M., Hossain, M. A., &amp; Shafee, S. (2003). Frequency of bay of bengal cyclonic storms and depressions crossing different Coastal Zones.', tags$i('International Journal of Climatology: A Journal of the Royal Meteorological Society,'), '23(9), 1119–1125.'),
+                                         p('CCSP (2008). Impacts of Climate Change and Variability on Transportation Systems and Infrastructure: Gulf Coast Study, Phase I.', tags$i('A Report by the U.S. Climate Change Science Program and the Subcommittee on Global Change Research.'), 'Savonis, M. J., V.R. Burkett, and J.R. Potter (eds.). Department of Transportation, Washington, DC, USA, 445 pp.'),
+                                         p('Chandra, Ganesh & Sagar, R.. (2003).', tags$i('Fisheries in Sundarbans: Problems and Prospects.'), '10.2139/ssrn.2084014. '),
+                                         p('Connect. Collaborate. Express | RoundGlass Living. (n.d.).', tags$i('Roundglass.com.'), 'Retrieved July 20, 2022, from https://roundglasssustain.com/photo-stories/honey-gatherers-sundarbans.'),
+                                         p('Evan, Amato & Camargo, Suzana. (2011). A Climatology of Arabian Sea Cyclonic Storms.', tags$i('JOURNAL OF CLIMATE.')),
+                                         p('Halder, Nirmol & Merchant, Andrew & Misbahuzzaman, Khaled & Wagner, Sven & Mukul, Sharif. (2021). Why some trees are more vulnerable during catastrophic cyclone events in the Sundarbans mangrove forest of Bangladesh?.', tags$i('Forest Ecology and Management.'), '490. 119117. 10.1016/j.foreco.2021.119117.'),
+                                         p('Kabir, Kazi Ahmed & Saha, S B & Phillips, Michael. (2019).', tags$i('Aquaculture and Fisheries in the Sundarbans and Adjacent Areas in Bangladesh: Resources, Productivity, Challenges and Opportunities.'), '10.1007/978-3-030-00680-8_9.'),
+                                         p('Kumar, Shubham & Lal, Preet & Kumar, Amit. (2020). Turbulence of tropical cyclone ‘Fani’ in the Bay of Bengal and Indian subcontinent.', tags$i('Natural Hazards.')),
+                                         p('NRC (2010). Adapting to the Impacts of Climate Change. National Research Council.', tags$i('The National Academies Press,'), 'Washington, DC, USA.'),
+                                         p('Pramanik, A., Sengupta, S., & Bhattacharyya, M. (2019, January 1). Chapter 5 - Microbial Diversity and Community Analysis of the Sundarbans Mangrove, a World Heritage Site (S. Das & H. R. Dash, Eds.).', tags$i('ScienceDirect; Academic Press.')),
+                                         p('ReliefWeb. (2020, May 15). Bangladesh: Cyclone Bulbul final report - operation dref N° MDRBD023 - bangladesh.', tags$i('ReliefWeb.'), 'Retrieved July 20, 2022, from https://reliefweb.int/report/bangladesh/bangladesh-cyclone-bulbul-final-report-operation-dref-n-mdrbd023'),
+                                         p('Saha, (Dr.)Dipankar. (2015).', tags$i('Diversified Agriculture in Sundarbans.'), '10.13140/RG.2.1.4691.3446. '),
+                                         p('Sundarbans - an overview | ScienceDirect Topics. (n.d.).', tags$i('www.sciencedirect.com.'), 'https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/sundarbans.'),
+                                         p('Titumir, R. A. M. (n.d.). Sundarbans under threat.', tags$i('Prothomalo.'), 'Retrieved July 20, 2022'),
+                                         p('UNESCO World Heritage Centre. (2018).', tags$i('The Sundarbans.'), 'Unesco.org. https://whc.unesco.org/en/list/798/.'),
+                                         p('Velmurugan, A., Ambast, S. K., Swarnam, T. P., Burman, D., Mandal, S., & Subramani, T. (2018, January 1). Chapter 21 - Land Shaping Methods for Climate Change Adaptation in Coastal and Island Region (C. Sivaperuman, A. Velmurugan, A. K. Singh, & I. Jaisankar, Eds.).', tags$i('ScienceDirect; Academic Press.')),
+                                         p('Worlddata.info. (n.d.).', tags$i('Most recent cyclones in India.'), 'Worlddata.info. Retrieved July 19, 2022, from https://www.worlddata.info/asia/india/cyclones.php.'),
+                                         p('USGCRP (2014). Moser, S. C., M. A. Davidson, P. Kirshen, P. Mulvaney, J. F. Murley, J. E. Neumann, L. Petes, and D. Reed, 2014: Ch. 25: Coastal Zone Development and Ecosystems.', tags$i('Climate Change Impacts in the United States: The Third National Climate As­sessment,'), 'J. M. Melillo, Terese (T.C.) Richmond, and G. W. Yohe, Eds., U.S. Global Change Research Program, , 579-618.')
                                              ),
-            
                                   )),
                  
                  inverse = T)
@@ -2298,7 +2297,7 @@ server <- function(input, output, session) {
       land_fallow_plot <- ggplot(land_fallow, aes(x = forcats::fct_rev(village), y = sum, fill = village)) +
         geom_col(hoverinfo = "text", aes(text = paste("Village:", villages,"<br>Land Fallowed: ", sum)))+
         theme(legend.position = "none") +
-        labs(x = "", y = "Total Land Fallowed", caption = "*Note: For missing bars, villages did not have any land fallowed")+
+        labs(x = "", y = "Total Land Fallowed (Kathas)", caption = "*Note: For missing bars, villages did not have any land fallowed")+
         coord_flip() + scale_fill_brewer(palette = "Paired")
       ggplotly(land_fallow_plot, tooltip = c("text"))
     }
