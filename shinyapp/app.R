@@ -1094,22 +1094,33 @@ ui <- navbarPage(title = "",
                                           br()
                                    ),
                                    column(8, align = "center",
-                                          h3(strong("Example of Financial Diary", align = "center", style = "margin: 13px;")),
+                                          
                                           tabsetPanel(
                                             tabPanel("Front Side",
-                            h4(strong("Financial Activity"), align = "center", style = "margin: 13px;"),
+                            h4(strong("Example of Financial Diary", align = "center", style = "margin: 13px;")),
                             
                                    img(src='Picture2.png', width = "90%", align = "center")),
                             tabPanel("Back Side",
                             
-                            
-                                   h4(strong("Expenditure Activity"), align = "center", style = "margin: 13px;"),
+                                    h4(strong("Example of Financial Diary", align = "center", style = "margin: 13px;")),
+                                 
                                 
                                    img(src='fd.png', width = "60%", align = "center", style = "margin: 6px;")),
-                           
+                            tabPanel("Gallery",
+                                    fluidRow(style = "margin: 6px;", align = "right",
+                                      h4(strong("Images taken by Sundarbans Field Team"), align = "center"),
+                                      imageOutput("image", height = "500px"),
+                                       actionButton("previous", "Previous", align = "right"),
+                                        actionButton("next", "Next", align = "right"),
+                                       
+                            
+                                    ))),
                           
-                          
-                          )))), 
+                                          ),
+                            
+                            
+                            
+                          )), 
                  ## Sundarbans Region--------------------------------------------
                  navbarMenu("Sundarbans Region" ,
                             tabPanel("Villages", 
