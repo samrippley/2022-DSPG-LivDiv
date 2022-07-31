@@ -1232,19 +1232,7 @@ ui <- navbarPage(title = "",
                             
                                      
                             ),
-                            #tabPanel("Gallery",
-                             #        fluidRow(style = "margin: 6px;", 
-                              #                column(12,
-                               #                      h2(strong("Images"))
-                                                     
-                                #                     
-                                 #             ),   
-                                  #            mainPanel( 
-                                   #             actionButton("previous", "Previous"),
-                                    #            actionButton("next", "Next"),
-                                     #           imageOutput("image")
-                                                
-                                      #        ))),
+                            
                  ),
                  
                  ## Tab Demographics --------------------------------------------
@@ -1311,7 +1299,9 @@ ui <- navbarPage(title = "",
                                                      p("Despite most of the population being involved in agriculture, land holding in the Sundarbans is mostly marginal. Pargumti and Bijoynagar have the 
                                                        highest average amount of land owned, with households owning over 60 kathas. Kathas is a land measurement commonly used in India. For reference, 
                                                        1 acre of land equals 32 kathas. To help rest and regenerate harvest, farmers tend to fallow their land. Bijoynagar had the largest average land fallow 
-                                                       (about 95 kathas, approx. 3 acres) for the current agricultural season. ")
+                                                       (about 95 kathas, approx. 3 acres) for the current agricultural season. "),
+                                                     p(tags$small("Select:")),                                                         
+                                                     actionButton(inputId ="button1", label = "Map")
                                                      
                                                      
                                               ) ,
@@ -1336,14 +1326,14 @@ ui <- navbarPage(title = "",
                                                      textOutput("result5"), align = "left",
                                                      textOutput("result8"), align = "left"),
                                               ),
-                                              column(12, 
-                                                     fluidPage(
-                                                       p(tags$small("Select:")),                                                         
-                                                       actionButton(inputId ="button1", label = "Map"),
-                                                       br(),
-                                                       br()
-                                                    ),
-                                     ))),
+                                              #column(12, 
+                                               #      fluidPage(
+                                                #       p(tags$small("Select:")),                                                         
+                                                 #      actionButton(inputId ="button1", label = "Map"),
+                                                  #     br(),
+                                                   #    br()
+                                                   # ),
+                                     )),
                             tabPanel("Financial", 
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Financial Practices"), align = "center"),
