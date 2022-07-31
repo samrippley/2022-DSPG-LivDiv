@@ -1278,6 +1278,8 @@ ui <- navbarPage(title = "",
                                                      fluidRow(align = "center",
                                                               h4(strong(textOutput("result2"))),
                                                      withSpinner(plotlyOutput("ageplot", height = "500px", width = "100%")),
+                                                     textOutput("result6"), align = "left",
+                                                     textOutput("result7"), align = "left",
                                                      ),
                                               ))),
                                               column(12, 
@@ -1328,7 +1330,7 @@ ui <- navbarPage(title = "",
                                                               h4(strong(textOutput("result1"))),
                                                      withSpinner(plotlyOutput("ocuplot", height = "500px")),
                                                      br(),
-                                                     textOutput("result4"), align = "left"),
+                                                     textOutput("result5"), align = "left"),
                                               ),
                                               column(12, 
                                                      fluidPage(
@@ -1878,12 +1880,25 @@ server <- function(input, output, session) {
   #note 
   
   
-  output$result6 <- renderText({
+  output$result7 <- renderText({
     if (ageVar() == "Mean Years of Education for Head of Households") {
-     paste("")
+      paste("")
     }
     else if (ageVar() == "Households that Live Below Poverty Line (₹204) per week") {
+      paste("(Live below the poverty line)")
+    }
+    else if (ageVar() == "Household Heads Marital Status") {
       
+    }
+  })
+  
+  
+  output$result6 <- renderText({
+    if (ageVar() == "Mean Years of Education for Head of Households") {
+     paste("Mean: 5.30 Years | Median: 5.00 Years")
+    }
+    else if (ageVar() == "Households that Live Below Poverty Line (₹204) per week") {
+      paste("Mean: 10.3 Households | Median: 10 Households")
     }
     else if (ageVar() == "Household Heads Marital Status") {
       
@@ -1892,14 +1907,14 @@ server <- function(input, output, session) {
   
   output$result4 <- renderText({
     if (finVar() == "Number of Households that Own a Business") {
-      paste("Mean: 3.6 | Median: 3  (Do own a Business)")
+      paste("Mean: 3.60 households | Median: 3.00 households | (Own a Business)")
     }
     else if (finVar() == "Proportion of Households Owning Assets") {
       paste("")
     }
     
     else if (finVar() == "Income vs Remmitances (October 2018 - November 2019)") {
-      paste("")
+      paste("Mean: INR 4214 | Median: INR 3800")
     }
     else if (finVar() == "Average Monthly Salary per Household by Village")  {
       paste("")
@@ -1914,7 +1929,7 @@ server <- function(input, output, session) {
     
   })  
   
-  output$result4 <- renderText({ 
+  output$result5 <- renderText({ 
   if (ocuVar() == "Primary Occupation for Head of Households") {
     paste("*Note: Missing bar indicates zero value for occupation")
   } 
@@ -1922,7 +1937,7 @@ server <- function(input, output, session) {
     paste("*Note: Missing bar indicates zero value for occupation")
   }
   else if (ocuVar() == "Percentage of Households Involved in Agricultural Farming") {
-    paste("")
+    paste("Mean: 61.92% | Median: 60% | (Involved in Farming)")
   }
   else if (ocuVar() == "Average Amount of Land Owned by Village") {
     paste("Mean: 48.37 Kathas | Median: 40 Kathas")
