@@ -1245,7 +1245,10 @@ ui <- navbarPage(title = "",
                                                      h4(strong("Who lives in the Sundarbans Region?")),
                                                      p("We examine the data from the baseline survey collected in November 2018 to understand better the socio-demographic and economic characteristics of the Sundarbans population. Maps and Graphs are interactive – one can hover over an individual marker to produce a popup that provides specific attributes."),
                                                      p("Household heads in the Sundarbans area tend to be middle-aged adults, with the mean being around 49 years. Interestingly, there is a striking pattern by administrative block. Household heads that live in the Sagar, Namkhana, and Patharpratima Blocks are younger than their counterparts in Gosaba and Hangalganj. Additionally, families in Sagar, Namkhana, and Patharpratima Blocks have a greater median household size and, on average, have a higher number of children per household. Overall, most families are headed by married parents. Notably, males are more likely to be heads of married households, while females tend to be heads of unmarried households."),
-                                                     p("Household heads also have low levels of education as the average education across villages is approximately five years, comparable to completing elementary school. This low level of education may contribute to the high levels of the poverty level in the region. More than half of families in Haridaskati Samsernagar live with less than ₹240 per week per person (Indian poverty line of 2018-2019). However, other villages like Purba Dwarokapur have a lower proportion of households (18%) below the poverty line.")
+                                                     p("Household heads also have low levels of education as the average education across villages is approximately five years, comparable to completing elementary school. This low level of education may contribute to the high levels of the poverty level in the region. More than half of families in Haridaskati Samsernagar live with less than ₹240 per week per person (Indian poverty line of 2018-2019). However, other villages like Purba Dwarokapur have a lower proportion of households (18%) below the poverty line."),
+                                                     br(),
+                                                     p(tags$small("Select:")),                                                         
+                                                     actionButton(inputId ="button", label = "Map")
                                                      
                                               ) ,
                                               column(8,
@@ -1270,16 +1273,7 @@ ui <- navbarPage(title = "",
                                                      textOutput("result7"), align = "left",
                                                      ),
                                               ))),
-                                              column(12, 
-                                                     fluidPage(
-                                                       p(tags$small("Select:")),                                                         
-                                                       actionButton(inputId ="button", label = "Map")
-                                                       
-                                                     ),
-                          
-                                     
-                                              ),
-                                            
+                                              
                                      )), 
                             tabPanel("Livelihood", 
                                      fluidRow(style = "margin: 6px;", align = "justify",
@@ -1300,6 +1294,7 @@ ui <- navbarPage(title = "",
                                                        highest average amount of land owned, with households owning over 60 kathas. Kathas is a land measurement commonly used in India. For reference, 
                                                        1 acre of land equals 32 kathas. To help rest and regenerate harvest, farmers tend to fallow their land. Bijoynagar had the largest average land fallow 
                                                        (about 95 kathas, approx. 3 acres) for the current agricultural season. "),
+                                                     br(),
                                                      p(tags$small("Select:")),                                                         
                                                      actionButton(inputId ="button1", label = "Map")
                                                      
@@ -1322,17 +1317,10 @@ ui <- navbarPage(title = "",
 
                                                               h4(strong(textOutput("result1"), align = "center")),
                                                      withSpinner(plotlyOutput("ocuplot", height = "500px")),
-                                                     #br(),
                                                      textOutput("result5"), align = "left"),
                                                      textOutput("result8"), align = "left",
                                               ),
-                                              #column(12, 
-                                               #      fluidPage(
-                                                #       p(tags$small("Select:")),                                                         
-                                                 #      actionButton(inputId ="button1", label = "Map"),
-                                                  #     br(),
-                                                   #    br()
-                                                   # ),
+                                              
                                      )),
                             tabPanel("Financial", 
                                      fluidRow(style = "margin: 6px;", align = "justify",
@@ -1349,6 +1337,9 @@ ui <- navbarPage(title = "",
                                                        Remittances are any income household receives from someone working away from home. We visualize the relationship between average weekly remittances and 
                                                        average weekly income. In most villages, higher remittances correlate with a higher weekly income, except for Amrabti, Pargumti, and Sagar, 
                                                        suggesting other possible economic opportunities in these three villages."),
+                                                     br(),
+                                                     p(tags$small("Select:")),
+                                                     actionButton(inputId ="button2", label = "Map")
                                                     
                                               ),
                                               column(8, h4(strong("Financial – November 2018 (Baseline)")),
@@ -1368,14 +1359,7 @@ ui <- navbarPage(title = "",
                                                    
                                                      
                                               )),
-                                               column(12, 
-                                                      fluidPage(
-                                                        p(tags$small("Select:")),
-                                                        actionButton(inputId ="button2", label = "Map")
-                                                      
-                                                      ),
-                                              
-                                     )),
+                                              ),
                             
                  )), 
 
