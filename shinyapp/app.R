@@ -1323,7 +1323,7 @@ ui <- navbarPage(title = "",
                                               h1(strong("Financial Practices"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
-                                                     h4(strong("How do residents earn their money?")),
+                                                     h4(strong("How do Residents Earn their Money?")),
                                                      p("We present interactive graphs of the baseline survey to understand the financial behavior of the Sundarbans population. There are slight differences 
                                                        in average household monthly salary across villages ranging from as high as ₹4600 (US$ 71) in Amrabati to as low as ₹2500 (US$ 38.5) in Sagar, using 
                                                        1 US Dollar = ₹0.0154 exchange rate in 2018. The salary is more likely to come from working for someone else as most family members do not own a business."),
@@ -1369,7 +1369,7 @@ ui <- navbarPage(title = "",
                             tabPanel("Expenditure",
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Expenditure"), align = "center"),
-                                              column(12,h4(strong("How are residents spending their money?")),
+                                              column(12,h4(strong("How are Residents Spending their Money?")),
                                                      p("We present average weekly expenditure from November 2018 - October 2019 to examine the spending habits of households in the Sundarbans. 
                                                        The graphs will provide information on the changing seasonal patterns of residents' spending in the region and how they react to events such as 
                                                        festivals and holidays, harvest seasons, and weather-related shocks. "),
@@ -1537,7 +1537,7 @@ ui <- navbarPage(title = "",
                             tabPanel("Income",
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Income"), align = "center"),
-                                              column(12,h4(strong("Overview")),
+                                              column(12,h4(strong("Household Earnings")),
                                                      p("Income is defined as total male and female income, including remittances. On average, the weekly income per household across villages is approximately 
                                                        ₹1400 (US$ 21.56), and the median is about ₹1400 (US$ 21.56).  Sagar has a weekly average income of around ₹1954 (US$ 30.9), which is one of the higher averages
                                                        in the region. Since many of these households work for wages either as agriculture workers or casual laborers, the per week income is relatively the same throughout
@@ -1590,7 +1590,7 @@ ui <- navbarPage(title = "",
                             tabPanel("Borrowing",
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Borrowing"), align = "center"),
-                                              column(12,h4(strong("Borrowing Practices by Sundarbans households")),
+                                              column(12,h4(strong("Borrowing Practices by Sundarbans Households")),
                                                      p("Households in the Sundarbans seem to use borrowing as a livelihood coping strategy. On average, approximately 22% of households tend to borrow each week. 
                                                      It is most common to borrow no re usually borrow around 600₹ (US$ 9.25) a week. The amount borrowed and the number of households borrowing is relatively consistent
                                                      during the year, despite the differences in borrowing behavior across villages. For example, there is a significant spike in the amount borrowed between April and 
@@ -1705,7 +1705,7 @@ ui <- navbarPage(title = "",
                 tabPanel("Shocks",
                                        fluidRow(style = "margin: 6px;", h1(strong("Shocks"), align = "center"), 
                                                 column(4, 
-                                                h4(strong("What Shocks are affecting this region (2009 – 2018)?"), align = "left"), 
+                                                h4(strong("What Shocks are Affecting this Region (2009 – 2018)?"), align = "left"), 
                                                 p("The Sundarbans area typically face yearly tropical events such as cyclones. However, the region is facing the effects of climate change as the frequency and intensity of cyclones have increased in the past decade. Specifically, the most devastating cyclones in the region occurred in 2007, 2009, 2019, 2020, and 2021. The impact of the cyclone in 2009 (Alia) is still evident as the majority of households reported experiencing a shock in 2009, even though this interview was done in 2018. Moreover, many families reported experiencing three shocks, with some reporting a high of four shocks in 2009. Shocks are any event, most likely negative, that can harm the households’ livelihoods. The majority of shocks families have experienced in the last decade are due to environmental events or the loss of various assets. The most frequent shocks households experienced during 2009-2018 were loss of home due to river erosion or cyclone, loss of livestock, crop loss, and forced migration due to flooding. The effects of shocks were similar across villages, as the average number of shocks was roughly three per year for most villages.", style = "padding-top:10px;", align = "justify")),
                                        # Show a plot of the generated plot
                                          column(8,
@@ -1968,7 +1968,7 @@ server <- function(input, output, session) {
       paste("")
     }
     else if (ocuVar() == "Percentage of Households Involved in Agricultural Farming") {
-      paste("(Involved in Farming)")
+      paste("")
     }
     else if (ocuVar() == "Average Amount of Land Owned by Village") {
       paste("")
@@ -2559,7 +2559,7 @@ server <- function(input, output, session) {
   
   output$malefemaleinc <- renderPlot({
     ggplot(filtered_malefemaleinc(), aes(x = week,y = !!input$Gender, color = village)) + geom_line() + 
-      labs(x = "Date", y = "Average Weekly Income (INR)", color = "Village", caption = "Male - Mean: INR 1065.54  |  Median = INR 642.5   Female - Mean: INR 96.60  |  Median: INR 0.00 ") +
+      labs(x = "Date", y = "Average Weekly Income (INR)", color = "Village", caption = "Male - Mean: INR 1065.54  |  Median: INR 642.5     Female - Mean: INR 96.60  |  Median: INR 0.00 ") +
       theme_classic()+
       theme(plot.caption = element_text(size = 12))+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), 
