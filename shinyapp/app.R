@@ -1317,14 +1317,9 @@ ui <- navbarPage(title = "",
 
                                                               h4(strong(textOutput("result1"), align = "center")),
                                                      withSpinner(plotlyOutput("ocuplot", height = "500px")),
-<<<<<<< HEAD
-                                                     textOutput("result5"), align = "left"),
-                                                     textOutput("result8"), align = "left",
-=======
                                                      #br(),
                                                      textOutput("result5"), align = "left",
                                                      textOutput("result8"), align = "left"),
->>>>>>> e87996e293af284985b90794735106965b3cd1d8
                                               ),
                                               
                                      )),
