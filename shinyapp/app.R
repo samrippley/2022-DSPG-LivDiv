@@ -1247,7 +1247,7 @@ ui <- navbarPage(title = "",
                                                      p("Household heads in the Sundarbans area tend to be middle-aged adults, with the mean being around 49 years. Interestingly, there is a striking pattern by administrative block. Household heads that live in the Sagar, Namkhana, and Patharpratima Blocks are younger than their counterparts in Gosaba and Hangalganj. Additionally, families in Sagar, Namkhana, and Patharpratima Blocks have a greater median household size and, on average, have a higher number of children per household. Overall, most families are headed by married parents. Notably, males are more likely to be heads of married households, while females tend to be heads of unmarried households."),
                                                      p("Household heads also have low levels of education as the average education across villages is approximately five years, comparable to completing elementary school. This low level of education may contribute to the high levels of the poverty level in the region. More than half of families in Haridaskati Samsernagar live with less than ₹240 per week per person (Indian poverty line of 2018-2019). However, other villages like Purba Dwarokapur have a lower proportion of households (18%) below the poverty line."),
                                                      br(),
-                                                     p(tags$small("Select:")),                                                         
+                                                     p(strong("Select:")),
                                                      actionButton(inputId ="button", label = "Map")
                                                      
                                               ) ,
@@ -1295,7 +1295,7 @@ ui <- navbarPage(title = "",
                                                        1 acre of land equals 32 kathas. To help rest and regenerate harvest, farmers tend to fallow their land. Bijoynagar had the largest average land fallow 
                                                        (about 95 kathas, approx. 3 acres) for the current agricultural season. "),
                                                      br(),
-                                                     p(tags$small("Select:")),                                                         
+                                                     p(strong("Select:")),                                                       
                                                      actionButton(inputId ="button1", label = "Map")
                                                      
                                                      
@@ -1339,7 +1339,7 @@ ui <- navbarPage(title = "",
                                                        average weekly income. In most villages, higher remittances correlate with a higher weekly income, except for Amrabti, Pargumti, and Sagar, 
                                                        suggesting other possible economic opportunities in these three villages."),
                                                      br(),
-                                                     p(tags$small("Select:")),
+                                                     p(strong("Select:")),
                                                      actionButton(inputId ="button2", label = "Map")
                                                     
                                               ),
