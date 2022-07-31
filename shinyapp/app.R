@@ -1317,8 +1317,14 @@ ui <- navbarPage(title = "",
 
                                                               h4(strong(textOutput("result1"), align = "center")),
                                                      withSpinner(plotlyOutput("ocuplot", height = "500px")),
+<<<<<<< HEAD
                                                      textOutput("result5"), align = "left"),
                                                      textOutput("result8"), align = "left",
+=======
+                                                     #br(),
+                                                     textOutput("result5"), align = "left",
+                                                     textOutput("result8"), align = "left"),
+>>>>>>> e87996e293af284985b90794735106965b3cd1d8
                                               ),
                                               
                                      )),
@@ -1356,6 +1362,8 @@ ui <- navbarPage(title = "",
                                                               h4(strong(textOutput("result")), align = "center"),
                                                      
                                                      withSpinner(plotlyOutput("finplot", height = "500px")),
+                                                     textOutput("result4"), align = "left",
+                                                     textOutput("result9"), align = "left"
                                                    
                                                      
                                               )),
@@ -1884,7 +1892,7 @@ server <- function(input, output, session) {
      paste("Mean: 5.30 Years | Median: 5.00 Years")
     }
     else if (ageVar() == "Households that Live Below Poverty Line (₹204) per week") {
-      paste("Mean: 10.3 Households | Median: 10 Households")
+      paste("Mean: 10.30 Households | Median: 10.00 Households")
     }
     else if (ageVar() == "Household Heads Marital Status") {
       
@@ -1893,7 +1901,7 @@ server <- function(input, output, session) {
   
   output$result4 <- renderText({
     if (finVar() == "Number of Households that Own a Business") {
-      paste("Mean: 3.60 households | Median: 3.00 households ")
+      paste("Mean: 3.60 Households | Median: 3.00 Households ")
     }
     else if (finVar() == "Proportion of Households Owning Assets") {
       paste("")
@@ -1903,7 +1911,7 @@ server <- function(input, output, session) {
       paste("")
     }
     else if (finVar() == "Average Monthly Salary per Household by Village")  {
-      paste("Mean: INR 4214 | Median: INR 3800")
+      paste("Mean: INR 4214.00 | Median: INR 3800.00")
     }
     else if (finVar() == "Number of Times Households Saved in Prior Year") {
       paste("")
@@ -1947,14 +1955,14 @@ server <- function(input, output, session) {
     paste("*Note: Missing bar indicates zero value for occupation")
   }
   else if (ocuVar() == "Percentage of Households Involved in Agricultural Farming") {
-    paste("Mean: 61.92% | Median: 60% ")
+    paste("Mean: 61.92% | Median: 60.00% ")
   }
   else if (ocuVar() == "Average Amount of Land Owned by Village") {
-    paste("Mean: 48.37 Kathas | Median: 40 Kathas")
+    paste("Mean: 48.37 Kathas | Median: 40.00 Kathas")
     
   }
   else if (ocuVar() == "Total Land Fallowed (Kathas)") {
-    paste("Mean: 41.7 Kathas | Median: 39.5 Kathas")
+    paste("Mean: 41.70 Kathas | Median: 39.50 Kathas")
   }
   else if (ocuVar() == "Average Job Duration for Head of Household") {
     paste("Mean: 8.02 Months | Median: 8.21 Months")
@@ -1980,7 +1988,7 @@ server <- function(input, output, session) {
       paste("*Note: Data missing for some villages or missing bar means zero land was fallowed for village")
     }
     else if (ocuVar() == "Average Job Duration for Head of Household") {
-      paste("Mean: 8.02 Months | Median: 8.21 Months")
+      paste("")
     }
     
   })
