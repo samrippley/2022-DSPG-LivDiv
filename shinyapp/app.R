@@ -1276,12 +1276,15 @@ ui <- navbarPage(title = "",
                                                      
                                                      ),
                                                      fluidRow(align = "center",
-                                                              h4(strong(textOutput("result2"))),
+                                                              h4(strong(textOutput("result2")), align = "center"),
                                                      withSpinner(plotlyOutput("ageplot", height = "500px", width = "100%")),
+                                                     textOutput("result6"), align = "left",
+                                                     textOutput("result7"), align = "left",
                                                      ),
                                               ))),
                                               column(12, 
                                                      fluidPage(
+                                                       p(tags$small("Select:")),                                                         
                                                        actionButton(inputId ="button", label = "Map")
                                                        
                                                      ),
@@ -1312,7 +1315,8 @@ ui <- navbarPage(title = "",
                                                      
                                                      
                                               ) ,
-                                              column(8, h4(strong("Livelihood – November 2018 (Baseline)")),
+                                              column(8, 
+                                                     h4(strong("Livelihood – November 2018 (Baseline)")),
                                                      selectInput("ocudrop", "Select Characteristic:", width = "100%", choices = c(    
                                                        "Primary Occupation" = "Primary Occupation for Head of Households",
                                                        "Secondary Occupation" ="Secondary Occupation for Head of Households", 
@@ -1325,13 +1329,15 @@ ui <- navbarPage(title = "",
                                                      ),
                                                      ),
                                                      fluidRow(align = "center",
-                                                              h4(strong(textOutput("result1"))),
+
+                                                              h4(strong(textOutput("result1"), align = "center")),
                                                      withSpinner(plotlyOutput("ocuplot", height = "500px")),
-                                                     br(),
-                                                     textOutput("result4"), align = "left"),
+                                                     #br(),
+                                                     textOutput("result5"), align = "left"),
                                               ),
                                               column(12, 
                                                      fluidPage(
+                                                       p(tags$small("Select:")),                                                         
                                                        actionButton(inputId ="button1", label = "Map"),
                                                        br(),
                                                        br()
@@ -1365,7 +1371,7 @@ ui <- navbarPage(title = "",
                                                        "Savings" = "Number of Times Households Saved in Prior Year"
                                                      )),
                                                      fluidRow(align = "center",
-                                                              h4(strong(textOutput("result")), align = "left"),
+                                                              h4(strong(textOutput("result")), align = "center"),
                                                      
                                                      withSpinner(plotlyOutput("finplot", height = "500px")),
                                                    
@@ -1373,6 +1379,7 @@ ui <- navbarPage(title = "",
                                               )),
                                                column(12, 
                                                       fluidPage(
+                                                        p(tags$small("Select:")),
                                                         actionButton(inputId ="button2", label = "Map")
                                                       
                                                       ),
@@ -1418,6 +1425,7 @@ ui <- navbarPage(title = "",
                                                      multiple = T, options = list(`actions-box` = T)),
                                          pickerInput("block_choose_exp", "Select Administrative Block (For Expenditure by Blocks):", choices = blocks_vector, selected = blocks_vector, 
                                                      multiple = T, options = list(`actions-box` = T)),
+                                         p(tags$small("Select:")),                                                         
                                          actionButton(inputId ="button3", label = "Map")
                                          
                                          ),
@@ -1426,11 +1434,11 @@ ui <- navbarPage(title = "",
                                        mainPanel(
                                          tabsetPanel(
                                            tabPanel("Weekly Expenditure",
-                                                    h4(strong("Average Weekly Expenditure"), align = "center"), 
+                                                    h4(strong("Average Weekly Expenditure"), align = "center", style = "margin: 13px;"), 
                                                     plotOutput("exp", height = "500px"),
                                                     ),
                                            tabPanel("Weekly Expenditure by Blocks",
-                                                    h4(strong("Average Weekly Expenditure by Administrative Block"), align = "center"),
+                                                    h4(strong("Average Weekly Expenditure by Administrative Block"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("exp_block", height = "500px")),
                                            tabPanel("Expenditure Table", 
                                                     h4(strong(""), align = "center"),
@@ -1472,6 +1480,7 @@ ui <- navbarPage(title = "",
                                                      multiple = T, options = list(`actions-box` = T)),
                                          pickerInput("block_choose_cs", "Select Administrative Block (For Weekly Food Consumption by Blocks):", choices = blocks_vector, selected = blocks_vector, 
                                                      multiple = T, options = list(`actions-box` = T)),
+                                         p(tags$small("Select:")),                                                         
                                          actionButton(inputId ="button4", label = "Map")
                                          
                                        ),
@@ -1479,22 +1488,22 @@ ui <- navbarPage(title = "",
                                        mainPanel(
                                          tabsetPanel(
                                            tabPanel("Weekly Food Consumption",
-                                                    h4(strong("Average Weekly Food Consumption Spending"), align = "center"),
+                                                    h4(strong("Average Weekly Food Consumption Spending"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("cs_exp", height = "500px")),
                                            tabPanel("Staple Items", 
-                                                    h4(strong("Average Weekly Expenditure on Staple Food"), align = "center"),
+                                                    h4(strong("Average Weekly Expenditure on Staple Food"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("cs_staple", height = "500px")),
                                            tabPanel("Meats", 
-                                                    h4(strong("Average Weekly Expenditure on Meats"), align = "center"),
+                                                    h4(strong("Average Weekly Expenditure on Meats"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("cs_meats", height = "500px")),
                                            tabPanel("Other", 
-                                                    h4(strong("Average Weekly Expenditure on Other Food Items"), align = "center"),
+                                                    h4(strong("Average Weekly Expenditure on Other Food Items"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("cs_other", height = "500px")),
                                            tabPanel("Total Food Items", 
-                                                    h4(strong("Total Weekly Consumption Items Purchased"), align = "center"),
+                                                    h4(strong("Total Weekly Consumption Items Purchased"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("cs_item", height = "500px")),
                                            tabPanel("Weekly Food Consumption by Blocks", 
-                                                    h4(strong("Average Weekly Food Consumption by Administrative Block"), align = "center"),
+                                                    h4(strong("Average Weekly Food Consumption by Administrative Block"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("cs_block", height = "500px"))
                                            #tabPanel("Table", DT::DTOutput("cs_table"))
                                          )
@@ -1529,6 +1538,7 @@ ui <- navbarPage(title = "",
                                                      multiple = T, options = list(`actions-box` = T)),
                                          pickerInput("block_choose_nf", "Select Administrative Block (For Non Food Consumption by Blocks):", choices = blocks_vector, selected = blocks_vector, 
                                                      multiple = T, options = list(`actions-box` = T)),
+                                         p(tags$small("Select:")),                                                         
                                          actionButton(inputId ="button5", label = "Map")
                                          
                                        ),
@@ -1536,10 +1546,10 @@ ui <- navbarPage(title = "",
                                        mainPanel(
                                          tabsetPanel(
                                            tabPanel("Weekly Non-Food Consumption",
-                                                    h4(strong("Average Weekly Non-Food Consumption"), align = "center"),
+                                                    h4(strong("Average Weekly Non-Food Consumption"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("nonfood_plot", height = "500px")),
                                            tabPanel("Non-Food Consumption by Blocks",
-                                                    h4(strong("Average Weekly Non-Food Consumption by Administrative Block"), align = "center"),
+                                                    h4(strong("Average Weekly Non-Food Consumption by Administrative Block"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("nf_block_plot", height = "500px"))
                                            #tabPanel("Table", DT::DTOutput("nonfood_table"))
                                          )
@@ -1579,20 +1589,21 @@ ui <- navbarPage(title = "",
                                          varSelectInput("Gender", "Select Gender (For Income by Gender):", malefemale_inc[,-(1:2)]),
                                          pickerInput("block_choose_inc", "Select Administrative Block (For Income by Blocks):", choices = blocks_vector, selected = blocks_vector, 
                                                      multiple = T, options = list(`actions-box` = T)),
+                                         p(tags$small("Select:")),                                                         
                                          actionButton(inputId ="button6", label = "Map")
                                        ),
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
                                            tabPanel("Weekly Income",
-                                                    h4(strong("Average Weekly Income"), align = "center"),
+                                                    h4(strong("Average Weekly Income"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("inc", height = "500px")),
                                            tabPanel("Weekly Income by Gender", 
-                                                    h4(strong("Average Weekly Income by Gender"), align = "center"),
+                                                    h4(strong("Average Weekly Income by Gender"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("malefemaleinc", height = "500px")),
                                            #tabPanel("Full Income", plotOutput("fullinc")),
                                            tabPanel("Weekly Income by Blocks", 
-                                                    h4(strong("Average Weekly Income by Administrative Block"), align = "center"),
+                                                    h4(strong("Average Weekly Income by Administrative Block"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("inc_block", height = "500px")),
                                            tabPanel("Weekly Income Table", 
                                                     DT::DTOutput("inc_table"))
@@ -1626,19 +1637,20 @@ ui <- navbarPage(title = "",
                                                                 multiple = T, options = list(`actions-box` = T)),
                                                     pickerInput("event_choose_borr", "Select Event:", choices = events_vector, selected = "Kharif Crop Preparation", 
                                                                 multiple = T, options = list(`actions-box` = T)),
+                                                    p(tags$small("Select:")),                                                         
                                                     actionButton(inputId ="button7", label = "Map")
                                        ),
                                      
                                      mainPanel(
                                        tabsetPanel(
                                          tabPanel("Weekly Borrowing",
-                                                  h4(strong("Total Weekly Amount Borrowed"), align = "center"),
+                                                  h4(strong("Total Weekly Amount Borrowed"), align = "center", style = "margin: 13px;"),
                                                   plotOutput("bor", height = "500px")),
                                          tabPanel("Total Households Borrowing",
-                                                  h4(strong("Total Households Borrowing"), align = "center"),
+                                                  h4(strong("Total Households Borrowing"), align = "center", style = "margin: 13px;"),
                                                   plotOutput("borr", height = "500px")),
                                          tabPanel("Borrowing Usage", 
-                                                  h4(strong("Households’ Purpose for Borrowing"), align = "center"),
+                                                  h4(strong("Households’ Purpose for Borrowing"), align = "center", style = "margin: 13px;"),
                                                   plotOutput("purpplot", height = "500px"))
                                        
                                        )
@@ -1684,6 +1696,7 @@ ui <- navbarPage(title = "",
                                                      multiple = T, options = list(`actions-box` = T)),
                                          pickerInput("block_choose_rmt", "Select Administrative Block (For Remittances by Blocks):", choices = blocks_vector, selected = blocks_vector, 
                                                      multiple = T, options = list(`actions-box` = T)),
+                                         p(tags$small("Select:")),                                                         
                                          actionButton(inputId ="button8", label = "Map")
                                          
                                        ),
@@ -1692,16 +1705,16 @@ ui <- navbarPage(title = "",
                                        mainPanel(
                                          tabsetPanel(
                                            tabPanel("Weekly Remittances",
-                                                    h4(strong("Average Weekly Remittances"), align = "center"),
+                                                    h4(strong("Average Weekly Remittances"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("rmt", height = "500px")),
                                            tabPanel("Weekly Remittances by Blocks", 
-                                                    h4(strong("Average Weekly Remittances by Administrative Block"), align = "center"),
+                                                    h4(strong("Average Weekly Remittances by Administrative Block"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("rmt_block", height = "500px")),
                                            tabPanel("Method", 
-                                                    h4(strong("Methods of Remittances Transfer"), align = "center"),
+                                                    h4(strong("Methods of Remittances Transfer"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("rmt_method", height = "500px")),
                                            tabPanel("Remittances Usage", 
-                                                    h4(strong("Usage of Remittances"), align = "center"),
+                                                    h4(strong("Usage of Remittances"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("rmt_purpose", height = "500px")),
                                            tabPanel("Weekly Remittances Table",
                                                     DT:: DTOutput("rmt_table")),
@@ -1729,10 +1742,10 @@ ui <- navbarPage(title = "",
 
                                                       plotlyOutput("shocks_all")),
                                              tabPanel("Total Shocks per Village", 
-                                                      h4(strong("Average Number of Shocks per Village (2009-2018)"), align = "center"),
+                                                      h4(strong("Average Number of Shocks per Village (2009-2018)"), align = "center", style = "margin: 13px;"),
                                                       plotOutput("shocks_village")),
                                              tabPanel("Yearly Shocks", 
-                                                      h4(strong("Yearly Household Shocks"), align = "center"),
+                                                      h4(strong("Yearly Household Shocks"), align = "center", style = "margin: 13px;"),
                                                       plotlyOutput("shocks_by_year"))
                                                       )
                                                   ),
@@ -1746,16 +1759,16 @@ ui <- navbarPage(title = "",
                                                                             ),
                                         column(8,tabsetPanel(
                                           tabPanel("Frequency", 
-                                                   h4(strong("Total Household Shocks (2009)"), align = "center"),
+                                                   h4(strong("Total Household Shocks (2009)"), align = "center", style = "margin: 13px;"),
                                                    plotlyOutput("shocks_plot_2009", height = "500")),
                                           tabPanel("Coping Mechanism", 
-                                                   h4(strong("Coping Mechanism for Shocks (2009)"), align = "center"),
+                                                   h4(strong("Coping Mechanism for Shocks (2009)"), align = "center", style = "margin: 13px;"),
                                                    plotlyOutput("cope_2009_plot", height = "600")),
                                           tabPanel("Relocation Status", 
-                                                   h4(strong("Households Relocation Status for 2009 Shocks"), align = "center"),
+                                                   h4(strong("Households Relocation Status for 2009 Shocks"), align = "center", style = "margin: 13px;"),
                                                    plotlyOutput("shock_relocation_2009_yn")),
                                           tabPanel("Relocation Areas", 
-                                                   h4(strong("Relocation Areas due to 2009 Shocks"), align = "center"),
+                                                   h4(strong("Relocation Areas due to 2009 Shocks"), align = "center", style = "margin: 13px;"),
                                                    plotlyOutput("shock_relocation_2009"))
                                                             )
                                                
@@ -1878,12 +1891,25 @@ server <- function(input, output, session) {
   #note 
   
   
-  output$result6 <- renderText({
+  output$result7 <- renderText({
     if (ageVar() == "Mean Years of Education for Head of Households") {
-     paste("")
+      paste("")
     }
     else if (ageVar() == "Households that Live Below Poverty Line (₹204) per week") {
+      paste("(Live below the poverty line)")
+    }
+    else if (ageVar() == "Household Heads Marital Status") {
       
+    }
+  })
+  
+  
+  output$result6 <- renderText({
+    if (ageVar() == "Mean Years of Education for Head of Households") {
+     paste("Mean: 5.30 Years | Median: 5.00 Years")
+    }
+    else if (ageVar() == "Households that Live Below Poverty Line (₹204) per week") {
+      paste("Mean: 10.3 Households | Median: 10 Households")
     }
     else if (ageVar() == "Household Heads Marital Status") {
       
@@ -1892,14 +1918,14 @@ server <- function(input, output, session) {
   
   output$result4 <- renderText({
     if (finVar() == "Number of Households that Own a Business") {
-      paste("Mean: 3.6 | Median: 3  (Do own a Business)")
+      paste("Mean: 3.60 households | Median: 3.00 households | (Own a Business)")
     }
     else if (finVar() == "Proportion of Households Owning Assets") {
       paste("")
     }
     
     else if (finVar() == "Income vs Remmitances (October 2018 - November 2019)") {
-      paste("")
+      paste("Mean: INR 4214 | Median: INR 3800")
     }
     else if (finVar() == "Average Monthly Salary per Household by Village")  {
       paste("")
@@ -1914,7 +1940,7 @@ server <- function(input, output, session) {
     
   })  
   
-  output$result4 <- renderText({ 
+  output$result5 <- renderText({ 
   if (ocuVar() == "Primary Occupation for Head of Households") {
     paste("*Note: Missing bar indicates zero value for occupation")
   } 
@@ -1922,7 +1948,7 @@ server <- function(input, output, session) {
     paste("*Note: Missing bar indicates zero value for occupation")
   }
   else if (ocuVar() == "Percentage of Households Involved in Agricultural Farming") {
-    paste("")
+    paste("Mean: 61.92% | Median: 60% | (Involved in Farming)")
   }
   else if (ocuVar() == "Average Amount of Land Owned by Village") {
     paste("Mean: 48.37 Kathas | Median: 40 Kathas")
@@ -2018,7 +2044,7 @@ server <- function(input, output, session) {
     ggplot(filtered_bramt(), aes(x=week_num, y=br_amt, color = village, na.rm = T)) +
       geom_line() +
       theme_classic()+
-      labs(color = "Villages", caption = "Mean: INR 2703.12  Median: INR 600.00") + 
+      labs(color = "Villages", caption = "Mean: INR 2703.12  |  Median: INR 600.00") + 
       xlab("Date") +
       ylab("Total Weekly Borrowing (INR)")+
       theme(plot.caption = element_text(size = 12))+
@@ -2039,7 +2065,7 @@ server <- function(input, output, session) {
   output$borr <- renderPlot({
     ggplot(filtered_dbr(), aes(x=week_num, y=d_br, color = village, na.rm=TRUE)) +
       geom_line() +
-      labs(caption = "Mean: 22%  Median: 0.00", color = "Villages") +
+      labs(caption = "Mean: 22%  |  Median: 0.00", color = "Villages") +
       theme(plot.caption = element_text(size = 12))+
       xlab("Date") +
       ylab("Number of Households")+
@@ -2099,7 +2125,7 @@ server <- function(input, output, session) {
       geom_line()+
       theme_classic()+
       #ggtitle("Average Weekly Expenditure on Staple Items ")+
-      labs(x = "Date", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: INR 463.87   Median: INR 431.20 ")+
+      labs(x = "Date", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: INR 463.87  |  Median: INR 431.20 ")+
       scale_y_discrete(breaks = c(0,250,500,750,1000,1250), limits = c(0:1250)) + 
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       theme(plot.caption = element_text(size = 12))+
@@ -2113,7 +2139,7 @@ server <- function(input, output, session) {
       geom_line()+
       theme_classic()+
       #ggtitle("Average Weekly Expenditure on Meat")+
-      labs(x = "Date", y = "Average Weekly Staple Expenditure (INR)", color = "Villages", caption = "Mean: INR 158.97  Median: INR 431.20")+
+      labs(x = "Date", y = "Average Weekly Staple Expenditure (INR)", color = "Villages", caption = "Mean: INR 158.97  |  Median: INR 431.20")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       scale_y_discrete(breaks = c(0,200,400), limits = c(0:400)) + 
       theme(plot.caption = element_text(size = 12))+
@@ -2126,7 +2152,7 @@ server <- function(input, output, session) {
       geom_line() +
       theme_classic()+
       #ggtitle("Average Weekly Expenditure on 'Other' Items")+
-      labs(x = "Date", y = "Average Weekly Staple Expenditure (INR) ", color = "Villages", caption = "Mean: INR 113.75  Median: INR 111.94")+
+      labs(x = "Date", y = "Average Weekly Staple Expenditure (INR) ", color = "Villages", caption = "Mean: INR 113.75  |  Median: INR 111.94")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       scale_y_discrete(breaks = c(0,200,400,600), limits = c(0:600)) + 
       theme(plot.caption = element_text(size = 12))+
@@ -2397,7 +2423,7 @@ server <- function(input, output, session) {
                                , y = avg_rmt, color = village)) + 
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Weekly Remittance (INR)", caption = "Mean: INR 205.61   Median: INR 107.14", color = "Villages") +
+      labs(x = "Date", y = "Average Weekly Remittance (INR)", caption = "Mean: INR 205.61  |  Median: INR 107.14", color = "Villages") +
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + 
       scale_color_brewer(palette = "Paired")+
       scale_y_discrete(breaks = c(0,1000,2000,3000,4000,5000), limits = c(0:5000)) +
@@ -2415,7 +2441,7 @@ server <- function(input, output, session) {
     ggplot(filtered_rmt_block(), aes(x = week , y = block_avg_rmt, color = Block)) +
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Weekly Remittances (INR)", color = "Blocks", caption = "Mean: INR 13549.16  Median: INR 10400.00") +
+      labs(x = "Date", y = "Average Weekly Remittances (INR)", color = "Blocks", caption = "Mean: INR 13549.16  |  Median: INR 10400.00") +
       theme(plot.caption = element_text(size = 12))+
       scale_y_discrete(breaks = c(0,500,1000,1500,2000,2500), limits = c(0:2500)) +
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
@@ -2455,7 +2481,7 @@ server <- function(input, output, session) {
   output$exp <- renderPlot({
     ggplot(filtered_exp(), aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) +
       geom_line() +
-      labs(x="Date", y="Average Weekly Expenditure (INR)", caption = "Mean: INR 1982.77   Median: INR 1832.61", color = "Villages") +
+      labs(x="Date", y="Average Weekly Expenditure (INR)", caption = "Mean: INR 1982.77  |  Median: INR 1832.61", color = "Villages") +
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) +
       scale_y_discrete(breaks = c(0,2000,4000,6000,8000), limits = c(0:8000)) + 
       scale_color_brewer(palette = "Paired")+
@@ -2470,7 +2496,7 @@ server <- function(input, output, session) {
     ggplot(filtered_exp_block(), aes(x = week , y = block_avg_exp, color = Block)) +
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Weekly Expenditure (INR)", color = "Blocks", caption = "Mean: INR 117784.9  Median INR 111505.00") +
+      labs(x = "Date", y = "Average Weekly Expenditure (INR)", color = "Blocks", caption = "Mean: INR 117784.90  |  Median INR 111505.00") +
       theme(plot.caption = element_text(size = 12))+
       geom_rect(data = filtered_event_exp(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
@@ -2496,7 +2522,7 @@ server <- function(input, output, session) {
     ggplot(filtered_inc(), aes(week, avg_inc, color = village)) + 
       geom_line() + 
       labs(x = "Date", y = "Average Weekly Income (INR)", color = "Village",
-           caption = "Mean: INR 1395.61   Median: INR 1341.82") + 
+           caption = "Mean: INR 1395.61  |  Median: INR 1341.82") + 
       scale_color_brewer(palette = "Paired")+
       theme_classic()+
       theme(plot.caption = element_text(size = 12))+
@@ -2513,7 +2539,7 @@ server <- function(input, output, session) {
   
   output$malefemaleinc <- renderPlot({
     ggplot(filtered_malefemaleinc(), aes(x = week,y = !!input$Gender, color = village)) + geom_line() + 
-      labs(x = "Date", y = "Average Weekly Income (INR)", color = "Village", caption = "Male - Mean: INR 1065.54  Median = INR 642.5   Female - Mean: INR 96.60  Median: INR 0.00 ") +
+      labs(x = "Date", y = "Average Weekly Income (INR)", color = "Village", caption = "Male - Mean: INR 1065.54  |  Median = INR 642.5   Female - Mean: INR 96.60  |  Median: INR 0.00 ") +
       theme_classic()+
       theme(plot.caption = element_text(size = 12))+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), 
@@ -2536,7 +2562,7 @@ server <- function(input, output, session) {
     ggplot(filtered_inc_block(), aes(x = week, y = block_avg_inc, color = Block)) +
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Weekly Income (INR)", color = "Blocks", caption = "Mean: INR 83097.02  Median: INR 81977.00") +
+      labs(x = "Date", y = "Average Weekly Income (INR)", color = "Blocks", caption = "Mean: INR 83097.02  |  Median: INR 81977.00") +
       theme(plot.caption = element_text(size = 12))+
       scale_y_discrete(breaks = c(0,1000,2000,3000,4000,5000), limits = c(0:5000)) +
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
@@ -2577,7 +2603,7 @@ server <- function(input, output, session) {
     ggplot(filtered_cs_avg(), aes(x = week, y = avg_cs , color = village)) +
       geom_line() +
       theme_classic()+
-      labs(x = "Date", y = "Average Weekly Expenditure (INR)", caption = "Mean: INR 766.13  Median: INR 731.68", color = "Villages")+
+      labs(x = "Date", y = "Average Weekly Expenditure (INR)", caption = "Mean: INR 766.13  |  Median: INR 731.68", color = "Villages")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       scale_y_discrete(breaks = c(0,500,1000,1500,2000), limits = c(0:2000)) + 
       theme(plot.caption = element_text(size = 12))+
@@ -2597,7 +2623,7 @@ server <- function(input, output, session) {
     ggplot(filtered_cs_avg_items(), aes(x = week, y = avg_item, color = village))+
       geom_line() +
       theme_classic()+
-      labs(x = "Date", y = "Weekly Items Purchased", color = "Villages", caption = "Mean: 7.20  Median: 7.20")+
+      labs(x = "Date", y = "Weekly Items Purchased", color = "Villages", caption = "Mean: 7.20  |  Median: 7.20")+
       theme(plot.caption = element_text(size = 12))+
       scale_y_discrete(breaks = c(0,2,4,6,8,10), limits = c(0:10)) + 
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
@@ -2609,7 +2635,7 @@ server <- function(input, output, session) {
     ggplot(filtered_cs_block(), aes(x = week , y = block_avg_cs, color = Block)) +
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Weekly Consumption (INR)", color = "Blocks", caption = "Mean: INR 44745.59  Median: INR 43250.00") +
+      labs(x = "Date", y = "Average Weekly Consumption (INR)", color = "Blocks", caption = "Mean: INR 44745.59  |  Median: INR 43250.00") +
       theme(plot.caption = element_text(size = 12))+
       scale_y_discrete(breaks = c(0,250,500,750,1000,1250), limits = c(0:1250)) + 
       geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
@@ -2627,7 +2653,7 @@ server <- function(input, output, session) {
     ggplot(filtered_non_food_cs(), aes(x = week, y = !!input$nonfood_group, color = village)) +
       geom_line()+
       theme_classic()+
-      labs(x = "Date", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: INR 882.22  Median: INR 769.75")+
+      labs(x = "Date", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: INR 882.22  |  Median: INR 769.75")+
       theme(plot.caption = element_text(size = 12))+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       geom_rect(data = filtered_event_cs_nonfood(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
@@ -2644,7 +2670,7 @@ server <- function(input, output, session) {
     ggplot(filtered_nf(), aes(x = week , y = block_avg_nf, color = Block)) +
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Weekly Consumption (INR)", color = "Blocks", caption = "Mean: INR 53003.67  Median: INR 48385.00") +
+      labs(x = "Date", y = "Average Weekly Consumption (INR)", color = "Blocks", caption = "Mean: INR 53003.67  |  Median: INR 48385.00") +
       theme(plot.caption = element_text(size = 12))+
       scale_y_discrete(breaks = c(0,1000,2000,3000,4000), limits = c(0:4000)) +
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
