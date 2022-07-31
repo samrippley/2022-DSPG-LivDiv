@@ -1877,6 +1877,19 @@ server <- function(input, output, session) {
   
   #note 
   
+  
+  output$result6 <- renderText({
+    if (ageVar() == "Mean Years of Education for Head of Households") {
+     paste("")
+    }
+    else if (ageVar() == "Households that Live Below Poverty Line (₹204) per week") {
+      
+    }
+    else if (ageVar() == "Household Heads Marital Status") {
+      
+    }
+  })
+  
   output$result4 <- renderText({
     if (finVar() == "Number of Households that Own a Business") {
       paste("Mean: 3.6 | Median: 3  (Do own a Business)")
