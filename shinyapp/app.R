@@ -2100,7 +2100,7 @@ server <- function(input, output, session) {
       geom_line()+
       theme_classic()+
       #ggtitle("Average Weekly Expenditure on Staple Items ")+
-      labs(x = "Date", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: 463.87 ₹  Median: 431.20 ₹")+
+      labs(x = "Date", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: INR 463.87   Median: INR 431.20 ")+
       scale_y_discrete(breaks = c(0,250,500,750,1000,1250), limits = c(0:1250)) + 
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       theme(plot.caption = element_text(size = 12))+
@@ -2114,7 +2114,7 @@ server <- function(input, output, session) {
       geom_line()+
       theme_classic()+
       #ggtitle("Average Weekly Expenditure on Meat")+
-      labs(x = "Date", y = "Average Weekly Staple Expenditure (INR)", color = "Villages", caption = "Mean: 158.97  Median: 431.20")+
+      labs(x = "Date", y = "Average Weekly Staple Expenditure (INR)", color = "Villages", caption = "Mean: INR 158.97  Median: INR 431.20")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       scale_y_discrete(breaks = c(0,200,400), limits = c(0:400)) + 
       theme(plot.caption = element_text(size = 12))+
@@ -2127,7 +2127,7 @@ server <- function(input, output, session) {
       geom_line() +
       theme_classic()+
       #ggtitle("Average Weekly Expenditure on 'Other' Items")+
-      labs(x = "Date", y = "Average Weekly Staple Expenditure (INR) ", color = "Villages", caption = "Mean: 113.75  Median: 111.94")+
+      labs(x = "Date", y = "Average Weekly Staple Expenditure (INR) ", color = "Villages", caption = "Mean: INR 113.75  Median: INR 111.94")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       scale_y_discrete(breaks = c(0,200,400,600), limits = c(0:600)) + 
       theme(plot.caption = element_text(size = 12))+
