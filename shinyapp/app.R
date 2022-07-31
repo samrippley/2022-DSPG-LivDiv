@@ -1879,7 +1879,7 @@ server <- function(input, output, session) {
   
   output$result4 <- renderText({
     if (finVar() == "Number of Households that Own a Business") {
-      paste("")
+      paste("Mean: 3.6 | Median: 3  (Do own a Business)")
     }
     else if (finVar() == "Proportion of Households Owning Assets") {
       paste("")
@@ -1916,10 +1916,10 @@ server <- function(input, output, session) {
     
   }
   else if (ocuVar() == "Total Land Fallowed (Kathas)") {
-    paste("*Note: Data missing for some villages or missing bar means zero land was fallowed for village")
+    paste("*Note: Data missing for some villages or missing bar means zero land was fallowed for village | Mean: 41.7 Kathas | Median: 39.5 Kathas")
   }
   else if (ocuVar() == "Average Job Duration for Head of Household") {
-    paste("")
+    paste("Mean: 8.02 Months | Median: 8.21 Months")
   }
   
 })
@@ -2005,7 +2005,7 @@ server <- function(input, output, session) {
     ggplot(filtered_bramt(), aes(x=week_num, y=br_amt, color = village, na.rm = T)) +
       geom_line() +
       theme_classic()+
-      labs(color = "Villages", caption = "Mean: 2703.12  Median: 600.00") + 
+      labs(color = "Villages", caption = "Mean: INR 2703.12  Median: INR 600.00") + 
       xlab("Date") +
       ylab("Total Weekly Borrowing (INR)")+
       theme(plot.caption = element_text(size = 12))+
@@ -2026,7 +2026,7 @@ server <- function(input, output, session) {
   output$borr <- renderPlot({
     ggplot(filtered_dbr(), aes(x=week_num, y=d_br, color = village, na.rm=TRUE)) +
       geom_line() +
-      labs(caption = "Mean: 0.22  Median: 0.00") +
+      labs(caption = "Mean: 22%  Median: 0.00", color = "Villages") +
       theme(plot.caption = element_text(size = 12))+
       xlab("Date") +
       ylab("Number of Households")+
