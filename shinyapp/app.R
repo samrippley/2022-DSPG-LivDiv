@@ -1232,19 +1232,7 @@ ui <- navbarPage(title = "",
                             
                                      
                             ),
-                            #tabPanel("Gallery",
-                             #        fluidRow(style = "margin: 6px;", 
-                              #                column(12,
-                               #                      h2(strong("Images"))
-                                                     
-                                #                     
-                                 #             ),   
-                                  #            mainPanel( 
-                                   #             actionButton("previous", "Previous"),
-                                    #            actionButton("next", "Next"),
-                                     #           imageOutput("image")
-                                                
-                                      #        ))),
+                            
                  ),
                  
                  ## Tab Demographics --------------------------------------------
@@ -1257,7 +1245,10 @@ ui <- navbarPage(title = "",
                                                      h4(strong("Who lives in the Sundarbans Region?")),
                                                      p("We examine the data from the baseline survey collected in November 2018 to understand better the socio-demographic and economic characteristics of the Sundarbans population. Maps and Graphs are interactive – one can hover over an individual marker to produce a popup that provides specific attributes."),
                                                      p("Household heads in the Sundarbans area tend to be middle-aged adults, with the mean being around 49 years. Interestingly, there is a striking pattern by administrative block. Household heads that live in the Sagar, Namkhana, and Patharpratima Blocks are younger than their counterparts in Gosaba and Hangalganj. Additionally, families in Sagar, Namkhana, and Patharpratima Blocks have a greater median household size and, on average, have a higher number of children per household. Overall, most families are headed by married parents. Notably, males are more likely to be heads of married households, while females tend to be heads of unmarried households."),
-                                                     p("Household heads also have low levels of education as the average education across villages is approximately five years, comparable to completing elementary school. This low level of education may contribute to the high levels of the poverty level in the region. More than half of families in Haridaskati Samsernagar live with less than ₹240 per week per person (Indian poverty line of 2018-2019). However, other villages like Purba Dwarokapur have a lower proportion of households (18%) below the poverty line.")
+                                                     p("Household heads also have low levels of education as the average education across villages is approximately five years, comparable to completing elementary school. This low level of education may contribute to the high levels of the poverty level in the region. More than half of families in Haridaskati Samsernagar live with less than ₹240 per week per person (Indian poverty line of 2018-2019). However, other villages like Purba Dwarokapur have a lower proportion of households (18%) below the poverty line."),
+                                                     br(),
+                                                     p(strong("Select:")),
+                                                     actionButton(inputId ="button", label = "Map")
                                                      
                                               ) ,
                                               column(8,
@@ -1282,16 +1273,7 @@ ui <- navbarPage(title = "",
                                                      textOutput("result7"), align = "left",
                                                      ),
                                               ))),
-                                              column(12, 
-                                                     fluidPage(
-                                                       p(tags$small("Select:")),                                                         
-                                                       actionButton(inputId ="button", label = "Map")
-                                                       
-                                                     ),
-                          
-                                     
-                                              ),
-                                            
+                                              
                                      )), 
                             tabPanel("Livelihood", 
                                      fluidRow(style = "margin: 6px;", align = "justify",
@@ -1311,7 +1293,10 @@ ui <- navbarPage(title = "",
                                                      p("Despite most of the population being involved in agriculture, land holding in the Sundarbans is mostly marginal. Pargumti and Bijoynagar have the 
                                                        highest average amount of land owned, with households owning over 60 kathas. Kathas is a land measurement commonly used in India. For reference, 
                                                        1 acre of land equals 32 kathas. To help rest and regenerate harvest, farmers tend to fallow their land. Bijoynagar had the largest average land fallow 
-                                                       (about 95 kathas, approx. 3 acres) for the current agricultural season. ")
+                                                       (about 95 kathas, approx. 3 acres) for the current agricultural season. "),
+                                                     br(),
+                                                     p(strong("Select:")),                                                       
+                                                     actionButton(inputId ="button1", label = "Map")
                                                      
                                                      
                                               ) ,
@@ -1333,16 +1318,11 @@ ui <- navbarPage(title = "",
                                                               h4(strong(textOutput("result1"), align = "center")),
                                                      withSpinner(plotlyOutput("ocuplot", height = "500px")),
                                                      #br(),
-                                                     textOutput("result5"), align = "left"),
+                                                     textOutput("result5"), align = "left",
+                                                     textOutput("result8"), align = "left"),
                                               ),
-                                              column(12, 
-                                                     fluidPage(
-                                                       p(tags$small("Select:")),                                                         
-                                                       actionButton(inputId ="button1", label = "Map"),
-                                                       br(),
-                                                       br()
-                                                    ),
-                                     ))),
+                                              
+                                     )),
                             tabPanel("Financial", 
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Financial Practices"), align = "center"),
@@ -1358,6 +1338,9 @@ ui <- navbarPage(title = "",
                                                        Remittances are any income household receives from someone working away from home. We visualize the relationship between average weekly remittances and 
                                                        average weekly income. In most villages, higher remittances correlate with a higher weekly income, except for Amrabti, Pargumti, and Sagar, 
                                                        suggesting other possible economic opportunities in these three villages."),
+                                                     br(),
+                                                     p(strong("Select:")),
+                                                     actionButton(inputId ="button2", label = "Map")
                                                     
                                               ),
                                               column(8, h4(strong("Financial – November 2018 (Baseline)")),
@@ -1374,17 +1357,12 @@ ui <- navbarPage(title = "",
                                                               h4(strong(textOutput("result")), align = "center"),
                                                      
                                                      withSpinner(plotlyOutput("finplot", height = "500px")),
+                                                     textOutput("result4"), align = "left",
+                                                     textOutput("result9"), align = "left"
                                                    
                                                      
                                               )),
-                                               column(12, 
-                                                      fluidPage(
-                                                        p(tags$small("Select:")),
-                                                        actionButton(inputId ="button2", label = "Map")
-                                                      
-                                                      ),
-                                              
-                                     )),
+                                              ),
                             
                  )), 
 
@@ -1909,7 +1887,7 @@ server <- function(input, output, session) {
      paste("Mean: 5.30 Years | Median: 5.00 Years")
     }
     else if (ageVar() == "Households that Live Below Poverty Line (₹204) per week") {
-      paste("Mean: 10.3 Households | Median: 10 Households")
+      paste("Mean: 10.30 Households | Median: 10.00 Households")
     }
     else if (ageVar() == "Household Heads Marital Status") {
       
@@ -1918,14 +1896,38 @@ server <- function(input, output, session) {
   
   output$result4 <- renderText({
     if (finVar() == "Number of Households that Own a Business") {
-      paste("Mean: 3.60 households | Median: 3.00 households | (Own a Business)")
+      paste("Mean: 3.60 Households | Median: 3.00 Households ")
     }
     else if (finVar() == "Proportion of Households Owning Assets") {
       paste("")
     }
     
     else if (finVar() == "Income vs Remmitances (October 2018 - November 2019)") {
-      paste("Mean: INR 4214 | Median: INR 3800")
+      paste("")
+    }
+    else if (finVar() == "Average Monthly Salary per Household by Village")  {
+      paste("Mean: INR 4214.00 | Median: INR 3800.00")
+    }
+    else if (finVar() == "Number of Times Households Saved in Prior Year") {
+      paste("")
+    }
+    
+    else if (finVar() == "Percentage of Household with Migrant Workers") {
+      paste("")
+    }
+    
+  }) 
+  
+  output$result9 <- renderText({
+    if (finVar() == "Number of Households that Own a Business") {
+      paste("(Own a Business)")
+    }
+    else if (finVar() == "Proportion of Households Owning Assets") {
+      paste("")
+    }
+    
+    else if (finVar() == "Income vs Remmitances (October 2018 - November 2019)") {
+      paste("")
     }
     else if (finVar() == "Average Monthly Salary per Household by Village")  {
       paste("")
@@ -1938,7 +1940,7 @@ server <- function(input, output, session) {
       paste("")
     }
     
-  })  
+  })
   
   output$result5 <- renderText({ 
   if (ocuVar() == "Primary Occupation for Head of Households") {
@@ -1948,20 +1950,43 @@ server <- function(input, output, session) {
     paste("*Note: Missing bar indicates zero value for occupation")
   }
   else if (ocuVar() == "Percentage of Households Involved in Agricultural Farming") {
-    paste("Mean: 61.92% | Median: 60% | (Involved in Farming)")
+    paste("Mean: 61.92% | Median: 60.00% ")
   }
   else if (ocuVar() == "Average Amount of Land Owned by Village") {
-    paste("Mean: 48.37 Kathas | Median: 40 Kathas")
+    paste("Mean: 48.37 Kathas | Median: 40.00 Kathas")
     
   }
   else if (ocuVar() == "Total Land Fallowed (Kathas)") {
-    paste("*Note: Data missing for some villages or missing bar means zero land was fallowed for village | Mean: 41.7 Kathas | Median: 39.5 Kathas")
+    paste("Mean: 41.70 Kathas | Median: 39.50 Kathas")
   }
   else if (ocuVar() == "Average Job Duration for Head of Household") {
     paste("Mean: 8.02 Months | Median: 8.21 Months")
   }
   
 })
+  
+  output$result8 <- renderText({ 
+    if (ocuVar() == "Primary Occupation for Head of Households") {
+      paste("")
+    } 
+    else if (ocuVar() == "Secondary Occupation for Head of Households") {
+      paste("")
+    }
+    else if (ocuVar() == "Percentage of Households Involved in Agricultural Farming") {
+      paste("(Involved in Farming)")
+    }
+    else if (ocuVar() == "Average Amount of Land Owned by Village") {
+      paste("")
+      
+    }
+    else if (ocuVar() == "Total Land Fallowed (Kathas)") {
+      paste("*Note: Data missing for some villages or missing bar means zero land was fallowed for village")
+    }
+    else if (ocuVar() == "Average Job Duration for Head of Household") {
+      paste("")
+    }
+    
+  })
   
   
 
