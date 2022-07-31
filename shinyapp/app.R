@@ -2598,7 +2598,7 @@ server <- function(input, output, session) {
     ggplot(filtered_cs_avg_items(), aes(x = week, y = avg_item, color = village))+
       geom_line() +
       theme_classic()+
-      labs(x = "Date", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: 7.20  Median: 7.20")+
+      labs(x = "Date", y = "Weekly Items Bought", color = "Villages", caption = "Mean: 7.20  Median: 7.20")+
       theme(plot.caption = element_text(size = 12))+
       scale_y_discrete(breaks = c(0,2,4,6,8,10), limits = c(0:10)) + 
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
