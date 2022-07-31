@@ -651,13 +651,13 @@ names(avg_inc_table) <- c("Date", "Village", "Average Income (INR ₹)")
 
 #Shocks Data ------------------------------------------------------------------- 
 ## Frequency of each shock (Total baseline)
-shocks <- baseline %>% select(village,shk1,shk2,shk3,shk4,shk5,shk6,shk7)
+shocks <- baseline %>% select(village,shk1,shk2,shk3,shk4,shk5,shk6,shk7) 
 shocks <- data.frame(y=unlist(shocks))
 colnames(shocks) <- c('shock_nmb')
 shock_labels <- c('None', 'Crop Loss', 'Loss of vegetation', 'Damage(saline water)','Forced to move(Flooding)', 'Loss of agricultural land(erosion)',
                   'Loss of home(erosion/cyclone)', 'Loss of livestock', 'Loss of business', 'Death/health', 'Other')
 
-shocks_all <- ggplot(shocks, aes(shock_nmb)) + geom_bar(fill = "dark red", hoverinfo = "text", aes(text = paste("Count: ", shock_nmb))) + 
+shocks_all <- ggplot(shocks, aes(shock_nmb)) + geom_bar(fill = "dark red", hoverinfo = "text", aes(text = paste(""))) + 
   labs(x = "", y = "Occurrences" ,title = "") + theme(axis.text = element_text(size = 7)) +
   theme_classic()+
   scale_x_discrete(breaks = c(1,2,3,4,5,6,7,8,9,10,11),labels = str_wrap(shock_labels, width = 25) ,limits = c(0:11)) + 
@@ -697,7 +697,7 @@ shock_labels_2009 <- c('Crop Loss', 'Loss of vegetation', 'Damage(saline water)'
 shocks_2009 <- data.frame(y=unlist(shocks_2009))
 colnames(shocks_2009) <- c('shk')
 
-shocks_plot_2009 <-ggplot(shocks_2009, aes(shk)) + geom_bar(fill = "dark red",hoverinfo = "text", aes(text = paste("Count: ", shk))) + 
+shocks_plot_2009 <-ggplot(shocks_2009, aes(shk)) + geom_bar(fill = "dark red",hoverinfo = "text", aes(text = paste(""))) + 
   labs(x = "", y = "Occurrences" ,title = "") + theme(axis.text = element_text(size = 8)) + 
   scale_x_discrete(breaks = c(1,2,3,4,5,6,7,8,9,10),labels = str_wrap(shock_labels_2009, width = 25) ,limits = c(0:11)) +
   theme_classic()+
@@ -716,7 +716,7 @@ cope_labels <- c("Did not do anything","Relatives/friends Aid",
 
 shocks_cope$shk_2009_cope<-replace(shocks_cope$shk_2009_cope, shocks_cope$shk_2009_cope == 997, 16)
 
-cope_2009_plot <- ggplot(shocks_cope, aes(shk_2009_cope, fill = village)) + geom_bar(hoverinfo = "text", aes(text = paste("Village: ", village, "<br>Count: ", shk_2009_cope))) +
+cope_2009_plot <- ggplot(shocks_cope, aes(shk_2009_cope, fill = village)) + geom_bar(hoverinfo = "text", aes(text = paste(""))) +
   labs(x = "", y = "Total Shocks" ,title = "", fill = "Village") + scale_fill_brewer(palette = "Paired") +
   theme(axis.text = element_text(size = 8)) +
   theme_classic()+
@@ -729,7 +729,7 @@ shock_relocation <- baseline %>% select(village, shk_2009_reloc_yn)
 
 relocation_labels <- c("No", "Yes, for under a month", "Yes, for over a month")
 
-shock_relocation_2009_yn <- ggplot(shock_relocation, aes(shk_2009_reloc_yn, fill = village)) + geom_bar(hoverinfo = "text", aes(text = paste("Village: ", village, "<br>Count: ", shk_2009_reloc_yn))) + 
+shock_relocation_2009_yn <- ggplot(shock_relocation, aes(shk_2009_reloc_yn, fill = village)) + geom_bar(hoverinfo = "text", aes(text = paste(""))) + 
   labs(x = "", y = "Total Households" ,title = "", fill = "Village") + 
   theme_classic()+
   scale_x_discrete(breaks = c(0,1,2), labels = str_wrap(relocation_labels, width = 30), limits = c(0:2)) + 
@@ -743,7 +743,7 @@ relocation_where_labels <- c("Within same village","Other village in Sundarbans"
                              "Village outside Sundarbans, within West Bengal", "Kolkata", 
                              "Other Urban area outside Sundarbans, within West Bengal","Urban area outside West Bengal")
 
-shock_relocation_2009 <- ggplot(shock_relocation_where, aes(shk_2009_reloc1, fill = village)) + geom_bar(hoverinfo = "text", aes(text = paste("Village: ", village, "<br>Count: ", shk_2009_reloc1))) + 
+shock_relocation_2009 <- ggplot(shock_relocation_where, aes(shk_2009_reloc1, fill = village)) + geom_bar(hoverinfo = "text", aes(text = paste(""))) + 
   labs(x = "Relocation Areas", y = "Total Households" ,title = "", fill = "Village") + 
   scale_x_discrete(breaks = c(1,2,3,4,5,6), labels = str_wrap(relocation_where_labels, width = 20), limits = c(1:6)) +
   theme_classic()+
@@ -1719,13 +1719,13 @@ ui <- navbarPage(title = "",
                 tabPanel("Shocks",
                                        fluidRow(style = "margin: 6px;", h1(strong("Shocks"), align = "center"), 
                                                 column(4, 
-                                                h4(strong("What shocks affect this region?"), align = "center"), 
-                                                p("The Sundarbans are one of the most vulnerable regions in the world in regards to climate change. It is a very biodiverse region, largely made up of low-lying islands. Due to this, any changes to sea level is going to dramatically affect the area. Shocks can be classified as any event, most likely negative that can harm the household livelihood. When looking at “Frequency of Shocks” many of the shocks that are impacting these households are environmental impacts or loss of various items. Natural disasters could be a potential cause to many shocks. Some of the most frequent shocks that took place are loss of business, loss of vegetation, and loss of livestock. Our team also wanted to take a look at how each village was impacted by the different shocks taking place. Since many of the shocks are climate-related, and the proximity of all the villages are in the same region, the number of shocks taking place per year in every household was the same. Since the households reported on shocks taking place for the past 11 years from when the data was collected, we wanted to see if there were disproportionate impacts caused by certain shocks during that period. The Sundarbans area typically faces tropical events such as cyclones. However, the frequency and intensity of cyclones have increased in the past decade. Especially, the most devastating cyclones in the region occurred in 2007, 2009, 2019, 2020, and 2021. The impact of the cyclone in 2009 (Alia) is still evident as the majority of households reported a shock. in 2009, even though this interview was done in 2018. Moreover, many families reported experiencing 3 shocks, with some reporting a high of 4 shocks in 2009.", style = "padding-top:10px;", align = "justify")),
+                                                h4(strong("What Shocks are affecting this region (2009 – 2018)?"), align = "left"), 
+                                                p("The Sundarbans area typically face yearly tropical events such as cyclones. However, the region is facing the effects of climate change as the frequency and intensity of cyclones have increased in the past decade. Specifically, the most devastating cyclones in the region occurred in 2007, 2009, 2019, 2020, and 2021. The impact of the cyclone in 2009 (Alia) is still evident as the majority of households reported experiencing a shock in 2009, even though this interview was done in 2018. Moreover, many families reported experiencing three shocks, with some reporting a high of four shocks in 2009. Shocks are any event, most likely negative, that can harm the households’ livelihoods. The majority of shocks families have experienced in the last decade are due to environmental events or the loss of various assets. The most frequent shocks households experienced during 2009-2018 were loss of home due to river erosion or cyclone, loss of livestock, crop loss, and forced migration due to flooding. The effects of shocks were similar across villages, as the average number of shocks was roughly three per year for most villages.", style = "padding-top:10px;", align = "justify")),
                                        # Show a plot of the generated plot
                                          column(8,
                                            tabsetPanel(
                                              tabPanel("Shocks Frequency", 
-                                                      h4(strong("Total Household Shocks (2009-2018)"), align = "center", style = "margin: 13px;"),
+                                                      h4(strong("Frequency of Shocks"), align = "center", style = "margin: 13px;"),
                                                       plotlyOutput("shocks_all")),
                                              tabPanel("Total Shocks per Village", 
                                                       h4(strong("Average Number of Shocks per Village (2009-2018)"), align = "center", style = "margin: 13px;"),
@@ -1740,9 +1740,8 @@ ui <- navbarPage(title = "",
                          br(),
                                       fluidRow(style = "margin: 6px;", h1(strong("2009 Shocks"), align = "center"), 
                                                column(4, 
-                                                      h4(strong("2009 Shocks in Representative Sample"), align = "center"), 
-                                              p("After seeing that there is a disproportionate amount of shocks taking place in 2009, we wanted to take a further look at the causes and the effects of it. Cyclone Aila was a devastating force during that year that affected about 40 million people; washed away several thousand homes, took 190 lives, wounded more than 7103 people, and caused almost a billion dollars(USD) worth of damage. Since a majority of the shocks were taken during the period this data was collected in 2009, the most common shocks are still a loss of business, loss of vegetation, and loss of livestock. Actions taken after shocks to accommodate for losses of income or valuables are called copes. After the many shocks in 2009, families in the Sundarbans region coped by taking steps such as obtaining credit or pursuing other jobs. Notably, the most common coping method was unconditional help from the government, followed by receiving support from friends or relatives. Often, families did nothing and tried to “weather the storm” until better times. Since many of the houses in this region are made from wood or are propped by materials that can be easily wiped away from floods or high winds, relocation is common after shocks. Most often relocation is only taken place for less than a month, but in certain instances, this can be more permanent or longer. With a vast majority of households saying that they relocate for either less or more than a month, many of these households relocate to a safer place in the same village. Less frequently do the households relocate to Kolkata (the biggest city nearby) or other villages around the Sundarbans.", align = "justify", style = "padding-top:10px;"
-                                                )
+                                                      h4(strong("Coping Mechanisms"), align = "left"), 
+                                              p("Given the disproportionate number of shocks households faced in 2009, we further examine the effects of these shocks. Cyclone Aila was a devastating force in 2009 and affected about 40 million people; washed away several thousand homes, took hundreds of lives, wounded more than seven thousand people, and caused almost billions of dollars’ worth of damage. Alia severely affected households’ livelihood as the most common shocks in 2009 were loss of home (river erosion/cyclone), loss of livestock, migration due to flooding), loss of vegetation, and crop loss.  Families in the Sundarbans obtained credit and diversified their livelihoods by pursuing other jobs to cope with the adverse effects of cyclone Alia. Notably, the most common coping mechanism was unconditional help from the government, followed by receiving support from friends or relatives. Often, families did nothing and tried to “weather the storm” until better times. Relocation is also common after devastating climate shocks since many homes are made from wood or materials easily wiped away by floods or high winds. Relocations in 2009 were usually not more than a month, but in some cases, a household may decide to move permanently. Most families typically relocate to a shelter/safe house within their villages during cyclones or when their homes are destroyed. These households temporarily relocate less frequently to Kolkata (the biggest city nearby) or other villages around the Sundarbans.")
                                                                             ),
                                         column(8,tabsetPanel(
                                           tabPanel("Frequency", 
