@@ -1925,7 +1925,7 @@ server <- function(input, output, session) {
     paste("")
   }
   else if (ocuVar() == "Average Amount of Land Owned by Village") {
-    paste("")
+    paste("Mean: 48.37 Kathas | Median: 40 Kathas")
     
   }
   else if (ocuVar() == "Total Land Fallowed (Kathas)") {
