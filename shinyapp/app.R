@@ -1054,7 +1054,7 @@ ui <- navbarPage(title = "",
                                    column(4,
                                           h2(strong("The Setting")),
                                           p("The Sundarbans is a cluster of low-lying islands in the Bay of Bengal that spans across India and Bangladesh. The Sundarbans area hosts the largest mangrove forests in the world, supporting an exceptionally rich diversity of flora and endangered fauna such as the Bengal tiger, Estuarine crocodile, Indian python, and Irrawaddy dolphin. The United Nations Educational, Scientific and Cultural Organization (UNESCO) declared the Indian portion of the Sundarbans as a World Heritage Site in 1987 and the Bangladeshi portion in 1997, respectively. The Sundarbans Biosphere Reserve was designated under the UNESCO Man and the Biosphere Programme in 2001."),
-                                          p("The vast delta is formed by the confluence of the Ganges, the Brahmaputra, and the Meghna rivers. The Sundarbans region has a complex network of tidal waterways, creeks, and mudflats. The Sundarbans is considered an endangered ecosystem under the ICUN Red List of Ecosystems due to increasing threats from climate change, densely populated villages, and declining agriculture.The Sundarbans supplies sustainable livelihoods to more than 4 million people living in small villages near the mangrove forests. Most households rely on a diverse set of local livelihood practices such as farming, woodcutting, fishing, foraging, and honey collection. Farmers, primarily landless laborers, commonly farm a single crop (Aman rice paddy) in the rainy season and sell their produce to intermediaries or traders. The woodcutters obtain traditional forest produce like timber, fuelwood, and pulpwood and sell these items in local markets. A large-scale harvest of shrimps, fish, crustaceans, and honey from the forests is also typical. However, with the ongoing climate and population changes, forest conservation efforts from the local government have placed a cap on harvesting."),
+                                          p("The vast delta is formed by the confluence of the Ganges, the Brahmaputra, and the Meghna rivers. The Sundarbans region has a complex network of tidal waterways, creeks, and mudflats. The Sundarbans is considered an endangered ecosystem under the ICUN Red List of Ecosystems due to increasing threats from climate change, densely populated villages, and declining agriculture. The Sundarbans supplies sustainable livelihoods to more than 4 million people living in small villages near the mangrove forests. Most households rely on a diverse set of local livelihood practices such as farming, woodcutting, fishing, foraging, and honey collection. Farmers, primarily landless laborers, commonly farm a single crop (Aman rice paddy) in the rainy season and sell their produce to intermediaries or traders. The woodcutters obtain traditional forest produce like timber, fuelwood, and pulpwood and sell these items in local markets. A large-scale harvest of shrimps, fish, crustaceans, and honey from the forests is also typical. However, with the ongoing climate and population changes, forest conservation efforts from the local government have placed a cap on harvesting."),
                                           img(src='sunphoto1.png', align = "center", width = "95%")
                                           
                                    ),
@@ -1324,6 +1324,7 @@ ui <- navbarPage(title = "",
                                                      withSpinner(plotlyOutput("ocuplot", height = "500px")),
                                                      #br(),
                                                      textOutput("result5"), align = "left"),
+                                                     textOutput("result8"), align = "left",
                                               ),
                                               #column(12, 
                                                #      fluidPage(
@@ -1908,14 +1909,38 @@ server <- function(input, output, session) {
   
   output$result4 <- renderText({
     if (finVar() == "Number of Households that Own a Business") {
-      paste("Mean: 3.60 households | Median: 3.00 households | (Own a Business)")
+      paste("Mean: 3.60 households | Median: 3.00 households ")
     }
     else if (finVar() == "Proportion of Households Owning Assets") {
       paste("")
     }
     
     else if (finVar() == "Income vs Remmitances (October 2018 - November 2019)") {
+      paste("")
+    }
+    else if (finVar() == "Average Monthly Salary per Household by Village")  {
       paste("Mean: INR 4214 | Median: INR 3800")
+    }
+    else if (finVar() == "Number of Times Households Saved in Prior Year") {
+      paste("")
+    }
+    
+    else if (finVar() == "Percentage of Household with Migrant Workers") {
+      paste("")
+    }
+    
+  }) 
+  
+  output$result9 <- renderText({
+    if (finVar() == "Number of Households that Own a Business") {
+      paste("(Own a Business)")
+    }
+    else if (finVar() == "Proportion of Households Owning Assets") {
+      paste("")
+    }
+    
+    else if (finVar() == "Income vs Remmitances (October 2018 - November 2019)") {
+      paste("")
     }
     else if (finVar() == "Average Monthly Salary per Household by Village")  {
       paste("")
@@ -1928,7 +1953,7 @@ server <- function(input, output, session) {
       paste("")
     }
     
-  })  
+  })
   
   output$result5 <- renderText({ 
   if (ocuVar() == "Primary Occupation for Head of Households") {
@@ -1938,20 +1963,43 @@ server <- function(input, output, session) {
     paste("*Note: Missing bar indicates zero value for occupation")
   }
   else if (ocuVar() == "Percentage of Households Involved in Agricultural Farming") {
-    paste("Mean: 61.92% | Median: 60% | (Involved in Farming)")
+    paste("Mean: 61.92% | Median: 60% ")
   }
   else if (ocuVar() == "Average Amount of Land Owned by Village") {
     paste("Mean: 48.37 Kathas | Median: 40 Kathas")
     
   }
   else if (ocuVar() == "Total Land Fallowed (Kathas)") {
-    paste("*Note: Data missing for some villages or missing bar means zero land was fallowed for village | Mean: 41.7 Kathas | Median: 39.5 Kathas")
+    paste("Mean: 41.7 Kathas | Median: 39.5 Kathas")
   }
   else if (ocuVar() == "Average Job Duration for Head of Household") {
     paste("Mean: 8.02 Months | Median: 8.21 Months")
   }
   
 })
+  
+  output$result8 <- renderText({ 
+    if (ocuVar() == "Primary Occupation for Head of Households") {
+      paste("")
+    } 
+    else if (ocuVar() == "Secondary Occupation for Head of Households") {
+      paste("")
+    }
+    else if (ocuVar() == "Percentage of Households Involved in Agricultural Farming") {
+      paste("(Involved in Farming)")
+    }
+    else if (ocuVar() == "Average Amount of Land Owned by Village") {
+      paste("")
+      
+    }
+    else if (ocuVar() == "Total Land Fallowed (Kathas)") {
+      paste("*Note: Data missing for some villages or missing bar means zero land was fallowed for village")
+    }
+    else if (ocuVar() == "Average Job Duration for Head of Household") {
+      paste("Mean: 8.02 Months | Median: 8.21 Months")
+    }
+    
+  })
   
   
 
