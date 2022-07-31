@@ -1080,41 +1080,36 @@ ui <- navbarPage(title = "",
 
                  
                  ## Tab Date Intro--------------------------------------------
-                 tabPanel("Data", value = "overview",
+                 tabPanel("Data",
                           fluidRow(style = "margin: 6px;",
-                                   column(6, 
-                                          h3(strong("Overview")),
+                                   h1(strong("Data"), align = "center"),
+                                   column(4, 
+                                          h4(strong("Overview")),
                                           p("For our analysis, we obtain baseline as well as weekly household financial and consumption data from Gupta et al. (2021). The authors originally collected the household-level data from a representative sample of approximately 300 rural households in the Sundarbans region in West Bengal, India, from November 2018 to October 2019. The baseline data are collected through standard household surveys, while the financial diaries data provide 52 weeks of time-series data points on the 300 representative households.", align = "justify"),
-                                   #),
-                                   #column(4,
-                                          h3(strong("Initial Survey")),
+                                          h4(strong("Initial Survey")),
                                           p("The initial or baseline surveys were conducted in November 2018. The baseline data allow the team to visualize and provide insights into the region's demographic and socio-economic characteristics. The baseline survey collected information on household demographics, economic activities, assets and landholding, shock history, migration, and agricultural behaviors.", align = "justify"),
-                                          
-                                          
-                                   ),
-                                   column(6,
-                                          h3(strong("Financial Diaries")),
+                                         h4(strong("Financial Diaries")),
                                           p("The financial diaries captured high-frequency data on household income, expenditure, and consumption behavior. As such, we have weekly financial and economic activities for approximately 300 households for an entire year (November 2018 to October 2019).", align = "justify"),
                                           p("Household members were trained during the baseline interview to independently record their financial activities in their respective diaries (see images below for an example of a blank financial diary). Households received two more training sessions in the following two weeks and filled out the first four financial diaries during the training period. Additional support was given to families via phone calls and during the field team's monthly visit to collect completed diaries. These steps were implemented to ensure proper recording of weekly information. These diaries include data on weekly income, remittances, borrowing, lending, expenditure on consumption, and non-consumption items.", align = "justify"),
                                           br()
-                                   )),
-                        fluidRow(style = "margin: 6px;", align = "center", 
-                                 h3(strong("Example of Financial Diary", align = "center")),
-                            column(6, align = "center",
-                                   br(),
-                                   br(),
-                                   br(),
-                                   br(),
-                            h4(strong("Front Side- Financial Activity")),
-                                   img(src='Picture2.png', width = "100%")),
-                            column(6,
-                                   h4(strong("Back Side- Expenditure Activity")),
-                                   align = "center",
-                                   img(src='fd.png', width = "90%")),
+                                   ),
+                                   column(8, align = "center",
+                                          h3(strong("Example of Financial Diary", align = "center", style = "margin: 13px;")),
+                                          tabsetPanel(
+                                            tabPanel("Front Side",
+                            h4(strong("Financial Activity"), align = "center", style = "margin: 13px;"),
+                            
+                                   img(src='Picture2.png', width = "90%", align = "center")),
+                            tabPanel("Back Side",
+                            
+                            
+                                   h4(strong("Expenditure Activity"), align = "center", style = "margin: 13px;"),
+                                
+                                   img(src='fd.png', width = "60%", align = "center", style = "margin: 6px;")),
                            
                           
                           
-                          )), 
+                          )))), 
                  ## Sundarbans Region--------------------------------------------
                  navbarMenu("Sundarbans Region" ,
                             tabPanel("Villages", 
