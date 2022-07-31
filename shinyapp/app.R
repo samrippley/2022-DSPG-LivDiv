@@ -1282,6 +1282,7 @@ ui <- navbarPage(title = "",
                                               ))),
                                               column(12, 
                                                      fluidPage(
+                                                       p(tags$small("Select:")),                                                         
                                                        actionButton(inputId ="button", label = "Map")
                                                        
                                                      ),
@@ -1312,7 +1313,8 @@ ui <- navbarPage(title = "",
                                                      
                                                      
                                               ) ,
-                                              column(8, h4(strong("Livelihood – November 2018 (Baseline)")),
+                                              column(8, 
+                                                     h4(strong("Livelihood – November 2018 (Baseline)")),
                                                      selectInput("ocudrop", "Select Characteristic:", width = "100%", choices = c(    
                                                        "Primary Occupation" = "Primary Occupation for Head of Households",
                                                        "Secondary Occupation" ="Secondary Occupation for Head of Households", 
@@ -1325,13 +1327,14 @@ ui <- navbarPage(title = "",
                                                      ),
                                                      ),
                                                      fluidRow(align = "center",
-                                                              h4(strong(textOutput("result1"))),
-                                                     withSpinner(plotlyOutput("ocuplot", height = "500px")),
-                                                     br(),
-                                                     textOutput("result4"), align = "left"),
-                                              ),
+                                                              h4(strong(textOutput("result1")), align = "center"),
+                                                              withSpinner(plotlyOutput("ocuplot", height = "500px")),
+                                                              #br(),
+                                                              p(textOutput("result4"), align = "left"),
+                                                     )),
                                               column(12, 
                                                      fluidPage(
+                                                       p(tags$small("Select:")),                                                         
                                                        actionButton(inputId ="button1", label = "Map"),
                                                        br(),
                                                        br()
@@ -1365,7 +1368,7 @@ ui <- navbarPage(title = "",
                                                        "Savings" = "Number of Times Households Saved in Prior Year"
                                                      )),
                                                      fluidRow(align = "center",
-                                                              h4(strong(textOutput("result")), align = "left"),
+                                                              h4(strong(textOutput("result")), align = "center"),
                                                      
                                                      withSpinner(plotlyOutput("finplot", height = "500px")),
                                                    
@@ -1373,6 +1376,7 @@ ui <- navbarPage(title = "",
                                               )),
                                                column(12, 
                                                       fluidPage(
+                                                        p(tags$small("Select:")),
                                                         actionButton(inputId ="button2", label = "Map")
                                                       
                                                       ),
@@ -1418,6 +1422,7 @@ ui <- navbarPage(title = "",
                                                      multiple = T, options = list(`actions-box` = T)),
                                          pickerInput("block_choose_exp", "Select Administrative Block (For Expenditure by Blocks):", choices = blocks_vector, selected = blocks_vector, 
                                                      multiple = T, options = list(`actions-box` = T)),
+                                         p(tags$small("Select:")),                                                         
                                          actionButton(inputId ="button3", label = "Map")
                                          
                                          ),
@@ -1426,11 +1431,11 @@ ui <- navbarPage(title = "",
                                        mainPanel(
                                          tabsetPanel(
                                            tabPanel("Weekly Expenditure",
-                                                    h4(strong("Average Weekly Expenditure"), align = "center"), 
+                                                    h4(strong("Average Weekly Expenditure"), align = "center", style = "margin: 13px;"), 
                                                     plotOutput("exp", height = "500px"),
                                                     ),
                                            tabPanel("Weekly Expenditure by Blocks",
-                                                    h4(strong("Average Weekly Expenditure by Administrative Block"), align = "center"),
+                                                    h4(strong("Average Weekly Expenditure by Administrative Block"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("exp_block", height = "500px")),
                                            tabPanel("Expenditure Table", 
                                                     h4(strong(""), align = "center"),
@@ -1472,6 +1477,7 @@ ui <- navbarPage(title = "",
                                                      multiple = T, options = list(`actions-box` = T)),
                                          pickerInput("block_choose_cs", "Select Administrative Block (For Weekly Food Consumption by Blocks):", choices = blocks_vector, selected = blocks_vector, 
                                                      multiple = T, options = list(`actions-box` = T)),
+                                         p(tags$small("Select:")),                                                         
                                          actionButton(inputId ="button4", label = "Map")
                                          
                                        ),
@@ -1479,22 +1485,22 @@ ui <- navbarPage(title = "",
                                        mainPanel(
                                          tabsetPanel(
                                            tabPanel("Weekly Food Consumption",
-                                                    h4(strong("Average Weekly Food Consumption Spending"), align = "center"),
+                                                    h4(strong("Average Weekly Food Consumption Spending"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("cs_exp", height = "500px")),
                                            tabPanel("Staple Items", 
-                                                    h4(strong("Average Weekly Expenditure on Staple Food"), align = "center"),
+                                                    h4(strong("Average Weekly Expenditure on Staple Food"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("cs_staple", height = "500px")),
                                            tabPanel("Meats", 
-                                                    h4(strong("Average Weekly Expenditure on Meats"), align = "center"),
+                                                    h4(strong("Average Weekly Expenditure on Meats"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("cs_meats", height = "500px")),
                                            tabPanel("Other", 
-                                                    h4(strong("Average Weekly Expenditure on Other Food Items"), align = "center"),
+                                                    h4(strong("Average Weekly Expenditure on Other Food Items"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("cs_other", height = "500px")),
                                            tabPanel("Total Food Items", 
-                                                    h4(strong("Total Weekly Consumption Items Purchased"), align = "center"),
+                                                    h4(strong("Total Weekly Consumption Items Purchased"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("cs_item", height = "500px")),
                                            tabPanel("Weekly Food Consumption by Blocks", 
-                                                    h4(strong("Average Weekly Food Consumption by Administrative Block"), align = "center"),
+                                                    h4(strong("Average Weekly Food Consumption by Administrative Block"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("cs_block", height = "500px"))
                                            #tabPanel("Table", DT::DTOutput("cs_table"))
                                          )
@@ -1529,6 +1535,7 @@ ui <- navbarPage(title = "",
                                                      multiple = T, options = list(`actions-box` = T)),
                                          pickerInput("block_choose_nf", "Select Administrative Block (For Non Food Consumption by Blocks):", choices = blocks_vector, selected = blocks_vector, 
                                                      multiple = T, options = list(`actions-box` = T)),
+                                         p(tags$small("Select:")),                                                         
                                          actionButton(inputId ="button5", label = "Map")
                                          
                                        ),
@@ -1536,10 +1543,10 @@ ui <- navbarPage(title = "",
                                        mainPanel(
                                          tabsetPanel(
                                            tabPanel("Weekly Non-Food Consumption",
-                                                    h4(strong("Average Weekly Non-Food Consumption"), align = "center"),
+                                                    h4(strong("Average Weekly Non-Food Consumption"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("nonfood_plot", height = "500px")),
                                            tabPanel("Non-Food Consumption by Blocks",
-                                                    h4(strong("Average Weekly Non-Food Consumption by Administrative Block"), align = "center"),
+                                                    h4(strong("Average Weekly Non-Food Consumption by Administrative Block"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("nf_block_plot", height = "500px"))
                                            #tabPanel("Table", DT::DTOutput("nonfood_table"))
                                          )
@@ -1579,20 +1586,21 @@ ui <- navbarPage(title = "",
                                          varSelectInput("Gender", "Select Gender (For Income by Gender):", malefemale_inc[,-(1:2)]),
                                          pickerInput("block_choose_inc", "Select Administrative Block (For Income by Blocks):", choices = blocks_vector, selected = blocks_vector, 
                                                      multiple = T, options = list(`actions-box` = T)),
+                                         p(tags$small("Select:")),                                                         
                                          actionButton(inputId ="button6", label = "Map")
                                        ),
                                        # Show a plot of the generated plot
                                        mainPanel(
                                          tabsetPanel(
                                            tabPanel("Weekly Income",
-                                                    h4(strong("Average Weekly Income"), align = "center"),
+                                                    h4(strong("Average Weekly Income"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("inc", height = "500px")),
                                            tabPanel("Weekly Income by Gender", 
-                                                    h4(strong("Average Weekly Income by Gender"), align = "center"),
+                                                    h4(strong("Average Weekly Income by Gender"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("malefemaleinc", height = "500px")),
                                            #tabPanel("Full Income", plotOutput("fullinc")),
                                            tabPanel("Weekly Income by Blocks", 
-                                                    h4(strong("Average Weekly Income by Administrative Block"), align = "center"),
+                                                    h4(strong("Average Weekly Income by Administrative Block"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("inc_block", height = "500px")),
                                            tabPanel("Weekly Income Table", 
                                                     DT::DTOutput("inc_table"))
@@ -1626,19 +1634,20 @@ ui <- navbarPage(title = "",
                                                                 multiple = T, options = list(`actions-box` = T)),
                                                     pickerInput("event_choose_borr", "Select Event:", choices = events_vector, selected = "Kharif Crop Preparation", 
                                                                 multiple = T, options = list(`actions-box` = T)),
+                                                    p(tags$small("Select:")),                                                         
                                                     actionButton(inputId ="button7", label = "Map")
                                        ),
                                      
                                      mainPanel(
                                        tabsetPanel(
                                          tabPanel("Weekly Borrowing",
-                                                  h4(strong("Total Weekly Amount Borrowed"), align = "center"),
+                                                  h4(strong("Total Weekly Amount Borrowed"), align = "center", style = "margin: 13px;"),
                                                   plotOutput("bor", height = "500px")),
                                          tabPanel("Total Households Borrowing",
-                                                  h4(strong("Total Households Borrowing"), align = "center"),
+                                                  h4(strong("Total Households Borrowing"), align = "center", style = "margin: 13px;"),
                                                   plotOutput("borr", height = "500px")),
                                          tabPanel("Borrowing Usage", 
-                                                  h4(strong("Households’ Purpose for Borrowing"), align = "center"),
+                                                  h4(strong("Households’ Purpose for Borrowing"), align = "center", style = "margin: 13px;"),
                                                   plotOutput("purpplot", height = "500px"))
                                        
                                        )
@@ -1684,6 +1693,7 @@ ui <- navbarPage(title = "",
                                                      multiple = T, options = list(`actions-box` = T)),
                                          pickerInput("block_choose_rmt", "Select Administrative Block (For Remittances by Blocks):", choices = blocks_vector, selected = blocks_vector, 
                                                      multiple = T, options = list(`actions-box` = T)),
+                                         p(tags$small("Select:")),                                                         
                                          actionButton(inputId ="button8", label = "Map")
                                          
                                        ),
@@ -1692,16 +1702,16 @@ ui <- navbarPage(title = "",
                                        mainPanel(
                                          tabsetPanel(
                                            tabPanel("Weekly Remittances",
-                                                    h4(strong("Average Weekly Remittances"), align = "center"),
+                                                    h4(strong("Average Weekly Remittances"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("rmt", height = "500px")),
                                            tabPanel("Weekly Remittances by Blocks", 
-                                                    h4(strong("Average Weekly Remittances by Administrative Block"), align = "center"),
+                                                    h4(strong("Average Weekly Remittances by Administrative Block"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("rmt_block", height = "500px")),
                                            tabPanel("Method", 
-                                                    h4(strong("Methods of Remittances Transfer"), align = "center"),
+                                                    h4(strong("Methods of Remittances Transfer"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("rmt_method", height = "500px")),
                                            tabPanel("Remittances Usage", 
-                                                    h4(strong("Usage of Remittances"), align = "center"),
+                                                    h4(strong("Usage of Remittances"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("rmt_purpose", height = "500px")),
                                            tabPanel("Weekly Remittances Table",
                                                     DT:: DTOutput("rmt_table")),
@@ -1729,10 +1739,10 @@ ui <- navbarPage(title = "",
 
                                                       plotlyOutput("shocks_all")),
                                              tabPanel("Total Shocks per Village", 
-                                                      h4(strong("Average Number of Shocks per Village (2009-2018)"), align = "center"),
+                                                      h4(strong("Average Number of Shocks per Village (2009-2018)"), align = "center", style = "margin: 13px;"),
                                                       plotOutput("shocks_village")),
                                              tabPanel("Yearly Shocks", 
-                                                      h4(strong("Yearly Household Shocks"), align = "center"),
+                                                      h4(strong("Yearly Household Shocks"), align = "center", style = "margin: 13px;"),
                                                       plotlyOutput("shocks_by_year"))
                                                       )
                                                   ),
@@ -1746,16 +1756,16 @@ ui <- navbarPage(title = "",
                                                                             ),
                                         column(8,tabsetPanel(
                                           tabPanel("Frequency", 
-                                                   h4(strong("Total Household Shocks (2009)"), align = "center"),
+                                                   h4(strong("Total Household Shocks (2009)"), align = "center", style = "margin: 13px;"),
                                                    plotlyOutput("shocks_plot_2009", height = "500")),
                                           tabPanel("Coping Mechanism", 
-                                                   h4(strong("Coping Mechanism for Shocks (2009)"), align = "center"),
+                                                   h4(strong("Coping Mechanism for Shocks (2009)"), align = "center", style = "margin: 13px;"),
                                                    plotlyOutput("cope_2009_plot", height = "600")),
                                           tabPanel("Relocation Status", 
-                                                   h4(strong("Households Relocation Status for 2009 Shocks"), align = "center"),
+                                                   h4(strong("Households Relocation Status for 2009 Shocks"), align = "center", style = "margin: 13px;"),
                                                    plotlyOutput("shock_relocation_2009_yn")),
                                           tabPanel("Relocation Areas", 
-                                                   h4(strong("Relocation Areas due to 2009 Shocks"), align = "center"),
+                                                   h4(strong("Relocation Areas due to 2009 Shocks"), align = "center", style = "margin: 13px;"),
                                                    plotlyOutput("shock_relocation_2009"))
                                                             )
                                                
