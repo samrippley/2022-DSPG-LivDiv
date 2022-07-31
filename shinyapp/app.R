@@ -1073,7 +1073,7 @@ ui <- navbarPage(title = "",
                                           img(src='sunphoto2.png', align = "center", width = "95%")
                                    )
                           ),
-                          fluidRow(align = "left",
+                          fluidRow(align = "center",
                           p(tags$small(em('Source: Images taken by Sundarbans Field Team'))),
                           ),
                  ),
