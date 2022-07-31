@@ -1852,7 +1852,7 @@ ui <- navbarPage(title = "",
                                          p(tags$small(em('NRC (2010). Adapting to the Impacts of Climate Change. National Research Council. The National Academies Press, Washington, DC, USA.'))),
                                          p(tags$small(em('Pramanik, A., Sengupta, S., & Bhattacharyya, M. (2019, January 1). Chapter 5 - Microbial Diversity and Community Analysis of the Sundarbans Mangrove, a World Heritage Site (S. Das & H. R. Dash, Eds.). ScienceDirect; Academic Press. https://www.sciencedirect.com/science/article/pii/B9780128148495000058‌'))),
                                          p(tags$small(em('ReliefWeb. (2020, May 15). Bangladesh: Cyclone Bulbul final report - operation dref N° MDRBD023 - bangladesh. ReliefWeb. Retrieved July 20, 2022, from https://reliefweb.int/report/bangladesh/bangladesh-cyclone-bulbul-final-report-operation-dref-n-mdrbd023 '))),
-                                         p(tags$small(em('Saha, (Dr.)Dipankar. (2015). Diversified Agriculture in Sundarbans. 10.13140/RG.2.1.4691.3446. '))),
+                                         p(tags$small(em('Saha, Dipankar. (2015). Diversified Agriculture in Sundarbans. 10.13140/RG.2.1.4691.3446. '))),
                                          p(tags$small(em('Sundarbans - an overview | ScienceDirect Topics. (n.d.). Www.sciencedirect.com. https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/sundarbans.'))),
                                          p(tags$small(em('Titumir, R. A. M. (n.d.). Sundarbans under threat. Prothomalo. Retrieved July 20, 2022, from https://en.prothomalo.com/environment/sundarbans-under-threat.'))),
                                          p(tags$small(em('UNESCO World Heritage Centre. (2018). The Sundarbans. Unesco.org. https://whc.unesco.org/en/list/798/.'))),
@@ -2061,9 +2061,9 @@ server <- function(input, output, session) {
       labs(fill = "") + 
       xlab("") +
       ylab("Amount Borrowed (INR)")+
-      theme(legend.position = "none", axis.text.y = element_text(size = 16))+
       theme_classic() +
-      scale_fill_brewer(palette = "Paired")
+      scale_fill_brewer(palette = "Paired") +
+      theme(legend.position = "none", axis.text.y = element_text(size = 12), axis.text.x = element_text(size = 12)) 
   })
   
   
