@@ -1334,6 +1334,7 @@ ui <- navbarPage(title = "",
                                                      withSpinner(plotlyOutput("ocuplot", height = "500px")),
                                                      #br(),
                                                      textOutput("result5"), align = "left"),
+                                                     textOutput("result8"), align = "left",
                                               ),
                                               column(12, 
                                                      fluidPage(
@@ -1918,14 +1919,38 @@ server <- function(input, output, session) {
   
   output$result4 <- renderText({
     if (finVar() == "Number of Households that Own a Business") {
-      paste("Mean: 3.60 households | Median: 3.00 households | (Own a Business)")
+      paste("Mean: 3.60 households | Median: 3.00 households ")
     }
     else if (finVar() == "Proportion of Households Owning Assets") {
       paste("")
     }
     
     else if (finVar() == "Income vs Remmitances (October 2018 - November 2019)") {
+      paste("")
+    }
+    else if (finVar() == "Average Monthly Salary per Household by Village")  {
       paste("Mean: INR 4214 | Median: INR 3800")
+    }
+    else if (finVar() == "Number of Times Households Saved in Prior Year") {
+      paste("")
+    }
+    
+    else if (finVar() == "Percentage of Household with Migrant Workers") {
+      paste("")
+    }
+    
+  }) 
+  
+  output$result9 <- renderText({
+    if (finVar() == "Number of Households that Own a Business") {
+      paste("(Own a Business)")
+    }
+    else if (finVar() == "Proportion of Households Owning Assets") {
+      paste("")
+    }
+    
+    else if (finVar() == "Income vs Remmitances (October 2018 - November 2019)") {
+      paste("")
     }
     else if (finVar() == "Average Monthly Salary per Household by Village")  {
       paste("")
@@ -1938,7 +1963,7 @@ server <- function(input, output, session) {
       paste("")
     }
     
-  })  
+  })
   
   output$result5 <- renderText({ 
   if (ocuVar() == "Primary Occupation for Head of Households") {
@@ -1948,20 +1973,43 @@ server <- function(input, output, session) {
     paste("*Note: Missing bar indicates zero value for occupation")
   }
   else if (ocuVar() == "Percentage of Households Involved in Agricultural Farming") {
-    paste("Mean: 61.92% | Median: 60% | (Involved in Farming)")
+    paste("Mean: 61.92% | Median: 60% ")
   }
   else if (ocuVar() == "Average Amount of Land Owned by Village") {
     paste("Mean: 48.37 Kathas | Median: 40 Kathas")
     
   }
   else if (ocuVar() == "Total Land Fallowed (Kathas)") {
-    paste("*Note: Data missing for some villages or missing bar means zero land was fallowed for village | Mean: 41.7 Kathas | Median: 39.5 Kathas")
+    paste("Mean: 41.7 Kathas | Median: 39.5 Kathas")
   }
   else if (ocuVar() == "Average Job Duration for Head of Household") {
     paste("Mean: 8.02 Months | Median: 8.21 Months")
   }
   
 })
+  
+  output$result8 <- renderText({ 
+    if (ocuVar() == "Primary Occupation for Head of Households") {
+      paste("")
+    } 
+    else if (ocuVar() == "Secondary Occupation for Head of Households") {
+      paste("")
+    }
+    else if (ocuVar() == "Percentage of Households Involved in Agricultural Farming") {
+      paste("(Involved in Farming)")
+    }
+    else if (ocuVar() == "Average Amount of Land Owned by Village") {
+      paste("")
+      
+    }
+    else if (ocuVar() == "Total Land Fallowed (Kathas)") {
+      paste("*Note: Data missing for some villages or missing bar means zero land was fallowed for village")
+    }
+    else if (ocuVar() == "Average Job Duration for Head of Household") {
+      paste("Mean: 8.02 Months | Median: 8.21 Months")
+    }
+    
+  })
   
   
 
