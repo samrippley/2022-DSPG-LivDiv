@@ -377,10 +377,10 @@ method_values <- c("       397", "       472", "   1", "   1", "    13")
 
 rmt_method_plot <- ggplot(method_dat, aes( x= reorder(Method, method_counts), y = method_counts, fill = Method)) +
   geom_col() +
-  labs(x = "Method of Sending Remittances", y = "Total Households") +
+  labs(x = "", y = "Total Households") +
   theme_classic() +
   coord_flip()+
-  theme(legend.position = "none", axis.text.y = element_text(size = 16))+
+  theme(legend.position = "none", axis.text.y = element_text(size = 14))+
   #ggtitle("Method of Receiving Remittances")+
   geom_text(aes(label = method_values), size = 5) + scale_fill_brewer(palette = "Paired")
 
@@ -590,12 +590,12 @@ purpose_values <- c("      594", "      128", "     93", "     43", "      37", 
 
 rmt_purpose_plot <- ggplot(purpose_dat, aes(x = reorder(Purpose, purpose_count), y = purpose_count, fill = Purpose)) + 
   geom_col() +
-  labs(x = "Uses of Remittances", y = "Total Households") +
+  labs(x = "", y = "Total Households") +
   theme_classic() +
   #ggtitle("Purpose for Receiving Remittances")+
   #rotate_x_text(angle = 22, size = rel(0.8))
   coord_flip()+
-  theme(legend.position = "none", axis.text.y = element_text(size = 16))+
+  theme(legend.position = "none", axis.text.y = element_text(size = 14))+
   geom_text(aes(label = purpose_values), size = 5) + scale_fill_brewer(palette = "Paired")
 #--------------------------------------------------------------------
 # rmt table
@@ -1343,14 +1343,15 @@ ui <- navbarPage(title = "",
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
                                                      h4(strong("How do residents earn their money?")),
-                                                     p("We present interactive graphs of the baseline survey to understand the financial behavior of the Sundarbans population. There are slight differences in average 
-                                                       household monthly salary across villages ranging from as high as ₹4600 (US$ 71) in Amrabati to as low as ₹2500 (US$ 38.5) in Sagar, using 1 US Dollar = ₹0.0154 exchange rate
-                                                       in 2018. The salary is more likely to come from working for someone else as most family members do not own a business."),
+                                                     p("We present interactive graphs of the baseline survey to understand the financial behavior of the Sundarbans population. There are slight differences 
+                                                       in average household monthly salary across villages ranging from as high as ₹4600 (US$ 71) in Amrabati to as low as ₹2500 (US$ 38.5) in Sagar, using 
+                                                       1 US Dollar = ₹0.0154 exchange rate in 2018. The salary is more likely to come from working for someone else as most family members do not own a business."),
                                                      p("Migration appears to be a prominent livelihood strategy – on average, approximately 65% of households had at least one migrant in the last ten years. 
-                                                       Job opportunities may play a primary factor in the migration trend, thus explaining the high remittances in our sample. Remittances are any income 
-                                                       household receives from someone working away from home. We visualize the relationship between average weekly remittances and average weekly income. 
-                                                       In most villages, higher remittances correlate with a higher weekly income, except for Amrabti, Pargumti, and Sagar, suggesting other possible economic
-                                                       opportunities in these three villages."),
+                                                       For some villages, migration is a dominant strategy with at least 80% of households in Beguakhali, Bijoynager, and Purba Dwarokapur having family members
+                                                       migrating in the last ten years. Job opportunities may play a primary factor in the migration trend, thus explaining the high remittances in our sample. 
+                                                       Remittances are any income household receives from someone working away from home. We visualize the relationship between average weekly remittances and 
+                                                       average weekly income. In most villages, higher remittances correlate with a higher weekly income, except for Amrabti, Pargumti, and Sagar, 
+                                                       suggesting other possible economic opportunities in these three villages."),
                                                     
                                               ),
                                               column(8, h4(strong("Financial – November 2018 (Baseline)")),
@@ -1558,14 +1559,16 @@ ui <- navbarPage(title = "",
                                               p("", style = "padding-top:10px;"),
                                               column(12,h4(strong("Overview")),
                                                      p("Income is defined as total male and female income, including remittances. On average, the weekly income per household across villages is approximately 
-                                                       ₹1400 (US$ 21.56), and the median is about ₹1400 (US$ 21.56). Throughout the year, income fluctuates for many households due to different factors such as
-                                                       harvest seasons, an influx of remittances, or other external factors. There are also considerable variations in average weekly household income across the sampled
-                                                       villages over the 52 weeks. For example, in late March, there was an increase in average income for families living in Beguakhali, Haridaskati Samsernagar, 
-                                                       Purba Dwarokapur, and Sagar. The increase is especially significant for households in Beguakhali. Before March, the average weekly income was around ₹1500 (US$ 23.1), then it 
-                                                       increased substantially to over ₹7500 (US$ 115.5) in the last week of March. This spike is likely caused by an increase in remittances."),
-                                                     p("Males earn more in this region than females. Males average weekly income is ₹1065.54 (US$ 16.4 whereas for females the mean weekly income is ₹96 (US$ 1.48). 
-                                                       Female income has a higher variance across villages than males."),
-                                                     p("The importance of remittance income can be seen in this graph as all of the villages have similar weekly incomes before adding remittance. The village of Sagar has a weekly average income of around 1954 INR which is one of the higher weekly incomes in the region. Since many of these households work for wages either as agriculture workers or casual laborers, the per week income is relatively the same throughout the region. This can indicate why the weekly income is ranging consistently in-between 1000 INR and 2000 INR.")
+                                                       ₹1400 (US$ 21.56), and the median is about ₹1400 (US$ 21.56).  Sagar has a weekly average income of around ₹1954 (US$ 30.9), which is one of the higher averages
+                                                       in the region. Since many of these households work for wages either as agriculture workers or casual laborers, the per week income is relatively the same throughout
+                                                       the region. This indicates why the weekly income ranges consistently between ₹1000 and ₹2000."),
+                                                     p("Throughout the year, however, income fluctuates for many households due to different factors such as harvest seasons, an influx of remittances, or other external factors. 
+                                                       There are also considerable variations in average weekly household income across the sampled villages over the 52 weeks. For example, in late March, there was an increase 
+                                                       in average income for families living in Beguakhali, Haridaskati Samsernagar, Purba Dwarokapur, and Sagar. The increase is especially significant for households in Beguakhali. 
+                                                       Before March, the average weekly income was around ₹1500 (US$ 23.1), then it increased substantially to over ₹7500 (US$ 115.5) in the last week of March. This spike is caused 
+                                                       by an increase in remittances shown in the remittances graph."),
+                                                     p("Males earn more in this region than females. Males' average weekly income is ₹1065.54 (US$ 16.4 whereas for females the mean weekly income is ₹96 (US$ 1.48). 
+                                                       Female income has a higher variance across villages than males.")
                                                      )),
                                      # Sidebar with a select input for village
                                      sidebarLayout(
@@ -2020,6 +2023,7 @@ server <- function(input, output, session) {
       xlab("Date") +
       ylab("Total Weekly Borrowing (INR)")+
       theme(plot.caption = element_text(size = 12))+
+      scale_y_discrete(breaks = c(0,10000,20000,30000,40000,50000), limits = c(0:50000)) +
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) +
       scale_color_brewer(palette = "Paired") +
       #theme(legend.position = "none")+
@@ -2041,6 +2045,7 @@ server <- function(input, output, session) {
       xlab("Date") +
       ylab("Number of Households")+
       theme_classic()+
+      scale_y_discrete(breaks = c(0,10,20,30), limits = c(0:30)) +
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) +
       scale_color_brewer(palette = "Paired") +
       #theme(legend.position = "none")+
@@ -2054,9 +2059,9 @@ server <- function(input, output, session) {
     ggplot(dfpurp, aes(x= reorder(A,B), y = B, fill = A)) + geom_col() + 
       coord_flip()+
       labs(fill = "") + 
-      xlab("Purpose for Borrowing)") +
+      xlab("Purpose for Borrowing") +
       ylab("Amount Borrowed (INR)")+
-      theme(legend.position = "none", axis.text.y = element_text(size = 16))+
+      theme(legend.position = "none", axis.text.x = element_text(size = 16))+
       theme_classic() +
       scale_fill_brewer(palette = "Paired")
   })
@@ -2096,6 +2101,7 @@ server <- function(input, output, session) {
       theme_classic()+
       #ggtitle("Average Weekly Expenditure on Staple Items ")+
       labs(x = "Date", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: 463.87 ₹  Median: 431.20 ₹")+
+      scale_y_discrete(breaks = c(0,250,500,750,1000,1250), limits = c(0:1250)) + 
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       theme(plot.caption = element_text(size = 12))+
       geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
@@ -2110,6 +2116,7 @@ server <- function(input, output, session) {
       #ggtitle("Average Weekly Expenditure on Meat")+
       labs(x = "Date", y = "Average Weekly Staple Expenditure (INR)", color = "Villages", caption = "Mean: 158.97  Median: 431.20")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
+      scale_y_discrete(breaks = c(0,200,400), limits = c(0:400)) + 
       theme(plot.caption = element_text(size = 12))+
       geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
       scale_color_brewer(palette = "Paired")
@@ -2122,6 +2129,7 @@ server <- function(input, output, session) {
       #ggtitle("Average Weekly Expenditure on 'Other' Items")+
       labs(x = "Date", y = "Average Weekly Staple Expenditure (INR) ", color = "Villages", caption = "Mean: 113.75  Median: 111.94")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
+      scale_y_discrete(breaks = c(0,200,400,600), limits = c(0:600)) + 
       theme(plot.caption = element_text(size = 12))+
       geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
       scale_color_brewer(palette = "Paired")
@@ -2390,9 +2398,10 @@ server <- function(input, output, session) {
                                , y = avg_rmt, color = village)) + 
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Weekly Remittance (INR)", caption = "Mean: 205.61   Median: 107.14", color = "Villages") +
+      labs(x = "Date", y = "Average Weekly Remittance (INR)", caption = "Mean: INR 205.61   Median: INR 107.14", color = "Villages") +
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + 
       scale_color_brewer(palette = "Paired")+
+      scale_y_discrete(breaks = c(0,1000,2000,3000,4000,5000), limits = c(0:5000)) +
       theme(plot.caption = element_text(size = 12))+
       geom_rect(data = filtered_event_rmt(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
     
@@ -2407,8 +2416,9 @@ server <- function(input, output, session) {
     ggplot(filtered_rmt_block(), aes(x = week , y = block_avg_rmt, color = Block)) +
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Weekly Remittances (INR)", color = "Blocks", caption = "Mean: 6774.58  Median: 5200.00") +
+      labs(x = "Date", y = "Average Weekly Remittances (INR)", color = "Blocks", caption = "Mean: INR 13549.16  Median: INR 10400.00") +
       theme(plot.caption = element_text(size = 12))+
+      scale_y_discrete(breaks = c(0,500,1000,1500,2000,2500), limits = c(0:2500)) +
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       geom_rect(data = filtered_event_rmt(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
   })
@@ -2446,8 +2456,9 @@ server <- function(input, output, session) {
   output$exp <- renderPlot({
     ggplot(filtered_exp(), aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) +
       geom_line() +
-      labs(x="Date", y="Average Weekly Expenditure (INR)", caption = "Mean: 19822.77   Median: 1869.61", color = "Villages") +
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + 
+      labs(x="Date", y="Average Weekly Expenditure (INR)", caption = "Mean: INR 1982.77   Median: INR 1832.61", color = "Villages") +
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) +
+      scale_y_discrete(breaks = c(0,2000,4000,6000,8000), limits = c(0:8000)) + 
       scale_color_brewer(palette = "Paired")+
       theme_classic()+
       theme(plot.caption = element_text(size = 12))+
@@ -2460,10 +2471,12 @@ server <- function(input, output, session) {
     ggplot(filtered_exp_block(), aes(x = week , y = block_avg_exp, color = Block)) +
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Weekly Expenditure", color = "Blocks", caption = "Mean: 58892.47  Median 55752.50") +
+      labs(x = "Date", y = "Average Weekly Expenditure (INR)", color = "Blocks", caption = "Mean: INR 117784.9  Median INR 111505.00") +
       theme(plot.caption = element_text(size = 12))+
       geom_rect(data = filtered_event_exp(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
+      scale_y_discrete(breaks = c(0,1000,2000,3000,4000,5000), limits = c(0:5000))  
+      
   })
   
 
@@ -2484,10 +2497,11 @@ server <- function(input, output, session) {
     ggplot(filtered_inc(), aes(week, avg_inc, color = village)) + 
       geom_line() + 
       labs(x = "Date", y = "Average Weekly Income (INR)", color = "Village",
-           caption = "Mean: 1395.61   Median: 1341.82") + 
+           caption = "Mean: INR 1395.61   Median: INR 1341.82") + 
       scale_color_brewer(palette = "Paired")+
       theme_classic()+
       theme(plot.caption = element_text(size = 12))+
+      scale_y_discrete(breaks = c(0,2000,4000,6000), limits = c(0:6000)) + 
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + 
       geom_rect(data = filtered_event_inc(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
     
@@ -2500,7 +2514,7 @@ server <- function(input, output, session) {
   
   output$malefemaleinc <- renderPlot({
     ggplot(filtered_malefemaleinc(), aes(x = week,y = !!input$Gender, color = village)) + geom_line() + 
-      labs(x = "Date", y = "Average Weekly Income (INR)", color = "Village", caption = "Male - Mean: 1065.54  Median = 642.5   Female - Mean: 96.60  Median: 0.00 ") +
+      labs(x = "Date", y = "Average Weekly Income (INR)", color = "Village", caption = "Male - Mean: INR 1065.54  Median = INR 642.5   Female - Mean: INR 96.60  Median: INR 0.00 ") +
       theme_classic()+
       theme(plot.caption = element_text(size = 12))+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), 
@@ -2523,8 +2537,9 @@ server <- function(input, output, session) {
     ggplot(filtered_inc_block(), aes(x = week, y = block_avg_inc, color = Block)) +
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Weekly Income (INR)", color = "Blocks", caption = "Mean: 414548.51  Median: 40988.50") +
+      labs(x = "Date", y = "Average Weekly Income (INR)", color = "Blocks", caption = "Mean: INR 83097.02  Median: INR 81977.00") +
       theme(plot.caption = element_text(size = 12))+
+      scale_y_discrete(breaks = c(0,1000,2000,3000,4000,5000), limits = c(0:5000)) +
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       geom_rect(data = filtered_event_inc(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
   })
@@ -2563,8 +2578,9 @@ server <- function(input, output, session) {
     ggplot(filtered_cs_avg(), aes(x = week, y = avg_cs , color = village)) +
       geom_line() +
       theme_classic()+
-      labs(x = "Date", y = "Average Weekly Expenditure (INR)", caption = "Mean: 766.13  Median: 731.68", color = "Villages")+
+      labs(x = "Date", y = "Average Weekly Expenditure (INR)", caption = "Mean: INR 766.13  Median: INR 731.68", color = "Villages")+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
+      scale_y_discrete(breaks = c(0,500,1000,1500,2000), limits = c(0:2000)) + 
       theme(plot.caption = element_text(size = 12))+
       geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
       scale_color_brewer(palette = "Paired")
@@ -2582,8 +2598,9 @@ server <- function(input, output, session) {
     ggplot(filtered_cs_avg_items(), aes(x = week, y = avg_item, color = village))+
       geom_line() +
       theme_classic()+
-      labs(x = "Date", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: 7.2  Median: 7.2")+
+      labs(x = "Date", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: 7.20  Median: 7.20")+
       theme(plot.caption = element_text(size = 12))+
+      scale_y_discrete(breaks = c(0,2,4,6,8,10), limits = c(0:10)) + 
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
       scale_color_brewer(palette = "Paired")
@@ -2593,32 +2610,13 @@ server <- function(input, output, session) {
     ggplot(filtered_cs_block(), aes(x = week , y = block_avg_cs, color = Block)) +
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Weekly Consumption", color = "Blocks", caption = "Mean: 22372.80  Median: 21625.00") +
+      labs(x = "Date", y = "Average Weekly Consumption (INR)", color = "Blocks", caption = "Mean: INR 44745.59  Median: INR 43250.00") +
       theme(plot.caption = element_text(size = 12))+
+      scale_y_discrete(breaks = c(0,250,500,750,1000,1250), limits = c(0:1250)) + 
       geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))
   })
   
-  # Filtered consumption by group
-  
-  filtered_cs_food <- reactive({
-    avg_cs_food %>% 
-      filter(village %in% input$village_cs_food)
-  })
-  
-  # Consumption by food group plots
-  
-  output$food_plot <- renderPlot({
-    ggplot(filtered_cs_food(), aes(x = week, y = !!input$food_group, color = village))+
-      geom_line()+
-      theme_classic()+
-      labs(x = "Date", y = "Average Weekly Expenditure", color = "Villages", caption = "Mean: 721.41  Median: 686.96")+
-      #ggtitle("Average Consumption Expenditure on Food Items")+
-      theme(plot.caption = element_text(size = 12))+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
-      geom_rect(data = filtered_event_cs_food(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
-    
-  })
 
   
   filtered_non_food_cs <- reactive({
@@ -2630,7 +2628,7 @@ server <- function(input, output, session) {
     ggplot(filtered_non_food_cs(), aes(x = week, y = !!input$nonfood_group, color = village)) +
       geom_line()+
       theme_classic()+
-      labs(x = "Date", y = "Average Weekly Expenditure", color = "Villages", caption = "Mean: 882.22  Median: 769.75")+
+      labs(x = "Date", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: INR 882.22  Median: INR 769.75")+
       theme(plot.caption = element_text(size = 12))+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       geom_rect(data = filtered_event_cs_nonfood(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
@@ -2647,7 +2645,9 @@ server <- function(input, output, session) {
     ggplot(filtered_nf(), aes(x = week , y = block_avg_nf, color = Block)) +
       geom_line() +
       theme_classic() +
-      labs(x = "Date", y = "Average Weekly Consumption", color = "Blocks", caption = "Mean: 26501.83  Median: 24192.50") +
+      labs(x = "Date", y = "Average Weekly Consumption (INR)", color = "Blocks", caption = "Mean: INR 53003.67  Median: INR 48385.00") +
+      theme(plot.caption = element_text(size = 12))+
+      scale_y_discrete(breaks = c(0,1000,2000,3000,4000), limits = c(0:4000)) +
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
       geom_rect(data = filtered_event_cs_nonfood(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
     
