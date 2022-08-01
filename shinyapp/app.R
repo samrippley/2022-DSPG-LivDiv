@@ -1073,47 +1073,53 @@ ui <- navbarPage(title = "",
                                           img(src='sunphoto2.png', align = "center", width = "95%")
                                    )
                           ),
-                          fluidRow(align = "left",
+                          fluidRow(align = "center",
                           p(tags$small(em('Source: Images taken by Sundarbans Field Team'))),
                           ),
                  ),
 
                  
                  ## Tab Date Intro--------------------------------------------
-                 tabPanel("Data", value = "overview",
+                 tabPanel("Data",
                           fluidRow(style = "margin: 6px;",
-                                   column(6, 
-                                          h3(strong("Overview")),
+                                   h1(strong("Data"), align = "center"),
+                                   column(4, 
+                                          h4(strong("Overview")),
                                           p("For our analysis, we obtain baseline as well as weekly household financial and consumption data from Gupta et al. (2021). The authors originally collected the household-level data from a representative sample of approximately 300 rural households in the Sundarbans region in West Bengal, India, from November 2018 to October 2019. The baseline data are collected through standard household surveys, while the financial diaries data provide 52 weeks of time-series data points on the 300 representative households.", align = "justify"),
-                                   #),
-                                   #column(4,
-                                          h3(strong("Initial Survey")),
+                                          h4(strong("Initial Survey")),
                                           p("The initial or baseline surveys were conducted in November 2018. The baseline data allow the team to visualize and provide insights into the region's demographic and socio-economic characteristics. The baseline survey collected information on household demographics, economic activities, assets and landholding, shock history, migration, and agricultural behaviors.", align = "justify"),
-                                          
-                                          
-                                   ),
-                                   column(6,
-                                          h3(strong("Financial Diaries")),
+                                         h4(strong("Financial Diaries")),
                                           p("The financial diaries captured high-frequency data on household income, expenditure, and consumption behavior. As such, we have weekly financial and economic activities for approximately 300 households for an entire year (November 2018 to October 2019).", align = "justify"),
                                           p("Household members were trained during the baseline interview to independently record their financial activities in their respective diaries (see images below for an example of a blank financial diary). Households received two more training sessions in the following two weeks and filled out the first four financial diaries during the training period. Additional support was given to families via phone calls and during the field team's monthly visit to collect completed diaries. These steps were implemented to ensure proper recording of weekly information. These diaries include data on weekly income, remittances, borrowing, lending, expenditure on consumption, and non-consumption items.", align = "justify"),
                                           br()
-                                   )),
-                        fluidRow(style = "margin: 6px;", align = "center", 
-                                 h3(strong("Example of Financial Diary", align = "center")),
-                            column(6, align = "center",
-                                   br(),
-                                   br(),
-                                   br(),
-                                   br(),
-                            h4(strong("Front Side- Financial Activity")),
-                                   img(src='Picture2.png', width = "100%")),
-                            column(6,
-                                   h4(strong("Back Side- Expenditure Activity")),
-                                   align = "center",
-                                   img(src='fd.png', width = "90%")),
-                           
+                                   ),
+                                   column(8, align = "center",
+                                          
+                                          tabsetPanel(
+                                            tabPanel("Front Side",
+                            h4(strong("Example of Financial Diary", align = "center", style = "margin: 13px;")),
+                            
+                                   img(src='Picture2.png', width = "90%", align = "center")),
+                            tabPanel("Back Side",
+                            
+                                    h4(strong("Example of Financial Diary", align = "center", style = "margin: 13px;")),
+                                 
+                                
+                                   img(src='fd.png', width = "60%", align = "center", style = "margin: 6px;")),
+                            tabPanel("Gallery",
+                                    fluidRow(style = "margin: 6px;", align = "right",
+                                      h4(strong("Images taken by Sundarbans Field Team"), align = "center"),
+                                      imageOutput("image", height = "500px"),
+                                       actionButton("previous", "Previous", align = "right"),
+                                        actionButton("next", "Next", align = "right"),
+                                       
+                            
+                                    ))),
                           
-                          
+                                          ),
+                            
+                            
+                            
                           )), 
                  ## Sundarbans Region--------------------------------------------
                  navbarMenu("Sundarbans Region" ,
@@ -1149,7 +1155,7 @@ ui <- navbarPage(title = "",
                                                      tags$li(tags$b("Matmo"), "(Category 2): 28 October"),
                                                     )),
                                                      p(tags$i("Fani"),"was reported as the strongest tropical cyclone in 2019 and the 10th most severe cyclone in the Indian subcontinent within the last 52 years. Although", tags$i("Fani"),"downgraded when it hit the Sundarbans, 
-                                                       its high-speed winds and torrential rain destroyed homes, property, trees, and agricultural lands.",tags$i("Matmo"),"formed in the Philippine Sea on October 28th and dissipated as it went"),
+                                                       its high-speed winds and torrential rain destroyed homes, property, trees, and agricultural lands.",tags$i("Matmo"),"formed in the Philippine Sea on October 28th and dissipated as it went west over land in Cambodia."),
                                                     br(),
                                                     h4(strong("Harvest Seasons")),
                                                     br(),
@@ -1242,7 +1248,7 @@ ui <- navbarPage(title = "",
                                               h1(strong("Socioeconomic Characteristics"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
-                                                     h4(strong("Who lives in the Sundarbans Region?")),
+                                                     h4(strong("Who Lives in the Sundarbans Region?")),
                                                      p("We examine the data from the baseline survey collected in November 2018 to understand better the socio-demographic and economic characteristics of the Sundarbans population. Maps and Graphs are interactive – one can hover over an individual marker to produce a popup that provides specific attributes."),
                                                      p("Household heads in the Sundarbans area tend to be middle-aged adults, with the mean being around 49 years. Interestingly, there is a striking pattern by administrative block. Household heads that live in the Sagar, Namkhana, and Patharpratima Blocks are younger than their counterparts in Gosaba and Hangalganj. Additionally, families in Sagar, Namkhana, and Patharpratima Blocks have a greater median household size and, on average, have a higher number of children per household. Overall, most families are headed by married parents. Notably, males are more likely to be heads of married households, while females tend to be heads of unmarried households."),
                                                      p("Household heads also have low levels of education as the average education across villages is approximately five years, comparable to completing elementary school. This low level of education may contribute to the high levels of the poverty level in the region. More than half of families in Haridaskati Samsernagar live with less than ₹240 per week per person (Indian poverty line of 2018-2019). However, other villages like Purba Dwarokapur have a lower proportion of households (18%) below the poverty line which is on average 10 households per village."),
@@ -1328,7 +1334,7 @@ ui <- navbarPage(title = "",
                                               h1(strong("Financial Practices"), align = "center"),
                                               p("", style = "padding-top:10px;"), 
                                               column(4, 
-                                                     h4(strong("How do residents earn their money?")),
+                                                     h4(strong("How do Residents Earn their Money?")),
                                                      p("We present interactive graphs of the baseline survey to understand the financial behavior of the Sundarbans population. There are slight differences 
                                                        in average household monthly salary across villages ranging from as high as ₹4600 (US$ 71) in Amrabati to as low as ₹2500 (US$ 38.5) in Sagar, using 
                                                        1 US Dollar = ₹0.0154 exchange rate in 2018. The salary is more likely to come from working for someone else as most family members do not own a business."),
@@ -1374,7 +1380,7 @@ ui <- navbarPage(title = "",
                             tabPanel("Expenditure",
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Expenditure"), align = "center"),
-                                              column(12,h4(strong("How are residents spending their money?")),
+                                              column(12,h4(strong("How are Residents Spending their Money?")),
                                                      p("We present average weekly expenditure from November 2018 - October 2019 to examine the spending habits of households in the Sundarbans. 
                                                        The graphs will provide information on the changing seasonal patterns of residents' spending in the region and how they react to events such as 
                                                        festivals and holidays, harvest seasons, and weather-related shocks. "),
@@ -1500,7 +1506,7 @@ ui <- navbarPage(title = "",
                                                      p("Expenditures on health, home repairs, and books/tuition made up the largest but least recurring expenses, while utilities, toiletries, 
                                                        and transportation made up the most frequent purchases. Considering farmers make up the largest proportion of occupation in the Sundarbans, 
                                                        it is predictable to also see frequent expenditures on agriculture, livestock, and labor. The average weekly spending on non-food items was ₹882 (US$ 13.58). 
-                                                       There were also increases in non-food expenditure during harvest seasons. The largest non-food spending occurred near the Bulbul cyclone and local festivals
+                                                       There were also increases in non-food expenditure during harvest seasons. The largest non-food spending occurred near the Matmo cyclone and local festivals
                                                        such as Diwali and Dussehra."),
                                                    
                                                      
@@ -1542,15 +1548,15 @@ ui <- navbarPage(title = "",
                             tabPanel("Income",
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Income"), align = "center"),
-                                              column(12,h4(strong("Overview")),
+                                              column(12,h4(strong("Household Earnings")),
                                                      p("Income is defined as total male and female income, including remittances. On average, the weekly income per household across villages is approximately 
-                                                       ₹1400 (US$ 21.56), and the median is about ₹1400 (US$ 21.56).  Sagar has a weekly average income of around ₹1954 (US$ 30.9), which is one of the higher averages
+                                                       ₹1400 (US$ 21.56), and the median is about ₹1350 (US$ 20.79).  Sagar has a weekly average income of around ₹1954 (US$ 30.90), which is one of the higher averages
                                                        in the region. Since many of these households work for wages either as agriculture workers or casual laborers, the per week income is relatively the same throughout
                                                        the region. This indicates why the weekly income ranges consistently between ₹1000 and ₹2000."),
                                                      p("Throughout the year, however, income fluctuates for many households due to different factors such as harvest seasons, an influx of remittances, or other external factors. 
                                                        There are also considerable variations in average weekly household income across the sampled villages over the 52 weeks. For example, in late March, there was an increase 
                                                        in average income for families living in Beguakhali, Haridaskati Samsernagar, Purba Dwarokapur, and Sagar. The increase is especially significant for households in Beguakhali. 
-                                                       Before March, the average weekly income was around ₹1500 (US$ 23.1), then it increased substantially to over ₹7500 (US$ 115.5) in the last week of March. This spike is caused 
+                                                       Before March, the average weekly income was around ₹1500 (US$ 23.10), then it increased substantially to over ₹7500 (US$ 115.50) in the last week of March. This spike is caused 
                                                        by an increase in remittances shown in the remittances graph."),
                                                      p("Males earn more in this region than females. Males' average weekly income is ₹1065.54 (US$ 16.4 whereas for females the mean weekly income is ₹96 (US$ 1.48). 
                                                        Female income has a higher variance across villages than males.")
@@ -1595,9 +1601,9 @@ ui <- navbarPage(title = "",
                             tabPanel("Borrowing",
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Borrowing"), align = "center"),
-                                              column(12,h4(strong("Borrowing Practices by Sundarbans households")),
+                                              column(12,h4(strong("Borrowing Practices by Sundarbans Households")),
                                                      p("Households in the Sundarbans seem to use borrowing as a livelihood coping strategy. On average, approximately 22% of households tend to borrow each week. 
-                                                     It is most common to borrow no re usually borrow around 600₹ (US$ 9.25) a week. The amount borrowed and the number of households borrowing is relatively consistent
+                                                     It is most common to borrow around 600₹ (US$ 9.25) a week. The amount borrowed and the number of households borrowing is relatively consistent
                                                      during the year, despite the differences in borrowing behavior across villages. For example, there is a significant spike in the amount borrowed between April and 
                                                      June by families living in Pargumti, Purba Dwarokapur, and Shibpur. This increase coincides with the dry season and after cyclone Fani. Bijoynagar had the largest number of households borrowing,
                                                      with over 30 households borrowing in January during the Karif harvest and Rabi planting seasons. During the Karif harvest season, there is a decrease in the number of households borrowing and the amount borrowed. 
@@ -1710,7 +1716,7 @@ ui <- navbarPage(title = "",
                 tabPanel("Shocks",
                                        fluidRow(style = "margin: 6px;", h1(strong("Shocks"), align = "center"), 
                                                 column(4, 
-                                                h4(strong("What Shocks are affecting this region (2009 – 2018)?"), align = "left"), 
+                                                h4(strong("What Shocks are Affecting this Region (2009 – 2018)?"), align = "left"), 
                                                 p("The Sundarbans area typically face yearly tropical events such as cyclones. However, the region is facing the effects of climate change as the frequency and intensity of cyclones have increased in the past decade. Specifically, the most devastating cyclones in the region occurred in 2007, 2009, 2019, 2020, and 2021. The impact of the cyclone in 2009 (Alia) is still evident as the majority of households reported experiencing a shock in 2009, even though this interview was done in 2018. Moreover, many families reported experiencing three shocks, with some reporting a high of four shocks in 2009. Shocks are any event, most likely negative, that can harm the households’ livelihoods. The majority of shocks families have experienced in the last decade are due to environmental events or the loss of various assets. The most frequent shocks households experienced during 2009-2018 were loss of home due to river erosion or cyclone, loss of livestock, crop loss, and forced migration due to flooding. The effects of shocks were similar across villages, as the average number of shocks was roughly three per year for most villages.", style = "padding-top:10px;", align = "justify")),
                                        # Show a plot of the generated plot
                                          column(8,
@@ -1973,7 +1979,7 @@ server <- function(input, output, session) {
       paste("")
     }
     else if (ocuVar() == "Percentage of Households Involved in Agricultural Farming") {
-      paste("(Involved in Farming)")
+      paste("")
     }
     else if (ocuVar() == "Average Amount of Land Owned by Village") {
       paste("")
@@ -2564,7 +2570,7 @@ server <- function(input, output, session) {
   
   output$malefemaleinc <- renderPlot({
     ggplot(filtered_malefemaleinc(), aes(x = week,y = !!input$Gender, color = village)) + geom_line() + 
-      labs(x = "Date", y = "Average Weekly Income (INR)", color = "Village", caption = "Male - Mean: INR 1065.54  |  Median = INR 642.5   Female - Mean: INR 96.60  |  Median: INR 0.00 ") +
+      labs(x = "Date", y = "Average Weekly Income (INR)", color = "Village", caption = "Male - Mean: INR 1065.54  |  Median: INR 642.5     Female - Mean: INR 96.60  |  Median: INR 0.00 ") +
       theme_classic()+
       theme(plot.caption = element_text(size = 12))+
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), 
