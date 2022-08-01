@@ -1506,7 +1506,7 @@ ui <- navbarPage(title = "",
                                                      p("Expenditures on health, home repairs, and books/tuition made up the largest but least recurring expenses, while utilities, toiletries, 
                                                        and transportation made up the most frequent purchases. Considering farmers make up the largest proportion of occupation in the Sundarbans, 
                                                        it is predictable to also see frequent expenditures on agriculture, livestock, and labor. The average weekly spending on non-food items was ₹882 (US$ 13.58). 
-                                                       There were also increases in non-food expenditure during harvest seasons. The largest non-food spending occurred near the Bulbul cyclone and local festivals
+                                                       There were also increases in non-food expenditure during harvest seasons. The largest non-food spending occurred near the Matmo cyclone and local festivals
                                                        such as Diwali and Dussehra."),
                                                    
                                                      
@@ -1550,7 +1550,7 @@ ui <- navbarPage(title = "",
                                               h1(strong("Income"), align = "center"),
                                               column(12,h4(strong("Household Earnings")),
                                                      p("Income is defined as total male and female income, including remittances. On average, the weekly income per household across villages is approximately 
-                                                       ₹1400 (US$ 21.56), and the median is about ₹1400 (US$ 21.56).  Sagar has a weekly average income of around ₹1954 (US$ 30.90), which is one of the higher averages
+                                                       ₹1400 (US$ 21.56), and the median is about ₹1350 (US$ 20.79).  Sagar has a weekly average income of around ₹1954 (US$ 30.90), which is one of the higher averages
                                                        in the region. Since many of these households work for wages either as agriculture workers or casual laborers, the per week income is relatively the same throughout
                                                        the region. This indicates why the weekly income ranges consistently between ₹1000 and ₹2000."),
                                                      p("Throughout the year, however, income fluctuates for many households due to different factors such as harvest seasons, an influx of remittances, or other external factors. 
@@ -1603,7 +1603,7 @@ ui <- navbarPage(title = "",
                                               h1(strong("Borrowing"), align = "center"),
                                               column(12,h4(strong("Borrowing Practices by Sundarbans Households")),
                                                      p("Households in the Sundarbans seem to use borrowing as a livelihood coping strategy. On average, approximately 22% of households tend to borrow each week. 
-                                                     It is most common to borrow no re usually borrow around 600₹ (US$ 9.25) a week. The amount borrowed and the number of households borrowing is relatively consistent
+                                                     It is most common to borrow around 600₹ (US$ 9.25) a week. The amount borrowed and the number of households borrowing is relatively consistent
                                                      during the year, despite the differences in borrowing behavior across villages. For example, there is a significant spike in the amount borrowed between April and 
                                                      June by families living in Pargumti, Purba Dwarokapur, and Shibpur. This increase coincides with the dry season and after cyclone Fani. Bijoynagar had the largest number of households borrowing,
                                                      with over 30 households borrowing in January during the Karif harvest and Rabi planting seasons. During the Karif harvest season, there is a decrease in the number of households borrowing and the amount borrowed. 
