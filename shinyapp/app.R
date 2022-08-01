@@ -1102,13 +1102,13 @@ ui <- navbarPage(title = "",
                                    img(src='Picture2.png', width = "90%", align = "center")),
                             tabPanel("Back Side",
                                     
-                                    h4(strong("Example of Financial Diary", align = "center", style = "margin: 20px;")),
-                                    
-                                   img(src='fd.png', width = "60%", align = "center")),
+                                     h4(strong("Example of Financial Diary", align = "center", style = "margin: 13px;")),
+                                     
+                                     img(src='fd.png', width = "60%", align = "center")),
                             tabPanel("Gallery", align = "right",
-                                      h4(strong("Images taken by Sundarbans Field Team"), align = "center", style = "margin: 13px;"),
-                                    
-                                      imageOutput("image"),
+                                     h4(strong("Images taken by Sundarbans Field Team"), align = "center", style = "margin: 13px;"),
+                                     
+                                     imageOutput("image"),
                                        actionButton("previous", "Previous", align = "right"),
                                         actionButton("next", "Next", align = "right"),
                                        
