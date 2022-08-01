@@ -1097,24 +1097,23 @@ ui <- navbarPage(title = "",
                                           
                                           tabsetPanel(
                                             tabPanel("Front Side",
-                            h4(strong("Example of Financial Diary", align = "center", style = "margin: 13px;")),
+                            h4(strong("Example of Financial Diary", align = "center", style = "margin: 20px;")),
                             
                                    img(src='Picture2.png', width = "90%", align = "center")),
                             tabPanel("Back Side",
-                            
-                                    h4(strong("Example of Financial Diary", align = "center", style = "margin: 13px;")),
-                                 
-                                
-                                   img(src='fd.png', width = "60%", align = "center", style = "margin: 6px;")),
-                            tabPanel("Gallery",
-                                    fluidRow(style = "margin: 6px;", align = "right",
-                                      h4(strong("Images taken by Sundarbans Field Team"), align = "center"),
-                                      imageOutput("image", height = "500px"),
+                                    
+                                    h4(strong("Example of Financial Diary", align = "center", style = "margin: 20px;")),
+                                    
+                                   img(src='fd.png', width = "60%", align = "center")),
+                            tabPanel("Gallery", align = "right",
+                                      h4(strong("Images taken by Sundarbans Field Team"), align = "center", style = "margin: 13px;"),
+                                    
+                                      imageOutput("image"),
                                        actionButton("previous", "Previous", align = "right"),
                                         actionButton("next", "Next", align = "right"),
                                        
                             
-                                    ))),
+                                    )),
                           
                                           ),
                             
@@ -2008,7 +2007,7 @@ server <- function(input, output, session) {
   
   output$image <- renderImage({
     x <- imgs[index()] 
-    list(src = x, alt = "alternate text", width = "100%", align = "right")
+    list(src = x, alt = "alternate text", width = "100%", align = "right", height = "500px")
   }, deleteFile = FALSE)
   
   # Events----------------
