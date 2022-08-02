@@ -2010,7 +2010,14 @@ server <- function(input, output, session) {
     list(src = x, alt = "alternate text", width = "100%", align = "right", height = "500px")
   }, deleteFile = FALSE)
   
-  # Events----------------
+  # Events input ----------------
+  
+  
+  filtered_event <- reactive({
+    event_periods %>% 
+      filter(Events %in% input$event_choose)
+  })
+  
   filtered_event_cs <- reactive({
     event_periods %>% 
       filter(Events %in% input$event_choose_cs)
@@ -2051,145 +2058,6 @@ server <- function(input, output, session) {
       filter(Events %in% input$event_choose_borr_count)
   })
   
-  
-  #borrowing tab-------------------------
-  
-  output$datapls <- renderTable({
-    pls %>% dplyr::select(!!!input$villages)
-  }, rownames = TRUE)
-  
-  output$datapls <- renderPlot({
-    ggplot(pls, aes(x =!!input$village, y = village)) + geom_bar(stat= "identity")
-  })
-  
-  
-  #borrowing amount
-  
-  filtered_bramt <- reactive({
-    bramt %>%
-      filter(village %in% input$village_bramt)
-  })
-  # Plot
-  output$bor <- renderPlot({
-    ggplot(filtered_bramt(), aes(x=week_num, y=br_amt, color = village, na.rm = T)) +
-      geom_line() +
-      theme_classic()+
-      labs(color = "Villages", caption = "Mean: INR 2703.12  |  Median: INR 600.00") + 
-      xlab("Date") +
-      ylab("Total Weekly Borrowing (INR)")+
-      theme(plot.caption = element_text(size = 12))+
-      scale_y_discrete(breaks = c(0,10000,20000,30000,40000,50000), limits = c(0:50000)) +
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) +
-      scale_color_brewer(palette = "Paired") +
-      #theme(legend.position = "none")+
-      geom_rect(data = filtered_event_borr(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
-    
-  })  
-  
-  # borrowing count 
-  filtered_dbr <- reactive({
-    dbr %>%
-      filter(village %in% input$village_bramt)
-  })
-  # Plot
-  output$borr <- renderPlot({
-    ggplot(filtered_dbr(), aes(x=week_num, y=d_br, color = village, na.rm=TRUE)) +
-      geom_line() +
-      labs(caption = "Mean: 22%  |  Median: 0.00", color = "Villages") +
-      theme(plot.caption = element_text(size = 12))+
-      xlab("Date") +
-      ylab("Number of Households")+
-      theme_classic()+
-      scale_y_discrete(breaks = c(0,10,20,30), limits = c(0:30)) +
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) +
-      scale_color_brewer(palette = "Paired") +
-      #theme(legend.position = "none")+
-      geom_rect(data = filtered_event_borr(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
-    
-  })  
-  
-  #borrowing purpose ----------------------
-  
-  output$purpplot <- renderPlot({
-    ggplot(dfpurp, aes(x= reorder(A,B), y = B, fill = A)) + geom_col() + 
-      coord_flip()+
-      labs(fill = "") + 
-      xlab("") +
-      ylab("Amount Borrowed (INR)")+
-      theme_classic() +
-      scale_fill_brewer(palette = "Paired") +
-      theme(legend.position = "none", axis.text.y = element_text(size = 12), axis.text.x = element_text(size = 12)) 
-  })
-  
-  
-  # Filtered consumption by group
-  
-  filtered_cs_food <- reactive({
-    avg_cs_food %>% 
-      filter(village %in% input$village_cs_food)
-  })
-  
-  filtered_cs_food_staple <- reactive({
-    avg_cs_food %>% 
-      filter(village %in% input$village_cs)
-  })
-  
-  filtered_cs_meats <- reactive({
-    avg_cs_food %>% 
-      filter(village %in% input$village_cs)
-  })
-  
-  filtered_cs_other <- reactive({
-    avg_cs_food %>% 
-      filter(village %in% input$village_cs)
-  })
-  
-  filtered_cs_block <- reactive({
-    cs_block %>% 
-      filter(Block %in% input$block_choose_cs)
-  })
-  
-
-  output$cs_staple <- renderPlot({
-    ggplot(filtered_cs_food_staple(), aes(x = week, y = `Staple Items`, color = village)) +
-      geom_line()+
-      theme_classic()+
-      #ggtitle("Average Weekly Expenditure on Staple Items ")+
-      labs(x = "Date", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: INR 463.87  |  Median: INR 431.20 ")+
-      scale_y_discrete(breaks = c(0,250,500,750,1000,1250), limits = c(0:1250)) + 
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
-      theme(plot.caption = element_text(size = 12))+
-      geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
-      scale_color_brewer(palette = "Paired")
-    
-  })
-  
-  output$cs_meats <- renderPlot({
-    ggplot(filtered_cs_meats(), aes(x = week, y = `Meats`, color = village))+
-      geom_line()+
-      theme_classic()+
-      #ggtitle("Average Weekly Expenditure on Meat")+
-      labs(x = "Date", y = "Average Weekly Staple Expenditure (INR)", color = "Villages", caption = "Mean: INR 158.97  |  Median: INR 431.20")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
-      scale_y_discrete(breaks = c(0,200,400), limits = c(0:400)) + 
-      theme(plot.caption = element_text(size = 12))+
-      geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
-      scale_color_brewer(palette = "Paired")
-  })
-  
-  output$cs_other <- renderPlot({
-    ggplot(filtered_cs_other(), aes(x = week, y = `Other`, color = village))+
-      geom_line() +
-      theme_classic()+
-      #ggtitle("Average Weekly Expenditure on 'Other' Items")+
-      labs(x = "Date", y = "Average Weekly Staple Expenditure (INR) ", color = "Villages", caption = "Mean: INR 113.75  |  Median: INR 111.94")+
-      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
-      scale_y_discrete(breaks = c(0,200,400,600), limits = c(0:600)) + 
-      theme(plot.caption = element_text(size = 12))+
-      geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
-      scale_color_brewer(palette = "Paired")
-    
-  })
   
   
   #map button -----------------------------------------------------
@@ -2377,7 +2245,7 @@ server <- function(input, output, session) {
     
   })
   
-  #financial  tabset -----------------------------------------------------
+  #financial  tab output -----------------------------------------------------
   finVar <- reactive({
     input$findrop
   })
@@ -2441,6 +2309,7 @@ server <- function(input, output, session) {
   
   # High Frequency Data Output------------------- 
   
+  # Remittances tab output--------------------
   # rmt plot output
   # Filter by input
   filtered_rmt <- reactive({
@@ -2495,6 +2364,8 @@ server <- function(input, output, session) {
   output$rmt_purpose <- renderPlot({
     rmt_purpose_plot
   })
+  
+  #Expenditure tab output -----------------
   # exp plot ouput
   # Filter by input
   filtered_exp <- reactive({
@@ -2507,7 +2378,7 @@ server <- function(input, output, session) {
       filter(Block %in% input$block_choose_exp)
   })
   
-  # Plot
+  # exp plot
   output$exp <- renderPlot({
     ggplot(filtered_exp(), aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) +
       geom_line() +
@@ -2522,6 +2393,7 @@ server <- function(input, output, session) {
     
   })
   
+  # exp by block plot
   output$exp_block <- renderPlot({
     ggplot(filtered_exp_block(), aes(x = week , y = block_avg_exp, color = Block)) +
       geom_line() +
@@ -2539,6 +2411,8 @@ server <- function(input, output, session) {
   output$exp_table <- DT::renderDT({
     expend_table
   })
+  
+  #Income tab-------------------
   # Render income plot output
   # Filter by input
   filtered_inc <- reactive({
@@ -2547,7 +2421,7 @@ server <- function(input, output, session) {
   })
   
   
-  # Plot
+  # Income plot
   output$inc <- renderPlot({
     ggplot(filtered_inc(), aes(week, avg_inc, color = village)) + 
       geom_line() + 
@@ -2567,6 +2441,7 @@ server <- function(input, output, session) {
       filter(village %in% input$village_inc)
   })
   
+  # income male/female plot
   output$malefemaleinc <- renderPlot({
     ggplot(filtered_malefemaleinc(), aes(x = week,y = !!input$Gender, color = village)) + geom_line() + 
       labs(x = "Date", y = "Average Weekly Income (INR)", color = "Village", caption = "Male - Mean: INR 1065.54  |  Median: INR 642.5     Female - Mean: INR 96.60  |  Median: INR 0.00 ") +
@@ -2588,6 +2463,7 @@ server <- function(input, output, session) {
       filter(Block %in% input$block_choose_inc)
   })
   
+  # income by block plot
   output$inc_block <- renderPlot({
     ggplot(filtered_inc_block(), aes(x = week, y = block_avg_inc, color = Block)) +
       geom_line() +
@@ -2616,14 +2492,14 @@ server <- function(input, output, session) {
   })
   
   
-  # Consumption ----------------------- 
+  ## Consumption output ----------------------- 
   
   # Filtered cs expenditure plot
   filtered_cs_avg <- reactive({
     cs_avg %>% 
       filter(village %in% input$village_cs)
   })
-  # consumption exp plot
+  # consumption plot
   filtered_event <- reactive({
     event_periods %>% 
       filter(Events %in% input$event_choose)
@@ -2661,6 +2537,7 @@ server <- function(input, output, session) {
       scale_color_brewer(palette = "Paired")
   })
   
+  # consumption by block plot
   output$cs_block <- renderPlot({
     ggplot(filtered_cs_block(), aes(x = week , y = block_avg_cs, color = Block)) +
       geom_line() +
@@ -2672,6 +2549,75 @@ server <- function(input, output, session) {
       scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))
   })
   
+  # Filtered consumption by group
+  
+  filtered_cs_food <- reactive({
+    avg_cs_food %>% 
+      filter(village %in% input$village_cs_food)
+  })
+  
+  filtered_cs_food_staple <- reactive({
+    avg_cs_food %>% 
+      filter(village %in% input$village_cs)
+  })
+  
+  filtered_cs_meats <- reactive({
+    avg_cs_food %>% 
+      filter(village %in% input$village_cs)
+  })
+  
+  filtered_cs_other <- reactive({
+    avg_cs_food %>% 
+      filter(village %in% input$village_cs)
+  })
+  
+  filtered_cs_block <- reactive({
+    cs_block %>% 
+      filter(Block %in% input$block_choose_cs)
+  })
+  
+  # staple items plot
+  output$cs_staple <- renderPlot({
+    ggplot(filtered_cs_food_staple(), aes(x = week, y = `Staple Items`, color = village)) +
+      geom_line()+
+      theme_classic()+
+      #ggtitle("Average Weekly Expenditure on Staple Items ")+
+      labs(x = "Date", y = "Average Weekly Expenditure (INR)", color = "Villages", caption = "Mean: INR 463.87  |  Median: INR 431.20 ")+
+      scale_y_discrete(breaks = c(0,250,500,750,1000,1250), limits = c(0:1250)) + 
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
+      theme(plot.caption = element_text(size = 12))+
+      geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
+      scale_color_brewer(palette = "Paired")
+    
+  })
+  # meats plot
+  output$cs_meats <- renderPlot({
+    ggplot(filtered_cs_meats(), aes(x = week, y = `Meats`, color = village))+
+      geom_line()+
+      theme_classic()+
+      #ggtitle("Average Weekly Expenditure on Meat")+
+      labs(x = "Date", y = "Average Weekly Staple Expenditure (INR)", color = "Villages", caption = "Mean: INR 158.97  |  Median: INR 431.20")+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
+      scale_y_discrete(breaks = c(0,200,400), limits = c(0:400)) + 
+      theme(plot.caption = element_text(size = 12))+
+      geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
+      scale_color_brewer(palette = "Paired")
+  })
+  # Other food plot
+  output$cs_other <- renderPlot({
+    ggplot(filtered_cs_other(), aes(x = week, y = `Other`, color = village))+
+      geom_line() +
+      theme_classic()+
+      #ggtitle("Average Weekly Expenditure on 'Other' Items")+
+      labs(x = "Date", y = "Average Weekly Staple Expenditure (INR) ", color = "Villages", caption = "Mean: INR 113.75  |  Median: INR 111.94")+
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
+      scale_y_discrete(breaks = c(0,200,400,600), limits = c(0:600)) + 
+      theme(plot.caption = element_text(size = 12))+
+      geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
+      scale_color_brewer(palette = "Paired")
+    
+  })
+  
 
   
   filtered_non_food_cs <- reactive({
@@ -2679,6 +2625,7 @@ server <- function(input, output, session) {
       filter(village %in% input$village_cs_nonfood)
   })
   
+  # non food plot
   output$nonfood_plot <- renderPlot({
     ggplot(filtered_non_food_cs(), aes(x = week, y = !!input$nonfood_group, color = village)) +
       geom_line()+
@@ -2695,7 +2642,7 @@ server <- function(input, output, session) {
     nonfoodcs_block %>% 
       filter(Block %in% input$block_choose_nf)
   })
-  
+  # non food by block plot
   output$nf_block_plot <- renderPlot({
     ggplot(filtered_nf(), aes(x = week , y = block_avg_nf, color = Block)) +
       geom_line() +
@@ -2707,16 +2654,80 @@ server <- function(input, output, session) {
       geom_rect(data = filtered_event_cs_nonfood(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
     
   })
-
-
-  #Event Filtered
   
-  filtered_event <- reactive({
-    event_periods %>% 
-      filter(Events %in% input$event_choose)
+  #borrowing tab output -------------------------
+  
+  output$datapls <- renderTable({
+    pls %>% dplyr::select(!!!input$villages)
+  }, rownames = TRUE)
+  
+  output$datapls <- renderPlot({
+    ggplot(pls, aes(x =!!input$village, y = village)) + geom_bar(stat= "identity")
   })
   
-  ###Shock plot output  -----------------------------------------------------
+  
+  #borrowing amount
+  
+  filtered_bramt <- reactive({
+    bramt %>%
+      filter(village %in% input$village_bramt)
+  })
+  # borrowing pamount lot
+  output$bor <- renderPlot({
+    ggplot(filtered_bramt(), aes(x=week_num, y=br_amt, color = village, na.rm = T)) +
+      geom_line() +
+      theme_classic()+
+      labs(color = "Villages", caption = "Mean: INR 2703.12  |  Median: INR 600.00") + 
+      xlab("Date") +
+      ylab("Total Weekly Borrowing (INR)")+
+      theme(plot.caption = element_text(size = 12))+
+      scale_y_discrete(breaks = c(0,10000,20000,30000,40000,50000), limits = c(0:50000)) +
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) +
+      scale_color_brewer(palette = "Paired") +
+      #theme(legend.position = "none")+
+      geom_rect(data = filtered_event_borr(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
+    
+  })  
+  
+  # borrowing count 
+  filtered_dbr <- reactive({
+    dbr %>%
+      filter(village %in% input$village_bramt)
+  })
+  # borrowng count plot
+  output$borr <- renderPlot({
+    ggplot(filtered_dbr(), aes(x=week_num, y=d_br, color = village, na.rm=TRUE)) +
+      geom_line() +
+      labs(caption = "Mean: 22%  |  Median: 0.00", color = "Villages") +
+      theme(plot.caption = element_text(size = 12))+
+      xlab("Date") +
+      ylab("Number of Households")+
+      theme_classic()+
+      scale_y_discrete(breaks = c(0,10,20,30), limits = c(0:30)) +
+      scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) +
+      scale_color_brewer(palette = "Paired") +
+      #theme(legend.position = "none")+
+      geom_rect(data = filtered_event_borr(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)
+    
+  })  
+  
+  ##borrowing purpose ----------------------
+  
+  output$purpplot <- renderPlot({
+    ggplot(dfpurp, aes(x= reorder(A,B), y = B, fill = A)) + geom_col() + 
+      coord_flip()+
+      labs(fill = "") + 
+      xlab("") +
+      ylab("Amount Borrowed (INR)")+
+      theme_classic() +
+      scale_fill_brewer(palette = "Paired") +
+      theme(legend.position = "none", axis.text.y = element_text(size = 12), axis.text.x = element_text(size = 12)) 
+  })
+
+  
+
+  
+  #Shocks tab output  -----------------------------------------------------
   
   #shock_all plot output
   output$shocks_all <- renderPlotly({
