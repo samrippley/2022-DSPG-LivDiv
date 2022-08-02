@@ -45,57 +45,26 @@ village_vector = c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskat
 
 # data -----------------------------------------------------------
 
+## demographics data
+
 load("data/livdivdata.RData")
 
 baseline <- livdiv %>%
   slice(1:306,)
 
-#overview images
+## overview images
 imgs <- list.files("www/photos/", pattern=".png", full.names = TRUE)
 
-#borrowing data 
-fdliv <- livdiv 
-meals <- fdliv %>%
-  select(c("hhid", "date", "fs_skipmeals", "fs_reducemeals", "village","hhid", "week_num"))
-meals$date <- as_date(meals$date)
-borrow <- fdliv %>%
-  select(c("hhid", "date", "d_br", "d_br_cash","d_br_inkind", "br_amt","br_amtdue", "village","hhid", "week_num"))
-borrow$date <- as_date(borrow$date)
-purp <- fdliv %>%
-  select(c("date", "br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag", "village","hhid", "week_num"))
-purp$date <- as_date(purp$date)
-bramt <- borrow %>%
-  select(c("br_amt", "date", "village", "week_num")) %>%
-  group_by(village,week_num) %>%
-  summarize_at(c("br_amt"), mean, na.rm=TRUE) 
-dbr <- borrow %>%
-  select(c("d_br", "d_br_cash", "d_br_inkind", "date", "village", "week_num")) %>%
-  group_by(village,week_num) %>%
-  summarize_at(c("d_br", "d_br_cash", "d_br_inkind"), sum, na.rm=TRUE) 
-
-borrow <- livdiv %>%  select(c("hhid", "date", "d_br", "d_br_cash","d_br_inkind", "br_amt","br_amtdue", "village","hhid", "week_num"))
-borrow$date <- as_date(borrow$date)
-
-purp <- livdiv %>%  
-  select(c("date", "br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag", "village","hhid", "week_num"))
-
-purposenv <- purp %>%  
-  select(c("br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag", "village", "week_num")) %>% summarize_at(c("br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan","br_purpose_asset", "br_purpose_ag"), sum, na.rm=TRUE) 
-
-purposenv <- t(purposenv)
-purposenv <- as.data.frame(purposenv)
-dfpurp <- data.frame(A = c("Consumption", "Other Expenses", "Fees Due", "Payback Other Loan", "Asset Purchase", "Agriculture Purchases"), B = c(purposenv$V1))
-# pls purpose dynamic hist
 
 
-# children data
+## children data-------
 
 avg_children <- baseline %>% group_by(village) %>% summarize(avg_children = sum(nb_children)/n())
 
 
 
 
-# land fallowed data 
+## land fallowed data------- 
 land_fallow <- baseline %>% 
   select(village, land_fallow)
 land_fallow <- land_fallow %>% 
@@ -103,11 +72,11 @@ land_fallow <- land_fallow %>%
   summarise("avg" = mean(na.omit(land_fallow)), "sum" = sum(na.omit(land_fallow)))
 
 
-# participate in ag data 
+## participate in ag data--------- 
 
 agfa <- baseline %>% group_by(village) %>% summarize(prop_farm = sum(farm_yn)/n())
 
-# household asset data 
+## household asset data--------- 
 
 villages <- c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur") 
 assets <- baseline %>% select(contains("asset")) %>% select(contains("num"))  %>% 
@@ -122,14 +91,14 @@ assets_long["propotion"] = assets_long["proportion"]
 assets_long["proportion"] <- round(assets_long$proportion, digits = 2)
 
 
-#household size data
+## household size data--------
 hhsize <- baseline %>% 
   select(village, hhid, nb_hhmem) 
 median_hhsize <- hhsize %>% 
   group_by(village) %>% 
   summarise("median" = median(nb_hhmem))
 
-# job duration 
+## job duration data-------- 
 job_duration <- baseline %>% 
   select(village, relationship1, relationship2, relationship3, relationship4,
          job1_duration1, job1_duration2, job1_duration3,
@@ -224,13 +193,13 @@ job_duration_avg <- c(amrabati_job_duration_summary$`avg job duration`, beguakha
 
 job_duration_summary <- data.frame(villages, job_duration_avg)
 
-# remmitences v income data 
+## remmitences v income data--------- 
 
 baseline.summary <- livdiv %>% select(village, full_inc, rmt_total) %>% 
   group_by(village) %>%
   summarise_all(mean, na.rm = TRUE)
 
-#land owned data 
+## land owned data---------- 
 villages <- c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur") 
 land_owners <- c(2, 18, 41, 14, 25, 21, 24, 21, 10, 24)
 max_land_value <- c(16, 160, 510, 80, 120, 200, 250, 70, 80, 180 )
@@ -239,11 +208,11 @@ mean_land_value <- c(13, 45.44, 60.95, 42.14, 45.44, 50.9, 64, 36.35, 23.7, 41.5
 sum_value <- c(26, 818, 2499, 590, 1136, 1069, 1537, 763.5, 237, 998)
 land_stats <- data.frame(villages, land_owners, max_land_value, min_land_value, mean_land_value, sum_value)
 
-#Migrant woker proportion data 
+## Migrant woker proportion data-------- 
 
 migrant_prop <- baseline %>% group_by(village) %>% summarize(migrant_proportion = (mean(hh_migrant)*100))
 
-# savings data 
+## savings data------- 
 nbsav <- baseline %>% 
   group_by(village) %>% 
   summarize_at(c("nb_put_saving"), mean, na.rm=TRUE)
@@ -251,22 +220,22 @@ nbsav <- baseline %>%
 nbsavcount <- baseline %>% select(nb_put_saving, village) %>% count(nb_put_saving)
 
 
-#land holding data 
+## land holding data--------- 
 
 land <- baseline %>% select(village, no_farm_reason) %>% na.omit(no_farm_reason)
 land$no_farm_reason <- as.numeric(as.factor(land$no_farm_reason))
 
-# salary data 
+## salary data------- 
 
 m_salary <-  baseline %>% group_by(village) %>% select(job1_salary1) %>% summarize(avg_salary = sum(job1_salary1, na.rm = TRUE)/n())
 
-#edu and age data 
+## edu and age data------- 
 by_villagemore <- baseline %>% 
   group_by(village ) %>% 
   summarize_at(c("head_age", "head_edu", "head_married"), mean, na.rm=TRUE) %>%
   mutate(sub = substr(head_edu, 1, 4))
 
-#occupation data 
+## occupation data-------- 
 occup1 <- baseline %>% 
   filter(relationship1 == 1) %>%
   select(c(village = "village", job = "job1_1"))
@@ -291,7 +260,7 @@ countv <- occup %>%
   group_by(village) %>%
   count(job) 
 
-#secondary occupation data 
+## secondary occupation data-------- 
 
 soccup1 <- baseline %>% 
   filter(relationship1 == 1) %>%
@@ -320,7 +289,7 @@ scountv <- soccup %>%
 scountv <- scountv %>%
   filter(job != 0)
 
-# Poverty line counts
+## Poverty line counts--------
 Village <- c(rep("Amrabati", 2), rep("Beguakhali", 2), rep("Bijoynagar", 2), rep("Birajnagar", 2), rep("Haridaskati Samsernagar", 2), rep("Lakshmi Janardanpur",2), rep("Pargumti",2),rep("Purba Dwarokapur", 2), rep("Sagar", 2), rep("Shibpur",2))
 Key <- rep(c("Live Above ₹204", "Live Below ₹204"), 2)
 Households <- c(17,11,20,10,32,18,19,9,14,16,17,11,18,10,23,5,21,6,21,7)
@@ -328,7 +297,7 @@ Percentage<- c("60", "40", "67", "33", "64","36","68","32","53",
                "47","60","40","64","36","82","18","77","23","75","25" )
 Village <- forcats::fct_rev(Village)
 dat_pl <- data.frame(Village, Key, Households, Percentage)
-# Business counts
+## Business counts---------
 Village <- c(rep("Amrabati", 2), rep("Beguakhali", 2), rep("Bijoynagar", 2), rep("Birajnagar", 2), rep("Haridaskati Samsernagar", 2), rep("Lakshmi Janardanpur",2), rep("Pargumti",2),rep("Purba Dwarokapur", 2), rep("Sagar", 2), rep("Shibpur",2))
 #Village <- forcats::fct_rev(Village)
 `Village` <- forcats::fct_rev(`Village`)
@@ -338,7 +307,7 @@ key <- rep(c("No", "Yes"), 2)
 dat_bus <-  data.frame(dat_pl$Village, key, `households`,`percentage`)
 
 
-# marital status
+## marital status--------
 countmar <- baseline %>%
   count(head_married, head_female, head_married & head_female) %>% 
   mutate(Gender = case_when(head_female == 1 ~ "Female", 
@@ -349,40 +318,9 @@ fd <- livdiv %>%
   select(-(4:967))
 
 
-# remittance data
-rmt <- fd %>% 
-  select(village, hhid, name, week, date, 
-         rmt_total, rmt_method_bank, rmt_method_person, 
-         rmt_method_mobile, rmt_method_moneyorder, rmt_method_oth, rmt_purpose_food, rmt_purpose_food,
-         rmt_purpose_tuition, rmt_purpose_asset, rmt_purpose_med, rmt_purpose_oth, rmt_purpose_none)
-
-
-rmt_mean <- rmt %>% 
-  select(village, week, rmt_total) %>% 
-  group_by(week, village) %>% 
-  summarise(avg_rmt = mean(na.omit(rmt_total), na.rm = T))
-
 
 village <- c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur") 
 
-
-#--------------------------------------------------------------------
-
-
-# rmt method plot:
-method_counts <- c(397, 472, 1, 1, 13)
-Method <- c("Bank", "In person", "Mobile", "Money Order", "Other")
-method_dat <- data.frame(Method, method_counts, stringsAsFactors = T)
-method_values <- c("       397", "       472", "   1", "   1", "    13")
-
-rmt_method_plot <- ggplot(method_dat, aes( x= reorder(Method, method_counts), y = method_counts, fill = Method)) +
-  geom_col() +
-  labs(x = "", y = "Total Households") +
-  theme_classic() +
-  coord_flip()+
-  theme(legend.position = "none", axis.text.y = element_text(size = 14))+
-  #ggtitle("Method of Receiving Remittances")+
-  geom_text(aes(label = method_values), size = 5) + scale_fill_brewer(palette = "Paired")
 
 
 # leaflet data for villages tab--------------------------------------------------------------------
@@ -442,7 +380,7 @@ addCircles(lat = 21.657, lng = 88.0591,
     "Birajnagar and Bijoynagar - Gosaba Block", "Haridaskati Samsernagar and Pargumti - Hangalganj Block"
   ))
   
-# leaflet data for age graph--------------------------------------------------------------------
+## leaflet data for age graph--------------------------------------------------------------------
 
 icons2 <- awesomeIcons(
   icon = 'ios-close',
@@ -579,10 +517,42 @@ map_leaflet3 <- leaflet(data = d.sundarban) %>%
              ))
 
 
-#-------------------------------
+# High Frequency data, data---------
+
+## remittance data-------------
+rmt <- fd %>% 
+  select(village, hhid, name, week, date, 
+         rmt_total, rmt_method_bank, rmt_method_person, 
+         rmt_method_mobile, rmt_method_moneyorder, rmt_method_oth, rmt_purpose_food, rmt_purpose_food,
+         rmt_purpose_tuition, rmt_purpose_asset, rmt_purpose_med, rmt_purpose_oth, rmt_purpose_none)
 
 
-# rmt purpose plot:
+rmt_mean <- rmt %>% 
+  select(village, week, rmt_total) %>% 
+  group_by(week, village) %>% 
+  summarise(avg_rmt = mean(na.omit(rmt_total), na.rm = T))
+
+
+village <- c("Amrabati","Beguakhali","Bijoynagar","Birajnagar","Haridaskati Samsernagar","Lakshmi Janardanpur","Pargumti","Purba Dwarokapur","Sagar","Shibpur") 
+
+
+## rmt method----
+method_counts <- c(397, 472, 1, 1, 13)
+Method <- c("Bank", "In person", "Mobile", "Money Order", "Other")
+method_dat <- data.frame(Method, method_counts, stringsAsFactors = T)
+method_values <- c("       397", "       472", "   1", "   1", "    13")
+
+rmt_method_plot <- ggplot(method_dat, aes( x= reorder(Method, method_counts), y = method_counts, fill = Method)) +
+  geom_col() +
+  labs(x = "", y = "Total Households") +
+  theme_classic() +
+  coord_flip()+
+  theme(legend.position = "none", axis.text.y = element_text(size = 14))+
+  #ggtitle("Method of Receiving Remittances")+
+  geom_text(aes(label = method_values), size = 5) + scale_fill_brewer(palette = "Paired")
+
+
+## rmt purpose------
 Purpose <-  c("Food/Utility Purchases", "Other", "No Reason", "Medical Expenses","Tuition", "Assets/Durable Purchases")
 purpose_count <- c(594, 128, 93, 43, 37, 27)
 purpose_dat <- data.frame(Purpose, purpose_count, stringsAsFactors = T)
@@ -597,8 +567,8 @@ rmt_purpose_plot <- ggplot(purpose_dat, aes(x = reorder(Purpose, purpose_count),
   coord_flip()+
   theme(legend.position = "none", axis.text.y = element_text(size = 14))+
   geom_text(aes(label = purpose_values), size = 5) + scale_fill_brewer(palette = "Paired")
-#--------------------------------------------------------------------
-# rmt table
+
+## rmt table----------
 fd <- livdiv %>%
   select(-(4:967))
 
@@ -613,9 +583,8 @@ avg_rmt <- rmt_dat %>%
 avg_rmt[,3] <- format(round(unlist(avg_rmt[,3]), digits = 2), nsmall = 2)
 names(avg_rmt) <- c("Date", "Village", "Average Remittances (INR ₹)")
 
-#-----------------------------------------------------------------
 
-# Expenditure plot data:
+# Expenditure plot data---------
 expen <- fd %>%
   select(c("hhid", "week_num", "date", "total_spending", "village","hhid")) 
 expen$date <- as_date(expen$date)
@@ -630,124 +599,25 @@ ggplot(exbyvil, aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) 
   labs(title="Average Weekly Expenditure by Village",
        x="Date", y="Average Weekly Expenditure (INR)") +
   scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40)) + scale_color_brewer(palette = "Paired")
-#--------------------------------------------------------------------
-# Expenditure table
+
+# Expenditure table----------
 expend_table <- expen %>% 
   group_by(date, village) %>% 
   summarize("Average Expenditure" = mean(total_spending, na.rm = T))
 expend_table[,3] <- format(round(unlist(expend_table[,3]), digits = 2), nsmall = 2)
 names(expend_table) <- c("Date", "Village", "Average Expenditure (INR ₹)")
-#--------------------------------------------------------------------
-# Income plot data:
+
+# Income plot data--------------
 fin_diary <- livdiv %>% select(village, date, week, name, full_inc) %>% arrange(week, village) %>% group_by(week) 
 fin_diary$date <- as_date(fin_diary$date)
 avg_tot_inc <- fin_diary %>% group_by(date, village, week) %>% summarize(avg_inc = mean(full_inc, na.rm = TRUE))
 ggplot(avg_tot_inc, aes(date, avg_inc, color = village)) + geom_line() + labs(x = "", y = "Income (INR)", title = "Average Weekly Household Income by village", color = "Village") + scale_color_brewer(palette = "Paired")
-#--------------------------------------------------------------------
-#Income table 
+
+#Income table----------- 
 avg_inc_table <- fin_diary %>% group_by(date, village) %>% summarize("Average Income" = mean(full_inc, na.rm = TRUE))
 avg_inc_table[,3] <- format(round(unlist(avg_inc_table[,3]), digits = 2), nsmall = 2)
 names(avg_inc_table) <- c("Date", "Village", "Average Income (INR ₹)")
 
-#Shocks Data ------------------------------------------------------------------- 
-## Frequency of each shock (Total baseline)
-shocks <- baseline %>% select(village,shk1,shk2,shk3,shk4,shk5,shk6,shk7) 
-shocks <- data.frame(y=unlist(shocks))
-colnames(shocks) <- c('shock_nmb')
-shock_labels <- c('None', 'Crop Loss', 'Loss of vegetation', 'Damage(saline water)','Forced to move(Flooding)', 'Loss of agricultural land(erosion)',
-                  'Loss of home(erosion/cyclone)', 'Loss of livestock', 'Loss of business', 'Death/health', 'Other')
-
-shocks_all <- ggplot(shocks, aes(shock_nmb)) + geom_bar(fill = "dark red", hoverinfo = "text", aes(text = paste(""))) + 
-  labs(x = "", y = "Occurrences" ,title = "") + theme(axis.text = element_text(size = 7)) +
-  theme_classic()+
-  scale_x_discrete(breaks = c(1,2,3,4,5,6,7,8,9,10,11),labels = str_wrap(shock_labels, width = 25) ,limits = c(0:11)) + 
-  coord_flip()
-## Average Shocks by Village
-shocks2 <- baseline %>% select(village, shk_count) %>% 
-  group_by(village) %>% summarize(avg_count = sum(shk_count, na.rm = TRUE)/n())
-
-shocks_village <- ggplot(shocks2, aes(village, avg_count, fill = village)) + geom_col() + 
-  labs(x = "", y = "Average Number of Shocks per Year (2009-2018)" ,title = "", fill = "Village") + 
-  theme_classic()+
-  theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_brewer(palette = "Paired") + coord_polar()
-
-
-## Total Shocks by Year
-shock_year <- baseline %>% select(village, shk_2009_count, shk_2010_count, shk_2011_count, 
-                                  shk_2012_count, shk_2013_count, shk_2014_count, 
-                                  shk_2015_count, shk_2016_count, shk_2017_count,shk_2018_count) %>% 
-  summarize("2009" = sum(shk_2009_count), "2010" = sum(shk_2010_count), "2011" = sum(shk_2011_count), "2012" = sum(shk_2012_count), 
-            "2013" = sum(shk_2013_count), "2014" = sum(shk_2014_count), "2015" = sum(shk_2015_count), "2016" = sum(shk_2016_count),
-            "2017" = sum(shk_2017_count), "2018" = sum(shk_2018_count))
-
-shocks_year_long <- gather(shock_year, year, count, "2009":"2018")
-
-shocks_by_year <- ggplot(shocks_year_long, aes(year, count, fill = year)) + geom_col(hoverinfo = "text", aes(text = paste("Count: ", count))) + 
-  labs(x = "", y = "Total Shocks" ,title = "") + 
-  theme_classic()+
-  theme(axis.ticks.x=element_blank(), legend.position="none") + scale_fill_brewer(palette = "Paired")
-
-## Frequency of each shocks in 2009
-
-shocks_2009 <- baseline %>% select(shk_2009_type1, shk_2009_type2, shk_2009_type3, shk_2009_type4, shk_2009_type5, shk_2009_type6)
-shock_labels_2009 <- c('Crop Loss', 'Loss of vegetation', 'Damage(saline water)',
-                       'Forced to move(Flooding)', 'Loss of agricultural land(erosion)',
-                       'Loss of home(erosion/cyclone)', 'Loss of livestock', 'Loss of business', 
-                       'Death/health', 'Other')
-shocks_2009 <- data.frame(y=unlist(shocks_2009))
-colnames(shocks_2009) <- c('shk')
-
-shocks_plot_2009 <-ggplot(shocks_2009, aes(shk)) + geom_bar(fill = "dark red",hoverinfo = "text", aes(text = paste(""))) + 
-  labs(x = "", y = "Occurrences" ,title = "") + theme(axis.text = element_text(size = 8)) + 
-  scale_x_discrete(breaks = c(1,2,3,4,5,6,7,8,9,10),labels = str_wrap(shock_labels_2009, width = 25) ,limits = c(0:11)) +
-  theme_classic()+
-  coord_flip()
-## Type of Cope after 2009 Shock
-
-shocks_cope <- baseline %>% select(village, shk_2009_cope) 
-
-cope_labels <- c("Did not do anything","Relatives/friends Aid",
-                 "Local government aid", "Changed dietary practices", 
-                 "Changed cropping practices", "Family increased non-farm employment", 
-                 "Family increased farm wage employment", "Family migrated",
-                 "Relied on savings", "Obtained credit", "Sold durable HH assets", "Sold land/building", 
-                 "Rented out land/building","Distress sales of animal stock", "Relocated children",
-                 "Reduced health/education","Did not know")
-
-shocks_cope$shk_2009_cope<-replace(shocks_cope$shk_2009_cope, shocks_cope$shk_2009_cope == 997, 16)
-
-cope_2009_plot <- ggplot(shocks_cope, aes(shk_2009_cope, fill = village)) + geom_bar(hoverinfo = "text", aes(text = paste(""))) +
-  labs(x = "", y = "Total Shocks" ,title = "", fill = "Village") + scale_fill_brewer(palette = "Paired") +
-  theme(axis.text = element_text(size = 8)) +
-  theme_classic()+
-  scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), labels = str_wrap(cope_labels, width = 30), limits = c(0:20)) + 
-  coord_flip() 
-
-## Relocation Status after 2009 Shock
-
-shock_relocation <- baseline %>% select(village, shk_2009_reloc_yn)
-
-relocation_labels <- c("No", "Yes, for under a month", "Yes, for over a month")
-
-shock_relocation_2009_yn <- ggplot(shock_relocation, aes(shk_2009_reloc_yn, fill = village)) + geom_bar(hoverinfo = "text", aes(text = paste(""))) + 
-  labs(x = "", y = "Total Households" ,title = "", fill = "Village") + 
-  theme_classic()+
-  scale_x_discrete(breaks = c(0,1,2), labels = str_wrap(relocation_labels, width = 30), limits = c(0:2)) + 
-  scale_fill_brewer(palette = "Paired")
-
-## Where they Relocated after 2009 Shock
-
-shock_relocation_where <- baseline %>% select(village, shk_2009_reloc1)
-
-relocation_where_labels <- c("Within same village","Other village in Sundarbans",
-                             "Village outside Sundarbans, within West Bengal", "Kolkata", 
-                             "Other Urban area outside Sundarbans, within West Bengal","Urban area outside West Bengal")
-
-shock_relocation_2009 <- ggplot(shock_relocation_where, aes(shk_2009_reloc1, fill = village)) + geom_bar(hoverinfo = "text", aes(text = paste(""))) + 
-  labs(x = "Relocation Areas", y = "Total Households" ,title = "", fill = "Village") + 
-  scale_x_discrete(breaks = c(1,2,3,4,5,6), labels = str_wrap(relocation_where_labels, width = 20), limits = c(1:6)) +
-  theme_classic()+
-  scale_fill_brewer(palette = "Paired") + coord_flip() +  theme(axis.text = element_text(size = 8))
 
 
 ##Male and Female Income
@@ -789,7 +659,7 @@ cs_avg <- cs %>%
   group_by(village, week) %>% 
   summarise(avg_cs = mean(na.omit(cs_total)))
 
-# Average consumption expenditure plot
+## Average consumption plot------- 
 cs_avg_plot <- ggplot(cs_avg, aes(x = week, y = avg_cs , color = village)) +
   geom_line() +
   theme_classic()+
@@ -797,7 +667,7 @@ cs_avg_plot <- ggplot(cs_avg, aes(x = week, y = avg_cs , color = village)) +
   labs(x = "", y = "Average Consumption Expenditure (INR)", caption = "Mean: 766.13  Median: 731.68", color = "Villages")+
   scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
   theme(plot.caption = element_text(size = 10))
-# Average consumption items bought
+## Average consumption items bought-----
 
 cs_avg_items <- cs %>% 
   group_by(village, week) %>% 
@@ -809,8 +679,6 @@ filtered_cs_food <- reactive({
 })
 
 
-# Average consumption items bought plot
-
 cs_item_plot <- ggplot(cs_avg_items, aes(x = week, y = avg_item, color = village))+
   geom_line() +
   theme_classic()+
@@ -818,7 +686,7 @@ cs_item_plot <- ggplot(cs_avg_items, aes(x = week, y = avg_item, color = village
   labs(x = "", y = "No. of Consumption Items Bought", color = "Villages")+
   scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))
 
-# Average expenditure by group (staple, meat, other)
+## Average expenditure by group (staple, meat, other)--------
 
 avg_cs_food <- cs %>% 
   group_by(village, week) %>% 
@@ -827,7 +695,7 @@ avg_cs_food <- cs %>%
             "Meats" = mean(na.omit(cs_redmeat +cs_fishshrimp + cs_poultry)), 
             "Other" = mean(na.omit(cs_eggs + cs_dairy +cs_packaged + cs_sinful)))
 
-# Staple items plot
+# Staple items--------- 
 
 cs_staple_plot <- ggplot(avg_cs_food, aes(x = week, y = `Average Staple Expenditure`, color = village)) +
   geom_line()+
@@ -837,7 +705,7 @@ cs_staple_plot <- ggplot(avg_cs_food, aes(x = week, y = `Average Staple Expendit
   scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
   theme(plot.caption = element_text(size = 10))
 
-# Meat plot
+## Meat------- 
 
 cs_meat_plot <- ggplot(avg_cs_food, aes(x = week, y = `Average Meat Expenditure`, color = village))+
   geom_line()+
@@ -847,7 +715,7 @@ cs_meat_plot <- ggplot(avg_cs_food, aes(x = week, y = `Average Meat Expenditure`
   scale_x_discrete(breaks = c(10,20,30,40), labels = c("January 2019", "April 2019", "July 2019", "October 2019"), limits = c(10:40))+
   theme(plot.caption = element_text(size = 10))
 
-# Other consumption items plot
+## Other consumption items--------- 
 
 cs_other_plot <- ggplot(avg_cs_food, aes(x = week, y = `Average Other Expenditure`, color = village))+
   geom_line() +
@@ -879,10 +747,10 @@ filtered_non_food_cs <- reactive({
     filter(village %in% input$village_cs_nonfood)
 })
 
-# HFD by Block------------------------------------
+# High frequency data by Block------------------------------------
 blocks <- rep(c("Namkhana Block", "Sagar Block", "Gosaba Block", "Gosaba Block", "Hangalganj Block", "Patharpratima Block", "Hangalganj Block", "Patharpratima Block", "Sagar Block", "Namkhana Block"))
 
-# expenditure
+## expenditure------
 spending_vill <- fd %>% 
   select("village", "week", "total_spending")
 
@@ -895,7 +763,7 @@ exp_block <- exp_vill %>%
   group_by(week, Block) %>% 
   summarise(block_avg_exp = mean(exp_total))
 
-# income
+## income-------
 inc <- livdiv %>% 
   select(village, week, full_inc)
 
@@ -908,7 +776,7 @@ inc_block <- inc_vill %>%
   group_by(week, Block) %>% 
   summarise(block_avg_inc = mean(inc_total))
 
-# remittances
+## remittances-------
 rmt_v2 <- fd %>% 
   select(village, week, rmt_total)
 
@@ -921,7 +789,7 @@ rmt_block <- rmt_v3 %>%
   group_by(week, Block) %>% 
   summarise(block_avg_rmt = mean(remt_total))
 
-# consumption
+## consumption--------
 cs_v2 <- fd %>% 
   select(village, week, cs_total)
 
@@ -934,7 +802,7 @@ cs_block <- cs_vill %>%
   group_by(week, Block) %>% 
   summarise(block_avg_cs = mean(cs_tot))
 
-# non food consumption
+## non food consumption--------
 
 nonfoodcs <- non_food_cs %>% 
   select(avg_nonfood) %>% 
@@ -947,6 +815,39 @@ nonfoodcs_block <- nonfoodcs %>%
   summarise(block_avg_nf = mean(nf_total))
 
 blocks_vector <- c("Sagar Block", "Namkhana Block", "Patharpratima Block", "Gosaba Block", "Hangalganj Block")
+
+## borrowing data-------- 
+fdliv <- livdiv 
+meals <- fdliv %>%
+  select(c("hhid", "date", "fs_skipmeals", "fs_reducemeals", "village","hhid", "week_num"))
+meals$date <- as_date(meals$date)
+borrow <- fdliv %>%
+  select(c("hhid", "date", "d_br", "d_br_cash","d_br_inkind", "br_amt","br_amtdue", "village","hhid", "week_num"))
+borrow$date <- as_date(borrow$date)
+purp <- fdliv %>%
+  select(c("date", "br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag", "village","hhid", "week_num"))
+purp$date <- as_date(purp$date)
+bramt <- borrow %>%
+  select(c("br_amt", "date", "village", "week_num")) %>%
+  group_by(village,week_num) %>%
+  summarize_at(c("br_amt"), mean, na.rm=TRUE) 
+dbr <- borrow %>%
+  select(c("d_br", "d_br_cash", "d_br_inkind", "date", "village", "week_num")) %>%
+  group_by(village,week_num) %>%
+  summarize_at(c("d_br", "d_br_cash", "d_br_inkind"), sum, na.rm=TRUE) 
+
+borrow <- livdiv %>%  select(c("hhid", "date", "d_br", "d_br_cash","d_br_inkind", "br_amt","br_amtdue", "village","hhid", "week_num"))
+borrow$date <- as_date(borrow$date)
+
+purp <- livdiv %>%  
+  select(c("date", "br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag", "village","hhid", "week_num"))
+
+purposenv <- purp %>%  
+  select(c("br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan", "br_purpose_asset", "br_purpose_ag", "village", "week_num")) %>% summarize_at(c("br_purpose_cons", "br_purpose_exp", "br_purpose_fee", "br_purpose_loan","br_purpose_asset", "br_purpose_ag"), sum, na.rm=TRUE) 
+
+purposenv <- t(purposenv)
+purposenv <- as.data.frame(purposenv)
+dfpurp <- data.frame(A = c("Consumption", "Other Expenses", "Fees Due", "Payback Other Loan", "Asset Purchase", "Agriculture Purchases"), B = c(purposenv$V1))
 
 # Events data -------------------------------------
 Events <- c("Kharif Crop Preparation","Kharif Crop Harvest", "Rabi Crop Harvest","Honey Harvest", "Fani Cyclone", "Matmo Cyclone",
@@ -986,9 +887,108 @@ filtered_event_inc <- reactive({
     filter(Events %in% input$event_choose_inc)
 })
 
-#--------------------------------------------------------------------
+#Shocks Data ------------------------------------------------------------------- 
+## Frequency of each shock (Total baseline)------
+shocks <- baseline %>% select(village,shk1,shk2,shk3,shk4,shk5,shk6,shk7) 
+shocks <- data.frame(y=unlist(shocks))
+colnames(shocks) <- c('shock_nmb')
+shock_labels <- c('None', 'Crop Loss', 'Loss of vegetation', 'Damage(saline water)','Forced to move(Flooding)', 'Loss of agricultural land(erosion)',
+                  'Loss of home(erosion/cyclone)', 'Loss of livestock', 'Loss of business', 'Death/health', 'Other')
 
-# CODE TO DETECT ORIGIN OF LINK AND CHANGE LOGO ACCORDINGLY
+shocks_all <- ggplot(shocks, aes(shock_nmb)) + geom_bar(fill = "dark red", hoverinfo = "text", aes(text = paste(""))) + 
+  labs(x = "", y = "Occurrences" ,title = "") + theme(axis.text = element_text(size = 7)) +
+  theme_classic()+
+  scale_x_discrete(breaks = c(1,2,3,4,5,6,7,8,9,10,11),labels = str_wrap(shock_labels, width = 25) ,limits = c(0:11)) + 
+  coord_flip()
+## Average Shocks by Village-------
+shocks2 <- baseline %>% select(village, shk_count) %>% 
+  group_by(village) %>% summarize(avg_count = sum(shk_count, na.rm = TRUE)/n())
+
+shocks_village <- ggplot(shocks2, aes(village, avg_count, fill = village)) + geom_col() + 
+  labs(x = "", y = "Average Number of Shocks per Year (2009-2018)" ,title = "", fill = "Village") + 
+  theme_classic()+
+  theme(axis.text.x=element_blank(),axis.ticks.x=element_blank()) + scale_fill_brewer(palette = "Paired") + coord_polar()
+
+
+## Total Shocks by Year-------
+shock_year <- baseline %>% select(village, shk_2009_count, shk_2010_count, shk_2011_count, 
+                                  shk_2012_count, shk_2013_count, shk_2014_count, 
+                                  shk_2015_count, shk_2016_count, shk_2017_count,shk_2018_count) %>% 
+  summarize("2009" = sum(shk_2009_count), "2010" = sum(shk_2010_count), "2011" = sum(shk_2011_count), "2012" = sum(shk_2012_count), 
+            "2013" = sum(shk_2013_count), "2014" = sum(shk_2014_count), "2015" = sum(shk_2015_count), "2016" = sum(shk_2016_count),
+            "2017" = sum(shk_2017_count), "2018" = sum(shk_2018_count))
+
+shocks_year_long <- gather(shock_year, year, count, "2009":"2018")
+
+shocks_by_year <- ggplot(shocks_year_long, aes(year, count, fill = year)) + geom_col(hoverinfo = "text", aes(text = paste("Count: ", count))) + 
+  labs(x = "", y = "Total Shocks" ,title = "") + 
+  theme_classic()+
+  theme(axis.ticks.x=element_blank(), legend.position="none") + scale_fill_brewer(palette = "Paired")
+
+## Frequency of each shocks in 2009--------
+
+shocks_2009 <- baseline %>% select(shk_2009_type1, shk_2009_type2, shk_2009_type3, shk_2009_type4, shk_2009_type5, shk_2009_type6)
+shock_labels_2009 <- c('Crop Loss', 'Loss of vegetation', 'Damage(saline water)',
+                       'Forced to move(Flooding)', 'Loss of agricultural land(erosion)',
+                       'Loss of home(erosion/cyclone)', 'Loss of livestock', 'Loss of business', 
+                       'Death/health', 'Other')
+shocks_2009 <- data.frame(y=unlist(shocks_2009))
+colnames(shocks_2009) <- c('shk')
+
+shocks_plot_2009 <-ggplot(shocks_2009, aes(shk)) + geom_bar(fill = "dark red",hoverinfo = "text", aes(text = paste(""))) + 
+  labs(x = "", y = "Occurrences" ,title = "") + theme(axis.text = element_text(size = 8)) + 
+  scale_x_discrete(breaks = c(1,2,3,4,5,6,7,8,9,10),labels = str_wrap(shock_labels_2009, width = 25) ,limits = c(0:11)) +
+  theme_classic()+
+  coord_flip()
+## Type of Cope after 2009 Shock-------
+
+shocks_cope <- baseline %>% select(village, shk_2009_cope) 
+
+cope_labels <- c("Did not do anything","Relatives/friends Aid",
+                 "Local government aid", "Changed dietary practices", 
+                 "Changed cropping practices", "Family increased non-farm employment", 
+                 "Family increased farm wage employment", "Family migrated",
+                 "Relied on savings", "Obtained credit", "Sold durable HH assets", "Sold land/building", 
+                 "Rented out land/building","Distress sales of animal stock", "Relocated children",
+                 "Reduced health/education","Did not know")
+
+shocks_cope$shk_2009_cope<-replace(shocks_cope$shk_2009_cope, shocks_cope$shk_2009_cope == 997, 16)
+
+cope_2009_plot <- ggplot(shocks_cope, aes(shk_2009_cope, fill = village)) + geom_bar(hoverinfo = "text", aes(text = paste(""))) +
+  labs(x = "", y = "Total Shocks" ,title = "", fill = "Village") + scale_fill_brewer(palette = "Paired") +
+  theme(axis.text = element_text(size = 8)) +
+  theme_classic()+
+  scale_x_discrete(breaks = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), labels = str_wrap(cope_labels, width = 30), limits = c(0:20)) + 
+  coord_flip() 
+
+## Relocation Status after 2009 Shock-------
+
+shock_relocation <- baseline %>% select(village, shk_2009_reloc_yn)
+
+relocation_labels <- c("No", "Yes, for under a month", "Yes, for over a month")
+
+shock_relocation_2009_yn <- ggplot(shock_relocation, aes(shk_2009_reloc_yn, fill = village)) + geom_bar(hoverinfo = "text", aes(text = paste(""))) + 
+  labs(x = "", y = "Total Households" ,title = "", fill = "Village") + 
+  theme_classic()+
+  scale_x_discrete(breaks = c(0,1,2), labels = str_wrap(relocation_labels, width = 30), limits = c(0:2)) + 
+  scale_fill_brewer(palette = "Paired")
+
+## Where they Relocated after 2009 Shock--------
+
+shock_relocation_where <- baseline %>% select(village, shk_2009_reloc1)
+
+relocation_where_labels <- c("Within same village","Other village in Sundarbans",
+                             "Village outside Sundarbans, within West Bengal", "Kolkata", 
+                             "Other Urban area outside Sundarbans, within West Bengal","Urban area outside West Bengal")
+
+shock_relocation_2009 <- ggplot(shock_relocation_where, aes(shk_2009_reloc1, fill = village)) + geom_bar(hoverinfo = "text", aes(text = paste(""))) + 
+  labs(x = "Relocation Areas", y = "Total Households" ,title = "", fill = "Village") + 
+  scale_x_discrete(breaks = c(1,2,3,4,5,6), labels = str_wrap(relocation_where_labels, width = 20), limits = c(1:6)) +
+  theme_classic()+
+  scale_fill_brewer(palette = "Paired") + coord_flip() +  theme(axis.text = element_text(size = 8))
+
+
+# CODE TO DETECT ORIGIN OF LINK AND CHANGE LOGO ACCORDINGLY----------
 jscode <- "function getUrlVars() {
                 var vars = {};
                 var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
@@ -1026,7 +1026,7 @@ jscode <- "function getUrlVars() {
            }
            "
 
-# user -------------------------------------------------------------
+# user interface -------------------------------------------------------------
 ui <- navbarPage(title = "",
                  selected = "overview",
                  theme = shinytheme("lumen"),
@@ -2725,7 +2725,6 @@ server <- function(input, output, session) {
   })
 
   
-
   
   #Shocks tab output  -----------------------------------------------------
   
