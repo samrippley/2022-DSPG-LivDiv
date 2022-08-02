@@ -1373,7 +1373,8 @@ ui <- navbarPage(title = "",
 
                  
                  
-                 # FD data tab-----------------------------------------------------------
+                 # High Frequency data tab-----------------------------------------------------------
+                 ## Expenditure tab
                  
                  navbarMenu("High Frequency Data" ,
                             tabPanel("Expenditure",
@@ -1544,6 +1545,7 @@ ui <- navbarPage(title = "",
                                      
                             ), 
                             
+                            ## Income tab
                             tabPanel("Income",
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Income"), align = "center"),
@@ -1597,6 +1599,7 @@ ui <- navbarPage(title = "",
                                      
                             ),
                             
+                            ## Borrowing tab
                             tabPanel("Borrowing",
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Borrowing"), align = "center"),
@@ -1642,7 +1645,7 @@ ui <- navbarPage(title = "",
                             ),
                                      
                                     
-                            
+                            ## Remittances tab
                             tabPanel("Remittances", value = "",
                                      fluidRow(style = "margin: 6px;", align = "justify",
                                               h1(strong("Remittances"), align = "center"),
@@ -1710,7 +1713,7 @@ ui <- navbarPage(title = "",
                             
                             
                  )),
-                 ## Shocks Tab --------------------------------------------
+                 # Shocks Tab --------------------------------------------
                  
                 tabPanel("Shocks",
                                        fluidRow(style = "margin: 6px;", h1(strong("Shocks"), align = "center"), 
