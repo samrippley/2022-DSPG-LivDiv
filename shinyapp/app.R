@@ -2233,7 +2233,8 @@ server <- function(input, output, session) {
   
   # Events input ----------------
   
-  # This code filters the geom_rect in the plots based upon the event selecter input
+  # The code below filters the events in the plots based upon the event selecter input
+  # place these filtered data sets in the geom_rect() of your plot to the shaded regions
   filtered_event <- reactive({
     event_periods %>% 
       filter(Events %in% input$event_choose)
@@ -2283,6 +2284,7 @@ server <- function(input, output, session) {
   # rmt plot output
   
   # This code  filters the set based upon the village selector input
+  # Use this filtered data set in your ggplot to make filtered selections
   filtered_rmt <- reactive({
     rmt_mean %>%
       filter(village %in% input$village_rmt)
