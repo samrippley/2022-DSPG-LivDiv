@@ -1372,7 +1372,6 @@ ui <- navbarPage(title = "",
                                      # Sidebar with a select input for village
                                      sidebarLayout(
                                        sidebarPanel(
-                                         #tags$h2("Select/Deselect all"),
                                          pickerInput("village_exp", "Select Village:", choices = village_vector, 
                                                      selected = village_vector,
                                                      multiple = T, options = list(`actions-box` = T)),
@@ -1385,7 +1384,7 @@ ui <- navbarPage(title = "",
                                          
                                          ),
                                        
-                                       # Show a plot of the generated plot
+                                       # generate plots and data table
                                        mainPanel(
                                          tabsetPanel(
                                            tabPanel("Weekly Expenditure",
@@ -1425,7 +1424,7 @@ ui <- navbarPage(title = "",
                                                 
                                                      
                                               )),
-                                     # Sidebar with a select input for village
+                                     # Sidebar with a select input for villages, blocks, events, and map
                                      sidebarLayout(
                                        sidebarPanel(
                                          pickerInput("village_cs", "Select Village:", choices = village_vector,
@@ -1439,7 +1438,7 @@ ui <- navbarPage(title = "",
                                          actionButton(inputId ="button4", label = "Map")
                                          
                                        ),
-                                       # Show a plot of the generated plot
+                                       # generate plots
                                        mainPanel(
                                          tabsetPanel(
                                            tabPanel("Weekly Food Consumption",
@@ -1460,7 +1459,6 @@ ui <- navbarPage(title = "",
                                            tabPanel("Weekly Food Consumption by Blocks", 
                                                     h4(strong("Average Weekly Food Consumption by Administrative Block"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("cs_block", height = "500px"))
-                                           #tabPanel("Table", DT::DTOutput("cs_table"))
                                          )
                                        ),
                                        
@@ -1482,7 +1480,7 @@ ui <- navbarPage(title = "",
                                                    
                                                      
                                               )),
-                                     # Sidebar with a select input for village
+                                     # Sidebar with a select input for villages, blocks, events, and map
                                      sidebarLayout(
                                        sidebarPanel(
                                          pickerInput("village_cs_nonfood", "Select Village:", choices = village_vector, 
@@ -1497,7 +1495,7 @@ ui <- navbarPage(title = "",
                                          actionButton(inputId ="button5", label = "Map")
                                          
                                        ),
-                                       # Show a plot of the generated plot
+                                       # generate plots
                                        mainPanel(
                                          tabsetPanel(
                                            tabPanel("Weekly Non-Food Consumption",
@@ -1506,7 +1504,6 @@ ui <- navbarPage(title = "",
                                            tabPanel("Non-Food Consumption by Blocks",
                                                     h4(strong("Average Weekly Non-Food Consumption by Administrative Block"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("nf_block_plot", height = "500px"))
-                                           #tabPanel("Table", DT::DTOutput("nonfood_table"))
                                          )
                                        ),
                                        
@@ -1533,10 +1530,9 @@ ui <- navbarPage(title = "",
                                                      p("Males earn more in this region than females. Males' average weekly income is ₹1065.54 (US$ 16.4 whereas for females the mean weekly income is ₹96 (US$ 1.48). 
                                                        Female income has a higher variance across villages than males.")
                                                      )),
-                                     # Sidebar with a select input for village
+                                     # Sidebar with a select input for villages, blocks, events, and gender
                                      sidebarLayout(
                                        sidebarPanel(
-                                         #tags$h2("Select/Deselect all"),
                                          pickerInput("village_inc", "Select Village:", choices = village_vector, 
                                                      selected = village_vector,
                                                      multiple = T, options = list(`actions-box` = T)),
@@ -1548,7 +1544,7 @@ ui <- navbarPage(title = "",
                                          p(tags$small("Select:")),                                                         
                                          actionButton(inputId ="button6", label = "Map")
                                        ),
-                                       # Show a plot of the generated plot
+                                       # generate plots and data table
                                        mainPanel(
                                          tabsetPanel(
                                            tabPanel("Weekly Income",
@@ -1557,7 +1553,6 @@ ui <- navbarPage(title = "",
                                            tabPanel("Weekly Income by Gender", 
                                                     h4(strong("Average Weekly Income by Gender"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("malefemaleinc", height = "500px")),
-                                           #tabPanel("Full Income", plotOutput("fullinc")),
                                            tabPanel("Weekly Income by Blocks", 
                                                     h4(strong("Average Weekly Income by Administrative Block"), align = "center", style = "margin: 13px;"),
                                                     plotOutput("inc_block", height = "500px")),
@@ -1588,6 +1583,7 @@ ui <- navbarPage(title = "",
                                                        land or labor. This loan often leads to more significant losses in the event of a default, where the borrower cannot pay back the lender."),
 
                                               )),
+                                     # Sidebar with a select input for villages, blocks, events, and map
                                      sidebarLayout(
                                        sidebarPanel(pickerInput("village_bramt", "Select Village:", choices = village_vector, 
                                                                 selected = village_vector, 
@@ -1597,7 +1593,7 @@ ui <- navbarPage(title = "",
                                                     p(tags$small("Select:")),                                                         
                                                     actionButton(inputId ="button7", label = "Map")
                                        ),
-                                     
+                                     # generate plots 
                                      mainPanel(
                                        tabsetPanel(
                                          tabPanel("Weekly Borrowing",
@@ -1642,10 +1638,9 @@ ui <- navbarPage(title = "",
                                     
                                      
                                      
-                                     # Sidebar with a select input for village
+                                     # Sidebar with a select input for villages, blocks, events, and map
                                      sidebarLayout(
                                        sidebarPanel(
-                                         #tags$h2("Select/Deselect all"),
                                          pickerInput("village_rmt", "Select Village:", choices = village_vector, 
                                                      selected = village_vector,
                                                      multiple = T, options = list(`actions-box` = T)),
@@ -1658,7 +1653,7 @@ ui <- navbarPage(title = "",
                                          
                                        ),
                                        
-                                       # Show a plot of the generated plot
+                                       # generate plots and data table
                                        mainPanel(
                                          tabsetPanel(
                                            tabPanel("Weekly Remittances",
@@ -1984,53 +1979,6 @@ server <- function(input, output, session) {
     list(src = x, alt = "alternate text", width = "100%", align = "right", height = "500px")
   }, deleteFile = FALSE)
   
-  # Events input ----------------
-  
-# This code filters the geom_rect in the plots based upon the event selecter input
-  filtered_event <- reactive({
-    event_periods %>% 
-      filter(Events %in% input$event_choose)
-  })
-  
-  filtered_event_cs <- reactive({
-    event_periods %>% 
-      filter(Events %in% input$event_choose_cs)
-  })
-  
-  filtered_event_cs_food <- reactive({
-    event_periods %>% 
-      filter(Events %in% input$event_choose_cs_food)
-  })
-  
-  filtered_event_cs_nonfood <- reactive({
-    event_periods %>% 
-      filter(Events %in% input$event_choose_cs_nonfood)
-  })
-  
-  filtered_event_rmt <- reactive({
-    event_periods %>% 
-      filter(Events %in% input$event_choose_rmt)
-  })
-  
-  filtered_event_exp <- reactive({
-    event_periods %>% 
-      filter(Events %in% input$event_choose_exp)
-  })
-  
-  filtered_event_inc <- reactive({
-    event_periods %>% 
-      filter(Events %in% input$event_choose_inc)
-  })
-  
-  filtered_event_borr <- reactive({
-    event_periods %>% 
-      filter(Events %in% input$event_choose_borr)
-  })
-  
-  filtered_event_borr_count <- reactive({
-    event_periods %>% 
-      filter(Events %in% input$event_choose_borr_count)
-  })
   
   
   
@@ -2281,14 +2229,64 @@ server <- function(input, output, session) {
     
   })
   
-  # High Frequency Data Output------------------- 
+  # High Frequency Data Output-------------------
+  
+  # Events input ----------------
+  
+  # This code filters the geom_rect in the plots based upon the event selecter input
+  filtered_event <- reactive({
+    event_periods %>% 
+      filter(Events %in% input$event_choose)
+  })
+  
+  filtered_event_cs <- reactive({
+    event_periods %>% 
+      filter(Events %in% input$event_choose_cs)
+  })
+  
+  filtered_event_cs_food <- reactive({
+    event_periods %>% 
+      filter(Events %in% input$event_choose_cs_food)
+  })
+  
+  filtered_event_cs_nonfood <- reactive({
+    event_periods %>% 
+      filter(Events %in% input$event_choose_cs_nonfood)
+  })
+  
+  filtered_event_rmt <- reactive({
+    event_periods %>% 
+      filter(Events %in% input$event_choose_rmt)
+  })
+  
+  filtered_event_exp <- reactive({
+    event_periods %>% 
+      filter(Events %in% input$event_choose_exp)
+  })
+  
+  filtered_event_inc <- reactive({
+    event_periods %>% 
+      filter(Events %in% input$event_choose_inc)
+  })
+  
+  filtered_event_borr <- reactive({
+    event_periods %>% 
+      filter(Events %in% input$event_choose_borr)
+  })
+  
+  filtered_event_borr_count <- reactive({
+    event_periods %>% 
+      filter(Events %in% input$event_choose_borr_count)
+  })
   
   # Remittances tab output--------------------
   # rmt plot output
-  # This code  filters the set based upon the village selecter input
+  
+  # This code  filters the set based upon the village selector input
   filtered_rmt <- reactive({
     rmt_mean %>%
       filter(village %in% input$village_rmt)
+      # ^ (Variable in data set you want filtered %in% input$(input id of selector)
   })
   # Plot
   output$rmt <- renderPlot({
@@ -2352,7 +2350,7 @@ server <- function(input, output, session) {
       filter(Block %in% input$block_choose_exp)
   })
   
-  # exp plot
+  # exp plot with filtered data set and events input
   output$exp <- renderPlot({
     ggplot(filtered_exp(), aes(x=week_num, y=total_spending, color = village, na.rm=TRUE)) +
       geom_line() +
@@ -2367,7 +2365,7 @@ server <- function(input, output, session) {
     
   })
   
-  # exp by block plot
+  # exp by block plot with filtered data set and events input
   output$exp_block <- renderPlot({
     ggplot(filtered_exp_block(), aes(x = week , y = block_avg_exp, color = Block)) +
       geom_line() +
@@ -2395,7 +2393,7 @@ server <- function(input, output, session) {
   })
   
   
-  # Income plot
+  # Income plot with filtered data set and events input
   output$inc <- renderPlot({
     ggplot(filtered_inc(), aes(week, avg_inc, color = village)) + 
       geom_line() + 
@@ -2415,7 +2413,7 @@ server <- function(input, output, session) {
       filter(village %in% input$village_inc)
   })
   
-  # income male/female plot
+  # income male/female plot with filtered data set and events input
   output$malefemaleinc <- renderPlot({
     ggplot(filtered_malefemaleinc(), aes(x = week,y = !!input$Gender, color = village)) + geom_line() + 
       labs(x = "Date", y = "Average Weekly Income (INR)", color = "Village", caption = "Male - Mean: INR 1065.54  |  Median: INR 642.5     Female - Mean: INR 96.60  |  Median: INR 0.00 ") +
@@ -2437,7 +2435,7 @@ server <- function(input, output, session) {
       filter(Block %in% input$block_choose_inc)
   })
   
-  # income by block plot
+  # income by block plot with filtered data set and events input
   output$inc_block <- renderPlot({
     ggplot(filtered_inc_block(), aes(x = week, y = block_avg_inc, color = Block)) +
       geom_line() +
@@ -2460,7 +2458,7 @@ server <- function(input, output, session) {
   
   
   
-  #Render inc table
+  #Render income table
   output$inc_table <- DT::renderDT({
     avg_inc_table
   })
@@ -2473,7 +2471,7 @@ server <- function(input, output, session) {
     cs_avg %>% 
       filter(village %in% input$village_cs)
   })
-  # consumption plot
+  # consumption plot with filtered data set and events input
   filtered_event <- reactive({
     event_periods %>% 
       filter(Events %in% input$event_choose)
@@ -2491,13 +2489,13 @@ server <- function(input, output, session) {
       scale_color_brewer(palette = "Paired")
   })
   
-  # Filtered cs items
+  # Filtered cs items 
   filtered_cs_avg_items <- reactive({
     cs_avg_items %>% 
       filter(village %in% input$village_cs)
   })
   
-  # cs items plot
+  # cs items plot with filtered data set and events input
   
   output$cs_item <- renderPlot({
     ggplot(filtered_cs_avg_items(), aes(x = week, y = avg_item, color = village))+
@@ -2511,7 +2509,7 @@ server <- function(input, output, session) {
       scale_color_brewer(palette = "Paired")
   })
   
-  # consumption by block plot
+  # consumption by block plot with filtered data set and events input
   output$cs_block <- renderPlot({
     ggplot(filtered_cs_block(), aes(x = week , y = block_avg_cs, color = Block)) +
       geom_line() +
@@ -2550,7 +2548,7 @@ server <- function(input, output, session) {
       filter(Block %in% input$block_choose_cs)
   })
   
-  # staple items plot
+  # staple items plot with filtered data set and events input
   output$cs_staple <- renderPlot({
     ggplot(filtered_cs_food_staple(), aes(x = week, y = `Staple Items`, color = village)) +
       geom_line()+
@@ -2564,7 +2562,7 @@ server <- function(input, output, session) {
       scale_color_brewer(palette = "Paired")
     
   })
-  # meats plot
+  # meats plot with filtered data set and events input
   output$cs_meats <- renderPlot({
     ggplot(filtered_cs_meats(), aes(x = week, y = `Meats`, color = village))+
       geom_line()+
@@ -2577,7 +2575,7 @@ server <- function(input, output, session) {
       geom_rect(data = filtered_event_cs(), inherit.aes = F, aes(xmin= start_week, xmax= end_week, ymin=0, ymax= Inf, fill = Events), alpha=0.25)+
       scale_color_brewer(palette = "Paired")
   })
-  # Other food plot
+  # Other food plot with filtered data set and events input
   output$cs_other <- renderPlot({
     ggplot(filtered_cs_other(), aes(x = week, y = `Other`, color = village))+
       geom_line() +
@@ -2599,7 +2597,7 @@ server <- function(input, output, session) {
       filter(village %in% input$village_cs_nonfood)
   })
   
-  # non food plot
+  # non food plot with filtered data set and events input
   output$nonfood_plot <- renderPlot({
     ggplot(filtered_non_food_cs(), aes(x = week, y = !!input$nonfood_group, color = village)) +
       geom_line()+
@@ -2616,7 +2614,7 @@ server <- function(input, output, session) {
     nonfoodcs_block %>% 
       filter(Block %in% input$block_choose_nf)
   })
-  # non food by block plot
+  # non food by block plot with filtered data set and events input
   output$nf_block_plot <- renderPlot({
     ggplot(filtered_nf(), aes(x = week , y = block_avg_nf, color = Block)) +
       geom_line() +
@@ -2646,7 +2644,7 @@ server <- function(input, output, session) {
     bramt %>%
       filter(village %in% input$village_bramt)
   })
-  # borrowing pamount lot
+  # borrowing amount plot with filtered data set and events input
   output$bor <- renderPlot({
     ggplot(filtered_bramt(), aes(x=week_num, y=br_amt, color = village, na.rm = T)) +
       geom_line() +
@@ -2668,7 +2666,7 @@ server <- function(input, output, session) {
     dbr %>%
       filter(village %in% input$village_bramt)
   })
-  # borrowng count plot
+  # borrowng count plot with filtered data set and events input
   output$borr <- renderPlot({
     ggplot(filtered_dbr(), aes(x=week_num, y=d_br, color = village, na.rm=TRUE)) +
       geom_line() +
