@@ -852,40 +852,11 @@ dfpurp <- data.frame(A = c("Consumption", "Other Expenses", "Fees Due", "Payback
 # Events data -------------------------------------
 Events <- c("Kharif Crop Preparation","Kharif Crop Harvest", "Rabi Crop Harvest","Honey Harvest", "Fani Cyclone", "Matmo Cyclone",
             "Republic Day", "Rama Navami", "Eid al-Fitr", "Indian Independence Day", "Dussehra", "Diwali" ,"Christmas")
+# Vectors of the start and end week that the events occured
 start_week <- c(28, 1, 0, 19, 22, 48, 10, 20, 28, 38, 46, 49, 5)
 end_week <- c(36, 12, 14, 32, 24, 49, 10.2, 20.2, 28.2, 38.2, 46.2, 49.2, 5.2)
 event_periods <- data.frame(Events, start_week, end_week)
 events_vector <- Events
-
-filtered_event_cs <- reactive({
-  event_periods %>% 
-    filter(Events %in% input$event_choose_cs)
-})
-
-filtered_event_cs_food <- reactive({
-  event_periods %>% 
-    filter(Events %in% input$event_choose_cs_food)
-})
-
-filtered_event_cs_nonfood <- reactive({
-  event_periods %>% 
-    filter(Events %in% input$event_choose_cs_nonfood)
-})
-
-filtered_event_rmt <- reactive({
-  event_periods %>% 
-    filter(Events %in% input$event_choose_rmt)
-})
-
-filtered_event_exp <- reactive({
-  event_periods %>% 
-    filter(Events %in% input$event_choose_exp)
-})
-
-filtered_event_inc <- reactive({
-  event_periods %>% 
-    filter(Events %in% input$event_choose_inc)
-})
 
 #Shocks Data ------------------------------------------------------------------- 
 ## Frequency of each shock (Total baseline)------
@@ -2015,7 +1986,7 @@ server <- function(input, output, session) {
   
   # Events input ----------------
   
-  
+# This code filters the geom_rect in the plots based upon the event selecter input
   filtered_event <- reactive({
     event_periods %>% 
       filter(Events %in% input$event_choose)
@@ -2314,7 +2285,7 @@ server <- function(input, output, session) {
   
   # Remittances tab output--------------------
   # rmt plot output
-  # Filter by input
+  # This code  filters the set based upon the village selecter input
   filtered_rmt <- reactive({
     rmt_mean %>%
       filter(village %in% input$village_rmt)
@@ -2370,7 +2341,7 @@ server <- function(input, output, session) {
   
   #Expenditure tab output -----------------
   # exp plot ouput
-  # Filter by input
+  # fFilter by input
   filtered_exp <- reactive({
     exbyvil %>% 
       filter(village %in% input$village_exp)
