@@ -2231,7 +2231,7 @@ server <- function(input, output, session) {
   
   # High Frequency Data Output-------------------
   
-  # Events input ----------------
+  # Events filtering  ----------------
   
   # The code below filters the events in the plots based upon the event selecter input
   # place these filtered data sets in the geom_rect() of your plot to the shaded regions
